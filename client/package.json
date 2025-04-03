@@ -10,7 +10,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.0",
+    "@emotion/styled": "^11.11.0",
+    "@lottiefiles/react-lottie-player": "^3.5.0",
+    "@mui/material": "^5.15.0",
+    "axios": "^1.6.0",
+    "chart.js": "^4.4.0",
+    "formik": "^2.4.0",
     "react": "^18.2.0",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
