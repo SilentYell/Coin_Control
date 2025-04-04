@@ -1,12 +1,15 @@
 import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 
 function App() {
   return (
-    <div>
-      <h1>Coin Control</h1>
-      <p>Welcome to the budget management app!</p>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<h1>Welcome to Coin Control</h1>} />
+        <Route path="/dashboard" element={<h1>Dashboard</h1>} />
+      </Routes>
+    </Router>
   );
 }
 
