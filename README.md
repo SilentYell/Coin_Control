@@ -1,2 +1,6 @@
 # Coin Control
-A budget planning app for a Lighthouse Labs final project
+A basic React + Vite frontend and Express backend project.
+
+## Setup
+1. **Frontend**: `cd client && npm install && npm run dev`
+2. **Backend**: `cd server && npm install && node index.js`
