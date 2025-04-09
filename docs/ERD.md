@@ -1,6 +1,4 @@
-# ERD Documentation (PostgreSQL-Compatible)
-
-The Entity-Relationship Diagram (ERD) for the Coin Control project outlines the relationships between the following entities, optimized for PostgreSQL:
+# ERD Documentation
 
 ## Entities and Attributes
 
