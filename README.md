@@ -101,7 +101,6 @@ Here’s a detailed weekly and daily plan for your team of 4 to stay on track an
 #### **Part-Time Members**
 
 1. **Test and Debug Backend Routes:**
-- Use Postman or Insomnia to test all `/api/expenses` and `/api/income` routes.
 - Verify that the routes handle edge cases (e.g., invalid data, missing fields).
 - Fix any bugs or errors in the backend.
 
