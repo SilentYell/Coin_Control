@@ -1,5 +1,23 @@
 # Useful psql Commands
 
+## Start the PostgreSQL Server
+To start the PostgreSQL server, run:
+`sudo systemctl start postgresql`
+
+## Stop the PostgreSQL Server
+To stop the PostgreSQL server, run:
+`sudo systemctl stop postgresql`
+
+## Restart the PostgreSQL Server
+If you need to restart the server, run:
+`sudo systemctl restart postgresql`
+
+## Check PostgreSQL Server Status
+To check if the PostgreSQL server is running, run:
+`sudo systemctl status postgresql`
+
+This will show whether the service is active (running) or inactive.
+
 ## General Commands
 - **Start psql**:
   ```bash

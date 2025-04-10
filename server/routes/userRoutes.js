@@ -1,6 +1,5 @@
-# Routes
-
-<!-- This folder is for organizing Express route files. -->
+const express = require('express');
+const router = express.Router();
 
 // Mock user data
 const mockUser = {
@@ -13,3 +12,5 @@ const mockUser = {
 router.get('/user', (req, res) => {
   res.json(mockUser);
 });
+
+module.exports = router;

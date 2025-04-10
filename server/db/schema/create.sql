@@ -5,8 +5,9 @@ DROP TABLE IF EXISTS Users;
 
 -- Create USERS table
 CREATE TABLE Users (
-  id SERIAL PRIMARY KEY NOT NULL,
-  username VARCHAR(255) NOT NULL
+    user_id SERIAL PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    current_balance NUMERIC(15, 2) DEFAULT 0
 );
 
 -- Create INCOME table with a foreign key to USERS
@@ -16,7 +17,7 @@ CREATE TABLE Income (
   amount NUMERIC(15, 2) NOT NULL,
   frequency VARCHAR(20) NOT NULL,
   last_payment_date DATE NOT NULL,
-  FOREIGN KEY (user_id) REFERENCES Users(id)
+  FOREIGN KEY (user_id) REFERENCES Users(user_id)
 );
 
 -- Create EXPENSES table with a foreign key to USERS
@@ -27,6 +28,6 @@ CREATE TABLE Expenses (
   amount NUMERIC(15, 2) NOT NULL,
   expense_date DATE NOT NULL,
   category VARCHAR(50),
-  FOREIGN KEY (user_id) REFERENCES Users(id)
+  FOREIGN KEY (user_id) REFERENCES Users(user_id)
 );
 
