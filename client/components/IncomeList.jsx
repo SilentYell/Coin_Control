@@ -5,7 +5,11 @@ export default function IncomeList() {
   // Track income state
   const [incomeList, setIncome] = useState(incomeDb)
 
-console.log(incomeList)
+
+  const handleDelete = (id) => {
+    // resets on refresh
+    setIncome(incomeList.filter(income => income.income_id !== id))
+  }
 
   // format date for display
   const formatDate = (dateString) => {
@@ -38,7 +42,7 @@ console.log(incomeList)
           <tbody>
             {incomeList.map((income) => (
               <tr key={income.income_id}>
-                <td className="amount">${income.amount}</td>
+                <td className="amount">${income.amount.toFixed(2)}</td>
                 <td>{formatDate(income.last_payment_date)}</td>
                 <td className="frequency">{income.frequency}</td>
                 <td className="actions">
