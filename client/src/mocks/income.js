@@ -1,4 +1,3 @@
-import IncomeList from "../../components/IncomeList"
 
 const incomeDb = [
   {
