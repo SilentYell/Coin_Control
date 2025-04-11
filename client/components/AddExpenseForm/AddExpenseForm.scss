@@ -1,0 +1,14 @@
+.add-expense-form {
+  padding: 1rem;
+  background-color: #2d3748; // Dark background to match ExpensesList
+  border-radius: 0.75rem;
+  color: #e2e8f0;
+  max-width: 500px;
+  margin: 0 auto 2rem;
+
+  h2 {
+    margin-bottom: 1.5rem;
+    text-align: center;
+    color: #f7fafc;
+  }
+}
