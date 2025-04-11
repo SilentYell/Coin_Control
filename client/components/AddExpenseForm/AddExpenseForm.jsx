@@ -4,7 +4,7 @@ import './AddExpenseForm.scss';
 const AddExpenseForm = () => {
   // form state
   const [formData, setFormData] = useState({
-    description: '',
+    name: '',
     amount: '',
     expense_date: new Date().toISOString().split('T')[0], // set to todays date
     category: 'Groceries',
@@ -47,7 +47,7 @@ const AddExpenseForm = () => {
 
     // reset the form
     setFormData({
-      description: '',
+      name: '',
       amount: '',
       expense_date: new Date().toISOString().split('T')[0],
       category: 'Groceries',
@@ -60,12 +60,12 @@ const AddExpenseForm = () => {
 
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="description">Description</label>
+          <label htmlFor="name">Description</label>
           <input
             type="text"
-            id="description"
-            name="description"
-            value={formData.description}
+            id="name"
+            name="name"
+            value={formData.name}
             onChange={handleChange}
             placeholder="What was this expense for?"
             required

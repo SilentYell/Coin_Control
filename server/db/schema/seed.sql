@@ -19,9 +19,9 @@ VALUES
   (1, 1200, 'semi-monthly', TO_DATE('01/03/2025', 'DD/MM/YYYY'));
 
 -- Insert expenses data into the Expenses table
-INSERT INTO Expenses(user_id, amount, expense_date, category)
+INSERT INTO Expenses(expense_id, user_id, name, amount, expense_date, category)
 VALUES
-  (2, -400, TO_DATE('10/02/2025', 'DD/MM/YYYY'), 'Car Insurance'),
-  (1, -1200, TO_DATE('01/03/2025', 'DD/MM/YYYY'), 'Rent'),
-  (4, -85, TO_DATE('20/03/2025', 'DD/MM/YYYY'), 'Phone Bill'),
-  (4, -250, TO_DATE('25/03/2025', 'DD/MM/YYYY'), 'Groceries');
+  (1, 2, 'Car Insurance Payment', -400, TO_DATE('10/02/2025', 'DD/MM/YYYY'), 'Car Insurance'),
+  (2, 1, 'Monthly Rent', -1200, TO_DATE('01/03/2025', 'DD/MM/YYYY'), 'Rent'),
+  (3, 4, 'Phone Bill', -85, TO_DATE('20/03/2025', 'DD/MM/YYYY'), 'Phone Bill'),
+  (4, 4, 'Weekly Groceries', -250, TO_DATE('25/03/2025', 'DD/MM/YYYY'), 'Groceries');
