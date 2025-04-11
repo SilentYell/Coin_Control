@@ -1,7 +1,5 @@
 import React from 'react';
-import './Dashboard.scss';
 import './Card.scss';
-import { useState } from 'react';
 
 function Card({ title, value }) {
   return (

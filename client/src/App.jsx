@@ -4,6 +4,8 @@ import IncomeList from '../components/IncomeList';
 import ExpensesList from '../components/ExpensesList/ExpensesList';
 import AddExpenseForm from '../components/AddExpenseForm/AddExpenseForm';
 import IncomeForm from '../components/IncomeForm';
+import Dashboard from '../components/Dashboard/Dashboard';
+
 
 
 function App() {
@@ -25,7 +27,7 @@ function App() {
     });
   };
 
-// Need navigation bar to see expense and income lists
+  // Need navigation bar to see expense and income lists
 
   return (
     <div className="App" style={{ textAlign: 'center', marginTop: '50px' }}>
@@ -49,9 +51,8 @@ function App() {
           <h1>Welcome, {user.username}!</h1>
           <p>Current Balance: ${user.current_balance.toFixed(2)}</p>
 
-          {/* Adding Epense Form Component */}
+          {/* Adding Expense Form Component */}
           <AddExpenseForm />
-
 
           {/* Adding Expenses List Component */}
           <ExpensesList />
@@ -60,18 +61,20 @@ function App() {
 
       {/* Conditional Rendering for temporary Income list and form buttons */}
       {user && <button
-      className="temporary-button"
-      onClick={() => setShowIncome((prev) => !prev)}>
+        className="temporary-button"
+        onClick={() => setShowIncome((prev) => !prev)}>
         Show Income History
-
       </button>}
       {showIncome && <IncomeList />}
       {user && <button
-      className="temporary-button"
-      onClick={() => setIncomeForm((prev) => !prev)}>
+        className="temporary-button"
+        onClick={() => setIncomeForm((prev) => !prev)}>
         Add Income
-      </button> }
+      </button>}
       {incomeForm && <IncomeForm />}
+
+      {/* Adding Dashboard Component */}
+      <Dashboard />
     </div>
   );
 }
