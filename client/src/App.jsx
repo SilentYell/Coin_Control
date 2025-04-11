@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import './App.scss';
 import IncomeList from '../components/IncomeList';
+import ExpensesList from '../components/ExpensesList/ExpensesList';
+import AddExpenseForm from '../components/AddExpenseForm/AddExpenseForm';
 
 function App() {
 
@@ -43,6 +45,13 @@ function App() {
         <div>
           <h1>Welcome, {user.username}!</h1>
           <p>Current Balance: ${user.current_balance.toFixed(2)}</p>
+
+          {/* Adding Epense Form Component */}
+          <AddExpenseForm />
+
+
+          {/* Adding Expenses List Component */}
+          <ExpensesList />
         </div>
       )}
       <button
