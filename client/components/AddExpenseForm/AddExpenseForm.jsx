@@ -20,6 +20,31 @@ const AddExpenseForm = () => {
     'Healthcare',
     'Education',
     'Personal',
-    'Other'
+    'Other',
   ];
+
+  // handle input changes
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  // handle form submission
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // create expense object
+    const newExpense = {
+      ...formData,
+      amount: parseFloat(formData.amount),
+    };
+
+    // log new expense to console
+    console.log('New Expense:', newExpense);
+  };
 };
+
+export default AddExpenseForm;
