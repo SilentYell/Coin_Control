@@ -116,8 +116,8 @@ const AddExpenseForm = () => {
           </select>
         </div>
 
-
-
+        {/* submit button - add expense */}
+        <button type="submit" className="submit-btn">Add Expense</button>
 
       </form>
     </div>
