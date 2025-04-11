@@ -71,6 +71,25 @@ const AddExpenseForm = () => {
             required
           />
         </div>
+
+        <div className="form-group">
+          <label htmlFor="amount">Amount ($)</label>
+          <input
+            type="number"
+            id="amount"
+            name="amount"
+            value={formData.amount}
+            onChange={handleChange}
+            placeholder="0.00"
+            step="0.01"
+            min="0"
+            required
+          />
+        </div>
+
+
+
+
       </form>
     </div>
   );
