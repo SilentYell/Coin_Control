@@ -14,6 +14,8 @@ function App() {
     });
   };
 
+// Need navigation bar to see expense and income lists
+
   return (
     <div className="App" style={{ textAlign: 'center', marginTop: '50px' }}>
       {!user ? (
