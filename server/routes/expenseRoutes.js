@@ -75,6 +75,31 @@ router.put('/expenses/:id', async (req, res) => {
   }
 });
 
+// DELETE /api/expenses/:id - delete an expense
+router.delete('/expenses/:id', async (req, res) => {
+  try {
+    const expenseId = req.params.id;
+    const userId = 1; // hardcoded userID 1 for now
 
+    // delete the expense from the database
+    const result = await db.query(
+      'DELETE FROM Expenses WHERE expense_id = $1 AND user_id = $2 RETURNING *',
+      [expenseId, userId]
+    );
+
+    // if no rows were affected, the expense might not exist or doesn't belong to this user
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Expense not found or unauthorized' });
+    }
+
+    res.json({ 
+      message: 'Expense deleted successfully',
+      deletedExpense: result.rows[0]
+    });
+  } catch (error) {
+    console.error('Error deleting expense!', error);
+    res.status(500).json({ error: 'Failed to delete expense' });
+  }
+});
 
 module.exports = router;
