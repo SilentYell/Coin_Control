@@ -3,7 +3,13 @@ import './App.scss';
 import IncomeList from '../components/IncomeList';
 
 function App() {
+
   const [user, setUser] = useState(null);
+
+  // Temporary -- don't want to clog up the screen with income and expense data
+  const [showIncome, setShowIncome] = useState(false);
+  // end of temporary
+
 
   const handleLogin = () => {
     // Simulate a logged-in user
@@ -39,7 +45,12 @@ function App() {
           <p>Current Balance: ${user.current_balance.toFixed(2)}</p>
         </div>
       )}
-      <IncomeList />
+      <button
+      className="temporary-button"
+      onClick={() => setShowIncome((prev) => !prev)}>
+        Show Income History
+      </button>
+      {showIncome && <IncomeList />}
     </div>
   );
 }
