@@ -1,6 +1,16 @@
 import React from 'react';
 import './Dashboard.scss';
+import './Card.scss';
 import { useState } from 'react';
+
+function Card({ title, value }) {
+  return (
+    <div className="card">
+      <div className="card-title">{title}</div>
+      <div className="card-value">{value}</div>
+    </div>
+  );
+}
 
 function Dashboard() {
   

@@ -1,0 +1,17 @@
+.dashboard {
+  padding: 2rem;
+  background-color: #f7fafc;
+  border-radius: 0.5rem;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.dashboard h1 {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #2d3748;
+}
