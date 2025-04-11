@@ -1,10 +1,17 @@
 import React, { useState } from 'react';
 import './App.scss';
+import IncomeList from '../components/IncomeList';
 import ExpensesList from '../components/ExpensesList/ExpensesList';
 import AddExpenseForm from '../components/AddExpenseForm/AddExpenseForm';
 
 function App() {
+
   const [user, setUser] = useState(null);
+
+  // Temporary -- don't want to clog up the screen with income and expense data
+  const [showIncome, setShowIncome] = useState(false);
+  // end of temporary
+
 
   const handleLogin = () => {
     // Simulate a logged-in user
@@ -14,6 +21,8 @@ function App() {
       current_balance: 1000.0,
     });
   };
+
+// Need navigation bar to see expense and income lists
 
   return (
     <div className="App" style={{ textAlign: 'center', marginTop: '50px' }}>
@@ -45,6 +54,12 @@ function App() {
           <ExpensesList />
         </div>
       )}
+      <button
+      className="temporary-button"
+      onClick={() => setShowIncome((prev) => !prev)}>
+        Show Income History
+      </button>
+      {showIncome && <IncomeList />}
     </div>
   );
 }
