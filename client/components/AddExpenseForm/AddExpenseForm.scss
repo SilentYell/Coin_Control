@@ -1,10 +1,11 @@
 .add-expense-form {
-  padding: 1rem;
+  padding: 1.5rem;
   background-color: #2d3748; // dark background for now
   border-radius: 0.75rem;
   color: #e2e8f0;
   max-width: 500px;
   margin: 0 auto 2rem;
+  box-sizing: border-box;
 
   h2 {
     margin-bottom: 1.5rem;
@@ -31,6 +32,7 @@
       background-color: #1a202c;
       color: #e2e8f0;
       font-size: 1rem;
+      box-sizing: border-box;
 
       &:focus {
         outline: none;
@@ -64,6 +66,7 @@
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.2s;
+    box-sizing: border-box;
 
     &:hover {
       background-color: #2b6cb0;
