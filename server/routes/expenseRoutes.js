@@ -17,4 +17,29 @@ router.get('/expenses', async (req, res) => {
   }
 });
 
+// POST /api/expenses - create a new expense
+router.post('/expenses', async (req, res) => {
+  try {
+    const { name, amount, expense_date, category } = req.body;
+    const userId = 1; // hardcoded userID 1 for now and we can update this later
+
+    // validate fields that are required
+    if (!amount || !expense_date) {
+      return res
+        .status(400)
+        .json({ error: 'Amount and date are required to proceed' });
+    }
+
+    // insert the new expense into the database
+    const result = await db.query(
+      'INSERT INTO Expenses (user_id, amount, expense_date, category, name) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+      [userId, amount, expense_date, category, name]
+    );
+    res.status(201).json(result.rows[0]);
+  } catch (error) {
+    console.error('Error creating expense!', error);
+    res.status(500).json({ error: 'Failed to create expense' });
+  }
+});
+
 module.exports = router;
