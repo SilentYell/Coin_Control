@@ -1,3 +1,5 @@
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '../.env.development') }); //loading environment variables
 const { Pool } = require("pg");
 
 const client = new Pool({

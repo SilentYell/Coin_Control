@@ -24,7 +24,7 @@ CREATE TABLE Income (
 CREATE TABLE Expenses (
   expense_id SERIAL PRIMARY KEY NOT NULL,
   user_id INTEGER NOT NULL,
-  -- name VARCHAR(100) NOT NULL,
+  name VARCHAR(100) NOT NULL,
   amount NUMERIC(15, 2) NOT NULL,
   expense_date DATE NOT NULL,
   category VARCHAR(50),

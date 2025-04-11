@@ -10,7 +10,7 @@ const ExpensesList = () => {
       amount: 45.99,
       expense_date: '2025-04-05',
       category: 'Groceries',
-      description: 'Weekly grocery shopping',
+      name: 'Weekly grocery shopping',
     },
     {
       expense_id: 2,
@@ -18,7 +18,7 @@ const ExpensesList = () => {
       amount: 12.5,
       expense_date: '2025-04-07',
       category: 'Transportation',
-      description: 'Bus fare',
+      name: 'Bus fare',
     },
     {
       expense_id: 3,
@@ -26,7 +26,7 @@ const ExpensesList = () => {
       amount: 89.99,
       expense_date: '2025-04-08',
       category: 'Entertainment',
-      description: 'Concert tickets',
+      name: 'Concert tickets',
     },
     {
       expense_id: 4,
@@ -34,7 +34,7 @@ const ExpensesList = () => {
       amount: 199.99,
       expense_date: '2025-04-09',
       category: 'Utilities',
-      description: 'Electricity bill',
+      name: 'Electricity bill',
     },
   ]);
 
@@ -81,7 +81,7 @@ const ExpensesList = () => {
                   <td>
                     <span className="category-tag">{expense.category}</span>
                   </td>
-                  <td className="description">{expense.description}</td>
+                  <td className="description">{expense.name}</td>
                   <td className="actions">
                     <button className="edit-btn">Edit</button>
                     <button
