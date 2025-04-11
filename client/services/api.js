@@ -19,3 +19,26 @@ export const getExpenses = async () => {
     throw error;
   }
 };
+
+
+// add a new expense
+export const addExpense = async (expense) => {
+  try {
+    const response = await fetch(`${API_URL}/expenses`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(expense),
+    });
+    
+    if (!response.ok) {
+      throw new Error(`Error ${response.status}: ${response.statusText}`);
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('Failed to add expense:', error);
+    throw error;
+  }
+};

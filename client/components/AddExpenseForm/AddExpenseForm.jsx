@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { addExpense } from '../../services/api'; // importing api function
 import './AddExpenseForm.scss';
 
 const AddExpenseForm = () => {
