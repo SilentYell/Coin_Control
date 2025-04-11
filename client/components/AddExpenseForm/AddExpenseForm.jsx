@@ -44,7 +44,36 @@ const AddExpenseForm = () => {
 
     // log new expense to console
     console.log('New Expense:', newExpense);
+
+    // reset the form
+    setFormData({
+      description: '',
+      amount: '',
+      expense_date: new Date().toISOString().split('T')[0],
+      category: 'Groceries',
+    });
   };
+
+  return (
+    <div className="add-expense-form">
+      <h2>Add New Expense</h2>
+
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label htmlFor="description">Description</label>
+          <input
+            type="text"
+            id="description"
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+            placeholder="What was this expense for?"
+            required
+          />
+        </div>
+      </form>
+    </div>
+  );
 };
 
 export default AddExpenseForm;
