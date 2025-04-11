@@ -42,4 +42,39 @@ router.post('/expenses', async (req, res) => {
   }
 });
 
+// PUT /api/expenses/:id - update existing expense
+router.put('/expenses/:id', async (req, res) => {
+  try {
+    const expenseId = req.params.id;
+    const { name, amount, expense_date, category } = req.body;
+    const userId = 1; // hardcoded userID 1 for now and we can update this later
+
+    // validate fields that are required
+    if (!amount || !expense_date) {
+      return res
+        .status(400)
+        .json({ error: 'Amount and date are required to proceed' });
+    }
+
+    // update the expense in the database
+    const result = await db.query(
+      'UPDATE Expenses SET name = $1, amount = $2, expense_date = $3, category = $4 WHERE expense_id = $5 AND user_id = $6 RETURNING *',
+      [name, amount, expense_date, category, expenseId, userId]
+    );
+
+    // if no rows were affected, the expense might not exist or doesn't belong to this user
+    if (result.rows.length === 0) {
+      return res
+        .status(404)
+        .json({ error: 'Expense not found or unauthorized' });
+    }
+    res.json(result.rows[0]);
+  } catch (error) {
+    console.error('Error updating expense!', error);
+    res.status(500).json({ error: 'Failed to update expense' });
+  }
+});
+
+
+
 module.exports = router;
