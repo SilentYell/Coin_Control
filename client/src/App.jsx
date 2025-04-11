@@ -3,6 +3,8 @@ import './App.scss';
 import IncomeList from '../components/IncomeList';
 import ExpensesList from '../components/ExpensesList/ExpensesList';
 import AddExpenseForm from '../components/AddExpenseForm/AddExpenseForm';
+import IncomeForm from '../components/IncomeForm';
+
 
 function App() {
 
@@ -10,6 +12,7 @@ function App() {
 
   // Temporary -- don't want to clog up the screen with income and expense data
   const [showIncome, setShowIncome] = useState(false);
+  const [incomeForm, setIncomeForm] = useState(false);
   // end of temporary
 
 
@@ -54,12 +57,21 @@ function App() {
           <ExpensesList />
         </div>
       )}
-      <button
+
+      {/* Conditional Rendering for temporary Income list and form buttons */}
+      {user && <button
       className="temporary-button"
       onClick={() => setShowIncome((prev) => !prev)}>
         Show Income History
-      </button>
+
+      </button>}
       {showIncome && <IncomeList />}
+      {user && <button
+      className="temporary-button"
+      onClick={() => setIncomeForm((prev) => !prev)}>
+        Add Income
+      </button> }
+      {incomeForm && <IncomeForm />}
     </div>
   );
 }

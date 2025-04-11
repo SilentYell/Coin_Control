@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import incomeDb from '../src/mocks/income';
+import '../styles/IncomeList.scss'
 
 export default function IncomeList() {
   // Track income state
@@ -37,6 +38,7 @@ export default function IncomeList() {
               <th>Amount</th>
               <th>Frequency</th>
               <th>Last Payment Date</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
