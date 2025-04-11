@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './App.scss';
+import ExpensesList from '../components/ExpensesList/ExpensesList';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -34,6 +35,8 @@ function App() {
         <div>
           <h1>Welcome, {user.username}!</h1>
           <p>Current Balance: ${user.current_balance.toFixed(2)}</p>
+          {/* Adding Expenses List Component */}
+          <ExpensesList />
         </div>
       )}
     </div>
