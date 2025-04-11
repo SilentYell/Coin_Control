@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './App.scss';
+import IncomeList from '../components/IncomeList';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -36,6 +37,7 @@ function App() {
           <p>Current Balance: ${user.current_balance.toFixed(2)}</p>
         </div>
       )}
+      <IncomeList />
     </div>
   );
 }
