@@ -42,3 +42,25 @@ export const addExpense = async (expense) => {
     throw error;
   }
 };
+
+// update existing expense
+export const updateExpense = async (id, expense) => {
+  try {
+    const response = await fetch(`${API_URL}/expenses/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(expense),
+    });
+    
+    if (!response.ok) {
+      throw new Error(`Error ${response.status}: ${response.statusText}`);
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error(`Failed to update expense with id ${id}:`, error);
+    throw error;
+  }
+};
