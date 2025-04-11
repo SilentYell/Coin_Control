@@ -64,3 +64,21 @@ export const updateExpense = async (id, expense) => {
     throw error;
   }
 };
+
+// delete an expense
+export const deleteExpense = async (id) => {
+  try {
+    const response = await fetch(`${API_URL}/expenses/${id}`, {
+      method: 'DELETE',
+    });
+    
+    if (!response.ok) {
+      throw new Error(`Error ${response.status}: ${response.statusText}`);
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error(`Failed to delete expense with id ${id}:`, error);
+    throw error;
+  }
+};

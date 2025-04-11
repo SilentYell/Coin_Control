@@ -11,6 +11,11 @@ const AddExpenseForm = () => {
     category: 'Groceries',
   });
 
+  // state for tracking form submission status
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(false);
+
   // common expense categories
   const categories = [
     'Groceries',
@@ -34,30 +39,50 @@ const AddExpenseForm = () => {
   };
 
   // handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+    setError(null);
+    setSuccess(false);
 
-    // create expense object
-    const newExpense = {
-      ...formData,
-      amount: parseFloat(formData.amount),
-    };
+    try {
+      // create expense object
+      const newExpense = {
+        ...formData,
+        amount: parseFloat(formData.amount),
+      };
 
-    // log new expense to console
-    console.log('New Expense:', newExpense);
+      // send to api
+      const result = await addExpense(newExpense);
+      console.log('Expense added:', result);
 
-    // reset the form
-    setFormData({
-      name: '',
-      amount: '',
-      expense_date: new Date().toISOString().split('T')[0],
-      category: 'Groceries',
-    });
+      // set success state
+      setSuccess(true);
+
+      // reset the form
+      setFormData({
+        name: '',
+        amount: '',
+        expense_date: new Date().toISOString().split('T')[0],
+        category: 'Groceries',
+      });
+    } catch (error) {
+      setError(error.message || 'Failed to add expense');
+      console.error('Error adding expense', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <div className="add-expense-form">
       <h2>Add New Expense</h2>
+
+      {/* UI feedback for expense */}
+      {error && <div className="error-message">{error}</div>}
+      {success && (
+        <div className="success-message">Expense added successfully!</div>
+      )}
 
       <form onSubmit={handleSubmit}>
         <div className="form-group">
@@ -109,7 +134,7 @@ const AddExpenseForm = () => {
             onChange={handleChange}
             required
           >
-            {categories.map(category => (
+            {categories.map((category) => (
               <option key={category} value={category}>
                 {category}
               </option>
@@ -118,8 +143,9 @@ const AddExpenseForm = () => {
         </div>
 
         {/* submit button - add expense */}
-        <button type="submit" className="submit-btn">Add Expense</button>
-
+        <button type="submit" className="submit-btn" disabled={isLoading}>
+          {isLoading ? 'Adding...' : 'Add Expense'}
+        </button>
       </form>
     </div>
   );
