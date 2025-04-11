@@ -1,3 +1,5 @@
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, './.env.development') }); // load environment variables
 const express = require('express');
 const cors = require('cors'); // install cors: npm install cors
 const app = express();
@@ -17,6 +19,10 @@ app.use('/api', userRoutes);
 
 app.get('/', (req, res) => {
   res.send('Hello from Coin Control backend!');
+});
+
+app.get('/api/test', (req, res) => {
+  res.json({ message: 'API is working!' });
 });
 
 app.listen(port, () => {
