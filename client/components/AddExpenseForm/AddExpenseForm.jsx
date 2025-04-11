@@ -87,6 +87,18 @@ const AddExpenseForm = () => {
           />
         </div>
 
+        <div className="form-group">
+          <label htmlFor="expense_date">Date</label>
+          <input
+            type="date"
+            id="expense_date"
+            name="expense_date"
+            value={formData.expense_date}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
 
 
 
