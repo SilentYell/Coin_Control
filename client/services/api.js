@@ -142,3 +142,21 @@ export const updateIncome = async (id, income) => {
     throw error;
   }
 };
+
+// delete an income entry
+export const deleteIncome = async (id) => {
+  try {
+    const response = await fetch(`${API_URL}/income/${id}`, {
+      method: 'DELETE',
+    });
+    
+    if (!response.ok) {
+      throw new Error(`Error ${response.status}: ${response.statusText}`);
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error(`Failed to delete income with id ${id}:`, error);
+    throw error;
+  }
+};
