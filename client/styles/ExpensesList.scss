@@ -1,0 +1,62 @@
+.expenses-list {
+  padding: 1rem;
+  background-color: #FCEDD3;
+  border-radius: 0.75rem;
+  color: #000000;
+
+  h2 {
+    margin-bottom: 1.5rem;
+    text-align: center;
+    color: #1E4210;
+  }
+
+  .empty-state {
+    background-color: #E6B800;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    text-align: center;
+    color: #876510;
+  }
+
+  .table-container {
+    overflow-x: auto;
+    background-color: #FCEDD3;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+  }
+
+  .expenses-table {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    border-radius: 0.5rem;
+    overflow: hidden;
+
+    th {
+      background-color: #876510;
+      font-weight: 600;
+      color: #FCEDD3;
+      border-bottom: 2px solid #E6B800; 
+    }
+
+    td {
+      border-bottom: 1px solid #E6B800;
+      background-color: #FCEDD3;
+      color: #000000;
+    }
+
+    tbody tr:hover {
+      background-color: #E6B800;
+    }
+
+    .amount {
+      font-weight: 600;
+      color: #1E4210;
+    }
+
+    .actions button {
+      background-color: #876510;
+      color: #FCEDD3;
+    }
+  }
+}

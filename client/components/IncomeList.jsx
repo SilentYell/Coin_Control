@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import incomeDb from '../src/mocks/income';
-import '../styles/IncomeList.scss'
+import '../styles/IncomeList.scss';
 
 export default function IncomeList() {
   // Track income state

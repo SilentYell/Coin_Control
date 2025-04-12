@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { addExpense } from '../../services/api'; // importing api function
-import './AddExpenseForm.scss';
+import { addExpense } from '../services/api'; // importing api function
+import '../styles/AddExpenseForm.scss';
 
 const AddExpenseForm = () => {
   // form state

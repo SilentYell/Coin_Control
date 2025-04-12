@@ -1,0 +1,57 @@
+.dashboard {
+  padding: 1.5rem;
+  background-color: #FCEDD3;
+  border-radius: 0.75rem;
+  color: #000000;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  h1 {
+    margin-bottom: 1.5rem;
+    text-align: center;
+    color: #1E4210;
+  }
+
+  .layout {
+    background-image: linear-gradient(to right, #876510 1px, transparent 1px),
+                      linear-gradient(to bottom, #876510 1px, transparent 1px);
+    background-size: 100px 100px;
+    position: relative;
+  }
+}
+
+.layout {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* responsive grid */
+  grid-template-rows: auto; /* rows will adjust based on content */
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* responsive grid */
+  grid-template-rows: auto; /* rows will adjust based on content */
+  gap: 1rem; /* space between grid items */
+}
+
+/* Resize handle styles */
+.react-resizable-handle {
+  width: 15px;
+  height: 15px;
+  background-color: #E6B800;
+  position: absolute;
+  top: 0;
+  left: 0;
+  cursor: nw-resize; /* Show diagonal resize cursor */
+  border-radius: 50%;
+  z-index: 10;
+}
+
+.react-resizable-handle::after {
+  content: 'Resize';
+  position: absolute;
+  top: -20px;
+  left: 0;
+  font-size: 0.75rem;
+  color: #3182ce;
+}

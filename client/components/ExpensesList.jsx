@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { getExpenses, deleteExpense } from '../../services/api';
-import './ExpensesList.scss';
+import { getExpenses, deleteExpense } from '../services/api';
+import '../styles/ExpensesList.scss';
 
 const ExpensesList = () => {
   // mock data based on schema
