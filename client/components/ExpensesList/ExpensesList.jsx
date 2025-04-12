@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { getExpenses, deleteExpense } from '../../services/api';
 import './ExpensesList.scss';
 
 const ExpensesList = () => {
   // mock data based on schema
-  const [expenses, setExpenses] = useState([
+  const mockExpenses = [
     {
       expense_id: 1,
       user_id: 1,
@@ -36,7 +37,12 @@ const ExpensesList = () => {
       category: 'Utilities',
       name: 'Electricity bill',
     },
-  ]);
+  ];
+
+  const [expenses, setExpenses] = useState(mockExpenses);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [useMockData, setUseMockData] = useState(true);
 
   // format date for display
   const formatDate = (dateString) => {
@@ -49,8 +55,19 @@ const ExpensesList = () => {
   };
 
   // handle delete expense
-  const handleDelete = (id) => {
-    setExpenses(expenses.filter((expense) => expense.expense_id !== id));
+  const handleDelete = async (id) => {
+    try {
+      // call the API but continue using mock data
+      await deleteExpense(id);  
+      console.log(`Successfully called deleteExpense API for id: ${id}`);
+      
+      // update UI with mock data
+      setExpenses(expenses.filter((expense) => expense.expense_id !== id));
+    } catch (error) {
+      console.error('API error when deleting expense:', error);
+      // update the UI even if the API fails
+      setExpenses(expenses.filter((expense) => expense.expense_id !== id));
+    }
   };
 
   return (
