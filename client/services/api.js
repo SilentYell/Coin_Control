@@ -98,3 +98,25 @@ export const getIncome = async () => {
     throw error;
   }
 };
+
+// add a new income entry
+export const addIncome = async (income) => {
+  try {
+    const response = await fetch(`${API_URL}/income`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(income),
+    });
+    
+    if (!response.ok) {
+      throw new Error(`Error ${response.status}: ${response.statusText}`);
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('Failed to add income:', error);
+    throw error;
+  }
+};
