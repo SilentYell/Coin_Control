@@ -1,15 +1,16 @@
 .income-form {
-  padding: 1rem;
-  background-color: #2d3748; // dark background for now
+  padding: 1.5rem;
+  background-color: #FCEDD3; /* Light peach background */
   border-radius: 0.75rem;
-  color: #e2e8f0;
+  color: #000000; /* Black text color */
   max-width: 500px;
   margin: 0 auto 2rem;
+  box-sizing: border-box;
 
   h2 {
     margin-bottom: 1.5rem;
     text-align: center;
-    color: #f7fafc;
+    color: #1E4210; /* Dark green for headings */
   }
 
   .form-group {
@@ -18,19 +19,20 @@
     label {
       display: block;
       margin-bottom: 0.5rem;
-      color: #e2e8f0;
+      color: #876510; /* Brown for labels */
       font-weight: 500;
     }
 
     input,
     select {
-      width: 90%;
+      width: 100%;
       padding: 0.75rem;
       border-radius: 0.375rem;
-      border: 1px solid #4a5568;
-      background-color: #1a202c;
-      color: #e2e8f0;
+      border: 1px solid #876510; /* Brown border */
+      background-color: #FCEDD3; /* Light peach background */
+      color: #000000; /* Black text */
       font-size: 1rem;
+      box-sizing: border-box;
 
       &:focus {
         outline: none;
@@ -58,12 +60,13 @@
     padding: 0.75rem 1rem;
     border: none;
     border-radius: 0.375rem;
-    background-color: #3182ce; // blue submit button - color to change
-    color: white;
+    background-color: #1E4210; /* Dark green button */
+    color: #FCEDD3; /* Light peach text */
     font-weight: 600;
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.2s;
+    box-sizing: border-box;
 
     &:hover {
       background-color: #2b6cb0;

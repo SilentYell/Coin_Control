@@ -1,26 +1,26 @@
 .expenses-list {
   padding: 1rem;
-  background-color: #2d3748; // Dark background for the entire component
+  background-color: #FCEDD3; /* Light peach background */
   border-radius: 0.75rem;
-  color: #e2e8f0;
+  color: #000000; /* Black text color */
 
   h2 {
     margin-bottom: 1.5rem;
     text-align: center;
-    color: #f7fafc;
+    color: #1E4210; /* Dark green for headings */
   }
 
   .empty-state {
-    background-color: #3a4a61;
+    background-color: #E6B800; /* Gold background */
     padding: 2rem;
     border-radius: 0.5rem;
     text-align: center;
-    color: #cbd5e0;
+    color: #876510; /* Brown text color */
   }
 
   .table-container {
     overflow-x: auto;
-    background-color: #2d3748;
+    background-color: #FCEDD3; /* Light peach background */
     border-radius: 0.5rem;
     padding: 0.5rem;
   }
@@ -32,93 +32,31 @@
     border-radius: 0.5rem;
     overflow: hidden;
 
-    th,
-    td {
-      padding: 0.75rem 1rem;
-      text-align: left;
-    }
-
     th {
-      background-color: #1a202c;
+      background-color: #876510; /* Brown background */
       font-weight: 600;
-      color: #e2e8f0;
-      border-bottom: 2px solid #4a5568;
+      color: #FCEDD3; /* Light peach text */
+      border-bottom: 2px solid #E6B800; /* Gold border */
     }
 
     td {
-      border-bottom: 1px solid #4a5568;
-      background-color: #3a4a61;
-      color: #e2e8f0;
+      border-bottom: 1px solid #E6B800; /* Gold border */
+      background-color: #FCEDD3; /* Light peach background */
+      color: #000000; /* Black text */
     }
 
     tbody tr:hover {
-      background-color: #4a5568;
+      background-color: #E6B800; /* Gold hover effect */
     }
 
     .amount {
       font-weight: 600;
-      color: #fc8181; // Lighter red for dark background
+      color: #1E4210; /* Dark green for amounts */
     }
 
-    .category-tag {
-      display: inline-block;
-      padding: 0.25rem 0.5rem;
-      font-size: 0.875rem;
-      background-color: #4a5568;
-      color: #e2e8f0;
-      border-radius: 1rem;
-    }
-
-    .description {
-      max-width: 200px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .actions {
-      display: flex;
-      gap: 0.5rem;
-
-      button {
-        padding: 0.25rem 0.5rem;
-        font-size: 0.875rem;
-        border: none;
-        border-radius: 0.25rem;
-        cursor: pointer;
-        transition: background-color 0.2s ease;
-
-        &.edit-btn {
-          background-color: #3182ce;
-          color: white;
-
-          &:hover {
-            background-color: #2b6cb0;
-          }
-        }
-
-        &.delete-btn {
-          background-color: #e53e3e;
-          color: white;
-
-          &:hover {
-            background-color: #c53030;
-          }
-        }
-      }
-    }
-
-    .total-row {
-      background-color: #1a202c;
-      font-weight: 600;
-
-      .total-label {
-        text-align: right;
-      }
-
-      .total-amount {
-        color: #fc8181; // Lighter red for dark background
-      }
+    .actions button {
+      background-color: #876510; /* Brown buttons */
+      color: #FCEDD3; /* Light peach text */
     }
   }
 }

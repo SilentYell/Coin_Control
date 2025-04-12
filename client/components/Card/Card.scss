@@ -1,26 +1,30 @@
 .card {
-  background-color: #ffffff;
+  width: 100%; /* Ensure the card fills the parent container */
+  height: 100%; /* Ensure the card resizes with the parent container */
+  background-color: #FCEDD3; /* Light peach background */
   border-radius: 0.5rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  padding: 1.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
   text-align: center;
-  color: #2d3748;
+  color: #000000; /* Black text color */
+  user-select: none; /* Prevent text selection during dragging */
 }
 
 .card-title {
   font-size: 1.25rem;
   font-weight: bold;
   margin-bottom: 0.5rem;
+  color: #876510; /* Brown for titles */
 }
 
 .card-value {
   font-size: 1.5rem;
-  color: #3182ce;
+  color: #1E4210; /* Dark green for values */
 }
 
 .card-description {
   font-size: 0.9rem;
-  color: #4a5568;
+  color: #E6B800; /* Gold for descriptions */
   margin-top: 0.5rem;
 }
 

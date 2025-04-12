@@ -38,9 +38,9 @@ function Dashboard() {
       <ResponsiveGridLayout
         className="layout"
         layouts={{ lg: layout, md: layout, sm: layout, xs: layout, xxs: layout }}
-        breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
+        breakpoints={{ lg: 1000, md: 996, sm: 768, xs: 480, xxs: 0 }}
         cols={{ lg: 6, md: 4, sm: 2, xs: 1, xxs: 1 }}
-        rowHeight={100}
+        rowHeight={70}
         isResizable={isEditable} // Controlled by isEditable state
         isDraggable={isEditable} // Controlled by isEditable state
       >

@@ -1,12 +1,23 @@
 .dashboard {
-  max-width: 1440px; /* Set a maximum width for the dashboard */
-  max-height: 2160px; /* Set a maximum height for the dashboard */
+  padding: 1.5rem;
+  background-color: #FCEDD3; /* Light peach background */
+  border-radius: 0.75rem;
+  color: #000000; /* Black text color */
+  max-width: 1200px;
+  margin: 0 auto;
 
-  margin: 0 auto; /* Center the dashboard */
-  padding: 2rem; /* Add padding around the dashboard */
-  background-color: #f7fafc;
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  h1 {
+    margin-bottom: 1.5rem;
+    text-align: center;
+    color: #1E4210; /* Dark green for headings */
+  }
+
+  .layout {
+    background-image: linear-gradient(to right, #876510 1px, transparent 1px),
+                      linear-gradient(to bottom, #876510 1px, transparent 1px);
+    background-size: 100px 100px;
+    position: relative;
+  }
 }
 
 .layout {
@@ -14,10 +25,6 @@
   gap: 1rem;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* responsive grid */
   grid-template-rows: auto; /* rows will adjust based on content */
-  background-image: linear-gradient(to right, #e2e8f0 1px, transparent 1px),
-                    linear-gradient(to bottom, #e2e8f0 1px, transparent 1px);
-  background-size: 100px 100px; /* Adjust grid size to match rowHeight and column width */
-  position: relative;
 }
 
 .dashboard-grid {
@@ -27,19 +34,24 @@
   gap: 1rem; /* space between grid items */
 }
 
-.dashboard h1 {
-  text-align: center;
-  margin-bottom: 2rem;
-  color: #2d3748;
-}
-
+/* Resize handle styles */
 .react-resizable-handle {
-  width: 10px;
-  height: 10px;
+  width: 15px; /* Slightly larger for better usability */
+  height: 15px;
   background-color: #3182ce; /* Blue color for visibility */
   position: absolute;
-  bottom: 0;
-  right: 0;
-  cursor: se-resize; /* Show resize cursor */
+  top: 0; /* Move to the top */
+  left: 0; /* Move to the left */
+  cursor: nw-resize; /* Show diagonal resize cursor */
   border-radius: 50%; /* Make it circular */
+  z-index: 10; /* Ensure it’s above other elements */
+}
+
+.react-resizable-handle::after {
+  content: 'Resize';
+  position: absolute;
+  top: -20px;
+  left: 0;
+  font-size: 0.75rem;
+  color: #3182ce;
 }
