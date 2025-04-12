@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import './App.scss';
 import IncomeList from '../components/IncomeList';
-import ExpensesList from '../components/ExpensesList/ExpensesList';
-import AddExpenseForm from '../components/AddExpenseForm/AddExpenseForm';
+import ExpensesList from '../components/ExpensesList';
+import AddExpenseForm from '../components/AddExpenseForm';
 import IncomeForm from '../components/IncomeForm';
-import Dashboard from '../components/Dashboard/Dashboard';
+import Dashboard from '../components/Dashboard';
 
 
 

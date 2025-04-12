@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import './Dashboard.scss';
-import Card from '../Card/Card';
+import '../styles/Dashboard.scss';
+import Card from './Card';
 import { Responsive, WidthProvider } from 'react-grid-layout';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
@@ -9,7 +9,7 @@ function Dashboard() {
   const [totalExpenses, setTotalExpenses] = useState(1200);
   const [totalIncome, setTotalIncome] = useState(2000);
   const [currentBalance, setCurrentBalance] = useState(800);
-  const [isEditable, setIsEditable] = useState(false); // State to toggle edit mode
+  const [isEditable, setIsEditable] = useState(false); // State to toggle the cards edit mode
 
   // This defines the layout for the grid
   const layout = [
@@ -41,8 +41,8 @@ function Dashboard() {
         breakpoints={{ lg: 1000, md: 996, sm: 768, xs: 480, xxs: 0 }}
         cols={{ lg: 6, md: 4, sm: 2, xs: 1, xxs: 1 }}
         rowHeight={70}
-        isResizable={isEditable} // Controlled by isEditable state
-        isDraggable={isEditable} // Controlled by isEditable state
+        isResizable={isEditable}
+        isDraggable={isEditable}
       >
         <div key="expenses">
           <Card title="Total Expenses" value={`$${totalExpenses}`} description="Track your spending here." />

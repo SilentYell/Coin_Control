@@ -1,5 +1,5 @@
 import React from 'react';
-import './Card.scss';
+import '../styles/Card.scss';
 
 function Card({ title, value, description }) {
   return (
@@ -11,4 +11,4 @@ function Card({ title, value, description }) {
   );
 }
 
-export default Card; // Correctly export the Card component
+export default Card;
