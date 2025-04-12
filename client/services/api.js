@@ -120,3 +120,25 @@ export const addIncome = async (income) => {
     throw error;
   }
 };
+
+// update income entry
+export const updateIncome = async (id, income) => {
+  try {
+    const response = await fetch(`${API_URL}/income/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(income),
+    });
+    
+    if (!response.ok) {
+      throw new Error(`Error ${response.status}: ${response.statusText}`);
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error(`Failed to update income with id ${id}:`, error);
+    throw error;
+  }
+};
