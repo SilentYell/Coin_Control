@@ -1,26 +1,14 @@
 import React from 'react';
 import './Card.scss';
 
-function Card({ title, value }) {
+function Card({ title, value, description }) {
   return (
     <div className="card">
       <div className="card-title">{title}</div>
       <div className="card-value">{value}</div>
+      <div className="card-description">{description}</div>
     </div>
   );
 }
 
-function Dashboard() {
-  
-  return (
-    <div className="dashboard">
-      <h1>Card</h1>
-      
-      <p>This is the Card component!</p>
-      <button onClick={() => alert('Button clicked!')}>Click Me</button>
-      <p>Feel free to customize the content as needed.</p>
-    </div>
-  );
-}
-
-export default Dashboard;
+export default Card; // Correctly export the Card component
