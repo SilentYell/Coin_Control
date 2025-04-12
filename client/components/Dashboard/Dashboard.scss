@@ -1,12 +1,22 @@
 .dashboard {
-  padding: 2rem;
+  max-width: 1200px; /* Set a maximum width for the dashboard */
+  margin: 0 auto; /* Center the dashboard */
+  padding: 2rem; /* Add padding around the dashboard */
   background-color: #f7fafc;
   border-radius: 0.5rem;
+  text-shadow: #2d3748;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow for depth */
+}
+
+.layout {
+  display: grid;
+  gap: 1rem;
 }
 
 .dashboard-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* three equal columns */
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* responsive grid */
+  grid-template-rows: auto; /* rows will adjust based on content */
   gap: 1rem; /* space between grid items */
 }
 

@@ -1,6 +1,6 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
+  max-width: 100%; /* Allow full width for the dashboard */
+  margin: 0; /* Remove margin to avoid constraining the dashboard */
   padding: 2rem;
   text-align: center;
 }

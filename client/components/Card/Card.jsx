@@ -16,7 +16,7 @@ function Dashboard() {
     <div className="dashboard">
       <h1>Card</h1>
       
-      <p>Welcome to the Card component!</p>
+      <p>This is the Card component!</p>
       <button onClick={() => alert('Button clicked!')}>Click Me</button>
       <p>Feel free to customize the content as needed.</p>
     </div>
