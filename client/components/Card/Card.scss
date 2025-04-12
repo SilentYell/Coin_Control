@@ -1,12 +1,12 @@
 .card {
-  width: 100%; /* Ensure the card fills the parent container */
-  height: 100%; /* Ensure the card resizes with the parent container */
-  background-color: #FCEDD3; /* Light peach background */
+  width: 100%; /* Ensures the card fills the parent container */
+  height: 100%; /* Ensures the card resizes with the parent container */
+  background-color: #FCEDD3;
   border-radius: 0.5rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 1rem;
   text-align: center;
-  color: #000000; /* Black text color */
+  color: #000000;
   user-select: none; /* Prevent text selection during dragging */
 }
 
@@ -14,17 +14,17 @@
   font-size: 1.25rem;
   font-weight: bold;
   margin-bottom: 0.5rem;
-  color: #876510; /* Brown for titles */
+  color: #876510;
 }
 
 .card-value {
   font-size: 1.5rem;
-  color: #1E4210; /* Dark green for values */
+  color: #1E4210;
 }
 
 .card-description {
   font-size: 0.9rem;
-  color: #E6B800; /* Gold for descriptions */
+  color: #E6B800;
   margin-top: 0.5rem;
 }
 

@@ -1,15 +1,15 @@
 .dashboard {
   padding: 1.5rem;
-  background-color: #FCEDD3; /* Light peach background */
+  background-color: #FCEDD3;
   border-radius: 0.75rem;
-  color: #000000; /* Black text color */
+  color: #000000;
   max-width: 1200px;
   margin: 0 auto;
 
   h1 {
     margin-bottom: 1.5rem;
     text-align: center;
-    color: #1E4210; /* Dark green for headings */
+    color: #1E4210;
   }
 
   .layout {
@@ -36,15 +36,15 @@
 
 /* Resize handle styles */
 .react-resizable-handle {
-  width: 15px; /* Slightly larger for better usability */
+  width: 15px;
   height: 15px;
-  background-color: #3182ce; /* Blue color for visibility */
+  background-color: #E6B800;
   position: absolute;
-  top: 0; /* Move to the top */
-  left: 0; /* Move to the left */
+  top: 0;
+  left: 0;
   cursor: nw-resize; /* Show diagonal resize cursor */
-  border-radius: 50%; /* Make it circular */
-  z-index: 10; /* Ensure it’s above other elements */
+  border-radius: 50%;
+  z-index: 10;
 }
 
 .react-resizable-handle::after {

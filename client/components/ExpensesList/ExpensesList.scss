@@ -1,26 +1,26 @@
 .expenses-list {
   padding: 1rem;
-  background-color: #FCEDD3; /* Light peach background */
+  background-color: #FCEDD3;
   border-radius: 0.75rem;
-  color: #000000; /* Black text color */
+  color: #000000;
 
   h2 {
     margin-bottom: 1.5rem;
     text-align: center;
-    color: #1E4210; /* Dark green for headings */
+    color: #1E4210;
   }
 
   .empty-state {
-    background-color: #E6B800; /* Gold background */
+    background-color: #E6B800;
     padding: 2rem;
     border-radius: 0.5rem;
     text-align: center;
-    color: #876510; /* Brown text color */
+    color: #876510;
   }
 
   .table-container {
     overflow-x: auto;
-    background-color: #FCEDD3; /* Light peach background */
+    background-color: #FCEDD3;
     border-radius: 0.5rem;
     padding: 0.5rem;
   }
@@ -33,30 +33,30 @@
     overflow: hidden;
 
     th {
-      background-color: #876510; /* Brown background */
+      background-color: #876510;
       font-weight: 600;
-      color: #FCEDD3; /* Light peach text */
-      border-bottom: 2px solid #E6B800; /* Gold border */
+      color: #FCEDD3;
+      border-bottom: 2px solid #E6B800; 
     }
 
     td {
-      border-bottom: 1px solid #E6B800; /* Gold border */
-      background-color: #FCEDD3; /* Light peach background */
-      color: #000000; /* Black text */
+      border-bottom: 1px solid #E6B800;
+      background-color: #FCEDD3;
+      color: #000000;
     }
 
     tbody tr:hover {
-      background-color: #E6B800; /* Gold hover effect */
+      background-color: #E6B800;
     }
 
     .amount {
       font-weight: 600;
-      color: #1E4210; /* Dark green for amounts */
+      color: #1E4210;
     }
 
     .actions button {
-      background-color: #876510; /* Brown buttons */
-      color: #FCEDD3; /* Light peach text */
+      background-color: #876510;
+      color: #FCEDD3;
     }
   }
 }

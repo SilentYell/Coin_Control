@@ -1,8 +1,8 @@
 .add-expense-form {
   padding: 1.5rem;
-  background-color: #FCEDD3; /* Light peach background */
+  background-color: #FCEDD3;
   border-radius: 0.75rem;
-  color: #000000; /* Black text color */
+  color: #000000;
   max-width: 500px;
   margin: 0 auto 2rem;
   box-sizing: border-box;
@@ -10,7 +10,7 @@
   h2 {
     margin-bottom: 1.5rem;
     text-align: center;
-    color: #1E4210; /* Dark green for headings */
+    color: #1E4210;
   }
 
   .form-group {
@@ -19,7 +19,7 @@
     label {
       display: block;
       margin-bottom: 0.5rem;
-      color: #876510; /* Brown for labels */
+      color: #876510;
       font-weight: 500;
     }
 
@@ -28,9 +28,9 @@
       width: 100%;
       padding: 0.75rem;
       border-radius: 0.375rem;
-      border: 1px solid #876510; /* Brown border */
-      background-color: #FCEDD3; /* Light peach background */
-      color: #000000; /* Black text */
+      border: 1px solid #876510;
+      background-color: #FCEDD3;
+      color: #000000;
       font-size: 1rem;
       box-sizing: border-box;
 
@@ -60,8 +60,8 @@
     padding: 0.75rem 1rem;
     border: none;
     border-radius: 0.375rem;
-    background-color: #1E4210; /* Dark green button */
-    color: #FCEDD3; /* Light peach text */
+    background-color: #1E4210;
+    color: #FCEDD3; 
     font-weight: 600;
     font-size: 1rem;
     cursor: pointer;

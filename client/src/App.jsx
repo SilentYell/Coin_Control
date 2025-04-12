@@ -50,6 +50,9 @@ function App() {
         <div>
           <h1>Welcome, {user.username}!</h1>
           <p>Current Balance: ${user.current_balance.toFixed(2)}</p>
+          {/* Adding Dashboard Component */}
+          <Dashboard />
+
 
           {/* Adding Expense Form Component */}
           <AddExpenseForm />
@@ -72,9 +75,6 @@ function App() {
         Add Income
       </button>}
       {incomeForm && <IncomeForm />}
-
-      {/* Adding Dashboard Component */}
-      <Dashboard />
     </div>
   );
 }
