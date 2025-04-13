@@ -5,7 +5,7 @@ const IncomeForm = () => {
   // form state
   const [formData, setFormData] = useState({
     amount: 0,
-    last_payment_date: new Date().toISOString().split('T'),
+    last_payment_date: new Date().toISOString().split('T')[0],
     frequency: 'Semi-Monthly',
   });
 
