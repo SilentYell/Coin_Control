@@ -2,10 +2,22 @@ import React, { useState } from 'react'
 import '../styles/IncomeList.scss';
 
 export default function IncomeList({incomeList, setIncomeList}) {
-  const handleDelete = (id) => {
-    // resets on refresh
-    setIncomeList(incomeList.filter(income => income.income_id !== id))
-  }
+  const handleDelete = async (id) => {
+    console.log("Deleting income with id: ", id)
+    try{
+      const response = await fetch(`http://localhost:3000/api/delete/income/${id}`, {
+        method: 'DELETE',
+      });
+
+      // Throw error if response promise is rejected
+      if (!response.ok) throw new Error('Failed to delete income.');
+
+      // Update local state after successful deletion
+      setIncomeList(incomeList.filter(income => income.income_id !== id));
+    } catch (error) {
+      console.error('Error deleting income:', error.message)
+    }
+  };
 
   // format date for display
   const formatDate = (dateString) => {

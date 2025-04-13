@@ -38,9 +38,25 @@ module.exports = db => {
     })
     .catch(err => {
       console.error('Error inserting income', err);
-      res.status(500).json({error: 'Internal server error'});
+      res.status(500).json({error: 'Internal Server Error'});
     });
   });
+
+  router.delete("/delete/income/:id", (req, res) => {
+    const { id } = req.params;
+    const query = `
+    DELETE FROM income
+    WHERE income_id = $1;
+    `
+    db.query(query, [id])
+    .then(result => {
+      res.status(201).json(result.rows[0]);
+    })
+    .catch((err) => {
+      console.error('Error deleting income record');
+      res.status(500).json({error: 'Internal Server Error'});
+    })
+  })
 
 
   return router;
