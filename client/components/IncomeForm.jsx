@@ -5,12 +5,13 @@ const IncomeForm = () => {
   // form state
   const [formData, setFormData] = useState({
     amount: 0,
-    last_payment_date: new Date().toISOString().split('T')[0], // set to todays date
+    last_payment_date: new Date().toISOString().split('T'),
     frequency: 'Semi-Monthly',
   });
 
   // common expense categories
   const frequencies = [
+    'One-Time',
     'Daily',
     'Weekly',
     'Bi-Weekly',
@@ -28,24 +29,37 @@ const IncomeForm = () => {
   };
 
   // handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // create expense object
     const newIncome = {
       ...formData,
-      amount: amount.toFixed(2),
+      amount: parseFloat(formData.amount).toFixed(2),
     };
 
-    // log new expense to console
-    console.log('New Income Record:', newIncome);
+    // Call income post method in API
+    try {
+      const response = await fetch('http://localhost:3000/api/income', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newIncome),
+      });
 
-    // reset the form
-    setFormData({
-      amount: null,
-      last_payment_date: new Date().toISOString().split('T')[0],
-      frequency: 'Semi-Monthly',
-    });
+      // Throw error if response fails
+      if (!response.ok) throw new Error('Failed to add income record.')
+
+      // reset the form
+      setFormData({
+        amount: '',
+        last_payment_date: new Date().toISOString().split('T')[0],
+        frequency: 'Semi-Monthly',
+      });
+    } catch (error) {
+      console.error('Error saving income:', error.message);
+    }
   };
 
   return (
@@ -72,7 +86,7 @@ const IncomeForm = () => {
           <label htmlFor="last_payment_date">Paid Date</label>
           <input
             type="date"
-            name="last-payment-date"
+            name="last_payment_date"
             value={formData.expense_date}
             onChange={handleChange}
             required
