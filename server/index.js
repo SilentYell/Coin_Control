@@ -2,12 +2,18 @@ const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, './.env.development') }); // load environment variables
 const express = require('express');
 const cors = require('cors'); // install cors: npm install cors
+
+
 const app = express();
 const port = 3000;
+
+// Require db configuration
+const db = require('./db/database')
 
 // import routes
 const expenseRoutes = require('./routes/expenseRoutes');
 const userRoutes = require('./routes/userRoutes');
+const income = require('./routes/income')
 
 // middleware
 app.use(cors());
@@ -16,6 +22,8 @@ app.use(express.json()); // allows parsing JSON request bodies
 // use routes
 app.use('/api', expenseRoutes);
 app.use('/api', userRoutes);
+app.use('/api', income(db));
+
 
 app.get('/', (req, res) => {
   res.send('Hello from Coin Control backend!');

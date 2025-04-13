@@ -1,16 +1,23 @@
 import React, { useState } from 'react'
-import incomeDb from '../src/mocks/income';
 import '../styles/IncomeList.scss';
 
-export default function IncomeList() {
-  // Track income state
-  const [incomeList, setIncome] = useState(incomeDb)
+export default function IncomeList({incomeList, setIncomeList}) {
+  const handleDelete = async (id) => {
+    console.log("Deleting income with id: ", id)
+    try{
+      const response = await fetch(`http://localhost:3000/api/delete/income/${id}`, {
+        method: 'DELETE',
+      });
 
+      // Throw error if response promise is rejected
+      if (!response.ok) throw new Error('Failed to delete income.');
 
-  const handleDelete = (id) => {
-    // resets on refresh
-    setIncome(incomeList.filter(income => income.income_id !== id))
-  }
+      // Update local state after successful deletion
+      setIncomeList(incomeList.filter(income => income.income_id !== id));
+    } catch (error) {
+      console.error('Error deleting income:', error.message)
+    }
+  };
 
   // format date for display
   const formatDate = (dateString) => {
@@ -44,7 +51,7 @@ export default function IncomeList() {
           <tbody>
             {incomeList.map((income) => (
               <tr key={income.income_id}>
-                <td className="amount">${income.amount.toFixed(2)}</td>
+                <td className="amount">${income.amount}</td>
                 <td>{formatDate(income.last_payment_date)}</td>
                 <td className="frequency">{income.frequency}</td>
                 <td className="actions">
