@@ -13,10 +13,10 @@ VALUES ('Demo User', 1000.00);
 -- Insert income data into the Income table
 INSERT INTO Income(user_id, amount, frequency, last_payment_date)
 VALUES
-  (1, 2000, 'semi-monthly', TO_DATE('15/02/2025', 'DD/MM/YYYY')),
-  (3, 1800, 'semi-monthly', TO_DATE('01/03/2025', 'DD/MM/YYYY')),
-  (4, 1500, 'semi-monthly', TO_DATE('15/03/2025', 'DD/MM/YYYY')),
-  (1, 1200, 'semi-monthly', TO_DATE('01/03/2025', 'DD/MM/YYYY'));
+  (1, 2000, 'Semi-Monthly', TO_DATE('15/02/2025', 'DD/MM/YYYY')),
+  (3, 1800, 'Semi-Monthly', TO_DATE('01/03/2025', 'DD/MM/YYYY')),
+  (4, 1500, 'Semi-Monthly', TO_DATE('15/03/2025', 'DD/MM/YYYY')),
+  (1, 1200, 'Semi-Monthly', TO_DATE('01/03/2025', 'DD/MM/YYYY'));
 
 -- Insert expenses data into the Expenses table
 INSERT INTO Expenses(expense_id, user_id, name, amount, expense_date, category)
