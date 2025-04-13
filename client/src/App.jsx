@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './App.scss';
+import Navbar from '../components/Navbar';
 import IncomeList from '../components/IncomeList';
 import ExpensesList from '../components/ExpensesList';
 import AddExpenseForm from '../components/AddExpenseForm';
@@ -57,14 +58,15 @@ function App() {
           <h1>Welcome, {user.username}!</h1>
           <p>Current Balance: ${user.current_balance.toFixed(2)}</p>
           {/* Adding Dashboard Component */}
+          <Navbar />
           <Dashboard />
 
 
           {/* Adding Expense Form Component */}
-          <AddExpenseForm />
+          {/* <AddExpenseForm /> */}
 
           {/* Adding Expenses List Component */}
-          <ExpensesList />
+          {/* <ExpensesList /> */}
         </div>
       )}
 
