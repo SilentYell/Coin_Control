@@ -5,10 +5,16 @@ import ExpensesList from '../components/ExpensesList';
 import AddExpenseForm from '../components/AddExpenseForm';
 import IncomeForm from '../components/IncomeForm';
 import Dashboard from '../components/Dashboard';
-
-
+import useApplicationData from '../hooks/useApplicationData';
 
 function App() {
+  // States and functions from custom hook
+  const {
+    incomeList,
+    setIncomeList,
+    getIncome
+  } = useApplicationData();
+
 
   const [user, setUser] = useState(null);
 
@@ -65,10 +71,13 @@ function App() {
       {/* Conditional Rendering for temporary Income list and form buttons */}
       {user && <button
         className="temporary-button"
-        onClick={() => setShowIncome((prev) => !prev)}>
+        onClick={() => {
+          getIncome();
+          setShowIncome((prev) => !prev)
+          }}>
         Show Income History
       </button>}
-      {showIncome && <IncomeList />}
+    {showIncome && <IncomeList incomeList={incomeList} setIncomeList={setIncomeList}/>}
       {user && <button
         className="temporary-button"
         onClick={() => setIncomeForm((prev) => !prev)}>

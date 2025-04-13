@@ -2,8 +2,13 @@ const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, './.env.development') }); // load environment variables
 const express = require('express');
 const cors = require('cors'); // install cors: npm install cors
+
+
 const app = express();
 const port = 3000;
+
+// Require db configuration
+const db = require('./db/database')
 
 // import routes
 const expenseRoutes = require('./routes/expenseRoutes');

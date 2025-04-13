@@ -1,15 +1,10 @@
 import React, { useState } from 'react'
-import incomeDb from '../src/mocks/income';
 import '../styles/IncomeList.scss';
 
-export default function IncomeList() {
-  // Track income state
-  const [incomeList, setIncome] = useState(incomeDb)
-
-
+export default function IncomeList({incomeList, setIncomeList}) {
   const handleDelete = (id) => {
     // resets on refresh
-    setIncome(incomeList.filter(income => income.income_id !== id))
+    setIncomeList(incomeList.filter(income => income.income_id !== id))
   }
 
   // format date for display
@@ -44,7 +39,7 @@ export default function IncomeList() {
           <tbody>
             {incomeList.map((income) => (
               <tr key={income.income_id}>
-                <td className="amount">${income.amount.toFixed(2)}</td>
+                <td className="amount">${income.amount}</td>
                 <td>{formatDate(income.last_payment_date)}</td>
                 <td className="frequency">{income.frequency}</td>
                 <td className="actions">
