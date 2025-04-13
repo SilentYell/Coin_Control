@@ -35,7 +35,7 @@ const IncomeForm = () => {
     // create expense object
     const newIncome = {
       ...formData,
-      amount: parseFloat(formData.amount).toFixed(2),
+      amount: parseFloat(formData.amount),
     };
 
     // Call income post method in API
@@ -53,7 +53,7 @@ const IncomeForm = () => {
 
       // reset the form
       setFormData({
-        amount: '',
+        amount: 0,
         last_payment_date: new Date().toISOString().split('T')[0],
         frequency: 'Semi-Monthly',
       });
@@ -87,7 +87,7 @@ const IncomeForm = () => {
           <input
             type="date"
             name="last_payment_date"
-            value={formData.expense_date}
+            value={formData.last_payment_date}
             onChange={handleChange}
             required
           />
