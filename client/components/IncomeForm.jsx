@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import '../styles/IncomeForm.scss'
+import { addIncome } from '../services/api';
 
 const IncomeForm = () => {
-  // form state
+  // Income form state
   const [formData, setFormData] = useState({
     amount: 0,
     last_payment_date: new Date().toISOString().split('T')[0],
@@ -19,7 +20,10 @@ const IncomeForm = () => {
     'Monthly'
   ];
 
-  // handle input changes
+  /**
+   * Grabs the form data and updates the formData state
+   * @param {FormEvent} e - The form change event
+   */
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -28,11 +32,17 @@ const IncomeForm = () => {
     });
   };
 
-  // handle form submission
+  /**
+   * Handles form submission for adding a new income entry.
+   * Prevents default form behaviour, creates an income object from the form data,
+   * sends it to the backend via the API, and resets the form on success.
+   *
+   * @param {FormEvent} e - The form submission event
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // create expense object
+    // Create income object
     const newIncome = {
       ...formData,
       amount: parseFloat(formData.amount),
@@ -40,25 +50,19 @@ const IncomeForm = () => {
 
     // Call income post method in API
     try {
-      const response = await fetch('http://localhost:3000/api/income', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newIncome),
-      });
+      const response = await addIncome(newIncome);
 
       // Throw error if response fails
-      if (!response.ok) throw new Error('Failed to add income record.')
+      if (!response) throw new Error('Failed to add income record.')
 
-      // reset the form
+      // Reset the form
       setFormData({
         amount: 0,
         last_payment_date: new Date().toISOString().split('T')[0],
         frequency: 'Semi-Monthly',
       });
     } catch (error) {
-      console.error('Error saving income:', error.message);
+      console.error('Error adding income:', error.message)
     }
   };
 

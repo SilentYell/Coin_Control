@@ -1,32 +1,33 @@
 import React, { useState } from 'react'
 import '../styles/IncomeList.scss';
+import { deleteIncome, updateIncome } from '../services/api';
+import formatDate from '../src/helpers/formatDate';
 
-export default function IncomeList({incomeList, setIncomeList}) {
+const IncomeList = ({incomeList, setIncomeList}) => {
+  const handleEdit = async (id) => {
+    try {
+      await updateIncome(id);
+
+    } catch (error) {
+      console.error("Error updating income: ", error.message);
+    }
+  };
+
+  /**
+   * Deletes an income entry by ID from the db via the API,
+   * and updates the local state to reflect the change
+   *
+   * @param {Number} id - the ID of income record to delete
+   */
   const handleDelete = async (id) => {
-    console.log("Deleting income with id: ", id)
-    try{
-      const response = await fetch(`http://localhost:3000/api/delete/income/${id}`, {
-        method: 'DELETE',
-      });
-
-      // Throw error if response promise is rejected
-      if (!response.ok) throw new Error('Failed to delete income.');
+    try {
+      await deleteIncome(id) // call to backend
 
       // Update local state after successful deletion
       setIncomeList(incomeList.filter(income => income.income_id !== id));
     } catch (error) {
       console.error('Error deleting income:', error.message)
     }
-  };
-
-  // format date for display
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    });
   };
 
   return (
@@ -84,4 +85,7 @@ export default function IncomeList({incomeList, setIncomeList}) {
     )}
   </div>
   )
-}
+};
+
+
+export default IncomeList;
