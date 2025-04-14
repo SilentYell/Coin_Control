@@ -92,12 +92,11 @@ function App() {
       {/* Show editing form and past edit data */}
       {editingIncome && (
         <IncomeForm
-          incomeId={editingIncome.income_id}
           editingIncome={editingIncome}
-          setEditingIncome={setEditingIncome}
           onSubmitSuccess={async () => {
-            setEditingIncome(false);
-            onSubmitSuccess()
+            setEditingIncome(undefined); // hide form after submission
+            const updatedList = await getIncome();
+            setIncomeList(updatedList);
           }}
         />
       )}

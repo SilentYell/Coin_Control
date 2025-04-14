@@ -49,7 +49,10 @@ const IncomeList = ({ incomeList, setIncomeList, setEditingIncome }) => {
                 <td className="actions">
                   <button
                     className="edit-btn"
-                    onClick={() => setEditingIncome(income)}
+                    onClick={() =>
+                      setEditingIncome((prev) => {
+                        return prev?.income_id === income.income_id ? null : income;
+                      })}
                   >
                     Edit
                   </button>
