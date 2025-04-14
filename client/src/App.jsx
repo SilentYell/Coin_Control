@@ -42,7 +42,14 @@ function App() {
 
   return (
     <div className="App">
-      <Navbar user={user} handleLogin={handleLogin} handleLogout={handleLogout} />
+      <Navbar 
+        user={user}
+        handleLogin={handleLogin}
+        handleLogout={handleLogout}
+        incomeList={incomeList}
+        setIncomeList={setIncomeList}
+        getIncome={getIncome}
+      />
 
       {!user ? (
         <h3>
@@ -50,14 +57,7 @@ function App() {
         </h3>
       ) : (
         <div>
-          {/* Adding Navbar Component */}
-          {/* Adding Dashboard Component */}
           <Dashboard />
-          {/* Adding Expense Form Component */}
-          {/* <AddExpenseForm /> */}
-
-          {/* Adding Expenses List Component */}
-          {/* <ExpensesList /> */}
         </div>
       )}
 

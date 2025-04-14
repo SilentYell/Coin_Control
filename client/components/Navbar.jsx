@@ -1,41 +1,77 @@
 import React, { useState } from 'react';
 import '../styles/Navbar.scss';
+import Modal from './Modal';
+import IncomeForm from './IncomeForm';
+import AddExpenseForm from './AddExpenseForm';
+import ExpensesList from './ExpensesList';
+import IncomeList from './IncomeList';
 
-const Navbar = ({ user, handleLogin, handleLogout }) => {
+const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, getIncome }) => {
+
+  const [showIncomeFormModal, setShowIncomeFormModal] = useState(false);
+  const [showExpenseFormModal, setShowExpenseFormModal] = useState(false);
+  const [showIncomeListModal, setShowIncomeListModal] = useState(false);
+  const [showExpenseListModal, setShowExpenseListModal] = useState(false);
 
   return (
-    <nav className='navbar'>
-      <div className='navbar-logo'>
-        <span>Coin Control</span>
-      </div>
+    <>
+      <nav className='navbar'>
+        <div className='navbar-logo'>
+          <span>Coin Control</span>
+        </div>
 
-      <ul className='navbar-links'>
-        {user ? (
-          <>
-            <li><a href="#">Expense History</a></li>
-            <li><a href="#">Add Expense</a></li>
-            <li><a href="#">Income History</a></li>
-            <li><a href="#">Add Income</a></li>
-            <li><a href="#">Trophy Case</a></li>
-          </>
-        ) : (
-          <></>
-        )}
-      </ul>
+        <ul className='navbar-links'>
+          {user ? (
+            <>
+              <li><button onClick={() => setShowExpenseListModal(true)}>Expense History</button></li>
+              <li><button onClick={() => setShowExpenseFormModal(true)}>Add Expense</button></li>
+              <li><button onClick={() => setShowIncomeListModal(true)}>Income History</button></li>
+              <li><button onClick={() => setShowIncomeFormModal(true)}>Add Income</button></li>
+              <li><button>Trophy Case</button></li>
+            </>
+          ) : (
+            <></>
+          )}
+        </ul>
 
-      <div className='navbar-user'>
-        {!user ? (
-          // If no user, show login button
-          <button className='login-btn' onClick={handleLogin}>Login</button>
-        ) : (
-          <div className='user-info'>
-            <span>Welcome, {user.username}</span>
-            <span>Balance: ${user.current_balance.toFixed(2)}</span>
-          <button className='logout-btn' onClick={handleLogout}>Logout</button>
-          </div>
-        )}
-      </div>
-    </nav>
+        <div className='navbar-user'>
+          {!user ? (
+            // If no user, show login button
+            <button className='login-btn' onClick={handleLogin}>Login</button>
+          ) : (
+            <div className='user-info'>
+              <span>Welcome, {user.username}</span>
+              <span>Balance: ${user.current_balance.toFixed(2)}</span>
+              <button className='logout-btn' onClick={handleLogout}>Logout</button>
+            </div>
+          )}
+        </div>
+      </nav>
+
+      {showExpenseListModal && (
+        <Modal isOpen={showExpenseListModal} onClose={() => setShowExpenseListModal(false)}>
+          <ExpensesList />
+        </Modal>
+      )}
+
+      {showExpenseFormModal && (
+        <Modal isOpen={showExpenseFormModal} onClose={() => setShowExpenseFormModal(false)}>
+          <AddExpenseForm />
+        </Modal>
+      )}
+
+      {showIncomeListModal && (
+        <Modal isOpen={showIncomeListModal} onClose={() => setShowIncomeListModal(false)}>
+          <IncomeList incomeList={incomeList} setIncomeList={setIncomeList} />
+        </Modal>
+      )}
+
+      {showIncomeFormModal && (
+        <Modal isOpen={showIncomeFormModal} onClose={() => setShowIncomeFormModal(false)}>
+          <IncomeForm />
+        </Modal>
+      )}
+    </>
   );
 };
 
