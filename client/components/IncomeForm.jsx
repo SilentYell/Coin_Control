@@ -1,27 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import '../styles/IncomeForm.scss'
 import { addIncome, updateIncome } from '../services/api';
-import formatDate from '../src/helpers/formatDate';
+import initializeIncomeFormData from '../src/helpers/initializeIncomeFormData';
 
 const IncomeForm = ({ editingIncome, onSubmitSuccess }) => {
-  // Income form state
-  const [formData, setFormData] = useState({
-    amount: editingIncome?.amount || 0,
-    last_payment_date: editingIncome?.last_payment_date
-      ? new Date(editingIncome.last_payment_date).toISOString().split('T')[0]
-      : new Date().toISOString().split('T')[0],
-    frequency: editingIncome?.frequency || 'Semi-Monthly',
-  });
+  // Track current formData
+  const [formData, setFormData] = useState(() => initializeIncomeFormData(editingIncome));
 
-
+  // Render income after submit
   useEffect(() => {
-    if (editingIncome) {
-      setFormData({
-        amount: editingIncome.amount,
-        last_payment_date: new Date(editingIncome.last_payment_date).toISOString().split('T')[0],
-        frequency: editingIncome.frequency,
-      });
-    }
+      setFormData(initializeIncomeFormData(editingIncome));
   }, [editingIncome?.income_id]);
 
   // common expense categories
@@ -138,8 +126,11 @@ const IncomeForm = ({ editingIncome, onSubmitSuccess }) => {
           </select>
         </div>
 
-        <button type="submit" className="submit-btn">Add Income</button>
-
+        {/* Conditional Rendering for submit button (Add Income vs Edit Income */}
+        {editingIncome
+          ? <button type="submit" className="submit-btn">Update Income</button>
+          : <button type="submit" className="submit-btn">Add Income</button>
+        }
       </form>
     </div>
   );
