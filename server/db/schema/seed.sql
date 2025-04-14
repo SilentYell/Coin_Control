@@ -25,3 +25,14 @@ VALUES
   (2, 1, 'Monthly Rent', -1200, TO_DATE('01/03/2025', 'DD/MM/YYYY'), 'Rent'),
   (3, 4, 'Phone Bill', -85, TO_DATE('20/03/2025', 'DD/MM/YYYY'), 'Phone Bill'),
   (4, 4, 'Weekly Groceries', -250, TO_DATE('25/03/2025', 'DD/MM/YYYY'), 'Groceries');
+
+-- Reset the sequence for the expense_id column
+DO $$
+DECLARE
+  max_id INTEGER;
+BEGIN
+  SELECT MAX(expense_id) INTO max_id FROM Expenses;
+  IF max_id IS NOT NULL THEN
+    EXECUTE 'ALTER SEQUENCE expenses_expense_id_seq RESTART WITH ' || (max_id + 1);
+  END IF;
+END $$;
