@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getExpenses, deleteExpense } from '../services/api';
+import { getExpenses, deleteExpense, updateExpense } from '../services/api';
 import '../styles/ExpensesList.scss';
 
 const ExpensesList = () => {
@@ -7,6 +7,7 @@ const ExpensesList = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [useMockData, setUseMockData] = useState(true);
+  const [editingExpense, setEditingExpense] = useState(null);
 
   useEffect(() => {
     const fetchExpenses = async () => {
@@ -48,6 +49,84 @@ const ExpensesList = () => {
     }
   };
 
+  // handle edit button click
+  const handleEditClick = (expense) => {
+    setEditingExpense(expense);
+  };
+
+  // handle save after editing
+  const handleSaveEdit = async (updatedExpense) => {
+    try {
+      await updateExpense(updatedExpense.expense_id, updatedExpense);
+      const updatedExpenses = await getExpenses();
+      setExpenses(updatedExpenses);
+      setEditingExpense(null);
+    } catch (error) {
+      console.error('Failed to update expense:', error);
+      setError('Failed to update expense. Please try again later.');
+    }
+  };
+
+  // render edit form if editing
+  if (editingExpense) {
+    return (
+      <div className="edit-expense-form">
+        <h2>Edit Expense</h2>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSaveEdit(editingExpense);
+          }}
+        >
+          <label>
+            Amount:
+            <input
+              type="number"
+              value={editingExpense.amount}
+              onChange={(e) =>
+                setEditingExpense({ ...editingExpense, amount: e.target.value })
+              }
+            />
+          </label>
+          <label>
+            Date:
+            <input
+              type="date"
+              value={editingExpense.expense_date.split('T')[0]}
+              onChange={(e) =>
+                setEditingExpense({ ...editingExpense, expense_date: e.target.value })
+              }
+            />
+          </label>
+          <label>
+            Category:
+            <input
+              type="text"
+              value={editingExpense.category}
+              onChange={(e) =>
+                setEditingExpense({ ...editingExpense, category: e.target.value })
+              }
+            />
+          </label>
+          <label>
+            Description:
+            <input
+              type="text"
+              value={editingExpense.name}
+              onChange={(e) =>
+                setEditingExpense({ ...editingExpense, name: e.target.value })
+              }
+            />
+          </label>
+          <button type="submit">Save</button>
+          <button type="button" onClick={() => setEditingExpense(null)}>
+            Cancel
+          </button>
+        </form>
+      </div>
+    );
+  }
+
   return (
     <div className="expenses-list">
       <h2>Your Expenses</h2>
@@ -71,14 +150,19 @@ const ExpensesList = () => {
             <tbody>
               {expenses.map((expense) => (
                 <tr key={expense.expense_id}>
-                  <td className="amount">${expense.amount.toFixed(2)}</td>
+                  <td className="amount">${Number(expense.amount).toFixed(2)}</td>
                   <td>{formatDate(expense.expense_date)}</td>
                   <td>
                     <span className="category-tag">{expense.category}</span>
                   </td>
                   <td className="description">{expense.name}</td>
                   <td className="actions">
-                    <button className="edit-btn">Edit</button>
+                    <button
+                      className="edit-btn"
+                      onClick={() => handleEditClick(expense)}
+                    >
+                      Edit
+                    </button>
                     <button
                       className="delete-btn"
                       onClick={() => handleDelete(expense.expense_id)}
