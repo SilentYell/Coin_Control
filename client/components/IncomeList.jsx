@@ -4,24 +4,6 @@ import { deleteIncome, getIncome, updateIncome } from '../services/api';
 import formatDate from '../src/helpers/formatDate';
 
 const IncomeList = ({ incomeList, setIncomeList, setEditingIncome }) => {
-  // Render income history
-  useEffect(() => {
-    getIncome()
-    .then((data) => {
-      setIncomeList(data);
-    })
-  }, []);
-
-
-  const handleEdit = async (id) => {
-    try {
-      await updateIncome(id);
-
-    } catch (error) {
-      console.error("Error updating income: ", error.message);
-    }
-  };
-
   /**
    * Deletes an income entry by ID from the db via the API,
    * and updates the local state to reflect the change
