@@ -1,14 +1,28 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../styles/IncomeForm.scss'
-import { addIncome } from '../services/api';
+import { addIncome, updateIncome } from '../services/api';
+import formatDate from '../src/helpers/formatDate';
 
-const IncomeForm = () => {
+const IncomeForm = ({ editingIncome, onSubmitSuccess }) => {
   // Income form state
   const [formData, setFormData] = useState({
-    amount: 0,
-    last_payment_date: new Date().toISOString().split('T')[0],
-    frequency: 'Semi-Monthly',
+    amount: editingIncome?.amount || 0,
+    last_payment_date: editingIncome?.last_payment_date
+      ? new Date(editingIncome.last_payment_date).toISOString().split('T')[0]
+      : new Date().toISOString().split('T')[0],
+    frequency: editingIncome?.frequency || 'Semi-Monthly',
   });
+
+
+  useEffect(() => {
+    if (editingIncome) {
+      setFormData({
+        amount: editingIncome.amount,
+        last_payment_date: new Date(editingIncome.last_payment_date).toISOString().split('T')[0],
+        frequency: editingIncome.frequency,
+      });
+    }
+  }, [editingIncome?.income_id]);
 
   // common expense categories
   const frequencies = [
@@ -50,7 +64,14 @@ const IncomeForm = () => {
 
     // Call income post method in API
     try {
-      const response = await addIncome(newIncome);
+      let response
+      if (editingIncome?.income_id) {
+        // Update existing income
+        response = await updateIncome(editingIncome.income_id, newIncome);
+      } else {
+        // Add new income
+        response = await addIncome(newIncome);
+      }
 
       // Throw error if response fails
       if (!response) throw new Error('Failed to add income record.')
@@ -61,6 +82,10 @@ const IncomeForm = () => {
         last_payment_date: new Date().toISOString().split('T')[0],
         frequency: 'Semi-Monthly',
       });
+
+
+      // Notify parent component
+      if (onSubmitSuccess) onSubmitSuccess();
     } catch (error) {
       console.error('Error adding income:', error.message)
     }
