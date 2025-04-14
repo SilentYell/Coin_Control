@@ -30,6 +30,9 @@ router.post('/expenses', async (req, res) => {
         .json({ error: 'Amount and date are required to proceed' });
     }
 
+    console.log('POST request received with data:', { userId, name, amount, expense_date, category });
+    console.log('Inserting expense with query:', 'INSERT INTO Expenses (user_id, amount, expense_date, category, name) VALUES ($1, $2, $3, $4, $5) RETURNING *', [userId, amount, expense_date, category, name]);
+
     // insert the new expense into the database
     const result = await db.query(
       'INSERT INTO Expenses (user_id, amount, expense_date, category, name) VALUES ($1, $2, $3, $4, $5) RETURNING *',
@@ -80,6 +83,8 @@ router.delete('/expenses/:id', async (req, res) => {
   try {
     const expenseId = req.params.id;
     const userId = 1; // hardcoded userID 1 for now
+
+    console.log('DELETE request received for expense_id:', expenseId, 'and user_id:', userId);
 
     // delete the expense from the database
     const result = await db.query(
