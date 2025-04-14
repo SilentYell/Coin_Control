@@ -93,7 +93,7 @@ const IncomeForm = ({ editingIncome, onSubmitSuccess }) => {
 
   return (
     <div className="income-form">
-      <h2>Add New Income</h2>
+      <h2>{editingIncome ? 'Update Income' : 'Add Income'}</h2>
 
       <form onSubmit={handleSubmit}>
         <div className="form-group">
