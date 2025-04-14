@@ -12,9 +12,11 @@ function App() {
   const {
     incomeList,
     setIncomeList,
-    getIncome
+    getIncome,
+    editingIncome,
+    setEditingIncome,
+    onSubmitSuccess,
   } = useApplicationData();
-
 
   const [user, setUser] = useState(null);
 
@@ -77,7 +79,28 @@ function App() {
           }}>
         Show Income History
       </button>}
-    {showIncome && <IncomeList incomeList={incomeList} setIncomeList={setIncomeList}/>}
+      {showIncome &&
+        <IncomeList
+          incomeList={incomeList}
+          setIncomeList={setIncomeList}
+          editingIncome={editingIncome}
+          setEditingIncome={setEditingIncome}
+        />
+      }
+
+      {editingIncome && (
+        <IncomeForm
+          incomeId={editingIncome.income_id}
+          editingIncome={editingIncome}
+          setEditingIncome={setEditingIncome}
+          onSubmitSuccess={async () => {
+            setEditingIncome(false);
+            const updatedList = await getIncome(); // wait for the data
+            setIncomeList(updatedList);
+          }}
+        />
+      )}
+
       {user && <button
         className="temporary-button"
         onClick={() => setIncomeForm((prev) => !prev)}>

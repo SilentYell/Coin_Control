@@ -1,29 +1,30 @@
 // Function to track states and Handle API fetches to render data
 import { useState } from "react"
+import { getIncome } from "../services/api"
 
 const useApplicationData = () => {
   // Track income state --> maybe use reducer later?
     const [incomeList, setIncomeList] = useState([])
+    const [editingIncome, setEditingIncome] = useState(null) // edited income state
 
-  // Fetch income data (GET '/api/income')
-  const getIncome = () => {
-    fetch('http://localhost:3000/api/income')
-    .then((res) => {
-      if (!res.ok) throw new Error(`HTTP Error! Status: ${res.status}`)
-      return res.json()
-    })
-    .then((data) => {
-      setIncomeList(data) // update the state with the new data
-    })
-    .catch((err) => {
-      console.error('Fetch error:', err.message)
-    })
+
+  const onSubmitSuccess = () => {
+    setEditingIncome(null)
+    fetchIncomeList()
+  }
+
+  // Fetch incomes after state changes
+  const fetchIncomeList = async () => {
+    const data = await getIncome();
+    setIncomeList(data);
   }
 
   return {
     incomeList,
     setIncomeList,
-    getIncome
+    getIncome,
+    editingIncome,
+    setEditingIncome
   }
 }
 
