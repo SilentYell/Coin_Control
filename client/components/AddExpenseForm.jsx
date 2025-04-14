@@ -85,18 +85,6 @@ const AddExpenseForm = () => {
       )}
 
       <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="name">Description</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            placeholder="What was this expense for?"
-            required
-          />
-        </div>
 
         <div className="form-group">
           <label htmlFor="amount">Amount ($)</label>
@@ -140,6 +128,19 @@ const AddExpenseForm = () => {
               </option>
             ))}
           </select>
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="name">Description</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            placeholder="What was this expense for?"
+            required
+          />
         </div>
 
         {/* submit button - add expense */}

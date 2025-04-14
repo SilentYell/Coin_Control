@@ -41,11 +41,12 @@ const ExpensesList = () => {
   const handleDelete = async (id) => {
     try {
       await deleteExpense(id);
+
+      // Re-fetch expenses and update state in App.jsx
       const updatedExpenses = await getExpenses();
       setExpenses(updatedExpenses);
     } catch (error) {
-      console.error('API error when deleting expense:', error);
-      setError('Failed to delete expense. Please try again later.');
+      console.error('Error deleting expense:', error);
     }
   };
 
@@ -55,15 +56,15 @@ const ExpensesList = () => {
   };
 
   // handle save after editing
-  const handleSaveEdit = async (updatedExpense) => {
+  const handleEdit = async (updatedExpense) => {
     try {
       await updateExpense(updatedExpense.expense_id, updatedExpense);
+
+      // Re-fetch expenses and update state in App.jsx
       const updatedExpenses = await getExpenses();
       setExpenses(updatedExpenses);
-      setEditingExpense(null);
     } catch (error) {
-      console.error('Failed to update expense:', error);
-      setError('Failed to update expense. Please try again later.');
+      console.error('Error editing expense:', error);
     }
   };
 
@@ -75,7 +76,7 @@ const ExpensesList = () => {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            handleSaveEdit(editingExpense);
+            handleEdit(editingExpense);
           }}
         >
           <label>

@@ -26,12 +26,13 @@ const IncomeList = ({ incomeList, setIncomeList, setEditingIncome }) => {
    */
   const handleDelete = async (id) => {
     try {
-      await deleteIncome(id) // call to backend
+      await deleteIncome(id); // call to backend
 
       // Update local state after successful deletion
-      setIncomeList(incomeList.filter(income => income.income_id !== id));
+      const updatedIncomeList = await getIncome();
+      setIncomeList(updatedIncomeList);
     } catch (error) {
-      console.error('Error deleting income:', error.message)
+      console.error('Error deleting income:', error.message);
     }
   };
 

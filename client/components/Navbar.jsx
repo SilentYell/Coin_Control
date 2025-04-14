@@ -54,7 +54,6 @@ const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, ge
           ) : (
             <div className='user-info'>
               <span>Welcome, {user.username}</span>
-              <span>Balance: ${user.current_balance.toFixed(2)}</span>
               <button className='logout-btn' onClick={handleLogout}>Logout</button>
             </div>
           )}
