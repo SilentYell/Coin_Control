@@ -73,8 +73,9 @@ function App() {
       {/* Conditional Rendering for temporary Income list and form buttons */}
       {user && <button
         className="temporary-button"
-        onClick={() => {
-          getIncome();
+        onClick={async () => {
+          const updatedList = await getIncome();
+          setIncomeList(updatedList);
           setShowIncome((prev) => !prev)
           }}>
         Show Income History
@@ -88,6 +89,7 @@ function App() {
         />
       }
 
+      {/* Show editing form and past edit data */}
       {editingIncome && (
         <IncomeForm
           incomeId={editingIncome.income_id}
@@ -95,18 +97,24 @@ function App() {
           setEditingIncome={setEditingIncome}
           onSubmitSuccess={async () => {
             setEditingIncome(false);
-            const updatedList = await getIncome(); // wait for the data
-            setIncomeList(updatedList);
+            onSubmitSuccess()
           }}
         />
       )}
 
+      {/* Currently it's own button but maybe we move this to the 'income page' (i.e, hide other content only show income related stuff)? */}
       {user && <button
         className="temporary-button"
         onClick={() => setIncomeForm((prev) => !prev)}>
         Add Income
       </button>}
-      {incomeForm && <IncomeForm />}
+      {incomeForm && (
+        <IncomeForm
+          onSubmitSuccess={async () => {
+            onSubmitSuccess()
+          }}
+        />
+      )}
     </div>
   );
 }
