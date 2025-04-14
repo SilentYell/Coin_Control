@@ -16,14 +16,7 @@ function App() {
     getIncome
   } = useApplicationData();
 
-
   const [user, setUser] = useState(null);
-
-  // Temporary -- don't want to clog up the screen with income and expense data
-  const [showIncome, setShowIncome] = useState(false);
-  const [incomeForm, setIncomeForm] = useState(false);
-  // end of temporary
-
 
   const handleLogin = () => {
     // Simulate a logged-in user
@@ -38,8 +31,6 @@ function App() {
     setUser(null);
   };
 
-  // Need navigation bar to see expense and income lists
-
   return (
     <div className="App">
       <Navbar 
@@ -51,7 +42,10 @@ function App() {
         getIncome={getIncome}
       />
 
+      
       {!user ? (
+
+        // If not logged in, show blank dashboard
         <h3>
           Please click the login button to view your dashboard.
         </h3>
@@ -60,25 +54,6 @@ function App() {
           <Dashboard />
         </div>
       )}
-
-
-
-      {/* Conditional Rendering for temporary Income list and form buttons */}
-      {user && <button
-        className="temporary-button"
-        onClick={() => {
-          getIncome();
-          setShowIncome((prev) => !prev);
-        }}>
-        Show Income History
-      </button>}
-      {showIncome && <IncomeList incomeList={incomeList} setIncomeList={setIncomeList} />}
-      {user && <button
-        className="temporary-button"
-        onClick={() => setIncomeForm((prev) => !prev)}>
-        Add Income
-      </button>}
-      {incomeForm && <IncomeForm />}
     </div>
   );
 }

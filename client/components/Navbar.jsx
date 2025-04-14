@@ -21,7 +21,10 @@ const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, ge
         </div>
 
         <ul className='navbar-links'>
+        
           {user ? (
+
+            // If logged in, show buttons
             <>
               <li><button onClick={() => setShowExpenseListModal(true)}>Expense History</button></li>
               <li><button onClick={() => setShowExpenseFormModal(true)}>Add Expense</button></li>
@@ -30,6 +33,7 @@ const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, ge
               <li><button>Trophy Case</button></li>
             </>
           ) : (
+            // If not logged in, Navbar is empty
             <></>
           )}
         </ul>
