@@ -60,3 +60,55 @@
     }
   }
 }
+
+.edit-expense-form {
+  padding: 1.5rem;
+  background-color: #FCEDD3;
+  border-radius: 0.75rem;
+  color: #000000;
+  max-width: 500px;
+  margin: 0 auto;
+  box-sizing: border-box;
+
+  h2 {
+    margin-bottom: 1.5rem;
+    text-align: center;
+    color: #1E4210;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    label {
+      font-weight: bold;
+      color: #876510;
+    }
+
+    input {
+      padding: 0.5rem;
+      border: 1px solid #876510;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+    }
+
+    button {
+      padding: 0.75rem;
+      border: none;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .save-btn {
+      background-color: #1E4210;
+      color: #FCEDD3;
+    }
+
+    .cancel-btn {
+      background-color: #876510;
+      color: #FCEDD3;
+    }
+  }
+}

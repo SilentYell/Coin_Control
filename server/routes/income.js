@@ -52,7 +52,6 @@ module.exports = db => {
   // DELETE Route to delete an income record from the db
   router.delete("/delete/income/:id", (req, res) => {
     const { id } = req.params;
-    console.log(`DELETE request received for income_id: ${id}`); // Debugging log
 
     const query = `
     DELETE FROM income
@@ -62,8 +61,6 @@ module.exports = db => {
 
     db.query(query, [id])
     .then(result => {
-      console.log(`DELETE query result:`, result.rows); // Debugging log
-
       if (result.rows.length === 0) {
         return res.status(404).json({ error: `Income record with ID ${id} not found.` });
       }
@@ -79,8 +76,6 @@ module.exports = db => {
   router.put("/income/:id", (req, res) => {
     const { id } = req.params;
     const { amount, last_payment_date, frequency } = req.body;
-
-    console.log(`PUT request received for income_id: ${id} with data:`, req.body); // Debugging log
 
     // Validate required fields
     if (!amount || !last_payment_date || !frequency) {
@@ -100,8 +95,6 @@ module.exports = db => {
 
     db.query(query, queryParams)
     .then(result => {
-      console.log(`PUT query result:`, result.rows); // Debugging log
-
       if (result.rows.length === 0) {
         return res.status(404).json({ error: `Income record with ID ${id} not found.` });
       }

@@ -6,17 +6,10 @@ const { execSync } = require('child_process');
 // Define the path to the SQL files in your schema directory
 const schemaDir = path.resolve(__dirname, './schema');
 
-
-// DEBUG
-console.log('PGUSER:', process.env.PGUSER);
-console.log('PGDATABASE:', process.env.PGDATABASE);
-console.log('PGPORT:', process.env.PGPORT);
-
 // Read the user and database from the environment variables
 const user = process.env.PGUSER;
 const database = process.env.PGDATABASE;
 const port = process.env.PGPORT || '5432'; // Default to 5432 if not set
-
 
 // Ensure that the environment variables are set
 if (!user || !database) {
