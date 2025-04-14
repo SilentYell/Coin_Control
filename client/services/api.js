@@ -31,11 +31,11 @@ export const addExpense = async (expense) => {
       },
       body: JSON.stringify(expense),
     });
-    
+
     if (!response.ok) {
       throw new Error(`Error ${response.status}: ${response.statusText}`);
     }
-    
+
     return await response.json();
   } catch (error) {
     console.error('Failed to add expense:', error);
@@ -53,11 +53,11 @@ export const updateExpense = async (id, expense) => {
       },
       body: JSON.stringify(expense),
     });
-    
+
     if (!response.ok) {
       throw new Error(`Error ${response.status}: ${response.statusText}`);
     }
-    
+
     return await response.json();
   } catch (error) {
     console.error(`Failed to update expense with id ${id}:`, error);
@@ -71,11 +71,11 @@ export const deleteExpense = async (id) => {
     const response = await fetch(`${API_URL}/expenses/${id}`, {
       method: 'DELETE',
     });
-    
+
     if (!response.ok) {
       throw new Error(`Error ${response.status}: ${response.statusText}`);
     }
-    
+
     return await response.json();
   } catch (error) {
     console.error(`Failed to delete expense with id ${id}:`, error);
@@ -87,11 +87,11 @@ export const deleteExpense = async (id) => {
 export const getIncome = async () => {
   try {
     const response = await fetch(`${API_URL}/income`);
-    
+
     if (!response.ok) {
       throw new Error(`Error ${response.status}: ${response.statusText}`);
     }
-    
+
     return await response.json();
   } catch (error) {
     console.error('Failed to fetch income', error);
@@ -109,11 +109,11 @@ export const addIncome = async (income) => {
       },
       body: JSON.stringify(income),
     });
-    
+
     if (!response.ok) {
       throw new Error(`Error ${response.status}: ${response.statusText}`);
     }
-    
+
     return await response.json();
   } catch (error) {
     console.error('Failed to add income:', error);
@@ -131,11 +131,11 @@ export const updateIncome = async (id, income) => {
       },
       body: JSON.stringify(income),
     });
-    
+
     if (!response.ok) {
       throw new Error(`Error ${response.status}: ${response.statusText}`);
     }
-    
+
     return await response.json();
   } catch (error) {
     console.error(`Failed to update income with id ${id}:`, error);
@@ -146,15 +146,14 @@ export const updateIncome = async (id, income) => {
 // delete an income entry
 export const deleteIncome = async (id) => {
   try {
-    const response = await fetch(`${API_URL}/income/${id}`, {
+    const response = await fetch(`${API_URL}/delete/income/${id}`, {
       method: 'DELETE',
     });
-    
+
     if (!response.ok) {
       throw new Error(`Error ${response.status}: ${response.statusText}`);
     }
-    
-    return await response.json();
+    return;
   } catch (error) {
     console.error(`Failed to delete income with id ${id}:`, error);
     throw error;
