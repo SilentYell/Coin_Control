@@ -6,7 +6,7 @@ import AddExpenseForm from './AddExpenseForm';
 import ExpensesList from './ExpensesList';
 import IncomeList from './IncomeList';
 
-const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, getIncome }) => {
+const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, getIncome, editingIncome, setEditingIncome, onSubmitSuccess }) => {
 
   const [showIncomeFormModal, setShowIncomeFormModal] = useState(false);
   const [showExpenseFormModal, setShowExpenseFormModal] = useState(false);
@@ -28,7 +28,16 @@ const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, ge
             <>
               <li><button onClick={() => setShowExpenseListModal(true)}>Expense History</button></li>
               <li><button onClick={() => setShowExpenseFormModal(true)}>Add Expense</button></li>
-              <li><button onClick={() => setShowIncomeListModal(true)}>Income History</button></li>
+              <li>
+                <button onClick={async () => {
+                  const updatedList = await getIncome();
+                  console.log("Updated Income List:", updatedList); // Debugging line
+                  setIncomeList(updatedList);
+                  setShowIncomeListModal(true);
+                  }}>
+                  Income History
+                  </button>
+              </li>
               <li><button onClick={() => setShowIncomeFormModal(true)}>Add Income</button></li>
               <li><button>Trophy Case</button></li>
             </>
@@ -66,13 +75,30 @@ const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, ge
 
       {showIncomeListModal && (
         <Modal isOpen={showIncomeListModal} onClose={() => setShowIncomeListModal(false)}>
-          <IncomeList incomeList={incomeList} setIncomeList={setIncomeList} />
+          <IncomeList
+            incomeList={incomeList}
+            setIncomeList={setIncomeList}
+            editingIncome={editingIncome}
+            setEditingIncome={setEditingIncome}
+          />
         </Modal>
       )}
 
-      {showIncomeFormModal && (
-        <Modal isOpen={showIncomeFormModal} onClose={() => setShowIncomeFormModal(false)}>
-          <IncomeForm />
+      {(showIncomeFormModal || editingIncome) && (
+        <Modal isOpen={true} onClose={() => {
+          setEditingIncome(undefined);
+          setShowIncomeFormModal(false);
+        }}>
+          <IncomeForm 
+            editingIncome={editingIncome}
+            onSubmitSuccess={async () => {
+              onSubmitSuccess();
+              setEditingIncome(undefined);
+              setShowIncomeFormModal(false);
+              const updated = await getIncome();
+              setIncomeList(updated);
+            }}
+          />
         </Modal>
       )}
     </>
