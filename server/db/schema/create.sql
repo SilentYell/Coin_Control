@@ -5,9 +5,9 @@ DROP TABLE IF EXISTS Users;
 
 -- Create USERS table
 CREATE TABLE Users (
-    user_id SERIAL PRIMARY KEY,
-    username VARCHAR(50) UNIQUE NOT NULL,
-    current_balance NUMERIC(15, 2) DEFAULT 0
+  user_id SERIAL PRIMARY KEY,
+  username VARCHAR(50) UNIQUE NOT NULL,
+  current_balance NUMERIC(15, 2) DEFAULT 0
 );
 
 -- Create INCOME table with a foreign key to USERS
@@ -30,4 +30,15 @@ CREATE TABLE Expenses (
   category VARCHAR(50),
   FOREIGN KEY (user_id) REFERENCES Users(user_id)
 );
+
+-- Reset the sequence for the expense_id column
+DO $$
+DECLARE
+  max_id INTEGER;
+BEGIN
+  SELECT MAX(expense_id) INTO max_id FROM Expenses;
+  IF max_id IS NOT NULL THEN
+    EXECUTE 'ALTER SEQUENCE expenses_expense_id_seq RESTART WITH ' || (max_id + 1);
+  END IF;
+END $$;
 

@@ -4,6 +4,20 @@ import { deleteIncome, getIncome, updateIncome } from '../services/api';
 import formatDate from '../src/helpers/formatDate';
 
 const IncomeList = ({ incomeList, setIncomeList, setEditingIncome }) => {
+  useEffect(() => {
+    // Fetch income data from the backend when the component mounts
+    const fetchIncome = async () => {
+      try {
+        const data = await getIncome();
+        setIncomeList(data); // Updates the state with fetched data
+      } catch (error) {
+        console.error('Failed to fetch income:', error);
+      }
+    };
+
+    fetchIncome();
+  }, [setIncomeList]);
+
   /**
    * Deletes an income entry by ID from the db via the API,
    * and updates the local state to reflect the change
