@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import './App.scss';
+import Navbar from '../components/Navbar';
 import IncomeList from '../components/IncomeList';
-import ExpensesList from '../components/ExpensesList';
-import AddExpenseForm from '../components/AddExpenseForm';
 import IncomeForm from '../components/IncomeForm';
 import Dashboard from '../components/Dashboard';
 import useApplicationData from '../hooks/useApplicationData';
@@ -19,12 +18,8 @@ function App() {
   } = useApplicationData();
 
   const [user, setUser] = useState(null);
-
-  // Temporary -- don't want to clog up the screen with income and expense data
   const [showIncome, setShowIncome] = useState(false);
   const [incomeForm, setIncomeForm] = useState(false);
-  // end of temporary
-
 
   const handleLogin = () => {
     // Simulate a logged-in user
@@ -35,84 +30,35 @@ function App() {
     });
   };
 
-  // Need navigation bar to see expense and income lists
+  const handleLogout = () => {
+    setUser(null);
+  };
 
   return (
-    <div className="App" style={{ textAlign: 'center', marginTop: '50px' }}>
+    <div className="App">
+      <Navbar 
+        user={user}
+        handleLogin={handleLogin}
+        handleLogout={handleLogout}
+        incomeList={incomeList}
+        setIncomeList={setIncomeList}
+        getIncome={getIncome}
+        editingIncome={editingIncome}
+        setEditingIncome={setEditingIncome}
+        onSubmitSuccess={onSubmitSuccess}
+      />
+
+      
       {!user ? (
-        <button
-          onClick={handleLogin}
-          style={{
-            padding: '10px 20px',
-            fontSize: '16px',
-            backgroundColor: '#4CAF50',
-            color: 'white',
-            border: 'none',
-            borderRadius: '5px',
-            cursor: 'pointer',
-          }}
-        >
-          Login
-        </button>
+
+        // If not logged in, show blank dashboard
+        <h3>
+          Please click the login button to view your dashboard.
+        </h3>
       ) : (
         <div>
-          <h1>Welcome, {user.username}!</h1>
-          <p>Current Balance: ${user.current_balance.toFixed(2)}</p>
-          {/* Adding Dashboard Component */}
           <Dashboard />
-
-
-          {/* Adding Expense Form Component */}
-          <AddExpenseForm />
-
-          {/* Adding Expenses List Component */}
-          <ExpensesList />
         </div>
-      )}
-
-      {/* Conditional Rendering for temporary Income list and form buttons */}
-      {user && <button
-        className="temporary-button"
-        onClick={async () => {
-          const updatedList = await getIncome();
-          setIncomeList(updatedList);
-          setShowIncome((prev) => !prev)
-          }}>
-        Show Income History
-      </button>}
-      {showIncome &&
-        <IncomeList
-          incomeList={incomeList}
-          setIncomeList={setIncomeList}
-          editingIncome={editingIncome}
-          setEditingIncome={setEditingIncome}
-        />
-      }
-
-      {/* Show editing form and past edit data */}
-      {editingIncome && (
-        <IncomeForm
-          editingIncome={editingIncome}
-          onSubmitSuccess={async () => {
-            setEditingIncome(undefined); // hide form after submission
-            const updatedList = await getIncome();
-            setIncomeList(updatedList);
-          }}
-        />
-      )}
-
-      {/* Currently it's own button but maybe we move this to the 'income page' (i.e, hide other content only show income related stuff)? */}
-      {user && <button
-        className="temporary-button"
-        onClick={() => setIncomeForm((prev) => !prev)}>
-        Add Income
-      </button>}
-      {incomeForm && (
-        <IncomeForm
-          onSubmitSuccess={async () => {
-            onSubmitSuccess()
-          }}
-        />
       )}
     </div>
   );
