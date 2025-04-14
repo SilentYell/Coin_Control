@@ -18,8 +18,11 @@ function Dashboard() {
         const expenses = await getExpenses();
         const income = await getIncome();
 
-        const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0);
-        const totalIncome = income.reduce((sum, incomeItem) => sum + incomeItem.amount, 0);
+        console.log('Fetched Expenses:', expenses);
+        console.log('Fetched Income:', income);
+
+        const totalExpenses = expenses.reduce((sum, expense) => sum + (expense.amount || 0), 0);
+        const totalIncome = income.reduce((sum, incomeItem) => sum + (incomeItem.amount || 0), 0);
 
         setTotalExpenses(totalExpenses);
         setTotalIncome(totalIncome);
@@ -31,6 +34,12 @@ function Dashboard() {
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    console.log('Total Expenses:', totalExpenses);
+    console.log('Total Income:', totalIncome);
+    console.log('Current Balance:', currentBalance);
+  }, [totalExpenses, totalIncome, currentBalance]);
 
   // This defines the layout for the grid
   const layout = [
@@ -67,13 +76,25 @@ function Dashboard() {
         isDraggable={isEditable}
       >
         <div key="expenses">
-          <Card title="Total Expenses" value={`$${Number(totalExpenses || 0).toFixed(2)}`} description="Track your spending here." />
+          <Card
+            title="Total Expenses"
+            value={`$${Number(totalExpenses || 0).toFixed(2)}`}
+            description="Track your spending here."
+          />
         </div>
         <div key="income">
-          <Card title="Total Income" value={`$${Number(totalIncome || 0).toFixed(2)}`} description="Monitor your earnings." />
+          <Card 
+            title="Total Income" 
+            value={`$${Number(totalIncome || 0).toFixed(2)}`} 
+            description="Monitor your earnings." 
+          />
         </div>
         <div key="balance">
-          <Card title="Current Balance" value={`$${Number(currentBalance || 0).toFixed(2)}`} description="Your current financial status." />
+          <Card 
+            title="Current Balance" 
+            value={`$${Number(currentBalance || 0).toFixed(2)}`} 
+            description="Your current financial status." 
+          />
         </div>
       </ResponsiveGridLayout>
       </div>
