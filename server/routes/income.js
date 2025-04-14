@@ -1,6 +1,7 @@
 const router = require("express").Router();
 
 module.exports = db => {
+  // Route for all income entries for the logged in user
   router.get("/income", (req, res) => {
     const userId = 1; // change this later to be dynamic
     const queryParams = [userId]
@@ -9,7 +10,8 @@ module.exports = db => {
     SELECT
         *
     FROM income
-    WHERE user_id = $1;
+    WHERE user_id = $1
+    ORDER BY income_id;
     `;
 
     db.query(query, queryParams)
@@ -19,6 +21,7 @@ module.exports = db => {
   });
 
 
+  // Route to post an income entry to the db
   router.post("/income", (req, res) => {
     const { amount, last_payment_date, frequency } = req.body;
     const user_id = 1 // should come from req.body, will change to handle dynamic user ID later
@@ -42,6 +45,7 @@ module.exports = db => {
     });
   });
 
+  // Route to delete an income record from the db
   router.delete("/delete/income/:id", (req, res) => {
     const { id } = req.params;
     const query = `
@@ -53,11 +57,36 @@ module.exports = db => {
       res.status(201).json(result.rows[0]);
     })
     .catch((err) => {
-      console.error('Error deleting income record');
+      console.error('Error deleting income record:', err);
       res.status(500).json({error: 'Internal Server Error'});
-    })
-  })
+    });
+  });
 
+  // Route to update an income record by ID
+  router.put("/income/:id", (req, res) => {
+    const { id } = req.params;
+    const { amount, last_payment_date, frequency } = req.body
+
+    const queryParams = [Number(id), amount, last_payment_date, frequency]
+    const query = `
+    UPDATE income
+    SET
+      amount = $2,
+      last_payment_date = $3,
+      frequency = $4
+    WHERE income_id = $1
+    RETURNING *;
+    `;
+
+    db.query(query, queryParams)
+    .then(result => {
+      res.status(201).json(result.rows[0]);
+    })
+    .catch((err) => {
+      console.error('Error updating income record: ', err);
+      res.status(500).json({ error: "Internal Server Error" })
+    });
+  });
 
   return router;
 };

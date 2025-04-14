@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import '../styles/IncomeForm.scss'
+import { addIncome, updateIncome } from '../services/api';
+import initializeIncomeFormData from '../src/helpers/initializeIncomeFormData';
 
-const IncomeForm = () => {
-  // form state
-  const [formData, setFormData] = useState({
-    amount: 0,
-    last_payment_date: new Date().toISOString().split('T')[0],
-    frequency: 'Semi-Monthly',
-  });
+const IncomeForm = ({ editingIncome, onSubmitSuccess }) => {
+  // Track current formData
+  const [formData, setFormData] = useState(() => initializeIncomeFormData(editingIncome));
+
+  // Render income after submit
+  useEffect(() => {
+      setFormData(initializeIncomeFormData(editingIncome));
+  }, [editingIncome?.income_id]);
 
   // common expense categories
   const frequencies = [
@@ -19,7 +22,10 @@ const IncomeForm = () => {
     'Monthly'
   ];
 
-  // handle input changes
+  /**
+   * Grabs the form data and updates the formData state
+   * @param {FormEvent} e - The form change event
+   */
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -28,11 +34,17 @@ const IncomeForm = () => {
     });
   };
 
-  // handle form submission
+  /**
+   * Handles form submission for adding a new income entry.
+   * Prevents default form behaviour, creates an income object from the form data,
+   * sends it to the backend via the API, and resets the form on success.
+   *
+   * @param {FormEvent} e - The form submission event
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // create expense object
+    // Create income object
     const newIncome = {
       ...formData,
       amount: parseFloat(formData.amount),
@@ -40,31 +52,36 @@ const IncomeForm = () => {
 
     // Call income post method in API
     try {
-      const response = await fetch('http://localhost:3000/api/income', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newIncome),
-      });
+      let response
+      if (editingIncome?.income_id) {
+        // Update existing income
+        response = await updateIncome(editingIncome.income_id, newIncome);
+      } else {
+        // Add new income
+        response = await addIncome(newIncome);
+      }
 
       // Throw error if response fails
-      if (!response.ok) throw new Error('Failed to add income record.')
+      if (!response) throw new Error('Failed to add income record.')
 
-      // reset the form
+      // Reset the form
       setFormData({
         amount: 0,
         last_payment_date: new Date().toISOString().split('T')[0],
         frequency: 'Semi-Monthly',
       });
+
+
+      // Notify parent component
+      if (onSubmitSuccess) onSubmitSuccess();
     } catch (error) {
-      console.error('Error saving income:', error.message);
+      console.error('Error adding income:', error.message)
     }
   };
 
   return (
     <div className="income-form">
-      <h2>Add New Income</h2>
+      <h2>{editingIncome ? 'Update Income' : 'Add Income'}</h2>
 
       <form onSubmit={handleSubmit}>
         <div className="form-group">
@@ -109,8 +126,11 @@ const IncomeForm = () => {
           </select>
         </div>
 
-        <button type="submit" className="submit-btn">Add Income</button>
-
+        {/* Conditional Rendering for submit button (Add Income vs Edit Income */}
+        {editingIncome
+          ? <button type="submit" className="submit-btn">Update Income</button>
+          : <button type="submit" className="submit-btn">Add Income</button>
+        }
       </form>
     </div>
   );
