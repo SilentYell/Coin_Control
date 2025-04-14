@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { addExpense } from '../services/api'; // importing api function
 import '../styles/AddExpenseForm.scss';
 
-const AddExpenseForm = () => {
+const AddExpenseForm = ({ onSubmitSuccess }) => {
   // form state
   const [formData, setFormData] = useState({
     name: '',
@@ -53,10 +53,8 @@ const AddExpenseForm = () => {
       };
 
       // send to api
-      const result = await addExpense(newExpense);
-      console.log('Expense added:', result);
-
-      // set success state
+      await addExpense(newExpense);
+      console.log('Expense added successfully'); // Debugging log
       setSuccess(true);
 
       // reset the form
@@ -66,6 +64,8 @@ const AddExpenseForm = () => {
         expense_date: new Date().toISOString().split('T')[0],
         category: 'Groceries',
       });
+
+      if (onSubmitSuccess) await onSubmitSuccess(); // Re-fetch expenses
     } catch (error) {
       setError(error.message || 'Failed to add expense');
       console.error('Error adding expense', error);

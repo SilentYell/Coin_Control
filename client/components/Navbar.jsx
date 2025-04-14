@@ -5,8 +5,10 @@ import IncomeForm from './IncomeForm';
 import AddExpenseForm from './AddExpenseForm';
 import ExpensesList from './ExpensesList';
 import IncomeList from './IncomeList';
+import useApplicationData from '../hooks/useApplicationData';
 
 const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, getIncome, editingIncome, setEditingIncome, onSubmitSuccess }) => {
+  const { expensesList, setExpensesList, fetchExpensesList, onExpenseSubmitSuccess } = useApplicationData();
 
   const [showIncomeFormModal, setShowIncomeFormModal] = useState(false);
   const [showExpenseFormModal, setShowExpenseFormModal] = useState(false);
@@ -62,13 +64,17 @@ const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, ge
 
       {showExpenseListModal && (
         <Modal isOpen={showExpenseListModal} onClose={() => setShowExpenseListModal(false)}>
-          <ExpensesList />
+          <ExpensesList
+            expensesList={expensesList}
+            setExpensesList={setExpensesList}
+            onSubmitSuccess={onExpenseSubmitSuccess}
+          />
         </Modal>
       )}
 
       {showExpenseFormModal && (
         <Modal isOpen={showExpenseFormModal} onClose={() => setShowExpenseFormModal(false)}>
-          <AddExpenseForm />
+          <AddExpenseForm onSubmitSuccess={onExpenseSubmitSuccess} />
         </Modal>
       )}
 
