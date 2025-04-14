@@ -4,14 +4,8 @@ import { getIncome } from "../services/api"
 
 const useApplicationData = () => {
   // Track income state --> maybe use reducer later?
-    const [incomeList, setIncomeList] = useState([])
-    const [editingIncome, setEditingIncome] = useState(null) // edited income state
-
-
-  const onSubmitSuccess = () => {
-    setEditingIncome(null)
-    fetchIncomeList()
-  }
+    const [incomeList, setIncomeList] = useState([]);
+    const [editingIncome, setEditingIncome] = useState(null); // edited income state
 
   // Fetch incomes after state changes
   const fetchIncomeList = async () => {
@@ -19,12 +13,18 @@ const useApplicationData = () => {
     setIncomeList(data);
   }
 
+  const onSubmitSuccess = async () => {
+    setEditingIncome(null)
+    await fetchIncomeList()
+  }
+
   return {
     incomeList,
     setIncomeList,
     getIncome,
     editingIncome,
-    setEditingIncome
+    setEditingIncome,
+    onSubmitSuccess
   }
 }
 
