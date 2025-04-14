@@ -29,8 +29,8 @@ const Navbar = ({ user, handleLogin, handleLogout }) => {
           <button className='login-btn' onClick={handleLogin}>Login</button>
         ) : (
           <div className='user-info'>
-            <p>Welcome, {user.username}</p>
-            <p>Balance: ${user.current_balance.toFixed(2)}</p>
+            <span>Welcome, {user.username}</span>
+            <span>Balance: ${user.current_balance.toFixed(2)}</span>
           <button className='logout-btn' onClick={handleLogout}>Logout</button>
           </div>
         )}

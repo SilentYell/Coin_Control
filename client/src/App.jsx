@@ -36,15 +36,21 @@ function App() {
 
   const handleLogout = () => {
     setUser(null);
-  }
+  };
 
   // Need navigation bar to see expense and income lists
 
   return (
-    <div className="App" style={{ textAlign: 'center', marginTop: '50px' }}>
-          
+    <div className="App">
+      <Navbar user={user} handleLogin={handleLogin} handleLogout={handleLogout} />
+
+      {!user ? (
+        <h3>
+          Please click the login button to view your dashboard.
+        </h3>
+      ) : (
+        <div>
           {/* Adding Navbar Component */}
-          <Navbar user={user} handleLogin={handleLogin} handleLogout={handleLogout} />
           {/* Adding Dashboard Component */}
           <Dashboard />
           {/* Adding Expense Form Component */}
@@ -52,17 +58,21 @@ function App() {
 
           {/* Adding Expenses List Component */}
           {/* <ExpensesList /> */}
+        </div>
+      )}
+
+
 
       {/* Conditional Rendering for temporary Income list and form buttons */}
       {user && <button
         className="temporary-button"
         onClick={() => {
           getIncome();
-          setShowIncome((prev) => !prev)
-          }}>
+          setShowIncome((prev) => !prev);
+        }}>
         Show Income History
       </button>}
-    {showIncome && <IncomeList incomeList={incomeList} setIncomeList={setIncomeList}/>}
+      {showIncome && <IncomeList incomeList={incomeList} setIncomeList={setIncomeList} />}
       {user && <button
         className="temporary-button"
         onClick={() => setIncomeForm((prev) => !prev)}>

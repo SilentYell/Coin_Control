@@ -6,6 +6,8 @@ $navbar-link-color: white;
 $navbar-link-hover: #555;
 $logout-btn-bg: #f44336; // Red color for logout button
 $logout-btn-hover: #d32f2f;
+$login-btn-bg: #4CAF50;
+
 
 .navbar {
   display: flex;
@@ -39,6 +41,28 @@ $logout-btn-hover: #d32f2f;
       &:hover {
         background-color: $navbar-link-hover;
       }
+    }
+  }
+
+  .user-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-weight: bold;
+  }
+
+  .login-btn {
+    background-color: $login-btn-bg;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+
+    &:hover{
+      background-color: #388E3C;
     }
   }
 
