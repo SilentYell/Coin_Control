@@ -10,7 +10,8 @@ module.exports = db => {
     SELECT
         *
     FROM income
-    WHERE user_id = $1;
+    WHERE user_id = $1
+    ORDER BY income_id;
     `;
 
     db.query(query, queryParams)
