@@ -25,7 +25,7 @@ function App() {
     // Simulate a logged-in user
     setUser({
       user_id: 1,
-      username: 'New Boss',
+      username: 'Lighthouse Labber',
       current_balance: 1000.0,
     });
   };

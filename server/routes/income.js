@@ -1,7 +1,7 @@
 const router = require("express").Router();
 
 module.exports = db => {
-  // Route for all income entries for the logged in user
+  // GET Route for all income entries for the logged in user
   router.get("/income", (req, res) => {
     const userId = 1; // change this later to be dynamic
     const queryParams = [userId]
@@ -21,7 +21,7 @@ module.exports = db => {
   });
 
 
-  // Route to post an income entry to the db
+  // POST Route to post an income entry to the db
   router.post("/income", (req, res) => {
     const { amount, last_payment_date, frequency } = req.body;
     const user_id = 1 // should come from req.body, will change to handle dynamic user ID later
@@ -45,7 +45,7 @@ module.exports = db => {
     });
   });
 
-  // Route to delete an income record from the db
+  // DELETE Route to delete an income record from the db
   router.delete("/delete/income/:id", (req, res) => {
     const { id } = req.params;
     const query = `
@@ -62,7 +62,7 @@ module.exports = db => {
     });
   });
 
-  // Route to update an income record by ID
+  // PUT Route to update an income record by ID
   router.put("/income/:id", (req, res) => {
     const { id } = req.params;
     const { amount, last_payment_date, frequency } = req.body
