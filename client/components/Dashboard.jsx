@@ -1,15 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../styles/Dashboard.scss';
 import Card from './Card';
 import { Responsive, WidthProvider } from 'react-grid-layout';
+import { getExpenses, getIncome } from '../services/api';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 function Dashboard() {
-  const [totalExpenses, setTotalExpenses] = useState(1200);
-  const [totalIncome, setTotalIncome] = useState(2000);
-  const [currentBalance, setCurrentBalance] = useState(800);
+  const [totalExpenses, setTotalExpenses] = useState(0);
+  const [totalIncome, setTotalIncome] = useState(0);
+  const [currentBalance, setCurrentBalance] = useState(0);
   const [isEditable, setIsEditable] = useState(false); // State to toggle the cards edit mode
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const expenses = await getExpenses();
+        const income = await getIncome();
+
+        const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0);
+        const totalIncome = income.reduce((sum, incomeItem) => sum + incomeItem.amount, 0);
+
+        setTotalExpenses(totalExpenses);
+        setTotalIncome(totalIncome);
+        setCurrentBalance(totalIncome - totalExpenses);
+      } catch (error) {
+        console.error('Failed to fetch data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   // This defines the layout for the grid
   const layout = [
@@ -35,6 +56,7 @@ function Dashboard() {
       >
         {isEditable ? 'Lock Layout' : 'Unlock Layout'}
       </button>
+      <div className="dashboard-grid">
       <ResponsiveGridLayout
         className="layout"
         layouts={{ lg: layout, md: layout, sm: layout, xs: layout, xxs: layout }}
@@ -45,15 +67,16 @@ function Dashboard() {
         isDraggable={isEditable}
       >
         <div key="expenses">
-          <Card title="Total Expenses" value={`$${totalExpenses}`} description="Track your spending here." />
+          <Card title="Total Expenses" value={`$${Number(totalExpenses || 0).toFixed(2)}`} description="Track your spending here." />
         </div>
         <div key="income">
-          <Card title="Total Income" value={`$${totalIncome}`} description="Monitor your earnings." />
+          <Card title="Total Income" value={`$${Number(totalIncome || 0).toFixed(2)}`} description="Monitor your earnings." />
         </div>
         <div key="balance">
-          <Card title="Current Balance" value={`$${currentBalance}`} description="Your current financial status." />
+          <Card title="Current Balance" value={`$${Number(currentBalance || 0).toFixed(2)}`} description="Your current financial status." />
         </div>
       </ResponsiveGridLayout>
+      </div>
     </div>
   );
 }
