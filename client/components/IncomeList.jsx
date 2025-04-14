@@ -1,9 +1,18 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import '../styles/IncomeList.scss';
-import { deleteIncome, updateIncome } from '../services/api';
+import { deleteIncome, getIncome, updateIncome } from '../services/api';
 import formatDate from '../src/helpers/formatDate';
 
-const IncomeList = ({incomeList, setIncomeList}) => {
+const IncomeList = ({ incomeList, setIncomeList, setEditingIncome }) => {
+  // Render income history
+  useEffect(() => {
+    getIncome()
+    .then((data) => {
+      setIncomeList(data);
+    })
+  }, []);
+
+
   const handleEdit = async (id) => {
     try {
       await updateIncome(id);
@@ -56,7 +65,12 @@ const IncomeList = ({incomeList, setIncomeList}) => {
                 <td>{formatDate(income.last_payment_date)}</td>
                 <td className="frequency">{income.frequency}</td>
                 <td className="actions">
-                  <button className="edit-btn">Edit</button>
+                  <button
+                    className="edit-btn"
+                    onClick={() => setEditingIncome(income)}
+                  >
+                    Edit
+                  </button>
                   <button
                     className="delete-btn"
                     onClick={() => handleDelete(income.income_id)}
