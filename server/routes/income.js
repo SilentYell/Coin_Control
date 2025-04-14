@@ -64,13 +64,20 @@ module.exports = db => {
   // Route to update an income record by ID
   router.put("/income/:id", (req, res) => {
     const { id } = req.params;
-    const { amount } = req.body
+    const { amount, last_payment_date, frequency } = req.body
+
+    const queryParams = [Number(id), amount, last_payment_date, frequency]
     const query = `
     UPDATE income
-    SET amount = $1
-    WHERE income_id = $2;
-    `
-    db.query(query, [id, amount])
+    SET
+      amount = $2,
+      last_payment_date = $3,
+      frequency = $4
+    WHERE income_id = $1
+    RETURNING *;
+    `;
+
+    db.query(query, queryParams)
     .then(result => {
       res.status(201).json(result.rows[0]);
     })
