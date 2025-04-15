@@ -23,8 +23,11 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess }) => {
       }
     };
 
-    fetchExpenses();
-  }, [setExpensesList]);
+    //ph change - only fetch if there is no data
+    if (!expensesList || expensesList.length === 0) {
+      fetchExpenses();
+    }
+  }, []); //ph change - empty dependency array - only run on mount
 
   // format date for display
   const formatDate = (dateString) => {
@@ -41,7 +44,10 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess }) => {
     try {
       await deleteExpense(id);
       console.log('Expense deleted successfully'); // Debugging log
-      await onSubmitSuccess(); // Re-fetch expenses
+      // ph change - update locally instead of fetching again
+      setExpensesList((prevList) =>
+        prevList.filter((expense) => expense.expense_id !== id)
+      );
     } catch (error) {
       console.error('Error deleting expense:', error);
     }
@@ -93,7 +99,10 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess }) => {
               type="date"
               value={editingExpense.expense_date.split('T')[0]}
               onChange={(e) =>
-                setEditingExpense({ ...editingExpense, expense_date: e.target.value })
+                setEditingExpense({
+                  ...editingExpense,
+                  expense_date: e.target.value,
+                })
               }
             />
           </label>
@@ -103,7 +112,10 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess }) => {
               type="text"
               value={editingExpense.category}
               onChange={(e) =>
-                setEditingExpense({ ...editingExpense, category: e.target.value })
+                setEditingExpense({
+                  ...editingExpense,
+                  category: e.target.value,
+                })
               }
             />
           </label>
@@ -149,7 +161,9 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess }) => {
             <tbody>
               {expensesList.map((expense) => (
                 <tr key={expense.expense_id}>
-                  <td className="amount">${Number(expense.amount).toFixed(2)}</td>
+                  <td className="amount">
+                    ${Number(expense.amount).toFixed(2)}
+                  </td>
                   <td>{formatDate(expense.expense_date)}</td>
                   <td>
                     <span className="category-tag">{expense.category}</span>

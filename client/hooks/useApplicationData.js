@@ -1,5 +1,5 @@
 // Function to track states and Handle API fetches to render data
-import { useState } from "react"
+import { useState, useCallback } from "react"
 import { getIncome, getExpenses } from "../services/api"
 
 const useApplicationData = () => {
@@ -8,28 +8,39 @@ const useApplicationData = () => {
     const [editingIncome, setEditingIncome] = useState(null); // edited income state
     const [expensesList, setExpensesList] = useState([]);
 
-  // Fetch incomes after state changes
-  const fetchIncomeList = async () => {
-    const data = await getIncome();
-    setIncomeList(data);
-  }
+  // Fetch incomes after state changes //ph change - use callback to prevent recreation
+  const fetchIncomeList = useCallback(async () => {
+    try {
+      const data = await getIncome();
+      setIncomeList(data);
+      return data;
+    } catch (error) {
+      console.error("Error fetching income data:", error);
+      return [];
+    }
+  }, []);
 
-  // Fetch expenses after state changes
-  const fetchExpensesList = async () => {
-    const data = await getExpenses();
-    setExpensesList(data);
-  };
+  // Fetch expenses after state changes //ph change - use callback to prevent recreation
+  const fetchExpensesList = useCallback(async () => {
+    try {
+      const data = await getExpenses();
+      setExpensesList(data);
+      return data;
+    } catch (error) {
+      console.error("Error fetching expense data:", error);
+      return [];
+    }
+  }, []);
 
-  const onSubmitSuccess = async () => {
-    setEditingIncome(null)
-    await fetchIncomeList()
-  }
+  const onSubmitSuccess = useCallback(() => {
+    setEditingIncome(null);
+  }, []);
 
-  const onExpenseSubmitSuccess = async () => {
-    console.log('Fetching updated expenses list...'); // Debugging log
-    await fetchExpensesList();
-    console.log('Updated expenses list:', expensesList); // Debugging log
-  };
+  const onExpenseSubmitSuccess = useCallback(async () => {
+    // fetch only when needed after adding/editing expense
+    const updatedData = await fetchExpensesList();
+    console.log('Updated expenses list:', updatedData); // log returned data
+  }, [fetchExpensesList]);
 
   return {
     incomeList,

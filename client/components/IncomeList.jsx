@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import '../styles/IncomeList.scss';
 import { deleteIncome, getIncome, updateIncome } from '../services/api';
 import formatDate from '../src/helpers/formatDate';
@@ -15,8 +15,11 @@ const IncomeList = ({ incomeList, setIncomeList, setEditingIncome }) => {
       }
     };
 
-    fetchIncome();
-  }, [setIncomeList]);
+    // PH change - only fetch if we dont have data
+    if (!incomeList || incomeList.length === 0) {
+      fetchIncome();
+    }
+  }, []); // PH change - empty dependency array - only run on mount
 
   /**
    * Deletes an income entry by ID from the db via the API,
@@ -28,9 +31,10 @@ const IncomeList = ({ incomeList, setIncomeList, setEditingIncome }) => {
     try {
       await deleteIncome(id); // call to backend
 
-      // Update local state after successful deletion
-      const updatedIncomeList = await getIncome();
-      setIncomeList(updatedIncomeList);
+      // ph change - dont fetch again, update state locally
+      setIncomeList((prevList) =>
+        prevList.filter((item) => item.income_id !== id)
+      );
     } catch (error) {
       console.error('Error deleting income:', error.message);
     }
@@ -38,68 +42,70 @@ const IncomeList = ({ incomeList, setIncomeList, setEditingIncome }) => {
 
   return (
     <div className="income-list">
-    <h2>Income History</h2>
+      <h2>Income History</h2>
 
-    {incomeList.length === 0 ? (
-      <div className="empty-state">
-        <p>No income found. Add income to get started!</p>
-      </div>
-    ) : (
-      <div className="table-container">
-        <table className="income-table">
-          <thead>
-            <tr>
-              <th>Amount</th>
-              <th>Frequency</th>
-              <th>Last Payment Date</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {incomeList.map((income) => (
-              <tr key={income.income_id}>
-                <td className="amount">${income.amount}</td>
-                <td>{formatDate(income.last_payment_date)}</td>
-                <td className="frequency">{income.frequency}</td>
-                <td className="actions">
-                  <button
-                    className="edit-btn"
-                    onClick={() =>
-                      setEditingIncome((prev) => {
-                        return prev?.income_id === income.income_id ? null : income;
-                      })}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    className="delete-btn"
-                    onClick={() => handleDelete(income.income_id)}
-                  >
-                    Delete
-                  </button>
+      {incomeList.length === 0 ? (
+        <div className="empty-state">
+          <p>No income found. Add income to get started!</p>
+        </div>
+      ) : (
+        <div className="table-container">
+          <table className="income-table">
+            <thead>
+              <tr>
+                <th>Amount</th>
+                <th>Frequency</th>
+                <th>Last Payment Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {incomeList.map((income) => (
+                <tr key={income.income_id}>
+                  <td className="amount">${income.amount}</td>
+                  <td>{formatDate(income.last_payment_date)}</td>
+                  <td className="frequency">{income.frequency}</td>
+                  <td className="actions">
+                    <button
+                      className="edit-btn"
+                      onClick={() =>
+                        setEditingIncome((prev) => {
+                          return prev?.income_id === income.income_id
+                            ? null
+                            : income;
+                        })
+                      }
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="delete-btn"
+                      onClick={() => handleDelete(income.income_id)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+            <tfoot>
+              <tr className="total-row">
+                <td colSpan="4" className="total-label">
+                  Total
+                </td>
+                <td className="total-amount">
+                  $
+                  {incomeList
+                    .reduce((sum, income) => sum + Number(income.amount), 0)
+                    .toFixed(2)}
                 </td>
               </tr>
-            ))}
-          </tbody>
-          <tfoot>
-            <tr className="total-row">
-              <td colSpan="4" className="total-label">
-                Total
-              </td>
-              <td className="total-amount">
-                $
-                {incomeList
-                  .reduce((sum, income) => sum + Number(income.amount), 0)
-                  .toFixed(2)}
-              </td>
-            </tr>
-          </tfoot>
-        </table>
-      </div>
-    )}
-  </div>
-  )
+            </tfoot>
+          </table>
+        </div>
+      )}
+    </div>
+  );
 };
-
 
 export default IncomeList;

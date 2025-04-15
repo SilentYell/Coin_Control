@@ -32,13 +32,17 @@ const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, ge
               <li><button onClick={() => setShowExpenseFormModal(true)}>Add Expense</button></li>
               <li>
                 <button onClick={async () => {
-                  const updatedList = await getIncome();
-                  console.log("Updated Income List:", updatedList); // Debugging line
-                  setIncomeList(updatedList);
+                  //ph change - dont fetch every time, only if needed
+                  if (!incomeList || incomeList.length === 0) {
+                    getIncome().then(updatedList => {
+                      console.log("Updated Income List:", updatedList); // Debugging line (moved inside promise - ph)
+                      setIncomeList(updatedList);
+                    });
+                  }
                   setShowIncomeListModal(true);
-                  }}>
+                }}>
                   Income History
-                  </button>
+                </button>
               </li>
               <li><button onClick={() => setShowIncomeFormModal(true)}>Add Income</button></li>
               <li><button>Trophy Case</button></li>
@@ -100,8 +104,7 @@ const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, ge
               onSubmitSuccess();
               setEditingIncome(undefined);
               setShowIncomeFormModal(false);
-              const updated = await getIncome();
-              setIncomeList(updated);
+              // ph change - causes additional fetch ( the two lines below this were removed)
             }}
           />
         </Modal>
