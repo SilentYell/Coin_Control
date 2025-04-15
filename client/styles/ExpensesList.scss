@@ -1,13 +1,21 @@
 .expenses-list {
-  padding: 1rem;
+  padding: 0.5rem;
   background-color: #FCEDD3;
   border-radius: 0.75rem;
   color: #000000;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+  width: 100%;
+  margin: 0;
 
   h2 {
     margin-bottom: 1.5rem;
     text-align: center;
     color: #1E4210;
+    font-weight: 700;
+    font-size: 1.8rem;
+    border-bottom: 2px solid #E6B800;
+    padding-bottom: 0.75rem;
   }
 
   .empty-state {
@@ -16,27 +24,53 @@
     border-radius: 0.5rem;
     text-align: center;
     color: #876510;
+    margin: 1rem 0;
+  }
+
+  .error-message {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .loading {
+    text-align: center;
+    padding: 1rem;
+    color: #876510;
+    font-style: italic;
   }
 
   .table-container {
-    overflow-x: auto;
+    width: 100%;
     background-color: #FCEDD3;
     border-radius: 0.5rem;
-    padding: 0.5rem;
+    overflow-x: auto;
+    margin-bottom: 0.5rem;
   }
 
   .expenses-table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     border-radius: 0.5rem;
-    overflow: hidden;
+    table-layout: auto;
+
+    th, td {
+      padding: 0.75rem 1rem;
+      text-align: left;    
+    }
 
     th {
       background-color: #876510;
       font-weight: 600;
       color: #FCEDD3;
-      border-bottom: 2px solid #E6B800; 
+      border-bottom: 2px solid #E6B800;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
     }
 
     td {
@@ -45,8 +79,8 @@
       color: #000000;
     }
 
-    tbody tr:hover {
-      background-color: #E6B800;
+    tbody tr:hover td {
+      background-color: rgba(230, 184, 0, 0.15);
     }
 
     .amount {
@@ -62,35 +96,56 @@
 }
 
 .edit-expense-form {
-  padding: 1.5rem;
+  padding: 2rem;
   background-color: #FCEDD3;
   border-radius: 0.75rem;
   color: #000000;
   max-width: 500px;
   margin: 0 auto;
   box-sizing: border-box;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
   h2 {
     margin-bottom: 1.5rem;
     text-align: center;
     color: #1E4210;
+    font-weight: 700;
+    font-size: 1.8rem;
+    border-bottom: 2px solid #E6B800;
+    padding-bottom: 0.75rem;
   }
 
   form {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.25rem;
 
     label {
-      font-weight: bold;
+      display: block;
+      font-weight: 600;
       color: #876510;
+      margin-bottom: 0.25rem;
     }
 
-    input {
-      padding: 0.5rem;
-      border: 1px solid #876510;
+    input, select {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #E6B800;
       border-radius: 0.5rem;
       font-size: 1rem;
+      background-color: #FFFFFF;
+      
+      &:focus {
+        outline: none;
+        border-color: #876510;
+        box-shadow: 0 0 0 2px rgba(135, 101, 16, 0.2);
+      }
+    }
+
+    .button-group {
+      display: flex;
+      gap: 1rem;
+      margin-top: 0.5rem;
     }
 
     button {
@@ -98,15 +153,27 @@
       border: none;
       border-radius: 0.5rem;
       font-size: 1rem;
+      font-weight: 600;
       cursor: pointer;
+      transition: transform 0.2s;
+      width: 100%;
+      margin-top: 0.5rem;
+      
+      &:hover {
+        transform: translateY(-2px);
+      }
+      
+      &:active {
+        transform: translateY(0);
+      }
     }
 
-    .save-btn {
+    button[type="submit"] {
       background-color: #1E4210;
       color: #FCEDD3;
     }
 
-    .cancel-btn {
+    button[type="button"] {
       background-color: #876510;
       color: #FCEDD3;
     }
