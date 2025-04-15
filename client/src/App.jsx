@@ -1,13 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.scss';
 import Navbar from '../components/Navbar';
-import IncomeList from '../components/IncomeList';
-import IncomeForm from '../components/IncomeForm';
 import Dashboard from '../components/Dashboard';
 import useApplicationData from '../hooks/useApplicationData';
 
 function App() {
-  // States and functions from custom hook
   const {
     incomeList,
     setIncomeList,
@@ -15,28 +12,44 @@ function App() {
     editingIncome,
     setEditingIncome,
     onSubmitSuccess,
+    expensesList, // Use expensesList from useApplicationData
+    fetchExpensesList,
+    onExpenseSubmitSuccess,
   } = useApplicationData();
 
   const [user, setUser] = useState(null);
-  const [showIncome, setShowIncome] = useState(false);
-  const [incomeForm, setIncomeForm] = useState(false);
+
+  useEffect(() => {
+    if (user) {
+      const fetchData = async () => {
+        try {
+          const incomeData = await getIncome();
+          setIncomeList(incomeData);
+          await fetchExpensesList(); // Fetch expenses list
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      };
+
+      fetchData();
+    }
+  }, [user, setIncomeList, fetchExpensesList]);
 
   const handleLogin = () => {
-    // Simulate a logged-in user
     setUser({
       user_id: 1,
       username: 'Lighthouse Labber',
-      current_balance: 1000.0,
     });
   };
 
   const handleLogout = () => {
     setUser(null);
+    setIncomeList([]);
   };
 
   return (
     <div className="App">
-      <Navbar 
+      <Navbar
         user={user}
         handleLogin={handleLogin}
         handleLogout={handleLogout}
@@ -48,17 +61,10 @@ function App() {
         onSubmitSuccess={onSubmitSuccess}
       />
 
-      
       {!user ? (
-
-        // If not logged in, show blank dashboard
-        <h3>
-          Please click the login button to view your dashboard.
-        </h3>
+        <h3>Please click the login button to view your dashboard.</h3>
       ) : (
-        <div>
-          <Dashboard />
-        </div>
+        <Dashboard expenses={expensesList} income={incomeList} />
       )}
     </div>
   );
