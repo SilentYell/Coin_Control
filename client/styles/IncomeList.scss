@@ -63,6 +63,7 @@
 
     .actions {
       display: flex;
+      flex-direction: column;
       gap: 0.5rem;
 
       button {
@@ -95,13 +96,7 @@
 
     .total-row {
       display: flex;
-      justify-content: flex-end;
-      background-color: #1a202c;
       font-weight: 600;
-
-      .total-label {
-        text-align: right;
-      }
 
       .total-amount {
         color: #fc8181; /* Lighter red for dark background */
