@@ -103,7 +103,7 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess }) => {
               ref={editAmountInputRef}
               id="edit-amount"
               type="number"
-              value={Math.abs(editingExpense.amount)} // Show positive number
+              value={editingExpense.amount}
               onChange={(e) =>
                 setEditingExpense({
                   ...editingExpense,
