@@ -15,8 +15,8 @@ const Logo = () => {
         duration: 2000,
         easing: 'easeInOutSine',
         delay: 0,
-        loop: true,
-        direction: 'alternate',
+        loop: false,
+        direction: 'normal',
       });
     });
     // Animate the $ sign
@@ -31,11 +31,11 @@ const Logo = () => {
         duration: 1200,
         easing: 'easeInOutSine',
         delay: 500,
-        loop: true,
-        direction: 'alternate',
+        loop: false,
+        direction: 'normal',
       });
     }
-    // Animate the text paths
+    // Animate the text paths (draw once)
     const textPaths = document.querySelectorAll('.st3 path');
     textPaths.forEach((path, i) => {
       const length = path.getTotalLength();
@@ -49,8 +49,24 @@ const Logo = () => {
         duration: 1800,
         delay: 200 + i * 100,
         easing: 'easeInOutSine',
-        direction: 'alternate',
-        loop: true,
+        direction: 'normal',
+        loop: false,
+        complete: () => {
+          // After the last path animates, fade in all text
+          if (i === textPaths.length - 1) {
+            setTimeout(() => {
+              textPaths.forEach((p) => {
+                anime({
+                  targets: p,
+                  opacity: [0, 1],
+                  fill: ['#FFD700'],
+                  duration: 600,
+                  easing: 'easeOutQuad',
+                });
+              });
+            }, 200);
+          }
+        }
       });
     });
   }, []);
