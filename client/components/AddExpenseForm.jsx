@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { addExpense } from '../services/api'; // importing api function
 import '../styles/AddExpenseForm.scss';
 
 const AddExpenseForm = ({ onSubmitSuccess }) => {
   // form state
+  const amountInputRef = useRef(null);
   const [formData, setFormData] = useState({
     name: '',
     amount: '',
@@ -29,6 +30,13 @@ const AddExpenseForm = ({ onSubmitSuccess }) => {
     'Other',
   ];
 
+  // Focus on amount input when component mounts
+  useEffect(() => {
+    if (amountInputRef.current) {
+      amountInputRef.current.focus();
+    }
+  }, []);
+
   // handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -49,7 +57,7 @@ const AddExpenseForm = ({ onSubmitSuccess }) => {
       // create expense object
       const newExpense = {
         ...formData,
-        amount: parseFloat(formData.amount),
+        amount: -Math.abs(parseFloat(formData.amount)), // expense number will always be stored as negative
       };
 
       // send to api
@@ -89,6 +97,7 @@ const AddExpenseForm = ({ onSubmitSuccess }) => {
         <div className="form-group">
           <label htmlFor="amount">Amount ($)</label>
           <input
+            ref={amountInputRef}
             type="number"
             id="amount"
             name="amount"

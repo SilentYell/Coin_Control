@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { getExpenses, deleteExpense, updateExpense } from '../services/api';
 import '../styles/ExpensesList.scss';
 
@@ -6,8 +6,12 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [editingExpense, setEditingExpense] = useState(null);
+  const editAmountInputRef = useRef(null);
   // to calculate total after expenses are loading for colour
-  const total = expensesList.reduce((sum, expense) => sum + Number(expense.amount), 0);
+  const total = expensesList.reduce(
+    (sum, expense) => sum + Number(expense.amount),
+    0
+  );
 
   useEffect(() => {
     const fetchExpenses = async () => {
@@ -39,6 +43,12 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess }) => {
     });
   };
 
+  useEffect(() => {
+    if (editingExpense && editAmountInputRef.current) {
+      editAmountInputRef.current.focus();
+    }
+  }, [editingExpense]);
+
   // handle delete expense
   const handleDelete = async (id) => {
     try {
@@ -61,10 +71,14 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess }) => {
   // handle save after editing
   const handleEdit = async (updatedExpense) => {
     try {
-      await updateExpense(updatedExpense.expense_id, updatedExpense);
-      console.log('Expense updated successfully'); // Debugging log
+      const expenseToSave = {
+        ...updatedExpense,
+        amount: -Math.abs(parseFloat(updatedExpense.amount)) // Ensure negative
+      };
+      await updateExpense(expenseToSave.expense_id, expenseToSave);
+      console.log('Expense updated successfully');
       await onSubmitSuccess(); // Re-fetch expenses
-
+  
       // Close the modal after saving
       setEditingExpense(null);
     } catch (error) {
@@ -86,11 +100,15 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess }) => {
           <div className="form-group">
             <label htmlFor="edit-amount">Amount ($)</label>
             <input
+              ref={editAmountInputRef}
               id="edit-amount"
               type="number"
-              value={editingExpense.amount}
+              value={Math.abs(editingExpense.amount)} // Show positive number
               onChange={(e) =>
-                setEditingExpense({ ...editingExpense, amount: e.target.value })
+                setEditingExpense({
+                  ...editingExpense,
+                  amount: e.target.value, // Store as entered
+                })
               }
               step="0.01"
               required
