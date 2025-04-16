@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import '../styles/IncomeForm.scss'
 import { addIncome, updateIncome } from '../services/api';
 import initializeIncomeFormData from '../src/helpers/initializeIncomeFormData';
 
 const IncomeForm = ({ editingIncome, onSubmitSuccess }) => {
+  const amountInputRef = useRef(null);
   // Track current formData
   const [formData, setFormData] = useState(() => initializeIncomeFormData(editingIncome));
   const [success, setSuccess] = useState(false);
@@ -22,6 +23,12 @@ const IncomeForm = ({ editingIncome, onSubmitSuccess }) => {
     'Semi-Monthly',
     'Monthly'
   ];
+
+  useEffect(() => {
+    if (amountInputRef.current) {
+      amountInputRef.current.focus();
+    }
+  }, []);
 
   /**
    * Grabs the form data and updates the formData state
@@ -97,6 +104,7 @@ const IncomeForm = ({ editingIncome, onSubmitSuccess }) => {
         <div className="form-group">
           <label htmlFor="amount">Amount ($)</label>
           <input
+            ref={amountInputRef}
             type="number"
             id="amount"
             name="amount"

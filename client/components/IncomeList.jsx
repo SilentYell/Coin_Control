@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import '../styles/IncomeList.scss';
 import { deleteIncome, getIncome, updateIncome } from '../services/api';
 import formatDate from '../src/helpers/formatDate';
