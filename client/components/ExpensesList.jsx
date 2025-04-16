@@ -3,6 +3,7 @@ import { getExpenses, deleteExpense, updateExpense } from '../services/api';
 import '../styles/ExpensesList.scss';
 
 const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess }) => {
+  const [selectedCategory, setSelectedCategory] = useState('All');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [editingExpense, setEditingExpense] = useState(null);
@@ -12,6 +13,14 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess }) => {
     (sum, expense) => sum + Number(expense.amount),
     0
   );
+
+  // get unique categories from expenses
+  const categories = ['All', ...new Set(expensesList.map(expense => expense.category))];
+
+  // filter expenses by selected category
+  const filteredExpenses = selectedCategory === 'All' 
+    ? expensesList 
+    : expensesList.filter(expense => expense.category === selectedCategory);
 
   useEffect(() => {
     const fetchExpenses = async () => {
@@ -175,7 +184,21 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess }) => {
     <div className="expenses-list">
       <h2>Your Expenses</h2>
 
-      {expensesList.length === 0 ? (
+      {/* Add category filter */}
+      <div className="filter-controls">
+        <label htmlFor="category-filter">Filter by category: </label>
+        <select 
+          id="category-filter" 
+          value={selectedCategory} 
+          onChange={(e) => setSelectedCategory(e.target.value)}
+        >
+          {categories.map(category => (
+            <option key={category} value={category}>{category}</option>
+          ))}
+        </select>
+      </div>
+
+      {filteredExpenses.length === 0 ? (
         <div className="empty-state">
           <p>No expenses found. Add an expense to get started!</p>
         </div>
