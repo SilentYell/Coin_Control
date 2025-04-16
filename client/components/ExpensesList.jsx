@@ -236,7 +236,7 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess }) => {
               </tr>
             </thead>
             <tbody>
-              {expensesList.map((expense) => (
+              {filteredExpenses.map((expense) => (
                 <tr key={expense.expense_id}>
                   <td className="amount">
                     ${Number(expense.amount).toFixed(2)}
