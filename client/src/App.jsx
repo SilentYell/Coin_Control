@@ -13,6 +13,7 @@ function App() {
     setEditingIncome,
     onSubmitSuccess,
     expensesList, // Use expensesList from useApplicationData
+    setExpensesList,
     fetchExpensesList,
     onExpenseSubmitSuccess,
   } = useApplicationData();
@@ -59,6 +60,9 @@ function App() {
         editingIncome={editingIncome}
         setEditingIncome={setEditingIncome}
         onSubmitSuccess={onSubmitSuccess}
+        expensesList={expensesList}
+        setExpensesList={setExpensesList}
+        onExpenseSubmitSuccess={onExpenseSubmitSuccess}
       />
 
       {!user ? (

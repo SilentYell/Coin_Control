@@ -8,8 +8,7 @@ import IncomeList from './IncomeList';
 import useApplicationData from '../hooks/useApplicationData';
 import { FaBars, FaTimes } from 'react-icons/fa';
 
-const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, getIncome, editingIncome, setEditingIncome, onSubmitSuccess }) => {
-  const { expensesList, setExpensesList, fetchExpensesList, onExpenseSubmitSuccess } = useApplicationData();
+const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, getIncome, editingIncome, setEditingIncome, onSubmitSuccess, expensesList, setExpensesList, fetchExpensesList, onExpenseSubmitSuccess }) => {
 
   const [showIncomeFormModal, setShowIncomeFormModal] = useState(false);
   const [showExpenseFormModal, setShowExpenseFormModal] = useState(false);
@@ -121,9 +120,9 @@ const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, ge
             onSubmitSuccess={async () => {
               onSubmitSuccess();
               setEditingIncome(undefined);
-              setShowIncomeFormModal(false);
               // ph change - causes additional fetch ( the two lines below this were removed)
             }}
+            onClose={() => setShowIncomeFormModal(false)}
           />
         </Modal>
       )}
