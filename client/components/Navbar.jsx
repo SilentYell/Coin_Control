@@ -27,11 +27,14 @@ const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, ge
         <div className='navbar-logo'>
           <span>Coin Control</span>
         </div>
-        {menuOpen ? (
-          <FaTimes className="hamburger" onClick={toggleMenu} />
-        ) : (
-          <FaBars className="hamburger" onClick={toggleMenu} />
+        {user && (
+          menuOpen ? (
+            <FaTimes className="hamburger" onClick={toggleMenu} />
+          ) : (
+            <FaBars className="hamburger" onClick={toggleMenu} />
+          )
         )}
+
         <ul className={`navbar-links ${menuOpen ? 'open' : ''}`}>
 
           {user ? (
@@ -56,6 +59,11 @@ const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, ge
               </li>
               <li><button onClick={() => setShowIncomeFormModal(true)}>Add Income</button></li>
               <li><button>Trophy Case</button></li>
+              {user && (
+                <li className="mobile-logout">
+                <button className="logout-btn" onClick={handleLogout}>Logout</button>
+                </li>
+              )}
             </>
           ) : (
             // If not logged in, Navbar is empty

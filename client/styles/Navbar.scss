@@ -14,7 +14,7 @@ $login-btn-bg: #4CAF50;
   justify-content: space-between; // Space out logo, links, and logout button
   align-items: center;
   background-color: $navbar-bg;
-  padding: 10px 20px;
+  padding: 20px 20px;
   color: $navbar-link-color;
 
   .navbar-logo {
@@ -75,16 +75,8 @@ $login-btn-bg: #4CAF50;
     color: $navbar-link-color;
     cursor: pointer;
     margin-left: auto;
-  
-    @media (max-width: 768px) {
-      display: block;
-    }
   }
-  
-  .close-icon {
-    font-size: 24px;
-    color: $navbar-link-color;
-    cursor: pointer;
+  .mobile-logout {
     display: none;
   }
   
@@ -98,11 +90,10 @@ $login-btn-bg: #4CAF50;
         flex-direction: column;
         align-items: center;
         position: absolute;
-        top: 60px;
-        left: 20px;
-        width: 50px;        
+        top: 75px;
+        left: 10px;
+        right: 10px;
         background-color: $navbar-bg;
-        height: auto;
         width: 100%;
         transform: translateY(-100%);
         transition: transform 0.3s ease;
@@ -112,6 +103,9 @@ $login-btn-bg: #4CAF50;
           display: flex;
           transform: translateY(0);
           border-radius: 10px;
+          width: auto;
+          gap: 0px;
+          padding: 5px;
         }
   
         li {
@@ -129,7 +123,14 @@ $login-btn-bg: #4CAF50;
           }
         }
       }
-  
+      .hamburger {
+        display: block;
+      }
+
+      .mobile-logout {
+        display: block;
+      }
+      
       .user-info {
         display: none;
       }
