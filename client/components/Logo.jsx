@@ -35,6 +35,24 @@ const Logo = () => {
         direction: 'alternate',
       });
     }
+    // Animate the text paths
+    const textPaths = document.querySelectorAll('.st3 path');
+    textPaths.forEach((path, i) => {
+      const length = path.getTotalLength();
+      path.style.stroke = '#FFD700';
+      path.style.fill = 'none';
+      path.style.strokeDasharray = length;
+      path.style.strokeDashoffset = length;
+      anime({
+        targets: path,
+        strokeDashoffset: [length, 0],
+        duration: 1800,
+        delay: 200 + i * 100,
+        easing: 'easeInOutSine',
+        direction: 'alternate',
+        loop: true,
+      });
+    });
   }, []);
 
   return (
