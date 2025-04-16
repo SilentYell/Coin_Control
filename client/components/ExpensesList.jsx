@@ -8,19 +8,30 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess }) => {
   const [error, setError] = useState(null);
   const [editingExpense, setEditingExpense] = useState(null);
   const editAmountInputRef = useRef(null);
+
+  const categories = [
+    'Groceries',
+    'Transportation',
+    'Entertainment',
+    'Utilities',
+    'Housing',
+    'Healthcare',
+    'Education',
+    'Personal',
+    'Other',
+  ];
+
   // to calculate total after expenses are loading for colour
   const total = expensesList.reduce(
     (sum, expense) => sum + Number(expense.amount),
     0
   );
 
-  // get unique categories from expenses
-  const categories = ['All', ...new Set(expensesList.map(expense => expense.category))];
-
   // filter expenses by selected category
-  const filteredExpenses = selectedCategory === 'All' 
-    ? expensesList 
-    : expensesList.filter(expense => expense.category === selectedCategory);
+  const filteredExpenses =
+    selectedCategory === 'All'
+      ? expensesList
+      : expensesList.filter((expense) => expense.category === selectedCategory);
 
   useEffect(() => {
     const fetchExpenses = async () => {
@@ -82,12 +93,12 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess }) => {
     try {
       const expenseToSave = {
         ...updatedExpense,
-        amount: -Math.abs(parseFloat(updatedExpense.amount)) // Ensure negative
+        amount: -Math.abs(parseFloat(updatedExpense.amount)), // Ensure negative
       };
       await updateExpense(expenseToSave.expense_id, expenseToSave);
       console.log('Expense updated successfully');
       await onSubmitSuccess(); // Re-fetch expenses
-  
+
       // Close the modal after saving
       setEditingExpense(null);
     } catch (error) {
@@ -140,9 +151,8 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess }) => {
           </div>
           <div className="form-group">
             <label htmlFor="edit-category">Category</label>
-            <input
+            <select
               id="edit-category"
-              type="text"
               value={editingExpense.category}
               onChange={(e) =>
                 setEditingExpense({
@@ -151,7 +161,13 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess }) => {
                 })
               }
               required
-            />
+            >
+              {categories.map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="form-group">
             <label htmlFor="edit-name">Description</label>
@@ -187,13 +203,18 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess }) => {
       {/* Add category filter */}
       <div className="filter-controls">
         <label htmlFor="category-filter">Filter by category: </label>
-        <select 
-          id="category-filter" 
-          value={selectedCategory} 
+        <select
+          id="category-filter"
+          value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
         >
-          {categories.map(category => (
-            <option key={category} value={category}>{category}</option>
+          <option key="All" value="All">
+            All
+          </option>
+          {categories.map((category) => (
+            <option key={category} value={category}>
+              {category}
+            </option>
           ))}
         </select>
       </div>
