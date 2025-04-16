@@ -32,9 +32,11 @@ const useApplicationData = () => {
     }
   }, []);
 
-  const onSubmitSuccess = useCallback(() => {
+  const onSubmitSuccess = useCallback(async () => {
+    const updatedData = await fetchIncomeList();
+    console.log('Updated income list:', updatedData);
     setEditingIncome(null);
-  }, []);
+  }, [fetchIncomeList]);
 
   const onExpenseSubmitSuccess = useCallback(async () => {
     // fetch only when needed after adding/editing expense
