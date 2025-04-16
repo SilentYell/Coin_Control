@@ -47,11 +47,11 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess }) => {
       }
     };
 
-    //ph change - only fetch if there is no data
+    //only fetch if there is no data
     if (!expensesList || expensesList.length === 0) {
       fetchExpenses();
     }
-  }, []); //ph change - empty dependency array - only run on mount
+  }, []); //empty dependency array - only run on mount
 
   // format date for display
   const formatDate = (dateString) => {
@@ -74,7 +74,7 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess }) => {
     try {
       await deleteExpense(id);
       console.log('Expense deleted successfully'); // Debugging log
-      // ph change - update locally instead of fetching again
+      // update locally instead of fetching again
       setExpensesList((prevList) =>
         prevList.filter((expense) => expense.expense_id !== id)
       );

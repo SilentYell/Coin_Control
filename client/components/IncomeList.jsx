@@ -90,10 +90,19 @@ const IncomeList = ({ incomeList, setIncomeList, setEditingIncome }) => {
             </tbody>
             <tfoot>
               <tr className="total-row">
-                <td colSpan="4" className="total-label">
-                  Total
-                </td>
-                <td className="total-amount">
+                <td className="total-label">Total</td>
+                <td colSpan="2"></td>
+                <td
+                  className={
+                    'total-amount ' +
+                    (incomeList.reduce(
+                      (sum, income) => sum + Number(income.amount),
+                      0
+                    ) < 0
+                      ? 'negative'
+                      : 'positive')
+                  }
+                >
                   $
                   {incomeList
                     .reduce((sum, income) => sum + Number(income.amount), 0)
