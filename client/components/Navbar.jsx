@@ -6,6 +6,7 @@ import AddExpenseForm from './AddExpenseForm';
 import ExpensesList from './ExpensesList';
 import IncomeList from './IncomeList';
 import useApplicationData from '../hooks/useApplicationData';
+import { FaBars, FaTimes } from 'react-icons/fa';
 
 const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, getIncome, editingIncome, setEditingIncome, onSubmitSuccess }) => {
   const { expensesList, setExpensesList, fetchExpensesList, onExpenseSubmitSuccess } = useApplicationData();
@@ -14,6 +15,11 @@ const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, ge
   const [showExpenseFormModal, setShowExpenseFormModal] = useState(false);
   const [showIncomeListModal, setShowIncomeListModal] = useState(false);
   const [showExpenseListModal, setShowExpenseListModal] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  }
 
   return (
     <>
@@ -21,9 +27,13 @@ const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, ge
         <div className='navbar-logo'>
           <span>Coin Control</span>
         </div>
+        {menuOpen ? (
+          <FaTimes className="hamburger" onClick={toggleMenu} />
+        ) : (
+          <FaBars className="hamburger" onClick={toggleMenu} />
+        )}
+        <ul className={`navbar-links ${menuOpen ? 'open' : ''}`}>
 
-        <ul className='navbar-links'>
-        
           {user ? (
 
             // If logged in, show buttons
@@ -52,7 +62,7 @@ const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, ge
             <></>
           )}
         </ul>
-
+        
         <div className='navbar-user'>
           {!user ? (
             // If no user, show login button
