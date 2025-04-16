@@ -179,3 +179,16 @@
     }
   }
 }
+
+.edit-expense-form input,
+.edit-expense-form select,
+.edit-expense-form textarea {
+  display: block !important;
+  background: #fff !important;
+  color: #000 !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  border: 1px solid #E6B800 !important;
+  width: 100%;
+  margin-bottom: 1rem;
+}
