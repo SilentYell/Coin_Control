@@ -5,7 +5,6 @@ import '../styles/ExpensesList.scss';
 const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [useMockData, setUseMockData] = useState(true);
   const [editingExpense, setEditingExpense] = useState(null);
   // to calculate total after expenses are loading for colour
   const total = expensesList.reduce((sum, expense) => sum + Number(expense.amount), 0);
@@ -16,7 +15,6 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess }) => {
       try {
         const data = await getExpenses();
         setExpensesList(data);
-        setUseMockData(false);
       } catch (error) {
         console.error('Failed to fetch expenses:', error);
         setError('Failed to load expenses. Please try again later.');
