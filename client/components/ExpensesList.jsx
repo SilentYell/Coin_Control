@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getExpenses, deleteExpense, updateExpense } from '../services/api';
 import '../styles/ExpensesList.scss';
+import { MdEdit, MdDelete } from 'react-icons/md';
 
 const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess }) => {
   const [loading, setLoading] = useState(false);
@@ -170,7 +171,8 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess }) => {
                 <th>Date</th>
                 <th>Category</th>
                 <th>Description</th>
-                <th>Actions</th>
+                {/* OA - Kept "Actions" th for styling structure but header seemed unnecessary as buttons are intuitive */}
+                <th className='actions-header' aria-hidden="true"></th> 
               </tr>
             </thead>
             <tbody>
@@ -189,13 +191,13 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess }) => {
                       className="edit-btn"
                       onClick={() => handleEditClick(expense)}
                     >
-                      Edit
+                      <MdEdit />
                     </button>
                     <button
                       className="delete-btn"
                       onClick={() => handleDelete(expense.expense_id)}
                     >
-                      Delete
+                      <MdDelete />
                     </button>
                   </td>
                 </tr>
