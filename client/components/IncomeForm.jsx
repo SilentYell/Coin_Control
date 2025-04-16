@@ -6,6 +6,7 @@ import initializeIncomeFormData from '../src/helpers/initializeIncomeFormData';
 const IncomeForm = ({ editingIncome, onSubmitSuccess }) => {
   // Track current formData
   const [formData, setFormData] = useState(() => initializeIncomeFormData(editingIncome));
+  const [success, setSuccess] = useState(false);
 
   // Render income after submit
   useEffect(() => {
@@ -62,7 +63,13 @@ const IncomeForm = ({ editingIncome, onSubmitSuccess }) => {
       }
 
       // Throw error if response fails
-      if (!response) throw new Error('Failed to add income record.')
+      if (!response) throw new Error('Failed to add income record.');
+
+      // Call parent to update list immediately
+      if (onSubmitSuccess) await onSubmitSuccess();
+
+      // Show success message
+      setSuccess(true);
 
       // Reset the form
       setFormData({
@@ -72,8 +79,8 @@ const IncomeForm = ({ editingIncome, onSubmitSuccess }) => {
       });
 
 
-      // Notify parent component
-      if (onSubmitSuccess) onSubmitSuccess();
+      // Notify parent component - hide message after delay
+      setTimeout(() => setSuccess(false), 2000);
     } catch (error) {
       console.error('Error adding income:', error.message)
     }
@@ -82,6 +89,9 @@ const IncomeForm = ({ editingIncome, onSubmitSuccess }) => {
   return (
     <div className="income-form">
       <h2>{editingIncome ? 'Update Income' : 'Add Income'}</h2>
+
+      {/* success message added */}
+      {success && <div className="success-message">Income added successfully!</div>}
 
       <form onSubmit={handleSubmit}>
         <div className="form-group">

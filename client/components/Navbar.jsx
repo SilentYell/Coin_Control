@@ -103,9 +103,9 @@ const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, ge
             onSubmitSuccess={async () => {
               onSubmitSuccess();
               setEditingIncome(undefined);
-              setShowIncomeFormModal(false);
               // ph change - causes additional fetch ( the two lines below this were removed)
             }}
+            onClose={() => setShowIncomeFormModal(false)}
           />
         </Modal>
       )}
