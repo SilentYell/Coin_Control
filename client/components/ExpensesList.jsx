@@ -7,6 +7,9 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess }) => {
   const [error, setError] = useState(null);
   const [useMockData, setUseMockData] = useState(true);
   const [editingExpense, setEditingExpense] = useState(null);
+  // to calculate total after expenses are loading for colour
+  const total = expenses.reduce((sum, expense) => sum + Number(expense.amount), 0);
+
 
   useEffect(() => {
     const fetchExpenses = async () => {
@@ -83,19 +86,23 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess }) => {
             handleEdit(editingExpense);
           }}
         >
-          <label>
-            Amount:
+          <div className="form-group">
+            <label htmlFor="edit-amount">Amount ($)</label>
             <input
+              id="edit-amount"
               type="number"
               value={editingExpense.amount}
               onChange={(e) =>
                 setEditingExpense({ ...editingExpense, amount: e.target.value })
               }
+              step="0.01"
+              required
             />
-          </label>
-          <label>
-            Date:
+          </div>
+          <div className="form-group">
+            <label htmlFor="edit-date">Date</label>
             <input
+              id="edit-date"
               type="date"
               value={editingExpense.expense_date.split('T')[0]}
               onChange={(e) =>
@@ -104,11 +111,13 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess }) => {
                   expense_date: e.target.value,
                 })
               }
+              required
             />
-          </label>
-          <label>
-            Category:
+          </div>
+          <div className="form-group">
+            <label htmlFor="edit-category">Category</label>
             <input
+              id="edit-category"
               type="text"
               value={editingExpense.category}
               onChange={(e) =>
@@ -117,20 +126,29 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess }) => {
                   category: e.target.value,
                 })
               }
+              required
             />
-          </label>
-          <label>
-            Description:
+          </div>
+          <div className="form-group">
+            <label htmlFor="edit-name">Description</label>
             <input
+              id="edit-name"
               type="text"
               value={editingExpense.name}
               onChange={(e) =>
                 setEditingExpense({ ...editingExpense, name: e.target.value })
               }
+              required
             />
-          </label>
-          <button type="submit">Save</button>
-          <button type="button" onClick={() => setEditingExpense(null)}>
+          </div>
+          <button type="submit" className="submit-btn">
+            Save
+          </button>
+          <button
+            type="button"
+            className="cancel-btn"
+            onClick={() => setEditingExpense(null)}
+          >
             Cancel
           </button>
         </form>
@@ -191,11 +209,12 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess }) => {
                 <td colSpan="4" className="total-label">
                   Total
                 </td>
-                <td className="total-amount">
-                  $
-                  {expensesList
-                    .reduce((sum, expense) => sum + Number(expense.amount), 0)
-                    .toFixed(2)}
+                <td
+                  className={
+                    'total-amount ' + (total < 0 ? 'negative' : 'positive')
+                  }
+                >
+                  ${total.toFixed(2)}
                 </td>
               </tr>
             </tfoot>
