@@ -8,8 +8,7 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess }) => {
   const [useMockData, setUseMockData] = useState(true);
   const [editingExpense, setEditingExpense] = useState(null);
   // to calculate total after expenses are loading for colour
-  const total = expenses.reduce((sum, expense) => sum + Number(expense.amount), 0);
-
+  const total = expensesList.reduce((sum, expense) => sum + Number(expense.amount), 0);
 
   useEffect(() => {
     const fetchExpenses = async () => {
