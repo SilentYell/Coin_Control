@@ -243,7 +243,9 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess }) => {
                   </td>
                   <td>{formatDate(expense.expense_date)}</td>
                   <td>
-                    <span className="category-tag">{expense.category}</span>
+                    <span className={`category-tag ${expense.category}`}>
+                      {expense.category}
+                    </span>
                   </td>
                   <td className="description">{expense.name}</td>
                   <td className="actions">
