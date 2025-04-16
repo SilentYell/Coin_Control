@@ -5,8 +5,10 @@ import IncomeForm from './IncomeForm';
 import AddExpenseForm from './AddExpenseForm';
 import ExpensesList from './ExpensesList';
 import IncomeList from './IncomeList';
+import useApplicationData from '../hooks/useApplicationData';
 
 const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, getIncome, editingIncome, setEditingIncome, onSubmitSuccess }) => {
+  const { expensesList, setExpensesList, fetchExpensesList, onExpenseSubmitSuccess } = useApplicationData();
 
   const [showIncomeFormModal, setShowIncomeFormModal] = useState(false);
   const [showExpenseFormModal, setShowExpenseFormModal] = useState(false);
@@ -30,13 +32,17 @@ const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, ge
               <li><button onClick={() => setShowExpenseFormModal(true)}>Add Expense</button></li>
               <li>
                 <button onClick={async () => {
-                  const updatedList = await getIncome();
-                  console.log("Updated Income List:", updatedList); // Debugging line
-                  setIncomeList(updatedList);
+                  //ph change - dont fetch every time, only if needed
+                  if (!incomeList || incomeList.length === 0) {
+                    getIncome().then(updatedList => {
+                      console.log("Updated Income List:", updatedList); // Debugging line (moved inside promise - ph)
+                      setIncomeList(updatedList);
+                    });
+                  }
                   setShowIncomeListModal(true);
-                  }}>
+                }}>
                   Income History
-                  </button>
+                </button>
               </li>
               <li><button onClick={() => setShowIncomeFormModal(true)}>Add Income</button></li>
               <li><button>Trophy Case</button></li>
@@ -54,7 +60,6 @@ const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, ge
           ) : (
             <div className='user-info'>
               <span>Welcome, {user.username}</span>
-              <span>Balance: ${user.current_balance.toFixed(2)}</span>
               <button className='logout-btn' onClick={handleLogout}>Logout</button>
             </div>
           )}
@@ -63,13 +68,17 @@ const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, ge
 
       {showExpenseListModal && (
         <Modal isOpen={showExpenseListModal} onClose={() => setShowExpenseListModal(false)}>
-          <ExpensesList />
+          <ExpensesList
+            expensesList={expensesList}
+            setExpensesList={setExpensesList}
+            onSubmitSuccess={onExpenseSubmitSuccess}
+          />
         </Modal>
       )}
 
       {showExpenseFormModal && (
         <Modal isOpen={showExpenseFormModal} onClose={() => setShowExpenseFormModal(false)}>
-          <AddExpenseForm />
+          <AddExpenseForm onSubmitSuccess={onExpenseSubmitSuccess} />
         </Modal>
       )}
 
@@ -95,8 +104,7 @@ const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, ge
               onSubmitSuccess();
               setEditingIncome(undefined);
               setShowIncomeFormModal(false);
-              const updated = await getIncome();
-              setIncomeList(updated);
+              // ph change - causes additional fetch ( the two lines below this were removed)
             }}
           />
         </Modal>

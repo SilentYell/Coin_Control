@@ -29,11 +29,10 @@
   grid-template-rows: auto; /* rows will adjust based on content */
 }
 
+// Adjust the dashboard-grid to ensure ResponsiveGridLayout spans the entire width
 .dashboard-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* responsive grid */
-  grid-template-rows: auto; /* rows will adjust based on content */
-  gap: 1rem; /* space between grid items */
+  display: block;
+  width: 100%; /* Ensure it spans the entire width */
 }
 
 /* Resize handle styles */

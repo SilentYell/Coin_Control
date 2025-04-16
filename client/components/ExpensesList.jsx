@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { getExpenses, deleteExpense, updateExpense } from '../services/api';
 import '../styles/ExpensesList.scss';
 
-const ExpensesList = () => {
-  const [expenses, setExpenses] = useState([]);
+const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [useMockData, setUseMockData] = useState(true);
@@ -17,7 +16,7 @@ const ExpensesList = () => {
       setLoading(true);
       try {
         const data = await getExpenses();
-        setExpenses(data);
+        setExpensesList(data);
         setUseMockData(false);
       } catch (error) {
         console.error('Failed to fetch expenses:', error);
@@ -27,8 +26,11 @@ const ExpensesList = () => {
       }
     };
 
-    fetchExpenses();
-  }, []);
+    //ph change - only fetch if there is no data
+    if (!expensesList || expensesList.length === 0) {
+      fetchExpenses();
+    }
+  }, []); //ph change - empty dependency array - only run on mount
 
   // format date for display
   const formatDate = (dateString) => {
@@ -44,11 +46,13 @@ const ExpensesList = () => {
   const handleDelete = async (id) => {
     try {
       await deleteExpense(id);
-      const updatedExpenses = await getExpenses();
-      setExpenses(updatedExpenses);
+      console.log('Expense deleted successfully'); // Debugging log
+      // ph change - update locally instead of fetching again
+      setExpensesList((prevList) =>
+        prevList.filter((expense) => expense.expense_id !== id)
+      );
     } catch (error) {
-      console.error('API error when deleting expense:', error);
-      setError('Failed to delete expense. Please try again later.');
+      console.error('Error deleting expense:', error);
     }
   };
 
@@ -58,15 +62,16 @@ const ExpensesList = () => {
   };
 
   // handle save after editing
-  const handleSaveEdit = async (updatedExpense) => {
+  const handleEdit = async (updatedExpense) => {
     try {
       await updateExpense(updatedExpense.expense_id, updatedExpense);
-      const updatedExpenses = await getExpenses();
-      setExpenses(updatedExpenses);
+      console.log('Expense updated successfully'); // Debugging log
+      await onSubmitSuccess(); // Re-fetch expenses
+
+      // Close the modal after saving
       setEditingExpense(null);
     } catch (error) {
-      console.error('Failed to update expense:', error);
-      setError('Failed to update expense. Please try again later.');
+      console.error('Error editing expense:', error);
     }
   };
 
@@ -78,7 +83,7 @@ const ExpensesList = () => {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            handleSaveEdit(editingExpense);
+            handleEdit(editingExpense);
           }}
         >
           <div className="form-group">
@@ -155,7 +160,7 @@ const ExpensesList = () => {
     <div className="expenses-list">
       <h2>Your Expenses</h2>
 
-      {expenses.length === 0 ? (
+      {expensesList.length === 0 ? (
         <div className="empty-state">
           <p>No expenses found. Add an expense to get started!</p>
         </div>
@@ -172,7 +177,7 @@ const ExpensesList = () => {
               </tr>
             </thead>
             <tbody>
-              {expenses.map((expense) => (
+              {expensesList.map((expense) => (
                 <tr key={expense.expense_id}>
                   <td className="amount">
                     ${Number(expense.amount).toFixed(2)}
