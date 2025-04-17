@@ -1,4 +1,4 @@
-# User Stories (Simplified with Expenses Instead of Recurring Bills)
+# User Stories
 
 ## Authentication
 1. As a user, I want to create an account with a username and password, so that I can securely log in.
@@ -17,5 +17,10 @@
 10. As a user, I want to edit an income source (e.g., amount or frequency), so that I can update my budget as needed.
 11. As a user, I want to delete an income source, so that I can remove outdated or unnecessary entries.
 
+## Savings Goals
+12. As a user, I want to set a savings goal as a percentage of my income, so that I can automatically allocate savings when I add income.
+13. As a user, I want to update or delete my savings goal, so that I can adjust my savings plan as needed.
+14. As a user, I want to see my savings progress as a bar on the dashboard, so that I can visualize my progress toward my goal.
+
 ## Dashboard
-12. As a user, I want to see a summary of my current balance, total expenses, and total income, so that I can quickly understand my financial status.
+15. As a user, I want to see a summary of my current balance, total expenses, total income, and savings, so that I can quickly understand my financial status.
