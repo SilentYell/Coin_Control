@@ -14,6 +14,7 @@ const db = require('./db/database')
 const expenseRoutes = require('./routes/expenseRoutes');
 const userRoutes = require('./routes/userRoutes');
 const income = require('./routes/income')
+const savingsGoalsRouter = require('./routes/savingsGoals');
 
 // middleware
 app.use(cors());
@@ -23,6 +24,7 @@ app.use(express.json()); // allows parsing JSON request bodies
 app.use('/api', expenseRoutes);
 app.use('/api', userRoutes);
 app.use('/api', income(db));
+app.use('/api/savings-goals', savingsGoalsRouter);
 
 
 app.get('/', (req, res) => {

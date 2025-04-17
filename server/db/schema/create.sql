@@ -36,7 +36,10 @@ CREATE TABLE Expenses (
 CREATE TABLE SavingsGoals (
   goal_id SERIAL PRIMARY KEY,
   user_id INTEGER REFERENCES Users(user_id),
+  name VARCHAR(100) NOT NULL,
+  amount NUMERIC(15,2) NOT NULL,
   percent NUMERIC(5,2) NOT NULL,
+  saved NUMERIC(15,2) DEFAULT 0,
   created_at TIMESTAMP DEFAULT NOW()
 );
 

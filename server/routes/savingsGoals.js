@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../db'); // adjust path as needed
+const db = require('../db/database');
 
 // Get all savings goals for a user
 router.get('/:user_id', async (req, res) => {
@@ -18,12 +18,13 @@ router.get('/:user_id', async (req, res) => {
 
 // Add a new savings goal
 router.post('/', async (req, res) => {
-  const { user_id, percent } = req.body;
+  const { user_id, name, amount, percent } = req.body;
   try {
     const result = await db.query(
-      'INSERT INTO SavingsGoals (user_id, percent) VALUES ($1, $2) RETURNING *',
-      [user_id, percent]
+      'INSERT INTO SavingsGoals (user_id, name, amount, percent) VALUES ($1, $2, $3, $4) RETURNING *',
+      [user_id, name, amount, percent]
     );
+    console.log('Savings goal added:', result.rows[0]);
     res.status(201).json(result.rows[0]);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -33,11 +34,11 @@ router.post('/', async (req, res) => {
 // Update a savings goal
 router.put('/:goal_id', async (req, res) => {
   const { goal_id } = req.params;
-  const { percent } = req.body;
+  const { name, amount, percent, saved } = req.body;
   try {
     const result = await db.query(
-      'UPDATE SavingsGoals SET percent = $1 WHERE goal_id = $2 RETURNING *',
-      [percent, goal_id]
+      'UPDATE SavingsGoals SET name = $1, amount = $2, percent = $3, saved = $4 WHERE goal_id = $5 RETURNING *',
+      [name, amount, percent, saved, goal_id]
     );
     res.json(result.rows[0]);
   } catch (err) {
