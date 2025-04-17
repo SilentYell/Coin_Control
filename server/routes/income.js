@@ -1,10 +1,11 @@
+// Handles income-related API routes
 const router = require("express").Router();
 
 module.exports = db => {
-  // GET Route for all income entries for the logged in user
+  // Get all income entries for the user
   router.get("/income", (req, res) => {
     const userId = 1; // change this later to be dynamic
-    const queryParams = [userId]
+    const queryParams = [userId];
 
     const query = `
     SELECT
@@ -20,8 +21,7 @@ module.exports = db => {
     });
   });
 
-
-  // POST Route to post an income entry to the db
+  // Add a new income entry, allocate savings if applicable
   router.post("/income", async (req, res) => {
     const { amount, last_payment_date, frequency } = req.body;
     const user_id = 1; // should come from req.body, will change to handle dynamic user ID later
@@ -32,7 +32,7 @@ module.exports = db => {
     }
 
     try {
-      // 1. Insert the new income
+      // Insert the new income
       const insertResult = await db.query(
         `INSERT INTO income (user_id, amount, last_payment_date, frequency)
          VALUES ($1, $2, $3, $4)
@@ -41,7 +41,7 @@ module.exports = db => {
       );
       const newIncome = insertResult.rows[0];
 
-      // 2. Fetch the latest savings goal for the user
+      // Fetch the latest savings goal for the user
       const goalResult = await db.query(
         `SELECT * FROM SavingsGoals WHERE user_id = $1 ORDER BY created_at DESC LIMIT 1`,
         [user_id]
@@ -62,8 +62,8 @@ module.exports = db => {
         }
       }
 
-      // 3. (Optional) Deduct allocated from user's current_balance
-      // await db.query(`UPDATE Users SET current_balance = current_balance - $1 WHERE user_id = $2`, [allocated, user_id]);
+      // (Optional) Deduct allocated from user's current_balance
+      await db.query(`UPDATE Users SET current_balance = current_balance - $1 WHERE user_id = $2`, [allocated, user_id]);
 
       res.status(201).json(newIncome);
     } catch (err) {
@@ -72,7 +72,7 @@ module.exports = db => {
     }
   });
 
-  // DELETE Route to delete an income record from the db
+  // Delete an income record by ID
   router.delete("/delete/income/:id", (req, res) => {
     const { id } = req.params;
 
@@ -95,7 +95,7 @@ module.exports = db => {
     });
   });
 
-  // PUT Route to update an income record by ID
+  // Update an income record by ID
   router.put("/income/:id", (req, res) => {
     const { id } = req.params;
     const { amount, last_payment_date, frequency } = req.body;
