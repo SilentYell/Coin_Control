@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import '../styles/IncomeList.scss';
 import { deleteIncome, getIncome, updateIncome } from '../services/api';
 import formatDate from '../src/helpers/formatDate';
+import { MdEdit, MdDelete } from 'react-icons/md';
 
 const IncomeList = ({ incomeList, setIncomeList, setEditingIncome }) => {
   useEffect(() => {
@@ -56,7 +57,7 @@ const IncomeList = ({ incomeList, setIncomeList, setEditingIncome }) => {
                 <th>Amount</th>
                 <th>Frequency</th>
                 <th>Last Payment Date</th>
-                <th>Actions</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -76,13 +77,13 @@ const IncomeList = ({ incomeList, setIncomeList, setEditingIncome }) => {
                         })
                       }
                     >
-                      Edit
+                      <MdEdit />
                     </button>
                     <button
                       className="delete-btn"
                       onClick={() => handleDelete(income.income_id)}
                     >
-                      Delete
+                      <MdDelete />
                     </button>
                   </td>
                 </tr>
