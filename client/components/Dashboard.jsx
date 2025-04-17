@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import '../styles/Dashboard.scss';
 import Card from './Card';
 import { Responsive, WidthProvider } from 'react-grid-layout';
@@ -10,27 +10,28 @@ function Dashboard({ expenses = [], income = [] }) {
   const [totalIncome, setTotalIncome] = useState(0);
   const [currentBalance, setCurrentBalance] = useState(0);
   const [totalSavings, setTotalSavings] = useState(0);
-  const [goals, setGoals] = useState([]);
+  const [goal, setGoal] = useState(null);
   const [isEditable, setIsEditable] = useState(false);
 
-  // Fetch savings goals on mount
-  useEffect(() => {
-    const fetchGoals = async () => {
-      try {
-        // Hardcoded user_id 1 for now
-        const res = await fetch('http://localhost:3000/api/savings-goals/1');
-        const data = await res.json();
-        setGoals(data);
-        // Calculate total savings
-        const savings = data.reduce((sum, goal) => sum + Number(goal.saved || 0), 0);
-        setTotalSavings(savings);
-      } catch (err) {
-        setGoals([]);
-        setTotalSavings(0);
-      }
-    };
-    fetchGoals();
+  // Helper to fetch the latest goal
+  const fetchGoal = useCallback(async () => {
+    try {
+      // Hardcoded user_id 1 for now
+      const res = await fetch('http://localhost:3000/api/savings-goals/1');
+      const data = await res.json();
+      // Only one goal per user, so take the first
+      setGoal(data[0] || null);
+      setTotalSavings(data[0]?.saved ? Number(data[0].saved) : 0);
+    } catch (err) {
+      setGoal(null);
+      setTotalSavings(0);
+    }
   }, []);
+
+  // Fetch goal on mount and whenever income/expenses change
+  useEffect(() => {
+    fetchGoal();
+  }, [fetchGoal, income, expenses]);
 
   useEffect(() => {
     const totalExpenses = expenses.reduce((sum, expense) => sum + Number(expense.amount || 0), 0);
