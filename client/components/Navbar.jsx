@@ -14,6 +14,8 @@ const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, ge
   const [showExpenseFormModal, setShowExpenseFormModal] = useState(false);
   const [showIncomeListModal, setShowIncomeListModal] = useState(false);
   const [showExpenseListModal, setShowExpenseListModal] = useState(false);
+  const [showGoalModal, setShowGoalModal] = useState(false);
+  const [goalPercent, setGoalPercent] = useState('');
   const [menuOpen, setMenuOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -35,13 +37,12 @@ const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, ge
         )}
 
         <ul className={`navbar-links ${menuOpen ? 'open' : ''}`}>
-
           {user ? (
-
             // If logged in, show buttons
             <>
               <li><button onClick={() => setShowExpenseListModal(true)}>Expense History</button></li>
               <li><button onClick={() => setShowExpenseFormModal(true)}>Add Expense</button></li>
+              <li><button onClick={() => setShowGoalModal(true)}>Savings Goal</button></li>
               <li>
                 <button onClick={async () => {
                   //ph change - dont fetch every time, only if needed
