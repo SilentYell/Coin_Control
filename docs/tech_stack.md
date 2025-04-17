@@ -5,6 +5,7 @@
 - **Build Tool**: **Vite**
 - **Styling**: **Sass**
 - **Animation Library**: **Anime.js** (v3.2.1)
+- **Grid Layout**: **React-Grid-Layout** ([npmjs.com/package/react-grid-layout](https://www.npmjs.com/package/react-grid-layout))
 - **Linting**: **ESLint**
 - **Graphing Library**: **Chart.js** (or similar)
 
