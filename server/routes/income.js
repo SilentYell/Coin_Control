@@ -49,12 +49,17 @@ module.exports = db => {
       const goal = goalResult.rows[0];
 
       let allocated = 0;
-      if (goal && new Date(last_payment_date) >= new Date(goal.created_at)) {
-        allocated = amount * (goal.percent / 100);
-        await db.query(
-          `UPDATE SavingsGoals SET saved = saved + $1 WHERE goal_id = $2`,
-          [allocated, goal.goal_id]
-        );
+      if (goal) {
+        // Compare only the date part (YYYY-MM-DD) for same day or after
+        const goalDate = new Date(goal.created_at).toISOString().split('T')[0];
+        const incomeDate = new Date(last_payment_date).toISOString().split('T')[0];
+        if (incomeDate >= goalDate) {
+          allocated = amount * (goal.percent / 100);
+          await db.query(
+            `UPDATE SavingsGoals SET saved = saved + $1 WHERE goal_id = $2`,
+            [allocated, goal.goal_id]
+          );
+        }
       }
 
       // 3. (Optional) Deduct allocated from user's current_balance
