@@ -23,6 +23,10 @@ const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, ge
   const [goalAmount, setGoalAmount] = useState('');
   const [goals, setGoals] = useState([]);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [editingGoal, setEditingGoal] = useState(null);
+  const [editPercent, setEditPercent] = useState('');
+  const [editAmount, setEditAmount] = useState('');
+  const [editName, setEditName] = useState('');
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -147,64 +151,124 @@ const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, ge
       )}
 
       {showGoalModal && (
-        <Modal isOpen={showGoalModal} onClose={() => setShowGoalModal(false)}>
-          <form
-            className="savings-goal-modal"
-            onSubmit={async (e) => {
-              e.preventDefault();
-              const payload = {
-                user_id: user.user_id,
-                name: goalName,
-                amount: parseFloat(goalAmount),
-                percent: parseFloat(goalPercent)
-              };
-              const res = await fetch(`${API_URL}/savings-goals`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload),
-              });
-              const data = await res.json();
-              console.log('Savings goal added (frontend):', data);
-              setGoalName('');
-              setGoalAmount('');
-              setGoalPercent('');
-              fetch(`${API_URL}/savings-goals/${user.user_id}`)
-                .then(res => res.json())
-                .then(data => setGoals(data));
-            }}
-          >
-            <label>
-              Goal Name:
-              <input
-                type="text"
-                value={goalName}
-                onChange={e => setGoalName(e.target.value)}
-                required
-              />
-            </label>
-            <label>
-              Goal Amount ($):
-              <input
-                type="number"
-                min="1"
-                value={goalAmount}
-                onChange={e => setGoalAmount(e.target.value)}
-                required
-              />
-            </label>
-            <label>
-              % of future income to save:
-              <input
-                type="number"
-                min="1"
-                max="100"
-                value={goalPercent}
-                onChange={e => setGoalPercent(e.target.value)}
-                required
-              />
-            </label>
-            <button type="submit">Save Goal</button>
-          </form>
+        <Modal isOpen={showGoalModal} onClose={() => { setShowGoalModal(false); setEditingGoal(null); }}>
+          {editingGoal ? (
+            <form
+              className="savings-goal-modal"
+              onSubmit={async (e) => {
+                e.preventDefault();
+                const payload = {
+                  name: editName,
+                  amount: parseFloat(editAmount),
+                  percent: parseFloat(editPercent),
+                  saved: editingGoal.saved
+                };
+                await fetch(`${API_URL}/savings-goals/${editingGoal.goal_id}`, {
+                  method: 'PUT',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify(payload),
+                });
+                setEditingGoal(null);
+                setEditName('');
+                setEditAmount('');
+                setEditPercent('');
+                // Refresh goals
+                fetch(`${API_URL}/savings-goals/${user.user_id}`)
+                  .then(res => res.json())
+                  .then(data => setGoals(data));
+              }}
+            >
+              <label>
+                Goal Name:
+                <input
+                  type="text"
+                  value={editName}
+                  onChange={e => setEditName(e.target.value)}
+                  required
+                />
+              </label>
+              <label>
+                Goal Amount ($):
+                <input
+                  type="number"
+                  min="1"
+                  value={editAmount}
+                  onChange={e => setEditAmount(e.target.value)}
+                  required
+                />
+              </label>
+              <label>
+                % of future income to save:
+                <input
+                  type="number"
+                  min="1"
+                  max="100"
+                  value={editPercent}
+                  onChange={e => setEditPercent(e.target.value)}
+                  required
+                />
+              </label>
+              <button type="submit">Update Goal</button>
+              <button type="button" onClick={() => setEditingGoal(null)} style={{marginTop:8}}>Cancel</button>
+            </form>
+          ) : (
+            <form
+              className="savings-goal-modal"
+              onSubmit={async (e) => {
+                e.preventDefault();
+                const payload = {
+                  user_id: user.user_id,
+                  name: goalName,
+                  amount: parseFloat(goalAmount),
+                  percent: parseFloat(goalPercent)
+                };
+                const res = await fetch(`${API_URL}/savings-goals`, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify(payload),
+                });
+                const data = await res.json();
+                setGoalName('');
+                setGoalAmount('');
+                setGoalPercent('');
+                fetch(`${API_URL}/savings-goals/${user.user_id}`)
+                  .then(res => res.json())
+                  .then(data => setGoals(data));
+              }}
+            >
+              <label>
+                Goal Name:
+                <input
+                  type="text"
+                  value={goalName}
+                  onChange={e => setGoalName(e.target.value)}
+                  required
+                />
+              </label>
+              <label>
+                Goal Amount ($):
+                <input
+                  type="number"
+                  min="1"
+                  value={goalAmount}
+                  onChange={e => setGoalAmount(e.target.value)}
+                  required
+                />
+              </label>
+              <label>
+                % of future income to save:
+                <input
+                  type="number"
+                  min="1"
+                  max="100"
+                  value={goalPercent}
+                  onChange={e => setGoalPercent(e.target.value)}
+                  required
+                />
+              </label>
+              <button type="submit">Save Goal</button>
+            </form>
+          )}
           <div style={{ marginTop: '2rem' }}>
             <h3>Your Savings Goals</h3>
             {goals.length === 0 && <div>No goals yet.</div>}
@@ -218,6 +282,12 @@ const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, ge
                 <div style={{ fontSize: 13 }}>
                   Saved: ${Number(goal.saved || 0).toFixed(2)} / ${Number(goal.amount).toFixed(2)}
                 </div>
+                <button style={{marginTop:8}} onClick={() => {
+                  setEditingGoal(goal);
+                  setEditName(goal.name);
+                  setEditAmount(goal.amount);
+                  setEditPercent(goal.percent);
+                }}>Edit</button>
               </div>
             ))}
           </div>
