@@ -41,29 +41,28 @@ module.exports = db => {
       );
       const newIncome = insertResult.rows[0];
 
-      // 2. Fetch all savings goals for the user
-      const goalsResult = await db.query(
-        `SELECT * FROM SavingsGoals WHERE user_id = $1`,
+      // 2. Fetch the latest savings goal for the user
+      const goalResult = await db.query(
+        `SELECT * FROM SavingsGoals WHERE user_id = $1 ORDER BY created_at DESC LIMIT 1`,
         [user_id]
       );
-      const goals = goalsResult.rows;
+      const goal = goalResult.rows[0];
 
-      // 3. For each goal, calculate allocation and update saved
-      for (const goal of goals) {
-        const allocation = (amount * (goal.percent / 100));
+      let allocated = 0;
+      if (goal && new Date(last_payment_date) >= new Date(goal.created_at)) {
+        allocated = amount * (goal.percent / 100);
         await db.query(
           `UPDATE SavingsGoals SET saved = saved + $1 WHERE goal_id = $2`,
-          [allocation, goal.goal_id]
+          [allocated, goal.goal_id]
         );
       }
 
-      // 4. (Optional) Deduct total allocated from user's current_balance
-      // const totalAllocated = goals.reduce((sum, goal) => sum + (amount * (goal.percent / 100)), 0);
-      // await db.query(`UPDATE Users SET current_balance = current_balance - $1 WHERE user_id = $2`, [totalAllocated, user_id]);
+      // 3. (Optional) Deduct allocated from user's current_balance
+      // await db.query(`UPDATE Users SET current_balance = current_balance - $1 WHERE user_id = $2`, [allocated, user_id]);
 
       res.status(201).json(newIncome);
     } catch (err) {
-      console.error('Error inserting income and allocating to savings goals', err);
+      console.error('Error inserting income and allocating to savings goal', err);
       res.status(500).json({error: 'Internal Server Error'});
     }
   });

@@ -16,10 +16,13 @@ router.get('/:user_id', async (req, res) => {
   }
 });
 
-// Add a new savings goal
+// Add a new savings goal (only one per user, override old)
 router.post('/', async (req, res) => {
   const { user_id, name, amount, percent } = req.body;
   try {
+    // Delete any existing goal for this user
+    await db.query('DELETE FROM SavingsGoals WHERE user_id = $1', [user_id]);
+    // Insert the new goal
     const result = await db.query(
       'INSERT INTO SavingsGoals (user_id, name, amount, percent) VALUES ($1, $2, $3, $4) RETURNING *',
       [user_id, name, amount, percent]
