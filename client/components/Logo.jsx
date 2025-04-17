@@ -19,22 +19,44 @@ const Logo = () => {
         direction: 'normal',
       });
     });
-    // Animate the $ sign
-    const dollar = document.querySelector('.st2');
-    if (dollar) {
-      const length = dollar.getTotalLength();
-      dollar.style.strokeDasharray = length;
-      dollar.style.strokeDashoffset = length;
+
+    // Animate the large "C" letters (fade-in effect)
+    const cLetters = document.querySelectorAll('.st4');
+    anime({
+      targets: cLetters,
+      opacity: [0, 1],
+      duration: 1200,
+      easing: 'easeInOutSine',
+      delay: 500,
+      loop: false,
+    });
+
+    // Animate the vertical lines (stroke then fill)
+    const verticalLines = document.querySelectorAll('.st2');
+    verticalLines.forEach((line) => {
+      const length = line.getTotalLength();
+      line.style.strokeDasharray = length;
+      line.style.strokeDashoffset = length;
       anime({
-        targets: dollar,
+        targets: line,
         strokeDashoffset: [length, 0],
         duration: 1200,
         easing: 'easeInOutSine',
         delay: 500,
         loop: false,
         direction: 'normal',
+        complete: () => {
+          // Fill the line with black after stroke animation
+          anime({
+            targets: line,
+            fill: ['none', '#000000'],
+            duration: 600,
+            easing: 'easeOutQuad',
+          });
+        },
       });
-    }
+    });
+
     // Animate the text paths (draw once)
     const textPaths = document.querySelectorAll('.st3 path');
     textPaths.forEach((path, i) => {
@@ -66,25 +88,39 @@ const Logo = () => {
               });
             }, 200);
           }
-        }
+        },
       });
     });
   }, []);
 
   return (
     <div style={{ width: '60%', maxWidth: 500, margin: '0 auto' }}>
-        <svg version="1.1" id="Coin_Control" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px"
-        y="0px" viewBox="0 0 840.3 478.6" style={{enableBackground:'new 0 0 840.3 478.6'}} xmlSpace="preserve">
-        <style type="text/css">{`.st0{fill:none;stroke:#000000;stroke-width:5;stroke-miterlimit:10;}`}</style>
+      <svg
+        version="1.1"
+        id="Coin_Control"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlnsXlink="http://www.w3.org/1999/xlink"
+        x="0px"
+        y="0px"
+        viewBox="0 0 840.3 478.6"
+        style={{ enableBackground: 'new 0 0 840.3 478.6' }}
+        xmlSpace="preserve"
+      >
+        <style type="text/css">{`
+          .st0 { fill: none; stroke: #000000; stroke-width: 5; stroke-miterlimit: 10; }
+          .st2 { fill: none; stroke: #000000; stroke-width: 5; stroke-miterlimit: 10; }
+          .st3 { fill: #FFD700; }
+          .st4 { font-family: Arial-BoldMT, Arial; font-size: 120.3px; font-weight: 700; fill: #000000; }
+        `}</style>
         <g id="Coin_Control-2">
           <g id="Coin">
             <g>
               <defs>
                 <circle id="SVGID_1_" cx="427.6" cy="149.1" r="144.1" />
               </defs>
-              <use xlinkHref="#SVGID_1_" style={{overflow:'visible', fill:'#FFE856'}} />
+              <use xlinkHref="#SVGID_1_" style={{ overflow: 'visible', fill: '#FFE856' }} />
               <clipPath id="SVGID_00000090283407465915540280000003485204244605183618_">
-                <use xlinkHref="#SVGID_1_" style={{overflow:'visible'}} />
+                <use xlinkHref="#SVGID_1_" style={{ overflow: 'visible' }} />
               </clipPath>
             </g>
             <circle className="st0" cx="427.6" cy="149.1" r="144.1" />
@@ -93,24 +129,36 @@ const Logo = () => {
                 <circle id="SVGID_00000087393330643556594760000014413158236641276563_" cx="428" cy="149.7" r="126.5" />
               </defs>
               <clipPath id="SVGID_00000114779203500404086650000007098674584311641745_">
-                <use xlinkHref="#SVGID_00000087393330643556594760000014413158236641276563_" style={{overflow:'visible'}} />
+                <use xlinkHref="#SVGID_00000087393330643556594760000014413158236641276563_" style={{ overflow: 'visible' }} />
               </clipPath>
-              <g style={{clipPath:'url(#SVGID_00000114779203500404086650000007098674584311641745_)'}}>
+              <g style={{ clipPath: 'url(#SVGID_00000114779203500404086650000007098674584311641745_)' }}>
                 <g>
                   <defs>
                     <rect id="SVGID_00000103257481898567778470000011736520461905854119_" x="296.5" y="18.2" width="263" height="263" />
                   </defs>
                   <clipPath id="SVGID_00000067216344448436424760000001298085917937015945_">
-                    <use xlinkHref="#SVGID_00000103257481898567778470000011736520461905854119_" style={{overflow:'visible'}} />
+                    <use xlinkHref="#SVGID_00000103257481898567778470000011736520461905854119_" style={{ overflow: 'visible' }} />
                   </clipPath>
                 </g>
               </g>
             </g>
             <circle className="st0" cx="428" cy="149.7" r="126.5" />
-            <g id="_sign">
-              <path className="st2" d="M422.1,210.5v-15.1c-8.7-0.1-17.7-2.9-23-6.6l3.6-10.1c5.4,3.6,13.2,6.4,21.6,6.4c10.6,0,17.9-6.1,17.9-14.7 s-5.9-13.4-17-17.9c-15.3-6-24.8-12.9-24.8-25.9s8.9-21.9,22.6-24.2V87.4h9.3v14.6c9,0.3,15.1,2.7,19.5,5.2l-3.8,9.9 c-3.1-1.8-9.3-5.1-18.9-5.1c-11.5,0-15.9,6.9-15.9,12.9c0,7.8,5.5,11.7,18.6,17.1c15.5,6.3,23.2,14.1,23.2,27.4 c0,11.9-8.2,22.9-23.7,25.5v15.6H422.1L422.1,210.5z" />
-              <path className="st2 dollar-sign" />
-            </g>
+            {/* Large "C" letters */}
+            <text className="st4" transform="translate(377.02 173.12)">
+              <tspan x="0" y="0">C</tspan>
+            </text>
+            <text className="st4" transform="translate(399.12 207.87)">
+              <tspan x="0" y="0">C</tspan>
+            </text>
+            {/* Shortened vertical lines */}
+            <path
+              className="st2"
+              d="m424.45,68.79l-.1,26.72c-.15,4.6-6.84,4.62-7,0,0,0-.1-26.71-.1-26.71.13-4.76,7.06-4.78,7.19,0h0Z"
+            />
+            <path
+              className="st2"
+              d="m446.16,201.7l.16,26.72c-.12,4.86-7.2,4.87-7.33,0,0,0,.16-26.71.16-26.71.16-4.59,6.83-4.61,7,0h0Z"
+              />
           </g>
           <g>
             <g className="st3">
@@ -131,11 +179,10 @@ const Logo = () => {
           </g>
           <g>
             <g className="st3">
-              <path d="M746.9,427.3c-10,0-17.7-2.9-23.1-8.7c-5.5-5.8-8.2-13.9-8.2-24.4v-12.4c0-10.4,2.7-18.5,8.2-24.2 c5.5-5.7,13.2-8.6,23.1-8.6s17.7,2.9,23.1,8.6c5.5,5.7,8.2,13.8,8.2,24.2v12.6c0,10.4-2.7,18.5-8.2,24.3 C764.6,424.4,756.9,427.3,746.9,427.3z M746.9,413.1c5.2,0,9.3-1.6,12.1-4.9c2.9-3.3,4.3-7.9,4.3-13.8v-12.6 c0-5.9-1.4-10.5-4.3-13.7s-6.9-4.8-12.1-4.8c-5.2,0-9.2,1.6-12.1,4.8c-2.9,3.2-4.3,7.8-4.3,13.7v12.6c0,5.9,1.4,10.5,4.3,13.8 C737.7,411.4,741.7,413.1,746.9,413.1z" />
+              <path d="M746.9,427.3c-10,0-17.7-2.9-23.1-8.7c-5.5-5.8-8.2-13.9-8.2-24.4v-12.4c0-10.4,2.7-18.5,8.2-24.2 c5.5-5.7,13.2-8.6,23.1-8.6s17.7,2.9,23.1,8.6c5.5,5.7,8.2,13.8,8.2,24.2v12.6c0,10.4-2.7,18.5-8.2,24.3 C764.6,424.4,756.9,427.3,746.9,427.3z M746.9,413.1c5.2,0,9.3-1.6,12.1-4.9c2.9-3.3,4.3-7.9,4.3-13.8v-12.6 c0-5.9-1.4-10.5-4.3-13.7s-6.9-4.8-12.1-4.8c-5.2,0-9.2,1.6-12.1,4.8c-2.9,3.2-4.3,7.8-4.3,13.7v12.6 c0,5.9,1.4,10.5,4.3,13.8C737.7,411.4,741.7,413.1,746.9,413.1z" />
               <path d="M814.4,319.7v86.9c0,1.8,0.4,3.2,1.2,4.2s1.9,1.5,3.4,1.5h7v14.2h-8.8c-5.6,0-10-1.8-13.1-5.3c-3.1-3.5-4.7-8.5-4.7-14.9 v-86.7H814.4z" />
             </g>
           </g>
-          {/* <path d="M17.2,471c33.4-2.5,67.3-3.6,100.8-4.4c33.6-0.7,67.2-1.2,100.8-0.4c67.2,2.7,134.3,5,201.5,1.9c113.1-4.1,227-4.7,340-0.3 c20.8,0.9,42.2,1.8,63,3.2v1.3c-20.8,1.4-42.1,2.3-63,3.2c-79.4,3.1-159.8,3.9-239.3,2.3c-67-0.5-134.5-5.1-201.5-4 c-33.6,0.4-67.2,2.5-100.8,3.3c-42,1-84,0.2-125.9-1.1c-6-0.2-19.1-0.6-25.2-0.9c-16.8-0.7-33.6-1.5-50.4-2.8L17.2,471L17.2,471 L17.2,471z" /> */}
         </g>
       </svg>
     </div>
