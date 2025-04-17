@@ -70,7 +70,6 @@ const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, ge
             <></>
           )}
         </ul>
-        
         <div className='navbar-user'>
           {!user ? (
             // If no user, show login button
@@ -125,6 +124,37 @@ const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, ge
             }}
             onClose={() => setShowIncomeFormModal(false)}
           />
+        </Modal>
+      )}
+
+      {showGoalModal && (
+        <Modal isOpen={showGoalModal} onClose={() => setShowGoalModal(false)}>
+          <form
+            onSubmit={async (e) => {
+              e.preventDefault();
+              // Call your API here
+              await fetch('http://localhost:3000/api/savings-goals', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ user_id: user.user_id, percent: goalPercent }),
+              });
+              setShowGoalModal(false);
+              setGoalPercent('');
+            }}
+          >
+            <label>
+              Enter % of income to save:
+              <input
+                type="number"
+                min="0"
+                max="100"
+                value={goalPercent}
+                onChange={e => setGoalPercent(e.target.value)}
+                required
+              />
+            </label>
+            <button type="submit">Save Goal</button>
+          </form>
         </Modal>
       )}
     </>
