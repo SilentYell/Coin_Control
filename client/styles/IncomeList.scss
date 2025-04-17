@@ -1,17 +1,17 @@
 .income-list {
   padding: 1rem;
-  background-color: #FCEDD3; /* Light peach background */
+  background-color: #fcedd3; /* Light peach background */
   border-radius: 0.75rem;
   color: #000000; /* Black text color */
 
   h2 {
     margin-bottom: 1.5rem;
     text-align: center;
-    color: #1E4210; /* Dark green for headings */
+    color: #1e4210; /* Dark green for headings */
   }
 
   .empty-state {
-    background-color: #E6B800; /* Gold background */
+    background-color: #e6b800; /* Gold background */
     padding: 2rem;
     border-radius: 0.5rem;
     text-align: center;
@@ -20,7 +20,7 @@
 
   .table-container {
     overflow-x: auto;
-    background-color: #FCEDD3; /* Light peach background */
+    background-color: #fcedd3; /* Light peach background */
     border-radius: 0.5rem;
     padding: 0.5rem;
   }
@@ -41,24 +41,24 @@
     th {
       background-color: #876510; /* Brown background */
       font-weight: 600;
-      color: #FCEDD3; /* Light peach text */
-      border-bottom: 2px solid #E6B800; /* Gold border */
+      color: #fcedd3; /* Light peach text */
+      border-bottom: 2px solid #e6b800; /* Gold border */
     }
 
     td {
-      border-bottom: 1px solid #E6B800; /* Gold border */
-      background-color: #FCEDD3; /* Light peach background */
+      border-bottom: 1px solid #e6b800; /* Gold border */
+      background-color: #fcedd3; /* Light peach background */
       color: #000000; /* Black text */
     }
 
     tbody tr:hover {
       width: 100%;
-      background-color: #E6B800; /* Gold hover effect */
+      background-color: #e6b800; /* Gold hover effect */
     }
 
     .amount {
       font-weight: 600;
-      color: #1E4210; /* Dark green for amounts */
+      color: #1e4210; /* Dark green for amounts */
     }
 
     .actions {
@@ -75,7 +75,7 @@
         transition: background-color 0.2s ease;
 
         &.edit-btn {
-          background-color: #1E4210;
+          background-color: #1e4210;
           color: white;
 
           &:hover {
@@ -95,12 +95,26 @@
     }
 
     .total-row {
-      display: flex;
       font-weight: 600;
 
-      .total-amount {
-        color: #fc8181; /* Lighter red for dark background */
+      td.total-label {
+        text-align: left;
+        padding-right: 1rem;
+      }
+      
+      td.total-amount {
+        text-align: center;
       }
     }
   }
+}
+
+.income-list .total-amount.positive {
+  color: #24ac18 !important; // Green color
+  font-weight: 700;
+}
+
+.income-list .total-amount.negative {
+  color: #c53030 !important; // Red color
+  font-weight: 700;
 }

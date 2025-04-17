@@ -1,14 +1,38 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { getExpenses, deleteExpense, updateExpense } from '../services/api';
 import '../styles/ExpensesList.scss';
 import { MdEdit, MdDelete } from 'react-icons/md';
 
 const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess }) => {
+  const [selectedCategory, setSelectedCategory] = useState('All');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [editingExpense, setEditingExpense] = useState(null);
+  const editAmountInputRef = useRef(null);
+
+  const categories = [
+    'Groceries',
+    'Transportation',
+    'Entertainment',
+    'Utilities',
+    'Housing',
+    'Healthcare',
+    'Education',
+    'Personal',
+    'Other',
+  ];
+
   // to calculate total after expenses are loading for colour
-  const total = expensesList.reduce((sum, expense) => sum + Number(expense.amount), 0);
+  const total = expensesList.reduce(
+    (sum, expense) => sum + Number(expense.amount),
+    0
+  );
+
+  // filter expenses by selected category
+  const filteredExpenses =
+    selectedCategory === 'All'
+      ? expensesList
+      : expensesList.filter((expense) => expense.category === selectedCategory);
 
   useEffect(() => {
     const fetchExpenses = async () => {
@@ -24,11 +48,11 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess }) => {
       }
     };
 
-    //ph change - only fetch if there is no data
+    //only fetch if there is no data
     if (!expensesList || expensesList.length === 0) {
       fetchExpenses();
     }
-  }, []); //ph change - empty dependency array - only run on mount
+  }, []); //empty dependency array - only run on mount
 
   // format date for display
   const formatDate = (dateString) => {
@@ -40,12 +64,18 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess }) => {
     });
   };
 
+  useEffect(() => {
+    if (editingExpense && editAmountInputRef.current) {
+      editAmountInputRef.current.focus();
+    }
+  }, [editingExpense]);
+
   // handle delete expense
   const handleDelete = async (id) => {
     try {
       await deleteExpense(id);
       console.log('Expense deleted successfully'); // Debugging log
-      // ph change - update locally instead of fetching again
+      // update locally instead of fetching again
       setExpensesList((prevList) =>
         prevList.filter((expense) => expense.expense_id !== id)
       );
@@ -62,8 +92,12 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess }) => {
   // handle save after editing
   const handleEdit = async (updatedExpense) => {
     try {
-      await updateExpense(updatedExpense.expense_id, updatedExpense);
-      console.log('Expense updated successfully'); // Debugging log
+      const expenseToSave = {
+        ...updatedExpense,
+        amount: -Math.abs(parseFloat(updatedExpense.amount)), // Ensure negative
+      };
+      await updateExpense(expenseToSave.expense_id, expenseToSave);
+      console.log('Expense updated successfully');
       await onSubmitSuccess(); // Re-fetch expenses
 
       // Close the modal after saving
@@ -87,11 +121,15 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess }) => {
           <div className="form-group">
             <label htmlFor="edit-amount">Amount ($)</label>
             <input
+              ref={editAmountInputRef}
               id="edit-amount"
               type="number"
               value={editingExpense.amount}
               onChange={(e) =>
-                setEditingExpense({ ...editingExpense, amount: e.target.value })
+                setEditingExpense({
+                  ...editingExpense,
+                  amount: e.target.value, // Store as entered
+                })
               }
               step="0.01"
               required
@@ -114,9 +152,8 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess }) => {
           </div>
           <div className="form-group">
             <label htmlFor="edit-category">Category</label>
-            <input
+            <select
               id="edit-category"
-              type="text"
               value={editingExpense.category}
               onChange={(e) =>
                 setEditingExpense({
@@ -125,7 +162,13 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess }) => {
                 })
               }
               required
-            />
+            >
+              {categories.map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="form-group">
             <label htmlFor="edit-name">Description</label>
@@ -158,7 +201,26 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess }) => {
     <div className="expenses-list">
       <h2>Your Expenses</h2>
 
-      {expensesList.length === 0 ? (
+      {/* Add category filter */}
+      <div className="filter-controls">
+        <label htmlFor="category-filter">Filter by category: </label>
+        <select
+          id="category-filter"
+          value={selectedCategory}
+          onChange={(e) => setSelectedCategory(e.target.value)}
+        >
+          <option key="All" value="All">
+            All
+          </option>
+          {categories.map((category) => (
+            <option key={category} value={category}>
+              {category}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {filteredExpenses.length === 0 ? (
         <div className="empty-state">
           <p>No expenses found. Add an expense to get started!</p>
         </div>
@@ -176,14 +238,16 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess }) => {
               </tr>
             </thead>
             <tbody>
-              {expensesList.map((expense) => (
+              {filteredExpenses.map((expense) => (
                 <tr key={expense.expense_id}>
                   <td className="amount">
                     ${Number(expense.amount).toFixed(2)}
                   </td>
                   <td>{formatDate(expense.expense_date)}</td>
                   <td>
-                    <span className="category-tag">{expense.category}</span>
+                    <span className={`category-tag ${expense.category}`}>
+                      {expense.category}
+                    </span>
                   </td>
                   <td className="description">{expense.name}</td>
                   <td className="actions">

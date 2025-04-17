@@ -3,6 +3,7 @@ import './App.scss';
 import Navbar from '../components/Navbar';
 import Dashboard from '../components/Dashboard';
 import useApplicationData from '../hooks/useApplicationData';
+import Logo from '../components/Logo';
 
 function App() {
   const {
@@ -12,7 +13,7 @@ function App() {
     editingIncome,
     setEditingIncome,
     onSubmitSuccess,
-    expensesList, // Use expensesList from useApplicationData
+    expensesList,
     setExpensesList,
     fetchExpensesList,
     onExpenseSubmitSuccess,
@@ -26,7 +27,7 @@ function App() {
         try {
           const incomeData = await getIncome();
           setIncomeList(incomeData);
-          await fetchExpensesList(); // Fetch expenses list
+          await fetchExpensesList();
         } catch (error) {
           console.error('Error fetching data:', error);
         }
@@ -66,7 +67,12 @@ function App() {
       />
 
       {!user ? (
+      <>
         <h3>Please click the login button to view your dashboard.</h3>
+        <div className="logo-container">
+          <Logo />
+        </div>
+      </>
       ) : (
         <Dashboard expenses={expensesList} income={incomeList} />
       )}
