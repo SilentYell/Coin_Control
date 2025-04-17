@@ -48,10 +48,10 @@ function Dashboard({ expenses = [], income = [] }) {
     setTotalSavings(0);
   };
 
-  // Fetch goal on mount and whenever income/expenses change
+  // Fetch goal on mount and whenever income/expenses or goal changes
   useEffect(() => {
     fetchGoal();
-  }, [fetchGoal, income, expenses]);
+  }, [fetchGoal, income, expenses, goal]);
 
   useEffect(() => {
     const totalExpenses = expenses.reduce((sum, expense) => sum + Number(expense.amount || 0), 0);
@@ -59,7 +59,7 @@ function Dashboard({ expenses = [], income = [] }) {
     setTotalExpenses(totalExpenses);
     setTotalIncome(totalIncome);
     setCurrentBalance(totalIncome - totalExpenses - totalSavings);
-  }, [expenses, income, totalSavings]);
+  }, [expenses, income, totalSavings, goal]);
 
   return (
     <div className="dashboard">
