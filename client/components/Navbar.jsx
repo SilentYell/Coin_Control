@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../styles/Navbar.scss';
+import '../styles/SavingsGoalModal.scss';
 import Modal from './Modal';
 import IncomeForm from './IncomeForm';
 import AddExpenseForm from './AddExpenseForm';
@@ -7,6 +8,8 @@ import ExpensesList from './ExpensesList';
 import IncomeList from './IncomeList';
 import useApplicationData from '../hooks/useApplicationData';
 import { FaBars, FaTimes } from 'react-icons/fa';
+
+const API_URL = 'http://localhost:3000/api';
 
 const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, getIncome, editingIncome, setEditingIncome, onSubmitSuccess, expensesList, setExpensesList, fetchExpensesList, onExpenseSubmitSuccess }) => {
 
@@ -16,11 +19,28 @@ const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, ge
   const [showExpenseListModal, setShowExpenseListModal] = useState(false);
   const [showGoalModal, setShowGoalModal] = useState(false);
   const [goalPercent, setGoalPercent] = useState('');
+  const [goalName, setGoalName] = useState('');
+  const [goalAmount, setGoalAmount] = useState('');
+  const [goals, setGoals] = useState([]);
   const [menuOpen, setMenuOpen] = useState(false);
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
-  }
+  };
+
+  useEffect(() => {
+    if (showGoalModal && user) {
+      fetch(`${API_URL}/savings-goals/${user.user_id}`)
+        .then(res => res.json())
+        .then(data => setGoals(data))
+        .catch(() => setGoals([]));
+    }
+  }, [showGoalModal, user]);
+
+  const getProgress = (goal) => {
+    if (!goal.amount || !goal.saved) return 0;
+    return Math.min((goal.saved / goal.amount) * 100, 100);
+  };
 
   return (
     <>
@@ -44,15 +64,17 @@ const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, ge
               <li><button onClick={() => setShowExpenseFormModal(true)}>Add Expense</button></li>
               <li><button onClick={() => setShowGoalModal(true)}>Savings Goal</button></li>
               <li>
-                <button onClick={async () => {
+                <button onClick={() => {
                   //ph change - dont fetch every time, only if needed
-                  if (!incomeList || incomeList.length === 0) {
-                    getIncome().then(updatedList => {
-                      console.log("Updated Income List:", updatedList); // Debugging line (moved inside promise - ph)
+                  const handleIncomeHistoryClick = async () => {
+                    if (!incomeList || incomeList.length === 0) {
+                      const updatedList = await getIncome();
+                      console.log("Updated Income List:", updatedList);
                       setIncomeList(updatedList);
-                    });
-                  }
-                  setShowIncomeListModal(true);
+                    }
+                    setShowIncomeListModal(true);
+                  };
+                  handleIncomeHistoryClick();
                 }}>
                   Income History
                 </button>
@@ -61,18 +83,16 @@ const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, ge
               <li><button>Trophy Case</button></li>
               {user && (
                 <li className="mobile-logout">
-                <button className="logout-btn" onClick={handleLogout}>Logout</button>
+                  <button className="logout-btn" onClick={handleLogout}>Logout</button>
                 </li>
               )}
             </>
           ) : (
-            // If not logged in, Navbar is empty
             <></>
           )}
         </ul>
         <div className='navbar-user'>
           {!user ? (
-            // If no user, show login button
             <button className='login-btn' onClick={handleLogin}>Login</button>
           ) : (
             <div className='user-info'>
@@ -120,7 +140,6 @@ const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, ge
             onSubmitSuccess={async () => {
               onSubmitSuccess();
               setEditingIncome(undefined);
-              // ph change - causes additional fetch ( the two lines below this were removed)
             }}
             onClose={() => setShowIncomeFormModal(false)}
           />
@@ -130,23 +149,54 @@ const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, ge
       {showGoalModal && (
         <Modal isOpen={showGoalModal} onClose={() => setShowGoalModal(false)}>
           <form
+            className="savings-goal-modal"
             onSubmit={async (e) => {
               e.preventDefault();
-              // Call your API here
-              await fetch('http://localhost:3000/api/savings-goals', {
+              const payload = {
+                user_id: user.user_id,
+                name: goalName,
+                amount: parseFloat(goalAmount),
+                percent: parseFloat(goalPercent)
+              };
+              const res = await fetch(`${API_URL}/savings-goals`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ user_id: user.user_id, percent: goalPercent }),
+                body: JSON.stringify(payload),
               });
-              setShowGoalModal(false);
+              const data = await res.json();
+              console.log('Savings goal added (frontend):', data);
+              setGoalName('');
+              setGoalAmount('');
               setGoalPercent('');
+              fetch(`${API_URL}/savings-goals/${user.user_id}`)
+                .then(res => res.json())
+                .then(data => setGoals(data));
             }}
           >
             <label>
-              Enter % of income to save:
+              Goal Name:
+              <input
+                type="text"
+                value={goalName}
+                onChange={e => setGoalName(e.target.value)}
+                required
+              />
+            </label>
+            <label>
+              Goal Amount ($):
               <input
                 type="number"
-                min="0"
+                min="1"
+                value={goalAmount}
+                onChange={e => setGoalAmount(e.target.value)}
+                required
+              />
+            </label>
+            <label>
+              % of future income to save:
+              <input
+                type="number"
+                min="1"
                 max="100"
                 value={goalPercent}
                 onChange={e => setGoalPercent(e.target.value)}
@@ -155,6 +205,22 @@ const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, ge
             </label>
             <button type="submit">Save Goal</button>
           </form>
+          <div style={{ marginTop: '2rem' }}>
+            <h3>Your Savings Goals</h3>
+            {goals.length === 0 && <div>No goals yet.</div>}
+            {goals.map(goal => (
+              <div key={goal.goal_id} style={{ marginBottom: '1.5rem', background: '#fcedd3', borderRadius: 8, padding: 12 }}>
+                <div style={{ fontWeight: 600 }}>{goal.name} (${goal.amount})</div>
+                <div style={{ fontSize: 14, color: '#876510' }}>Saving {goal.percent}% of future income</div>
+                <div style={{ background: '#eee', borderRadius: 8, height: 16, margin: '8px 0', overflow: 'hidden' }}>
+                  <div style={{ width: `${getProgress(goal)}%`, background: '#FFD700', height: 16, transition: 'width 0.5s' }} />
+                </div>
+                <div style={{ fontSize: 13 }}>
+                  Saved: ${Number(goal.saved || 0).toFixed(2)} / ${Number(goal.amount).toFixed(2)}
+                </div>
+              </div>
+            ))}
+          </div>
         </Modal>
       )}
     </>
