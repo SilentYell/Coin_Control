@@ -22,7 +22,7 @@ module.exports = db => {
 
 
   // POST Route to post an income entry to the db
-  router.post("/income", (req, res) => {
+  router.post("/income", async (req, res) => {
     const { amount, last_payment_date, frequency } = req.body;
     const user_id = 1; // should come from req.body, will change to handle dynamic user ID later
 
@@ -31,22 +31,41 @@ module.exports = db => {
       return res.status(400).json({ error: "Amount, last payment date, and frequency are required." });
     }
 
-    const query = `
-    INSERT INTO income (user_id, amount, last_payment_date, frequency)
-    VALUES ($1, $2, $3, $4)
-    RETURNING *;
-    `;
+    try {
+      // 1. Insert the new income
+      const insertResult = await db.query(
+        `INSERT INTO income (user_id, amount, last_payment_date, frequency)
+         VALUES ($1, $2, $3, $4)
+         RETURNING *;`,
+        [user_id, amount, last_payment_date, frequency]
+      );
+      const newIncome = insertResult.rows[0];
 
-    const queryParams = [user_id, amount, last_payment_date, frequency];
+      // 2. Fetch all savings goals for the user
+      const goalsResult = await db.query(
+        `SELECT * FROM SavingsGoals WHERE user_id = $1`,
+        [user_id]
+      );
+      const goals = goalsResult.rows;
 
-    db.query(query, queryParams)
-    .then(result => {
-      res.status(201).json(result.rows[0]);
-    })
-    .catch(err => {
-      console.error('Error inserting income', err);
+      // 3. For each goal, calculate allocation and update saved
+      for (const goal of goals) {
+        const allocation = (amount * (goal.percent / 100));
+        await db.query(
+          `UPDATE SavingsGoals SET saved = saved + $1 WHERE goal_id = $2`,
+          [allocation, goal.goal_id]
+        );
+      }
+
+      // 4. (Optional) Deduct total allocated from user's current_balance
+      // const totalAllocated = goals.reduce((sum, goal) => sum + (amount * (goal.percent / 100)), 0);
+      // await db.query(`UPDATE Users SET current_balance = current_balance - $1 WHERE user_id = $2`, [totalAllocated, user_id]);
+
+      res.status(201).json(newIncome);
+    } catch (err) {
+      console.error('Error inserting income and allocating to savings goals', err);
       res.status(500).json({error: 'Internal Server Error'});
-    });
+    }
   });
 
   // DELETE Route to delete an income record from the db

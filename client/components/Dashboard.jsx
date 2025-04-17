@@ -9,27 +9,42 @@ function Dashboard({ expenses = [], income = [] }) {
   const [totalExpenses, setTotalExpenses] = useState(0);
   const [totalIncome, setTotalIncome] = useState(0);
   const [currentBalance, setCurrentBalance] = useState(0);
+  const [totalSavings, setTotalSavings] = useState(0);
+  const [goals, setGoals] = useState([]);
   const [isEditable, setIsEditable] = useState(false);
 
+  // Fetch savings goals on mount
   useEffect(() => {
-    console.log('Updated expenses:', expenses);
-    console.log('Updated income:', income);
+    const fetchGoals = async () => {
+      try {
+        // Hardcoded user_id 1 for now
+        const res = await fetch('http://localhost:3000/api/savings-goals/1');
+        const data = await res.json();
+        setGoals(data);
+        // Calculate total savings
+        const savings = data.reduce((sum, goal) => sum + Number(goal.saved || 0), 0);
+        setTotalSavings(savings);
+      } catch (err) {
+        setGoals([]);
+        setTotalSavings(0);
+      }
+    };
+    fetchGoals();
+  }, []);
 
+  useEffect(() => {
     const totalExpenses = expenses.reduce((sum, expense) => sum + Number(expense.amount || 0), 0);
     const totalIncome = income.reduce((sum, incomeItem) => sum + Number(incomeItem.amount || 0), 0);
-
-    console.log('Calculated totalExpenses:', totalExpenses);
-    console.log('Calculated totalIncome:', totalIncome);
-
     setTotalExpenses(totalExpenses);
     setTotalIncome(totalIncome);
-    setCurrentBalance(totalIncome - totalExpenses);
-  }, [expenses, income]);
+    setCurrentBalance(totalIncome - totalExpenses - totalSavings);
+  }, [expenses, income, totalSavings]);
 
   const layout = [
     { i: 'expenses', x: 0, y: 0, w: 2, h: 2 },
     { i: 'income', x: 2, y: 0, w: 2, h: 2 },
     { i: 'balance', x: 4, y: 0, w: 2, h: 2 },
+    { i: 'savings', x: 0, y: 2, w: 2, h: 2 },
   ];
 
   return (
@@ -77,7 +92,14 @@ function Dashboard({ expenses = [], income = [] }) {
             <Card
               title="Current Balance"
               value={`$${Number(currentBalance || 0).toFixed(2)}`}
-              description="Your current financial status."
+              description="Your current financial status (after savings)."
+            />
+          </div>
+          <div key="savings">
+            <Card
+              title="Total Savings"
+              value={`$${Number(totalSavings || 0).toFixed(2)}`}
+              description="Total allocated to your savings goals."
             />
           </div>
         </ResponsiveGridLayout>
