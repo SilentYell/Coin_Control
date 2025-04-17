@@ -13,8 +13,6 @@ sudo systemctl start postgresql
 npm run db-setup
 ```
 
-Here’s a detailed weekly and daily plan for your team of 4 to stay on track and complete the project by April 29, 2025. This plan considers your team composition (2 full-time and 2 part-time members) and breaks tasks into manageable chunks.
-
 ---
 
 ### **Week 1 (April 10–16): Core Features**
