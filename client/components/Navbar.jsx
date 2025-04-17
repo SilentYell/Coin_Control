@@ -5,6 +5,8 @@ import IncomeForm from './IncomeForm';
 import AddExpenseForm from './AddExpenseForm';
 import ExpensesList from './ExpensesList';
 import IncomeList from './IncomeList';
+import useApplicationData from '../hooks/useApplicationData';
+import { FaBars, FaTimes } from 'react-icons/fa';
 
 const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, getIncome, editingIncome, setEditingIncome, onSubmitSuccess, expensesList, setExpensesList, fetchExpensesList, onExpenseSubmitSuccess }) => {
 
@@ -12,6 +14,11 @@ const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, ge
   const [showExpenseFormModal, setShowExpenseFormModal] = useState(false);
   const [showIncomeListModal, setShowIncomeListModal] = useState(false);
   const [showExpenseListModal, setShowExpenseListModal] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  }
 
   return (
     <>
@@ -19,9 +26,16 @@ const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, ge
         <div className='navbar-logo'>
           <span>Coin Control</span>
         </div>
+        {user && (
+          menuOpen ? (
+            <FaTimes className="hamburger" onClick={toggleMenu} />
+          ) : (
+            <FaBars className="hamburger" onClick={toggleMenu} />
+          )
+        )}
 
-        <ul className='navbar-links'>
-        
+        <ul className={`navbar-links ${menuOpen ? 'open' : ''}`}>
+
           {user ? (
 
             // If logged in, show buttons
@@ -44,13 +58,18 @@ const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, ge
               </li>
               <li><button onClick={() => setShowIncomeFormModal(true)}>Add Income</button></li>
               <li><button>Trophy Case</button></li>
+              {user && (
+                <li className="mobile-logout">
+                <button className="logout-btn" onClick={handleLogout}>Logout</button>
+                </li>
+              )}
             </>
           ) : (
             // If not logged in, Navbar is empty
             <></>
           )}
         </ul>
-
+        
         <div className='navbar-user'>
           {!user ? (
             // If no user, show login button
