@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import '../styles/Dashboard.scss';
 import Card from './Card';
+import GoalCard from './GoalCard';
 import { Responsive, WidthProvider } from 'react-grid-layout';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
@@ -9,28 +10,56 @@ function Dashboard({ expenses = [], income = [] }) {
   const [totalExpenses, setTotalExpenses] = useState(0);
   const [totalIncome, setTotalIncome] = useState(0);
   const [currentBalance, setCurrentBalance] = useState(0);
+  const [totalSavings, setTotalSavings] = useState(0);
+  const [goal, setGoal] = useState(null);
   const [isEditable, setIsEditable] = useState(false);
 
-  useEffect(() => {
-    console.log('Updated expenses:', expenses);
-    console.log('Updated income:', income);
+  // Track layout state to detect width for compact mode
+  const [layoutState, setLayoutState] = useState([
+    { i: 'goal', x: 0, y: 0, w: 6, h: 2, minW: 2, minH: 1 },
+    { i: 'expenses', x: 0, y: 2, w: 2, h: 2 },
+    { i: 'income', x: 2, y: 2, w: 2, h: 2 },
+    { i: 'balance', x: 4, y: 2, w: 2, h: 2 },
+    { i: 'savings', x: 0, y: 4, w: 2, h: 2 },
+  ]);
 
+  // Helper to get the width of the goal card in grid columns
+  const goalCardWidth = layoutState.find((l) => l.i === 'goal')?.w || 6;
+  const isGoalCardCompact = goalCardWidth < 3;
+
+  // Helper to fetch the latest goal
+  const fetchGoal = useCallback(async () => {
+    try {
+      // Hardcoded user_id 1 for now
+      const res = await fetch('http://localhost:3000/api/savings-goals/1');
+      const data = await res.json();
+      // Only one goal per user, so take the first
+      setGoal(data[0] || null);
+      setTotalSavings(data[0]?.saved ? Number(data[0].saved) : 0);
+    } catch (err) {
+      setGoal(null);
+      setTotalSavings(0);
+    }
+  }, []);
+
+  // Remove goal from dashboard state when completed
+  const handleGoalComplete = (goalId) => {
+    setGoal(null);
+    setTotalSavings(0);
+  };
+
+  // Fetch goal on mount and whenever income/expenses change
+  useEffect(() => {
+    fetchGoal();
+  }, [fetchGoal, income, expenses]);
+
+  useEffect(() => {
     const totalExpenses = expenses.reduce((sum, expense) => sum + Number(expense.amount || 0), 0);
     const totalIncome = income.reduce((sum, incomeItem) => sum + Number(incomeItem.amount || 0), 0);
-
-    console.log('Calculated totalExpenses:', totalExpenses);
-    console.log('Calculated totalIncome:', totalIncome);
-
     setTotalExpenses(totalExpenses);
     setTotalIncome(totalIncome);
-    setCurrentBalance(totalIncome - totalExpenses);
-  }, [expenses, income]);
-
-  const layout = [
-    { i: 'expenses', x: 0, y: 0, w: 2, h: 2 },
-    { i: 'income', x: 2, y: 0, w: 2, h: 2 },
-    { i: 'balance', x: 4, y: 0, w: 2, h: 2 },
-  ];
+    setCurrentBalance(totalIncome - totalExpenses - totalSavings);
+  }, [expenses, income, totalSavings]);
 
   return (
     <div className="dashboard">
@@ -52,13 +81,21 @@ function Dashboard({ expenses = [], income = [] }) {
       <div className="dashboard-grid">
         <ResponsiveGridLayout
           className="layout"
-          layouts={{ lg: layout, md: layout, sm: layout, xs: layout, xxs: layout }}
+          layouts={{ lg: layoutState, md: layoutState, sm: layoutState, xs: layoutState, xxs: layoutState }}
           breakpoints={{ lg: 1000, md: 996, sm: 768, xs: 480, xxs: 0 }}
           cols={{ lg: 6, md: 4, sm: 2, xs: 1, xxs: 1 }}
           rowHeight={70}
           isResizable={isEditable}
           isDraggable={isEditable}
+          onResizeStop={(newLayout) => setLayoutState(newLayout)}
+          preventCollision={true}
+          margin={[16, 16]}
+          containerPadding={[16, 16]}
+          resizeHandles={['se', 'sw', 'ne', 'nw', 'n', 's', 'e', 'w']}
         >
+          <div key="goal">
+            <GoalCard goal={goal} saved={totalSavings} compact={isGoalCardCompact} onGoalComplete={handleGoalComplete} />
+          </div>
           <div key="expenses">
             <Card
               title="Total Expenses"
@@ -77,7 +114,14 @@ function Dashboard({ expenses = [], income = [] }) {
             <Card
               title="Current Balance"
               value={`$${Number(currentBalance || 0).toFixed(2)}`}
-              description="Your current financial status."
+              description="Your current financial status (after savings)."
+            />
+          </div>
+          <div key="savings">
+            <Card
+              title="Total Savings"
+              value={`$${Number(totalSavings || 0).toFixed(2)}`}
+              description="Total allocated to your savings goals."
             />
           </div>
         </ResponsiveGridLayout>

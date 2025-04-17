@@ -1,0 +1,52 @@
+.savings-goal-modal {
+  background: #fff;
+  padding: 2rem 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  max-width: 350px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+
+  label {
+    font-weight: 600;
+    color: #222;
+    margin-bottom: 0.5rem;
+  }
+
+  input[type="number"] {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    margin-top: 0.5rem;
+    transition: border 0.2s;
+    &:focus {
+      border: 1.5px solid #ffd700;
+      outline: none;
+    }
+  }
+
+  button[type="submit"] {
+    background: #ffd700;
+    color: #222;
+    border: none;
+    border-radius: 8px;
+    padding: 0.7rem 0;
+    font-weight: 700;
+    font-size: 1.1rem;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    transition: background 0.2s;
+    &:hover {
+      background: #e6c200;
+    }
+  }
+}

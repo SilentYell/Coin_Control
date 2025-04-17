@@ -2,6 +2,7 @@
 DROP TABLE IF EXISTS Income;
 DROP TABLE IF EXISTS Expenses;
 DROP TABLE IF EXISTS Users;
+DROP TABLE IF EXISTS SavingsGoals;
 
 -- Create USERS table
 CREATE TABLE Users (
@@ -29,6 +30,17 @@ CREATE TABLE Expenses (
   expense_date DATE NOT NULL,
   category VARCHAR(50),
   FOREIGN KEY (user_id) REFERENCES Users(user_id)
+);
+
+-- Create SAVINGS GOALS table with a foreign key to USERS
+CREATE TABLE SavingsGoals (
+  goal_id SERIAL PRIMARY KEY,
+  user_id INTEGER REFERENCES Users(user_id),
+  name VARCHAR(100) NOT NULL,
+  amount NUMERIC(15,2) NOT NULL,
+  percent NUMERIC(5,2) NOT NULL,
+  saved NUMERIC(15,2) DEFAULT 0,
+  created_at TIMESTAMP DEFAULT NOW()
 );
 
 -- Reset the sequence for the expense_id column
