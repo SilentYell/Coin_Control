@@ -159,3 +159,61 @@ export const deleteIncome = async (id) => {
     throw error;
   }
 };
+
+
+// fetch all transactions (expense & income)
+export const getAllTransactions = async () => {
+  try {
+    const response = await fetch(`${API_URL}/transactions`);
+
+    if (!response.ok) {
+      throw new Error(`Error ${response.status}: ${response.statusText}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Failed to fetch transactions', error);
+    throw error;
+  }
+};
+
+
+// update transaction by id
+export const updateTransaction = async (id, transaction) => {
+  try {
+    const response = await fetch(`${API_URL}/transactions/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(transaction),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error ${response.status}: ${response.statusText}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error(`Failed to update transaction with id ${id}:`, error);
+    throw error;
+  }
+};
+
+
+// delete an transaction entry
+export const deleteTransaction = async (id, type) => {
+  try {
+    const response = await fetch(`${API_URL}/delete/transactions/${type}/${id}`, {
+      method: 'DELETE',
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error ${response.status}: ${response.statusText}`);
+    }
+    return;
+  } catch (error) {
+    console.error(`Failed to delete transaction with id ${id}:`, error);
+    throw error;
+  }
+};
