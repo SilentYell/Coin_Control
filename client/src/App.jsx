@@ -20,6 +20,15 @@ function App() {
   } = useApplicationData();
 
   const [user, setUser] = useState(null);
+  const [showLogo, setShowLogo] = useState(false); // don't show logo immediately on load
+
+  useEffect(() => {
+    if (!user) {
+      setShowLogo(false); // reset on logout
+      const timer = setTimeout(() => setShowLogo(true), 650);
+      return () => clearTimeout(timer);
+    }
+  }, [user]);
 
   useEffect(() => {
     if (user) {
@@ -69,8 +78,12 @@ function App() {
       {!user ? (
       <>
         <h3>Please click the login button to view your dashboard.</h3>
-        <div className="logo-container">
-          <Logo />
+        <div className="logo-container" style={{ minHeight: 200 }}>
+          {showLogo && (
+            <div style={{ animation: 'fadeIn 1s' }}>
+              <Logo />
+            </div>
+          )}
         </div>
       </>
       ) : (

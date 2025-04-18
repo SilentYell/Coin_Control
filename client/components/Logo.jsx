@@ -108,7 +108,7 @@ const Logo = () => {
       >
         <style type="text/css">{`
           .st0 { fill: none; stroke: #000000; stroke-width: 5; stroke-miterlimit: 10; }
-          .st2 { fill: none; stroke: #000000; stroke-width: 5; stroke-miterlimit: 10; }
+          .st2 { fill: none; stroke:rgb(0, 0, 0); stroke-width: 5; stroke-miterlimit: 10; }
           .st3 { fill: #FFD700; }
           .st4 { font-family: Arial-BoldMT, Arial; font-size: 120.3px; font-weight: 700; fill: #000000; }
         `}</style>
