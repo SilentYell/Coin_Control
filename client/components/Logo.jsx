@@ -150,10 +150,10 @@ const Logo = () => {
             <text className="st4" transform="translate(399.12 207.87)">
               <tspan x="0" y="0">C</tspan>
             </text>
-            {/* Shortened vertical lines */}
+            {/* Vertical lines */}
             <path
               className="st2"
-              d="m424.45,68.79l-.1,26.72c-.15,4.6-6.84,4.62-7,0,0,0-.1-26.71-.1-26.71.13-4.76,7.06-4.78,7.19,0h0Z"
+              d="m424.45,66l-.1,26.72c-.15,4.6-6.84,4.62-7,0,0,0-.1-26.71-.1-26.71.13-4.76,7.06-4.78,7.19,0h0Z"
             />
             <path
               className="st2"
