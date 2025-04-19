@@ -12,7 +12,7 @@ import AllTransactions from './AllTransactions';
 
 const API_URL = 'http://localhost:3000/api';
 
-const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, getIncome, editingIncome, setEditingIncome, editTransaction, setEditTransaction, onSubmitSuccess, expensesList, setExpensesList, fetchExpensesList, onExpenseSubmitSuccess }) => {
+const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, getIncome, editingIncome, setEditingIncome, editingExpense, setEditingExpense, editTransaction, setEditTransaction, onSubmitSuccess, expensesList, setExpensesList, fetchExpensesList, onExpenseSubmitSuccess }) => {
 
   const [showIncomeFormModal, setShowIncomeFormModal] = useState(false);
   const [showExpenseFormModal, setShowExpenseFormModal] = useState(false);
@@ -145,7 +145,7 @@ const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, ge
           <IncomeForm
             editingIncome={editingIncome}
             onSubmitSuccess={async () => {
-              onSubmitSuccess();
+              await onSubmitSuccess();
               setEditingIncome(undefined);
             }}
             onClose={() => setShowIncomeFormModal(false)}
@@ -153,22 +153,56 @@ const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, ge
         </Modal>
       )}
 
+      {/* Render the transaction list in a modal */}
       {(showTransactionsModal || editTransaction) && (
         <Modal
           isOpen={true}
           onClose={() => {
             setEditTransaction(undefined);
             setShowTransactionsModal(false);
-          }}>
-          <AllTransactions
-            editTransaction={editTransaction}
-            setEditTransaction={setEditTransaction}
-            onSubmitSuccess={async () => {
-              onSubmitSuccess();
-              setEditTransaction(undefined);
-            }}
-            onClose={() => setShowTransactionsModal(false)}
-          />
+          }}
+        >
+        {/* If editing transaction, check the type and render appropriate form */}
+        {/* If not editing transaction, render all transacitons (i.e., wait for delete or edit) */}
+          {editTransaction ? (
+            editTransaction.type === 'Income' ? (
+              <IncomeForm
+                editingIncome={{
+                  income_id: editTransaction.id,
+                  amount: editTransaction.amount,
+                  last_payment_date: editTransaction.date,
+                }}
+                onSubmitSuccess={async () => {
+                  await onSubmitSuccess();
+                  setEditTransaction(undefined);
+                }}
+                onClose={() => setEditTransaction(undefined)}
+              />
+            ) : (
+              <AddExpenseForm
+                editingExpense={{
+                  expense_id: editTransaction.id,
+                  amount: editTransaction.amount,
+                  expense_date: editTransaction.date,
+                }}
+                onSubmitSuccess={ async () => {
+                  await onSubmitSuccess();
+                  setEditTransaction(undefined);
+                }}
+                onClose={() => setEditTransaction(undefined)}
+              />
+            )
+          ) : (
+            <AllTransactions
+              editTransaction={editTransaction}
+              setEditTransaction={setEditTransaction}
+              onSubmitSuccess={async () => {
+                await onSubmitSuccess();
+                setEditTransaction(undefined);
+              }}
+              onClose={() => setShowTransactionsModal(false)}
+            />
+          )}
         </Modal>
       )}
 
