@@ -2,12 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import { getExpenses, deleteExpense, updateExpense } from '../services/api';
 import '../styles/ExpensesList.scss';
 import { MdEdit, MdDelete } from 'react-icons/md';
+import formatDate from '../src/helpers/formatDate';
 
-const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess }) => {
+const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess, editingExpense, setEditingExpense }) => {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [editingExpense, setEditingExpense] = useState(null);
   const editAmountInputRef = useRef(null);
 
   const categories = [
@@ -54,15 +54,6 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess }) => {
     }
   }, []); //empty dependency array - only run on mount
 
-  // format date for display
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    });
-  };
 
   useEffect(() => {
     if (editingExpense && editAmountInputRef.current) {
@@ -234,7 +225,7 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess }) => {
                 <th>Category</th>
                 <th>Description</th>
                 {/* OA - Kept "Actions" th for styling structure but header seemed unnecessary as buttons are intuitive */}
-                <th className='actions-header' aria-hidden="true"></th> 
+                <th className='actions-header' aria-hidden="true"></th>
               </tr>
             </thead>
             <tbody>

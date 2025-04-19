@@ -13,7 +13,7 @@ import AllTransactions from './AllTransactions';
 const API_URL = 'http://localhost:3000/api';
 
 const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, getIncome, editingIncome, setEditingIncome, editingExpense, setEditingExpense, editTransaction, setEditTransaction, onSubmitSuccess, expensesList, setExpensesList, fetchExpensesList, onExpenseSubmitSuccess }) => {
-
+console.log('editTransaction', editTransaction)
   const [showIncomeFormModal, setShowIncomeFormModal] = useState(false);
   const [showExpenseFormModal, setShowExpenseFormModal] = useState(false);
   const [showIncomeListModal, setShowIncomeListModal] = useState(false);
@@ -116,6 +116,8 @@ const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, ge
             expensesList={expensesList}
             setExpensesList={setExpensesList}
             onSubmitSuccess={onExpenseSubmitSuccess}
+            editingExpense={editingExpense}
+            setEditingExpense={setEditingExpense}
           />
         </Modal>
       )}
@@ -186,7 +188,7 @@ const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, ge
                   expense_date: editTransaction.date,
                 }}
                 onSubmitSuccess={ async () => {
-                  await onSubmitSuccess();
+                  await onExpenseSubmitSuccess();
                   setEditTransaction(undefined);
                 }}
                 onClose={() => setEditTransaction(undefined)}
