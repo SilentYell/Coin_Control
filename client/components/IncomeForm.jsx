@@ -14,7 +14,7 @@ const IncomeForm = ({ editingIncome, onSubmitSuccess }) => {
       setFormData(initializeIncomeFormData(editingIncome));
   }, [editingIncome?.income_id]);
 
-  // common expense categories
+  // common income categories
   const frequencies = [
     'One-Time',
     'Daily',
