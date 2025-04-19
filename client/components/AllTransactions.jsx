@@ -17,7 +17,7 @@ const AllTransactions = ({ editTransaction, setEditTransaction }) => {
     const fetchTransaction = async () => {
       try {
         const data = await getAllTransactions();
-        console.log(data)
+        console.log('fetchTransaction data: ', data)
         setTransactionsList(data); // Updates the state with fetched data
       } catch (error) {
         console.error('Failed to fetch transactions:', error);
@@ -76,9 +76,6 @@ const AllTransactions = ({ editTransaction, setEditTransaction }) => {
                       className="edit-btn"
                       onClick={() =>
                         setEditTransaction((prev) => {
-                          console.log("prev", prev)
-                          console.log("transaction", transaction)
-
                           return prev?.id === transaction.id
                             ? null
                             : transaction;
@@ -123,7 +120,7 @@ const AllTransactions = ({ editTransaction, setEditTransaction }) => {
         </div>
       )}
     </div>
-  )
+  );
 };
 
 export default AllTransactions;
