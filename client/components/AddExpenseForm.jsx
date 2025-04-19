@@ -1,16 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { addExpense } from '../services/api'; // importing api function
 import '../styles/AddExpenseForm.scss';
+import { initializeExpenseFormData } from '../src/helpers/initializeFormData';
 
-const AddExpenseForm = ({ onSubmitSuccess }) => {
+const AddExpenseForm = ({ editingExpense, onSubmitSuccess }) => {
   // form state
   const amountInputRef = useRef(null);
-  const [formData, setFormData] = useState({
-    name: '',
-    amount: '',
-    expense_date: new Date().toISOString().split('T')[0], // set to todays date
-    category: 'Groceries',
-  });
+  const [formData, setFormData] = useState(() => initializeExpenseFormData(editingExpense));
 
   // state for tracking form submission status
   const [isLoading, setIsLoading] = useState(false);

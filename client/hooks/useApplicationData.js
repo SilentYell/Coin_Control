@@ -6,7 +6,11 @@ const useApplicationData = () => {
   // Track income state --> maybe use reducer later?
     const [incomeList, setIncomeList] = useState([]);
     const [editingIncome, setEditingIncome] = useState(null); // edited income state
+    const [editingExpense, setEditingExpense] = useState(null); // edited expense state
+    const [editTransaction, setEditTransaction] = useState([]); // edit transaction
     const [expensesList, setExpensesList] = useState([]);
+
+
 
   // Fetch incomes after state changes //ph change - use callback to prevent recreation
   const fetchIncomeList = useCallback(async () => {
@@ -50,6 +54,10 @@ const useApplicationData = () => {
     getIncome,
     editingIncome,
     setEditingIncome,
+    editingExpense,
+    setEditingExpense,
+    editTransaction,
+    setEditTransaction,
     onSubmitSuccess,
     expensesList,
     setExpensesList,
