@@ -42,7 +42,6 @@ module.exports = db => {
   router.delete("/delete/transactions/:type/:id", (req, res) => {
     const { id, type } = req.params;
 
-    console.log('in delete route:type ', type)
     let query = '';
 
     // Check for transaction type
