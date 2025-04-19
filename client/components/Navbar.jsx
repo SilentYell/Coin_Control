@@ -146,6 +146,7 @@ console.log('editTransaction', editTransaction)
         }}>
           <IncomeForm
             editingIncome={editingIncome}
+            setEditingIncome={setEditingIncome}
             onSubmitSuccess={async () => {
               await onSubmitSuccess();
               setEditingIncome(undefined);
@@ -174,6 +175,7 @@ console.log('editTransaction', editTransaction)
                   amount: editTransaction.amount,
                   last_payment_date: editTransaction.date,
                 }}
+                setEditingIncome={setEditTransaction}
                 onSubmitSuccess={async () => {
                   await onSubmitSuccess();
                   setEditTransaction(undefined);

@@ -3,7 +3,7 @@ import '../styles/IncomeForm.scss'
 import { addIncome, updateIncome } from '../services/api';
 import { initializeIncomeFormData } from '../src/helpers/initializeFormData';
 
-const IncomeForm = ({ editingIncome, onSubmitSuccess }) => {
+const IncomeForm = ({ editingIncome, setEditingIncome, onSubmitSuccess }) => {
   const amountInputRef = useRef(null);
   // Track current formData
   const [formData, setFormData] = useState(() => initializeIncomeFormData(editingIncome));
@@ -146,9 +146,21 @@ const IncomeForm = ({ editingIncome, onSubmitSuccess }) => {
 
         {/* Conditional Rendering for submit button (Add Income vs Edit Income */}
         {editingIncome
-          ? <button type="submit" className="submit-btn">Update Income</button>
+          ? (
+          <>
+            <button type="submit" className="submit-btn">Update Income</button>
+            <button
+              type="button"
+              className="cancel-btn"
+              onClick={() => setEditingIncome(null)}
+            >
+              Cancel
+            </button>
+            </>
+          )
           : <button type="submit" className="submit-btn">Add Income</button>
         }
+
       </form>
     </div>
   );
