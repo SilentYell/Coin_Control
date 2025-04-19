@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import '../styles/IncomeForm.scss'
 import { addIncome, updateIncome } from '../services/api';
-import initializeIncomeFormData from '../src/helpers/initializeIncomeFormData';
+import { initializeIncomeFormData } from '../src/helpers/initializeFormData';
 
 const IncomeForm = ({ editingIncome, onSubmitSuccess }) => {
   const amountInputRef = useRef(null);

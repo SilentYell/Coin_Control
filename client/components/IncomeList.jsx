@@ -57,7 +57,6 @@ const IncomeList = ({ incomeList, setIncomeList, setEditingIncome }) => {
                 <th>Amount</th>
                 <th>Last Payment Date</th>
                 <th>Frequency</th>
-
                 <th></th>
               </tr>
             </thead>
