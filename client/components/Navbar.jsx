@@ -8,15 +8,17 @@ import ExpensesList from './ExpensesList';
 import IncomeList from './IncomeList';
 import useApplicationData from '../hooks/useApplicationData';
 import { FaBars, FaTimes } from 'react-icons/fa';
+import AllTransactions from './AllTransactions';
 
 const API_URL = 'http://localhost:3000/api';
 
-const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, getIncome, editingIncome, setEditingIncome, onSubmitSuccess, expensesList, setExpensesList, fetchExpensesList, onExpenseSubmitSuccess }) => {
+const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, getIncome, editingIncome, setEditingIncome, editTransaction, setEditTransaction, onSubmitSuccess, expensesList, setExpensesList, fetchExpensesList, onExpenseSubmitSuccess }) => {
 
   const [showIncomeFormModal, setShowIncomeFormModal] = useState(false);
   const [showExpenseFormModal, setShowExpenseFormModal] = useState(false);
   const [showIncomeListModal, setShowIncomeListModal] = useState(false);
   const [showExpenseListModal, setShowExpenseListModal] = useState(false);
+  const [showTransactionsModal, setShowTransactionsModal] = useState(false);
   const [showGoalModal, setShowGoalModal] = useState(false);
   const [goalPercent, setGoalPercent] = useState('');
   const [goalName, setGoalName] = useState('');
@@ -84,6 +86,7 @@ const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, ge
                 </button>
               </li>
               <li><button onClick={() => setShowIncomeFormModal(true)}>Add Income</button></li>
+              <li><button onClick={() => setShowTransactionsModal(true)}>All Transactions</button></li>
               <li><button>Trophy Case</button></li>
               {user && (
                 <li className="mobile-logout">
@@ -139,13 +142,32 @@ const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, ge
           setEditingIncome(undefined);
           setShowIncomeFormModal(false);
         }}>
-          <IncomeForm 
+          <IncomeForm
             editingIncome={editingIncome}
             onSubmitSuccess={async () => {
               onSubmitSuccess();
               setEditingIncome(undefined);
             }}
             onClose={() => setShowIncomeFormModal(false)}
+          />
+        </Modal>
+      )}
+
+      {(showTransactionsModal || editTransaction) && (
+        <Modal
+          isOpen={true}
+          onClose={() => {
+            setEditTransaction(undefined);
+            setShowTransactionsModal(false);
+          }}>
+          <AllTransactions
+            editTransaction={editTransaction}
+            setEditTransaction={setEditTransaction}
+            onSubmitSuccess={async () => {
+              onSubmitSuccess();
+              setEditTransaction(undefined);
+            }}
+            onClose={() => setShowTransactionsModal(false)}
           />
         </Modal>
       )}
