@@ -199,7 +199,11 @@ console.log('editTransaction', editTransaction)
               editTransaction={editTransaction}
               setEditTransaction={setEditTransaction}
               onSubmitSuccess={async () => {
-                await onSubmitSuccess();
+                await onSubmitSuccess(); // handle income update
+                setEditTransaction(undefined);
+              }}
+              onExpenseSubmitSuccess={async () => {
+                await onExpenseSubmitSuccess(); // handle expense update
                 setEditTransaction(undefined);
               }}
               onClose={() => setShowTransactionsModal(false)}
