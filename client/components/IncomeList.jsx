@@ -55,8 +55,9 @@ const IncomeList = ({ incomeList, setIncomeList, setEditingIncome }) => {
             <thead>
               <tr>
                 <th>Amount</th>
-                <th>Frequency</th>
                 <th>Last Payment Date</th>
+                <th>Frequency</th>
+
                 <th></th>
               </tr>
             </thead>
