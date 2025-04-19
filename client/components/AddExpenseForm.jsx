@@ -1,9 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { addExpense } from '../services/api'; // importing api function
+import { addExpense, updateExpense } from '../services/api'; // importing api function
 import '../styles/AddExpenseForm.scss';
 import { initializeExpenseFormData } from '../src/helpers/initializeFormData';
 
 const AddExpenseForm = ({ editingExpense, onSubmitSuccess }) => {
+  console.log("editingExpense", editingExpense)
   // form state
   const amountInputRef = useRef(null);
   const [formData, setFormData] = useState(() => initializeExpenseFormData(editingExpense));
@@ -49,17 +50,28 @@ const AddExpenseForm = ({ editingExpense, onSubmitSuccess }) => {
     setError(null);
     setSuccess(false);
 
-    try {
-      // create expense object
-      const newExpense = {
-        ...formData,
-        amount: -Math.abs(parseFloat(formData.amount)), // expense number will always be stored as negative
-      };
+    // create expense object
+    const newExpense = {
+      ...formData,
+      amount: -Math.abs(parseFloat(formData.amount)), // expense number will always be stored as negative
+    };
 
-      // send to api
-      await addExpense(newExpense);
+    try {
+      let response
+      if (editingExpense?.expense_id) {
+        // update existing expense
+        response = await updateExpense(editingExpense.expense_id, newExpense)
+      } else {
+        // Add new expense
+        response = await addExpense(newExpense)
+      }
+
+      if (!response) throw new Error('Failed to add/update record.')
+
+      // If no errors, show success message
       console.log('Expense added successfully'); // Debugging log
       setSuccess(true);
+
 
       // reset the form
       setFormData({
@@ -80,7 +92,7 @@ const AddExpenseForm = ({ editingExpense, onSubmitSuccess }) => {
 
   return (
     <div className="add-expense-form">
-      <h2>Add New Expense</h2>
+      <h2>{editingExpense ? 'Update Expense' : 'Add New Expense'}</h2>
 
       {/* UI feedback for expense */}
       {error && <div className="error-message">{error}</div>}
@@ -148,10 +160,13 @@ const AddExpenseForm = ({ editingExpense, onSubmitSuccess }) => {
           />
         </div>
 
-        {/* submit button - add expense */}
-        <button type="submit" className="submit-btn" disabled={isLoading}>
-          {isLoading ? 'Adding...' : 'Add Expense'}
-        </button>
+        {/* submit button - add or update expense */}
+        {editingExpense
+          ? <button type="submit" className="submit-btn" disabled={isLoading}>Update Expense</button>
+          : <button type="submit" className="submit-btn" disabled={isLoading}>
+              {isLoading ? 'Adding...' : 'Add Expense'}
+            </button>
+        }
       </form>
     </div>
   );
