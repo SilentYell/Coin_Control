@@ -10,12 +10,17 @@ $login-btn-bg: #4CAF50;
 
 
 .navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
   display: flex;
   justify-content: space-between; // Space out logo, links, and logout button
   align-items: center;
   background-color: $navbar-bg;
   padding: 20px 20px;
   color: $navbar-link-color;
+  z-index: 1000;
 
   .navbar-logo {
     font-size: 20px;

@@ -21,10 +21,10 @@ VALUES
 -- Insert expenses data into the Expenses table
 INSERT INTO Expenses(expense_id, user_id, name, amount, expense_date, category)
 VALUES
-  (1, 2, 'Car Insurance Payment', -400, TO_DATE('10/02/2025', 'DD/MM/YYYY'), 'Car Insurance'),
-  (2, 1, 'Monthly Rent', -1200, TO_DATE('01/03/2025', 'DD/MM/YYYY'), 'Rent'),
-  (3, 4, 'Phone Bill', -85, TO_DATE('20/03/2025', 'DD/MM/YYYY'), 'Phone Bill'),
-  (4, 4, 'Weekly Groceries', -250, TO_DATE('25/03/2025', 'DD/MM/YYYY'), 'Groceries');
+  (1, 2, 'Car Insurance Payment', -400, TO_DATE('10/02/2025', 'DD/MM/YYYY'), 'Transportation'),
+  (2, 1, 'Monthly Rent', -1200, TO_DATE('01/03/2025', 'DD/MM/YYYY'), 'Housing'),
+  (3, 1, 'Phone Bill', -85, TO_DATE('20/03/2025', 'DD/MM/YYYY'), 'Utilities'),
+  (4, 1, 'Weekly Groceries', -250, TO_DATE('25/03/2025', 'DD/MM/YYYY'), 'Groceries');
 
 -- Reset the sequence for the expense_id column
 DO $$
