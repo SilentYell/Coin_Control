@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 import { getExpenses } from '../services/api';
 
+// Category colours match ExpenseList.scss colours for consistency
 const CATEGORY_COLORS = {
   Groceries: '#1e4210', 
   Transportation: '#2b6cb0', 
@@ -34,6 +35,7 @@ const ExpensesPieChart = () => {
     fetchExpenses();
   }, []);
 
+  // Group expenses by category and sum amounts
   const groupedData = expenses.reduce((acc, curr) => {
     const { category, amount } = curr;
     if (!acc[category]) {
@@ -43,9 +45,15 @@ const ExpensesPieChart = () => {
     return acc;
   }, {});
 
+  // Convert grouped object into array for chart
   const chartData = Object.entries(groupedData).map(([name, value]) => ({
     name, value
   }))
+
+  // Loading message for initial webpage entry
+  if (loading) {
+    return <div style={{ textAlign: 'center', padding: '2rem' }}>Loading chart...</div>;
+  }
 
 return (
   <ResponsiveContainer width="100%" height={400}>
