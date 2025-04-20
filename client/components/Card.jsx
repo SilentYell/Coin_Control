@@ -2,7 +2,7 @@ import anime from 'animejs/lib/anime.es.js';
 import React, { useEffect, useRef } from 'react';
 import '../styles/Card.scss';
 
-function Card({ title, value, description }) {
+function Card({ title, value, description, children }) {
   const cardRef = useRef(null);
 
   useEffect(() => {
@@ -22,6 +22,7 @@ function Card({ title, value, description }) {
       <div className="card-title">{title}</div>
       <div className="card-value">{value}</div>
       <div className="card-description">{description}</div>
+      <div className="card-children">{children}</div>
     </div>
   );
 }

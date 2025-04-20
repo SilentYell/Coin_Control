@@ -54,8 +54,8 @@ return (
         data={chartData}
         cx="50%"
         cy="50%"
-        labelLine={false}
-        outerRadius={120}
+        labelLine={true}
+        outerRadius={140}
         fill="#8884d8"
         dataKey="value"
         nameKey="name"
@@ -65,7 +65,7 @@ return (
           <Cell key={`cell-${index}`} fill={CATEGORY_COLORS[entry.name] || '#ccc'} />
         ))}
       </Pie>
-      <Tooltip />
+      <Tooltip formatter={(value, name) => [`$${value.toFixed(2)}`, name]} />
       <Legend />
     </PieChart>
   </ResponsiveContainer>
