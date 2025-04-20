@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import '../styles/Dashboard.scss';
 import Card from './Card';
 import GoalCard from './GoalCard';
+import ExpensesPieChart from './ExpensesPieChart';
 import { Responsive, WidthProvider } from 'react-grid-layout';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
@@ -123,6 +124,11 @@ function Dashboard({ expenses = [], income = [] }) {
               value={`$${Number(totalSavings || 0).toFixed(2)}`}
               description="Total allocated to your savings goals."
             />
+          </div>
+          <div key="pie-chart">
+            <Card title="Expenses Breakdown">
+              <ExpensesPieChart />
+            </Card>
           </div>
         </ResponsiveGridLayout>
       </div>
