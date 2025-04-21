@@ -14,8 +14,8 @@ function App() {
     setEditingIncome,
     editingExpense,
     setEditingExpense,
-    editTransaction,
-    setEditTransaction,
+    editTransactionType,
+    setEditTransactionType,
     onSubmitSuccess,
     expensesList,
     setExpensesList,
@@ -66,8 +66,8 @@ function App() {
         setEditingIncome={setEditingIncome}
         editingExpense={editingExpense}
         setEditingExpense={setEditingExpense}
-        editTransaction={editTransaction}
-        setEditTransaction={setEditTransaction}
+        editTransactionType={editTransactionType}
+        setEditTransactionType={setEditTransactionType}
         onSubmitSuccess={onSubmitSuccess}
         expensesList={expensesList}
         setExpensesList={setExpensesList}
