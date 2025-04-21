@@ -30,10 +30,10 @@ const AllTransactions = ({ setEditTransactionType, onEditIncome, onEditExpense, 
     console.log('handle edit trans.: ', transaction)
     if (transaction.type ==='Income') {
       const fullIncome = await getIncomeById(transaction.id);
-      console.log('FullIncome fetch:', fullIncome)
       onEditIncome(fullIncome);
     } else {
       const fullExpense = await getExpenseById(transaction.id);
+      console.log('fetch fullexpense: ', fullExpense)
       onEditExpense(fullExpense);
     }
 

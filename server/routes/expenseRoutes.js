@@ -30,7 +30,7 @@ router.get('/expenses/:id', (req, res) => {
   `
   db.query(query, [id])
   .then(({ rows }) => {
-    res.json(rows);
+    res.json(rows[0]);
   })
   .catch((err) => {
     console.error(`Error fetching expense ID ${id}`, err);
