@@ -1,9 +1,9 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import '../styles/IncomeForm.scss'
 import { addIncome, updateIncome } from '../services/api';
 import { initializeIncomeFormData } from '../src/helpers/initializeFormData';
 
-const IncomeForm = ({ editingIncome, setEditingIncome, onSubmitSuccess }) => {
+const IncomeForm = ({ editingIncome, setEditingIncome, onSubmitSuccess, setEditSuccess }) => {
   // Track current formData
   const [formData, setFormData] = useState(() => initializeIncomeFormData(editingIncome));
   const [success, setSuccess] = useState(false);
@@ -59,30 +59,35 @@ const IncomeForm = ({ editingIncome, setEditingIncome, onSubmitSuccess }) => {
       if (editingIncome?.income_id) {
         // Update existing income
         response = await updateIncome(editingIncome.income_id, newIncome);
+
+        // Throw error if response fails
+        if (!response) throw new Error('Failed to add income record.');
+
+        // Set edit state to true
+        setEditSuccess(true);
+        setTimeout(() => setEditSuccess(false), 2000);
       } else {
         // Add new income
         response = await addIncome(newIncome);
-      }
 
-      // Throw error if response fails
-      if (!response) throw new Error('Failed to add income record.');
+        // Throw error if response fails
+        if (!response) throw new Error('Failed to add income record.');
+
+        // Show success message
+        setSuccess(true);
+        setTimeout(() => setSuccess(false), 2000);
+      }
 
       // Call parent to update list immediately
       if (onSubmitSuccess) await onSubmitSuccess();
-
-      // Show success message
-      setSuccess(true);
 
       // Reset the form
       setFormData({
         amount: 0,
         last_payment_date: new Date().toISOString().split('T')[0],
-        frequency: 'Semi-Monthly',
+        frequency: 'One-Time',
       });
 
-
-      // Notify parent component - hide message after delay
-      setTimeout(() => setSuccess(false), 2000);
     } catch (error) {
       console.error('Error adding income:', error.message)
     }

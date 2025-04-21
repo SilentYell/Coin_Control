@@ -21,6 +21,8 @@ function App() {
     setExpensesList,
     fetchExpensesList,
     onExpenseSubmitSuccess,
+    editSuccess,
+    setEditSuccess
   } = useApplicationData();
 
   const [user, setUser] = useState(null);
@@ -72,6 +74,8 @@ function App() {
         expensesList={expensesList}
         setExpensesList={setExpensesList}
         onExpenseSubmitSuccess={onExpenseSubmitSuccess}
+        editSuccess={editSuccess}
+        setEditSuccess={setEditSuccess}
       />
 
       {!user ? (

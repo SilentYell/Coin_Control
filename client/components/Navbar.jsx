@@ -12,7 +12,27 @@ import AllTransactions from './AllTransactions';
 
 const API_URL = 'http://localhost:3000/api';
 
-const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, getIncome, editingIncome, setEditingIncome, editingExpense, setEditingExpense, editTransactionType, setEditTransactionType, onSubmitSuccess, expensesList, setExpensesList, fetchExpensesList, onExpenseSubmitSuccess }) => {
+const Navbar = (
+  { user,
+    handleLogin,
+    handleLogout,
+    incomeList,
+    setIncomeList,
+    getIncome,
+    editingIncome,
+    setEditingIncome,
+    editingExpense,
+    setEditingExpense,
+    editTransactionType,
+    setEditTransactionType,
+    onSubmitSuccess,
+    expensesList,
+    setExpensesList,
+    fetchExpensesList,
+    onExpenseSubmitSuccess,
+    editSuccess,
+    setEditSuccess
+  }) => {
   const [showIncomeFormModal, setShowIncomeFormModal] = useState(false);
   const [showExpenseFormModal, setShowExpenseFormModal] = useState(false);
   const [showIncomeListModal, setShowIncomeListModal] = useState(false);
@@ -117,6 +137,7 @@ const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, ge
             onSubmitSuccess={onExpenseSubmitSuccess}
             editingExpense={editingExpense}
             setEditingExpense={setEditingExpense}
+            setEditSuccess={setEditSuccess}
           />
         </Modal>
       )}
@@ -134,6 +155,8 @@ const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, ge
             setIncomeList={setIncomeList}
             editingIncome={editingIncome}
             setEditingIncome={setEditingIncome}
+            editSuccess={editSuccess}
+            setEditSuccess={setEditSuccess}
           />
         </Modal>
       )}
@@ -146,6 +169,7 @@ const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, ge
           <IncomeForm
             editingIncome={editingIncome}
             setEditingIncome={setEditingIncome}
+            setEditSuccess={setEditSuccess}
             onSubmitSuccess={async () => {
               await onSubmitSuccess();
               setEditingIncome(undefined);
@@ -172,6 +196,7 @@ const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, ge
               <IncomeForm
                 editingIncome={editingIncome}
                 setEditingIncome={setEditingIncome}
+                setEditSuccess={setEditSuccess}
                 onSubmitSuccess={async () => {
                   await onSubmitSuccess();
                   setEditingIncome(undefined);
@@ -187,6 +212,7 @@ const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, ge
             ) : editTransactionType === 'Expense' && editingExpense ? (
               <AddExpenseForm
                 editingExpense={editingExpense}
+                setEditSuccess={setEditSuccess}
                 onSubmitSuccess={ async () => {
                   await onExpenseSubmitSuccess();
                   setEditingExpense(undefined);
@@ -203,6 +229,7 @@ const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, ge
               onEditExpense={setEditingExpense}
               setEditTransactionType={setEditTransactionType}
               setShowTransactionsModal={setShowTransactionsModal}
+              setEditSuccess={setEditSuccess}
               onSubmitSuccess={async () => {
                 await onSubmitSuccess(); // handle income update
                 setEditTransactionType(undefined);

@@ -4,7 +4,7 @@ import { deleteIncome, getIncome, updateIncome } from '../services/api';
 import formatDate from '../src/helpers/formatDate';
 import { MdEdit, MdDelete } from 'react-icons/md';
 
-const IncomeList = ({ incomeList, setIncomeList, setEditingIncome }) => {
+const IncomeList = ({ incomeList, setIncomeList, setEditingIncome, editSuccess }) => {
   useEffect(() => {
     // Fetch income data from the backend when the component mounts
     const fetchIncome = async () => {
@@ -44,6 +44,10 @@ const IncomeList = ({ incomeList, setIncomeList, setEditingIncome }) => {
   return (
     <div className="income-list">
       <h2>Income History</h2>
+
+      {editSuccess && (
+        <div className="success-message">Income updated successfully!</div>
+      )}
 
       {incomeList.length === 0 ? (
         <div className="empty-state">
