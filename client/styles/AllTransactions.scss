@@ -25,6 +25,24 @@
     padding: 0.5rem;
   }
 
+
+  /* Ensure the td elements are part of the animation */
+  .transactions-table tbody tr.highlight-row td {
+    animation: pulse 3.5s ease-in; /* Animation on each <td> */
+    background-color: #d2b955; /* Override with highlight color */
+  }
+  @keyframes pulse {
+    0% {
+      background-color: #d2b955;
+    }
+    50% {
+      background-color: #fcedd3; /* Fade back to original color */
+    }
+    100% {
+      background-color: transparent;
+    }
+  }
+
   .transactions-table {
     width: 100%;
     border-collapse: collapse;

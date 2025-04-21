@@ -4,7 +4,10 @@ import formatDate from '../src/helpers/formatDate';
 import { MdEdit, MdDelete } from 'react-icons/md';
 import '../styles/AllTransactions.scss'
 
-const AllTransactions = ({ setEditTransactionType, onEditIncome, onEditExpense, setShowTransactionsModal, editSuccess, lastEditedTransactionType }) => {
+const AllTransactions = ({ setEditTransactionType, onEditIncome, onEditExpense, setShowTransactionsModal, editSuccess, lastEditedTransactionType, lastEditedId }) => {
+
+  console.log('last edited id: ', lastEditedId)
+
   const [transactionsList, setTransactionsList] = useState([]);
   const [selectedTransactionType, setSelectedTransactionType] = useState('All');
 
@@ -100,7 +103,10 @@ const AllTransactions = ({ setEditTransactionType, onEditIncome, onEditExpense, 
             </thead>
             <tbody>
               {filteredTransactionList.map((transaction) => (
-                <tr key={transaction.id}>
+                <tr
+                  key={transaction.id}
+                  className={transaction.id === lastEditedId ? 'highlight-row' : ''}
+                >
                   <td className="amount">{transaction.amount}</td>
                   <td>{formatDate(transaction.date)}</td>
                   <td>
