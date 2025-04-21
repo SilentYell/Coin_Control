@@ -79,13 +79,13 @@ ${
 }
 
 INSTRUCTIONS:
-1. Start with a brief unique greeting and ONE short financial wisdom quote
+1. Start with a brief unique greeting and ONE short unique financial wisdom quote
 2. Analyze spending patterns focusing on the top categories
 3. Provide exactly 3 specific, actionable tips to improve financial health
 4. Each tip should be directly related to the user's actual spending patterns
 5. Use a friendly, encouraging tone
 6. Include relevant emojis (money, savings, budget related)
-7. Keep the entire response under 200 words
+7. Please keep the entire response under 200 words
 
 Format your response in clear paragraphs with the tips as a numbered list.`;
 
