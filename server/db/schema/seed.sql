@@ -1,3 +1,10 @@
+-- Delete data to avoid duplicates on reset
+DELETE FROM User_trophies;
+DELETE FROM SavingsGoals;
+DELETE FROM Income;
+DELETE FROM Expenses;
+DELETE FROM Users;
+
 -- Insert users into the Users table
 INSERT INTO Users(username)
 VALUES
@@ -27,7 +34,12 @@ VALUES
   (4, 1, 'Weekly Groceries', -250, TO_DATE('25/03/2025', 'DD/MM/YYYY'), 'Groceries');
 
 -- Insert trophy data into the Trophies table
-INSERT INTO Trophies()
+INSERT INTO Trophies(trophy_id, name, description, percent_required, icon_url)
+VALUES
+  (1, 'Bronze Saver', 'Reached 25% of Savings Goal', 25, '/icons/trophy-25.svg'),
+  (2, 'Silver Saver', 'Reached 50% of Savings Goal', 50, '/icons/trophy-50.svg'),
+  (3, 'Gold Saver', 'Reached 75% of Savings Goal', 75, '/icons/trophy-75.svg'),
+  (4, 'Platinum Saver', 'Reached 100% of Savings Goal', 100, '/icons/trophy-100.svg');
 
 -- Reset the sequence for the expense_id column
 DO $$

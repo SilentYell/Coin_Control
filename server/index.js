@@ -13,18 +13,21 @@ const db = require('./db/database')
 // import routes
 const expenseRoutes = require('./routes/expenseRoutes');
 const userRoutes = require('./routes/userRoutes');
-const income = require('./routes/income')
+const income = require('./routes/income');
 const savingsGoalsRouter = require('./routes/savingsGoals');
+const trophyRoutes = require('./routes/trophyRoutes');
 
 // middleware
 app.use(cors());
 app.use(express.json()); // allows parsing JSON request bodies
+app.use(express.static(path.join(__dirname, '../public'))); // allows icons to be accessible via the browser at the root path
 
 // use routes
 app.use('/api', expenseRoutes);
 app.use('/api', userRoutes);
 app.use('/api', income(db));
 app.use('/api/savings-goals', savingsGoalsRouter);
+app.use('/api/trophies', trophyRoutes);
 
 
 app.get('/', (req, res) => {
