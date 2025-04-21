@@ -20,7 +20,6 @@ export const getExpenses = async () => {
   }
 };
 
-
 // add a new expense
 export const addExpense = async (expense) => {
   try {
@@ -156,6 +155,28 @@ export const deleteIncome = async (id) => {
     return;
   } catch (error) {
     console.error(`Failed to delete income with id ${id}:`, error);
+    throw error;
+  }
+};
+
+// get AI insights
+export const getAIInsights = async (expenses, income) => {
+  try {
+    const response = await fetch('http://localhost:3000/api/ai-insights', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ expenses, income }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error ${response.status}: ${response.statusText}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Failed to fetch AI insights:', error);
     throw error;
   }
 };
