@@ -13,11 +13,6 @@ import AllTransactions from './AllTransactions';
 const API_URL = 'http://localhost:3000/api';
 
 const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, getIncome, editingIncome, setEditingIncome, editingExpense, setEditingExpense, editTransactionType, setEditTransactionType, onSubmitSuccess, expensesList, setExpensesList, fetchExpensesList, onExpenseSubmitSuccess }) => {
-console.log('editTransactionType', editTransactionType)
-console.log('editingIncome', editingIncome)
-console.log('editingExpense', editingExpense)
-
-
   const [showIncomeFormModal, setShowIncomeFormModal] = useState(false);
   const [showExpenseFormModal, setShowExpenseFormModal] = useState(false);
   const [showIncomeListModal, setShowIncomeListModal] = useState(false);

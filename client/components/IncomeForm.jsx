@@ -57,7 +57,6 @@ const IncomeForm = ({ editingIncome, setEditingIncome, onSubmitSuccess }) => {
     try {
       let response
       if (editingIncome?.income_id) {
-        console.log('handlesubmit: ', editingIncome)
         // Update existing income
         response = await updateIncome(editingIncome.income_id, newIncome);
       } else {
