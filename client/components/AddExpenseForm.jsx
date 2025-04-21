@@ -4,7 +4,6 @@ import '../styles/AddExpenseForm.scss';
 import { initializeExpenseFormData } from '../src/helpers/initializeFormData';
 
 const AddExpenseForm = ({ editingExpense, onSubmitSuccess }) => {
-  console.log("editingExpense", editingExpense)
   // form state
   const amountInputRef = useRef(null);
   const [formData, setFormData] = useState(() => initializeExpenseFormData(editingExpense));
