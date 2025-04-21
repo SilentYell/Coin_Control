@@ -7,7 +7,7 @@ const useApplicationData = () => {
     const [incomeList, setIncomeList] = useState([]);
     const [editingIncome, setEditingIncome] = useState(null); // edited income state
     const [editingExpense, setEditingExpense] = useState(null); // edited expense state
-    const [editTransaction, setEditTransaction] = useState(null); // edit transaction
+    const [editTransactionType, setEditTransactionType] = useState(null); // edit transaction
     const [expensesList, setExpensesList] = useState([]);
 
   // Fetch incomes after state changes //ph change - use callback to prevent recreation
@@ -54,8 +54,8 @@ const useApplicationData = () => {
     setEditingIncome,
     editingExpense,
     setEditingExpense,
-    editTransaction,
-    setEditTransaction,
+    editTransactionType,
+    setEditTransactionType,
     onSubmitSuccess,
     expensesList,
     setExpensesList,
