@@ -61,11 +61,11 @@ const AIInsights = ({
             )}
           </div>
 
-          {/* {preview && (
+          {preview && (
             <Link to="/financial-assistant" className="view-more-button">
               View Complete Analysis <FaArrowRight />
             </Link>
-          )} */}
+          )}
         </>
       )}
     </div>

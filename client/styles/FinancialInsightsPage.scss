@@ -1,0 +1,50 @@
+.financial-insights-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+
+  .page-header {
+    margin-bottom: 2rem;
+    text-align: center;
+
+    h1 {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 1.5rem 0 0.5rem;
+      color: #1e4210;
+      font-size: 2rem;
+
+      .header-icon {
+        margin-right: 0.75rem;
+        color: #e6b800;
+      }
+    }
+
+    .subtitle {
+      color: #666;
+      font-size: 1.1rem;
+    }
+
+    .back-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background-color: #f0f0f0;
+      color: #333;
+      border-radius: 4px;
+      text-decoration: none;
+      transition: background-color 0.2s;
+
+      &:hover {
+        background-color: #e0e0e0;
+      }
+    }
+  }
+
+  .insights-container {
+    margin: 0 auto;
+    max-width: 800px;
+  }
+}
