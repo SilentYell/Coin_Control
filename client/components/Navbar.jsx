@@ -31,7 +31,9 @@ const Navbar = (
     fetchExpensesList,
     onExpenseSubmitSuccess,
     editSuccess,
-    setEditSuccess
+    setEditSuccess,
+    lastEditedTransactionType,
+    setLastEditedTransactionType
   }) => {
   const [showIncomeFormModal, setShowIncomeFormModal] = useState(false);
   const [showExpenseFormModal, setShowExpenseFormModal] = useState(false);
@@ -198,6 +200,7 @@ const Navbar = (
                 editingIncome={editingIncome}
                 setEditingIncome={setEditingIncome}
                 setEditSuccess={setEditSuccess}
+                setLastEditedTransactionType={setLastEditedTransactionType}
                 onSubmitSuccess={async () => {
                   await onSubmitSuccess();
                   setEditingIncome(undefined);
@@ -214,6 +217,7 @@ const Navbar = (
               <AddExpenseForm
                 editingExpense={editingExpense}
                 setEditSuccess={setEditSuccess}
+                setLastEditedTransactionType={setLastEditedTransactionType}
                 onSubmitSuccess={ async () => {
                   await onExpenseSubmitSuccess();
                   setEditingExpense(undefined);
@@ -228,9 +232,11 @@ const Navbar = (
             <AllTransactions
               onEditIncome={setEditingIncome}
               onEditExpense={setEditingExpense}
+              editTransactionType={editTransactionType}
               setEditTransactionType={setEditTransactionType}
+              lastEditedTransactionType={lastEditedTransactionType}
               setShowTransactionsModal={setShowTransactionsModal}
-              setEditSuccess={setEditSuccess}
+              editSuccess={editSuccess}
               onSubmitSuccess={async () => {
                 await onSubmitSuccess(); // handle income update
                 setEditTransactionType(undefined);

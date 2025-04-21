@@ -3,7 +3,7 @@ import '../styles/IncomeForm.scss'
 import { addIncome, updateIncome } from '../services/api';
 import { initializeIncomeFormData } from '../src/helpers/initializeFormData';
 
-const IncomeForm = ({ editingIncome, setEditingIncome, onSubmitSuccess, setEditSuccess }) => {
+const IncomeForm = ({ editingIncome, setEditingIncome, onSubmitSuccess, setEditSuccess, setLastEditedTransactionType }) => {
   // Track current formData
   const [formData, setFormData] = useState(() => initializeIncomeFormData(editingIncome));
   const [success, setSuccess] = useState(false);
@@ -64,6 +64,7 @@ const IncomeForm = ({ editingIncome, setEditingIncome, onSubmitSuccess, setEditS
         if (!response) throw new Error('Failed to update income record.');
 
         // Set edit state to true
+        setLastEditedTransactionType('Income')
         setEditSuccess(true);
         setTimeout(() => setEditSuccess(false), 2000);
       } else {

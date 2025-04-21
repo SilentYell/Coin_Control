@@ -22,7 +22,9 @@ function App() {
     fetchExpensesList,
     onExpenseSubmitSuccess,
     editSuccess,
-    setEditSuccess
+    setEditSuccess,
+    lastEditedTransactionType,
+    setLastEditedTransactionType
   } = useApplicationData();
 
   const [user, setUser] = useState(null);
@@ -76,6 +78,8 @@ function App() {
         onExpenseSubmitSuccess={onExpenseSubmitSuccess}
         editSuccess={editSuccess}
         setEditSuccess={setEditSuccess}
+        lastEditedTransactionType={lastEditedTransactionType}
+        setLastEditedTransactionType={setLastEditedTransactionType}
       />
 
       {!user ? (

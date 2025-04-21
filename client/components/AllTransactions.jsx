@@ -4,7 +4,7 @@ import formatDate from '../src/helpers/formatDate';
 import { MdEdit, MdDelete } from 'react-icons/md';
 import '../styles/AllTransactions.scss'
 
-const AllTransactions = ({ setEditTransactionType, onEditIncome, onEditExpense, setShowTransactionsModal }) => {
+const AllTransactions = ({ setEditTransactionType, onEditIncome, onEditExpense, setShowTransactionsModal, editSuccess, lastEditedTransactionType }) => {
   const [transactionsList, setTransactionsList] = useState([]);
   const [selectedTransactionType, setSelectedTransactionType] = useState('All');
 
@@ -64,6 +64,10 @@ const AllTransactions = ({ setEditTransactionType, onEditIncome, onEditExpense, 
   return (
     <div className="transactions-list">
       <h2>All Transactions</h2>
+
+      {editSuccess && (
+        <div className="success-message">{lastEditedTransactionType} updated successfully!</div>
+      )}
 
       {/* Add transaction type filter */}
       <div className="filter-controls">
