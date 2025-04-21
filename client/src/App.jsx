@@ -24,7 +24,9 @@ function App() {
     editSuccess,
     setEditSuccess,
     lastEditedTransactionType,
-    setLastEditedTransactionType
+    setLastEditedTransactionType,
+    lastEditedId,
+    setLastEditedId
   } = useApplicationData();
 
   const [user, setUser] = useState(null);
@@ -80,6 +82,8 @@ function App() {
         setEditSuccess={setEditSuccess}
         lastEditedTransactionType={lastEditedTransactionType}
         setLastEditedTransactionType={setLastEditedTransactionType}
+        lastEditedId={lastEditedId}
+        setLastEditedId={setLastEditedId}
       />
 
       {!user ? (

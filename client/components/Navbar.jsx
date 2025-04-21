@@ -33,7 +33,9 @@ const Navbar = (
     editSuccess,
     setEditSuccess,
     lastEditedTransactionType,
-    setLastEditedTransactionType
+    setLastEditedTransactionType,
+    lastEditedId,
+    setLastEditedId
   }) => {
   const [showIncomeFormModal, setShowIncomeFormModal] = useState(false);
   const [showExpenseFormModal, setShowExpenseFormModal] = useState(false);
@@ -141,6 +143,7 @@ const Navbar = (
             setEditingExpense={setEditingExpense}
             editSuccess={editSuccess}
             setEditSuccess={setEditSuccess}
+            lastEditedId={lastEditedId}
           />
         </Modal>
       )}
@@ -160,6 +163,7 @@ const Navbar = (
             setEditingIncome={setEditingIncome}
             editSuccess={editSuccess}
             setEditSuccess={setEditSuccess}
+            lastEditedId={lastEditedId}
           />
         </Modal>
       )}
@@ -173,6 +177,7 @@ const Navbar = (
             editingIncome={editingIncome}
             setEditingIncome={setEditingIncome}
             setEditSuccess={setEditSuccess}
+            setLastEditedId={setLastEditedId}
             onSubmitSuccess={async () => {
               await onSubmitSuccess();
               setEditingIncome(undefined);
@@ -200,6 +205,7 @@ const Navbar = (
                 editingIncome={editingIncome}
                 setEditingIncome={setEditingIncome}
                 setEditSuccess={setEditSuccess}
+                setLastEditedId={setLastEditedId}
                 setLastEditedTransactionType={setLastEditedTransactionType}
                 onSubmitSuccess={async () => {
                   await onSubmitSuccess();
@@ -217,6 +223,7 @@ const Navbar = (
               <AddExpenseForm
                 editingExpense={editingExpense}
                 setEditSuccess={setEditSuccess}
+                setLastEditedId={setLastEditedId}
                 setLastEditedTransactionType={setLastEditedTransactionType}
                 onSubmitSuccess={ async () => {
                   await onExpenseSubmitSuccess();
@@ -235,6 +242,7 @@ const Navbar = (
               editTransactionType={editTransactionType}
               setEditTransactionType={setEditTransactionType}
               lastEditedTransactionType={lastEditedTransactionType}
+              lastEditedId={lastEditedId}
               setShowTransactionsModal={setShowTransactionsModal}
               editSuccess={editSuccess}
               onSubmitSuccess={async () => {

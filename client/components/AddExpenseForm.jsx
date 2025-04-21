@@ -3,7 +3,7 @@ import { addExpense, updateExpense } from '../services/api'; // importing api fu
 import '../styles/AddExpenseForm.scss';
 import { initializeExpenseFormData } from '../src/helpers/initializeFormData';
 
-const AddExpenseForm = ({ editingExpense, onSubmitSuccess, setEditSuccess, setLastEditedTransactionType }) => {
+const AddExpenseForm = ({ editingExpense, onSubmitSuccess, setEditSuccess, setLastEditedTransactionType, setLastEditedId}) => {
   // form state
   const amountInputRef = useRef(null);
   const [formData, setFormData] = useState(() => initializeExpenseFormData(editingExpense));
@@ -65,9 +65,11 @@ const AddExpenseForm = ({ editingExpense, onSubmitSuccess, setEditSuccess, setLa
         if (!response) throw new Error('Failed to update expense record.')
 
         // Set edit state to true
+        setLastEditedId(editingExpense.expense_id)
         setLastEditedTransactionType('Expense')
         setEditSuccess(true);
-        setTimeout(() => setEditSuccess(false), 2000);
+        setTimeout(() => setEditSuccess(false), 2000); // clear success message
+        setTimeout(() => setLastEditedId(null), 3500); // clear visual on edited record
       } else {
         // Add new expense
         response = await addExpense(newExpense)
