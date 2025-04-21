@@ -4,7 +4,7 @@ import '../styles/ExpensesList.scss';
 import { MdEdit, MdDelete } from 'react-icons/md';
 import formatDate from '../src/helpers/formatDate';
 
-const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess, editingExpense, setEditingExpense, editSuccess, setEditSuccess }) => {
+const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess, editingExpense, setEditingExpense, editSuccess, setEditSuccess, lastEditedId, setLastEditedId }) => {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -108,6 +108,7 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess, editingE
         <form
           onSubmit={(e) => {
             e.preventDefault();
+            setLastEditedId(editingExpense.expense_id)
             handleEdit(editingExpense);
           }}
         >
@@ -181,7 +182,9 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess, editingE
           <button
             type="button"
             className="cancel-btn"
-            onClick={() => setEditingExpense(null)}
+            onClick={() => {
+              setEditingExpense(null)
+            }}
           >
             Cancel
           </button>
@@ -236,7 +239,10 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess, editingE
             </thead>
             <tbody>
               {filteredExpenses.map((expense) => (
-                <tr key={expense.expense_id}>
+                <tr
+                  key={expense.expense_id}
+                  className={expense.expense_id === lastEditedId ? 'highlight-row' : ''}
+                >
                   <td className="amount">
                     ${Number(expense.amount).toFixed(2)}
                   </td>

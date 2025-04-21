@@ -144,6 +144,7 @@ const Navbar = (
             editSuccess={editSuccess}
             setEditSuccess={setEditSuccess}
             lastEditedId={lastEditedId}
+            setLastEditedId={setLastEditedId}
           />
         </Modal>
       )}
@@ -178,6 +179,7 @@ const Navbar = (
             setEditingIncome={setEditingIncome}
             setEditSuccess={setEditSuccess}
             setLastEditedId={setLastEditedId}
+            setLastEditedTransactionType={setLastEditedTransactionType}
             onSubmitSuccess={async () => {
               await onSubmitSuccess();
               setEditingIncome(undefined);
