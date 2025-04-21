@@ -131,7 +131,7 @@ function Dashboard({ expenses = [], income = [] }) {
           </div>
           <div key="ai-insights">
             <Card title="Financial Insights">
-              <AIInsights expenses={expenses} income={income} />
+              <AIInsights expenses={expenses} income={income} preview={true} maxPreviewLines={2} />
             </Card>
           </div>
           <div key="pie-chart">
