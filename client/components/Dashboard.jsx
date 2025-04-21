@@ -3,6 +3,7 @@ import '../styles/Dashboard.scss';
 import Card from './Card';
 import GoalCard from './GoalCard';
 import ExpensesPieChart from './ExpensesPieChart';
+import AIInsights from './AIInsights';
 import { Responsive, WidthProvider } from 'react-grid-layout';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
@@ -66,6 +67,9 @@ function Dashboard({ expenses = [], income = [] }) {
   return (
     <div className="dashboard">
       <h1>Dashboard</h1>
+
+      <AIInsights expenses={expenses} income={income} />
+
       <button
         onClick={() => setIsEditable((prev) => !prev)}
         style={{
