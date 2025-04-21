@@ -3,6 +3,8 @@ DROP TABLE IF EXISTS Income;
 DROP TABLE IF EXISTS Expenses;
 DROP TABLE IF EXISTS Users;
 DROP TABLE IF EXISTS SavingsGoals;
+DROP TABLE IF EXISTS Trophies;
+DROP TABLE IF EXISTS User_trophies;
 
 -- Create USERS table
 CREATE TABLE Users (
@@ -41,6 +43,24 @@ CREATE TABLE SavingsGoals (
   percent NUMERIC(5,2) NOT NULL,
   saved NUMERIC(15,2) DEFAULT 0,
   created_at TIMESTAMP DEFAULT NOW()
+);
+
+-- Create TROPHIES table 
+CREATE TABLE Trophies (
+  trophy_id SERIAL PRIMARY KEY NOT NULL,
+  name TEXT NOT NULL,
+  description TEXT NOT NULL,
+  percent_required INTEGER NULL CHECK (percent_required >= 0 AND percent_required <= 100),
+  icon_url TEXT NOT NULL
+);
+
+-- Create USER_TROPHIES table to track with Users have earned which Trophies
+CREATE TABLE User_trophies (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER REFERENCES Users(user_id) ON DELETE CASCADE,
+  trophy_id INTEGER REFERENCES Trophies(trophy_id) ON DELETE CASCADE,
+  awarded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE (user_id, trophy_id)
 );
 
 -- Reset the sequence for the expense_id column
