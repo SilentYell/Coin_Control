@@ -17,7 +17,7 @@ router.post('/', async (req, res) => {
     }
 
     // Get the Gemini model
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
     // Create financial prompt
     const prompt = `As a financial advisor, analyze this data:
@@ -32,7 +32,11 @@ router.post('/', async (req, res) => {
 
     res.json({ insights: text });
   } catch (error) {
-    console.error('AI Insights error:', error);
+    console.error('AI Insights detailed error:', error.message, error.stack);
+    console.error('Request data:', {
+      expenses_length: expenses?.length,
+      income_length: income?.length,
+    });
     res.status(500).json({ error: 'Failed to generate insights' });
   }
 });

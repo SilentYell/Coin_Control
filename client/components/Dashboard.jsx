@@ -68,6 +68,7 @@ function Dashboard({ expenses = [], income = [] }) {
     <div className="dashboard">
       <h1>Dashboard</h1>
 
+      {/* We can move this to where we want it displayed - top for now */}
       <AIInsights expenses={expenses} income={income} />
 
       <button
