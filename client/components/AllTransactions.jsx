@@ -6,6 +6,14 @@ import '../styles/AllTransactions.scss'
 
 const AllTransactions = ({ setEditTransactionType, onEditIncome, onEditExpense, setShowTransactionsModal }) => {
   const [transactionsList, setTransactionsList] = useState([]);
+  const [selectedTransactionType, setSelectedTransactionType] = useState('All');
+
+  // filter transactions by selected type
+  const filteredTransactionList =
+    selectedTransactionType === 'All'
+      ? transactionsList
+      : transactionsList.filter((transaction) => transaction.type === selectedTransactionType);
+
 
   useEffect(() => {
 
@@ -57,7 +65,21 @@ const AllTransactions = ({ setEditTransactionType, onEditIncome, onEditExpense, 
     <div className="transactions-list">
       <h2>All Transactions</h2>
 
-      {transactionsList.length === 0 ? (
+      {/* Add transaction type filter */}
+      <div className="filter-controls">
+        <label htmlFor="transaction-type-filter">Filter by transaction type: </label>
+        <select
+          id="transaction-type-filter"
+          value={selectedTransactionType}
+          onChange={(e) => setSelectedTransactionType(e.target.value)}
+        >
+          <option value="All">All</option>
+          <option value="Income">Income</option>
+          <option value="Expense">Expense</option>
+        </select>
+      </div>
+
+      {filteredTransactionList.length === 0 ? (
         <div className="empty-state">
           <p>No transactions found. Add income or expenses to get started!</p>
         </div>
@@ -73,11 +95,13 @@ const AllTransactions = ({ setEditTransactionType, onEditIncome, onEditExpense, 
               </tr>
             </thead>
             <tbody>
-              {transactionsList.map((transaction) => (
+              {filteredTransactionList.map((transaction) => (
                 <tr key={transaction.id}>
                   <td className="amount">{transaction.amount}</td>
                   <td>{formatDate(transaction.date)}</td>
-                  <td>{transaction.type}</td>
+                  <td>
+                    <span className={`type-tag ${transaction.type}`}>{transaction.type}</span>
+                  </td>
                   <td className="actions">
                     <button
                       className="edit-btn"
@@ -104,7 +128,7 @@ const AllTransactions = ({ setEditTransactionType, onEditIncome, onEditExpense, 
                   colSpan="2"
                   className={
                     'total-amount ' +
-                    (transactionsList.reduce(
+                    (filteredTransactionList.reduce(
                       (sum, transaction) => sum + Number(transaction.amount),
                       0
                     ) < 0
@@ -113,7 +137,7 @@ const AllTransactions = ({ setEditTransactionType, onEditIncome, onEditExpense, 
                   }
                 >
                   $
-                  {transactionsList
+                  {filteredTransactionList
                     .reduce((sum, transaction) => sum + Number(transaction.amount), 0)
                     .toFixed(2)}
                 </td>
