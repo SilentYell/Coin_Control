@@ -3,7 +3,7 @@ import { addExpense, updateExpense } from '../services/api'; // importing api fu
 import '../styles/AddExpenseForm.scss';
 import { initializeExpenseFormData } from '../src/helpers/initializeFormData';
 
-const AddExpenseForm = ({ editingExpense, onSubmitSuccess }) => {
+const AddExpenseForm = ({ editingExpense, onSubmitSuccess, setEditSuccess }) => {
   // form state
   const amountInputRef = useRef(null);
   const [formData, setFormData] = useState(() => initializeExpenseFormData(editingExpense));
@@ -60,16 +60,28 @@ const AddExpenseForm = ({ editingExpense, onSubmitSuccess }) => {
       if (editingExpense?.expense_id) {
         // update existing expense
         response = await updateExpense(editingExpense.expense_id, newExpense)
+
+        // Throw error if response fails
+        if (!response) throw new Error('Failed to update expense record.')
+
+        // Set edit state to true
+        setEditSuccess(true);
+        setTimeout(() => setEditSuccess(false), 2000);
       } else {
         // Add new expense
         response = await addExpense(newExpense)
+
+        // Throw error if response fails
+        if (!response) throw new Error('Failed to add expense record.')
+
+        // If no errors, show success message
+        console.log('Expense added successfully'); // Debugging log
+        setSuccess(true);
+        setTimeout(() => setEditSuccess(false), 2000);
       }
 
-      if (!response) throw new Error('Failed to add/update record.')
 
-      // If no errors, show success message
-      console.log('Expense added successfully'); // Debugging log
-      setSuccess(true);
+
 
 
       // reset the form
@@ -81,6 +93,9 @@ const AddExpenseForm = ({ editingExpense, onSubmitSuccess }) => {
       });
 
       if (onSubmitSuccess) await onSubmitSuccess(); // Re-fetch expenses
+
+
+
     } catch (error) {
       setError(error.message || 'Failed to add expense');
       console.error('Error adding expense', error);

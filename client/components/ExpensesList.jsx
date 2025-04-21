@@ -4,7 +4,7 @@ import '../styles/ExpensesList.scss';
 import { MdEdit, MdDelete } from 'react-icons/md';
 import formatDate from '../src/helpers/formatDate';
 
-const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess, editingExpense, setEditingExpense }) => {
+const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess, editingExpense, setEditingExpense, editSuccess, setEditSuccess }) => {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -89,6 +89,8 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess, editingE
       };
       await updateExpense(expenseToSave.expense_id, expenseToSave);
       console.log('Expense updated successfully');
+      setEditSuccess(true);
+      setTimeout(() => setEditSuccess(false), 2000)
       await onSubmitSuccess(); // Re-fetch expenses
 
       // Close the modal after saving
@@ -191,6 +193,10 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess, editingE
   return (
     <div className="expenses-list">
       <h2>Your Expenses</h2>
+
+      {editSuccess && (
+        <div className="success-message">Expense updated successfully!</div>
+      )}
 
       {/* Add category filter */}
       <div className="filter-controls">

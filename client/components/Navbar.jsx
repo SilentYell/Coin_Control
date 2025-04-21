@@ -137,6 +137,7 @@ const Navbar = (
             onSubmitSuccess={onExpenseSubmitSuccess}
             editingExpense={editingExpense}
             setEditingExpense={setEditingExpense}
+            editSuccess={editSuccess}
             setEditSuccess={setEditSuccess}
           />
         </Modal>
