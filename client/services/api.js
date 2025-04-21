@@ -20,6 +20,21 @@ export const getExpenses = async () => {
   }
 };
 
+// Fetch expense by ID
+export const getExpenseById = async (id) => {
+  try {
+    const response = await fetch(`${API_URL}/expenses/${id}`);
+
+    if (!response.ok) {
+      throw new Error(`Error ${response.status}: ${response.statusText}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error(`Failed to fetch expense with ID ${id}`, error);
+    throw error;
+  }
+};
 
 // add a new expense
 export const addExpense = async (expense) => {
@@ -95,6 +110,20 @@ export const getIncome = async () => {
     return await response.json();
   } catch (error) {
     console.error('Failed to fetch income', error);
+    throw error;
+  }
+};
+
+// Fetch income by ID
+export const getIncomeById = async (id) => {
+  try {
+    const response = await fetch(`${API_URL}/income/${id}`);
+    if (!response.ok) {
+      throw new Error(`Error ${response.status}: ${response.statusText}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error(`Failed to fetch income with ID ${id}`, error);
     throw error;
   }
 };

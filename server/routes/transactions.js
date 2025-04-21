@@ -74,54 +74,5 @@ module.exports = db => {
     });
   });
 
-  // Update a transaction record by ID, use type of transaction for query
-  router.put("/transactions/:type/:id", (req, res) => {
-    const { id } = req.params;
-    const { amount, date, type } = req.body;
-
-    // Validate required fields
-    if (!amount || !date) {
-      return res.status(400).json({ error: "Amount or date is required." });
-    }
-
-    const queryParams = [Number(id), amount, date];
-
-    let query = '';
-
-    // Check transaction type, build appropriate query
-    if (type === 'Income') {
-      query = `
-        UPDATE income
-        SET
-          amount = $2,
-          last_payment_date = $3
-        WHERE income_id = $1
-        RETURNING *;
-      `;
-    } else {
-      query = `
-        UPDATE expenses
-        SET
-          amount = $2,
-          expense_date = $3
-        WHERE expense_id = $1
-        RETURNING *;
-      `;
-    }
-
-
-    db.query(query, queryParams)
-    .then(result => {
-      if (result.rows.length === 0) {
-        return res.status(404).json({ error: `Transaction record with ID ${id} and type ${type} not found.` });
-      }
-      res.status(201).json(result.rows[0]);
-    })
-    .catch((err) => {
-      console.error('Error updating transaction record: ', err);
-      res.status(500).json({ error: "Internal Server Error" });
-    });
-  });
-
   return router;
 };

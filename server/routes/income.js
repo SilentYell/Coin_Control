@@ -21,6 +21,24 @@ module.exports = db => {
     });
   });
 
+  // Get all income entries for the user
+  router.get("/income/:id", (req, res) => {
+    const { id } = req.params;
+
+    const query = `
+    SELECT
+        *
+    FROM income
+    WHERE income_id = $1;
+    `;
+
+    db.query(query, [id])
+    .then(({ rows }) => {
+      res.json(rows[0]);
+    });
+  });
+
+
   // Add a new income entry, allocate savings if applicable
   router.post("/income", async (req, res) => {
     const { amount, last_payment_date, frequency } = req.body;
