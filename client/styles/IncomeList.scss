@@ -25,6 +25,23 @@
     padding: 0.5rem;
   }
 
+  /* Ensure the td elements are part of the animation */
+  .income-table tbody tr.highlight-row td {
+    animation: pulse 3.5s ease-in; /* Animation on each <td> */
+    background-color: #d2b955; /* Override with highlight color */
+  }
+  @keyframes pulse {
+    0% {
+      background-color: #d2b955;
+    }
+    50% {
+      background-color: #fcedd3; /* Fade back to original color */
+    }
+    100% {
+      background-color: transparent;
+    }
+  }
+
   .income-table {
     width: 100%;
     border-collapse: collapse;
@@ -55,6 +72,11 @@
       width: 100%;
       background-color: #e6b800; /* Gold hover effect */
     }
+
+    .income-table tbody tr.highlight-row:hover {
+      background-color: #b8f3b8 !important;
+    }
+
 
     .amount {
       font-weight: 600;
@@ -101,7 +123,7 @@
         text-align: left;
         padding-right: 1rem;
       }
-      
+
       td.total-amount {
         text-align: center;
       }
