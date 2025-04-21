@@ -61,7 +61,7 @@ const IncomeForm = ({ editingIncome, setEditingIncome, onSubmitSuccess, setEditS
         response = await updateIncome(editingIncome.income_id, newIncome);
 
         // Throw error if response fails
-        if (!response) throw new Error('Failed to add income record.');
+        if (!response) throw new Error('Failed to update income record.');
 
         // Set edit state to true
         setEditSuccess(true);
