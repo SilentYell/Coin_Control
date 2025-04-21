@@ -23,6 +23,7 @@ function Dashboard({ expenses = [], income = [] }) {
     { i: 'income', x: 2, y: 2, w: 2, h: 2 },
     { i: 'balance', x: 4, y: 2, w: 2, h: 2 },
     { i: 'savings', x: 0, y: 4, w: 2, h: 2 },
+    { i: 'ai-insights', x: 2, y: 4, w: 2, h: 3 },
     { i: 'pie-chart', x: 4, y: 4, w: 2, h: 6 }
   ]);
 
@@ -68,8 +69,8 @@ function Dashboard({ expenses = [], income = [] }) {
     <div className="dashboard">
       <h1>Dashboard</h1>
 
-      {/* We can move this to where we want it displayed - top for now */}
-      <AIInsights expenses={expenses} income={income} />
+      {/* AI overight - We can move this to where we want it displayed - top for now */}
+      {/* <AIInsights expenses={expenses} income={income} /> */}
 
       <button
         onClick={() => setIsEditable((prev) => !prev)}
@@ -131,6 +132,14 @@ function Dashboard({ expenses = [], income = [] }) {
               description="Total allocated to your savings goals."
             />
           </div>
+
+          {/* AI insights in dashboard - talk about placement */}
+          <div key="ai-insights">
+            <Card title="Financial Insights">
+              <AIInsights expenses={expenses} income={income} />
+            </Card>
+          </div>
+
           <div key="pie-chart">
             <Card title="Expenses Breakdown">
               <ExpensesPieChart />

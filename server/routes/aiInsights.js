@@ -24,7 +24,7 @@ router.post('/', async (req, res) => {
     Expenses: ${JSON.stringify(expenses)}
     Income: ${JSON.stringify(income)}
     
-    Analyze spending patterns, identify top expense categories, and give 2-3 specific tips to improve this financial situation. Use a friendly tone and keep responses under 200 words.`;
+    Say hello, give unique financial quote. Analyze spending patterns, identify top expense categories, and give 2-3 specific tips to improve this financial situation. Use a friendly tone and keep responses under 200 words and use emojis.`;
 
     // Generate content
     const result = await model.generateContent(prompt);
