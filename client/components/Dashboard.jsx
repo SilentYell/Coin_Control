@@ -70,7 +70,7 @@ function Dashboard({ expenses = [], income = [] }) {
       <h1>Dashboard</h1>
 
       {/* AI overight - We can move this to where we want it displayed - top for now */}
-      {/* <AIInsights expenses={expenses} income={income} /> */}
+      <AIInsights expenses={expenses} income={income} />
 
       <button
         onClick={() => setIsEditable((prev) => !prev)}
@@ -134,11 +134,11 @@ function Dashboard({ expenses = [], income = [] }) {
           </div>
 
           {/* AI insights in dashboard - talk about placement */}
-          <div key="ai-insights">
+          {/* <div key="ai-insights">
             <Card title="Financial Insights">
               <AIInsights expenses={expenses} income={income} />
             </Card>
-          </div>
+          </div> */}
 
           <div key="pie-chart">
             <Card title="Expenses Breakdown">

@@ -35,7 +35,7 @@ const AIInsights = ({ expenses, income }) => {
 
   return (
     <div className="ai-insights">
-      <h3>Financial Insights</h3>
+      {/* <h3>Financial Insights</h3> */}
       {loading && <p className="loading">Analyzing your finances...</p>}
       {error && <p className="error">{error}</p>}
       {!loading && !error && insights && (
