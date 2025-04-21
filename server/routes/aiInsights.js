@@ -79,7 +79,7 @@ ${
 }
 
 INSTRUCTIONS:
-1. Start with a brief greeting and ONE short financial wisdom quote
+1. Start with a brief unique greeting and ONE short financial wisdom quote
 2. Analyze spending patterns focusing on the top categories
 3. Provide exactly 3 specific, actionable tips to improve financial health
 4. Each tip should be directly related to the user's actual spending patterns
