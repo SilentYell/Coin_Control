@@ -1,12 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const { OpenAI } = require('openai');
+const { GoogleGenerativeAI } = require('@google/generative-ai');
 const db = require('../db/database');
 
-// Initialize OpenAI client and load key
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+// Initialize Gemini client
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 // POST AI insights
 router.post('/', async (req, res) => {
@@ -18,26 +16,21 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ error: 'Missing expense or income data' });
     }
 
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-3.5-turbo',
-      messages: [
-        {
-          role: 'system',
-          content:
-            'You are a financial advisor helping users understand their spending patterns. Use a friendly tone and provide practical advice. Keep responses under 200 words.',
-        },
-        {
-          role: 'user',
-          content: `Here's my financial data: 
-          Expenses: ${JSON.stringify(expenses)}
-          Income: ${JSON.stringify(income)}
-          Analyze my spending patterns, identify my top expense categories, and give me 2-3 specific tips to improve my financial situation.`,
-        },
-      ],
-      temperature: 0.7,
-    });
+    // Get the Gemini model
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-    res.json({ insights: completion.choices[0].message.content });
+    // Create financial prompt
+    const prompt = `As a financial advisor, analyze this data:
+    Expenses: ${JSON.stringify(expenses)}
+    Income: ${JSON.stringify(income)}
+    
+    Analyze spending patterns, identify top expense categories, and give 2-3 specific tips to improve this financial situation. Use a friendly tone and keep responses under 200 words.`;
+
+    // Generate content
+    const result = await model.generateContent(prompt);
+    const text = result.response.text();
+
+    res.json({ insights: text });
   } catch (error) {
     console.error('AI Insights error:', error);
     res.status(500).json({ error: 'Failed to generate insights' });
