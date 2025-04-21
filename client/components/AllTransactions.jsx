@@ -1,23 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import { getAllTransactions, deleteTransaction } from '../services/api';
+import { getAllTransactions, deleteTransaction, getIncomeById, getExpenseById } from '../services/api.js';
 import formatDate from '../src/helpers/formatDate';
 import { MdEdit, MdDelete } from 'react-icons/md';
 import '../styles/AllTransactions.scss'
 
-const AllTransactions = ({ editTransaction, setEditTransaction }) => {
+const AllTransactions = ({ setEditTransactionType, onEditIncome, onEditExpense, setShowTransactionsModal }) => {
   const [transactionsList, setTransactionsList] = useState([]);
-  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
-    // If user is editing a transaction, set state isEditing to true
-    if (editTransaction) {
-      setIsEditing(true);
-    }
+
     // Fetch transaction data from the backend when the component mounts
     const fetchTransaction = async () => {
       try {
         const data = await getAllTransactions();
-        console.log('fetchTransaction data: ', data)
         setTransactionsList(data); // Updates the state with fetched data
       } catch (error) {
         console.error('Failed to fetch transactions:', error);
@@ -28,9 +23,23 @@ const AllTransactions = ({ editTransaction, setEditTransaction }) => {
     if (!transactionsList || transactionsList.length === 0) {
       fetchTransaction();
     }
-  }, [editTransaction]);
+  }, []);
 
-  console.log('transactionList: ', transactionsList)
+
+  const handleEdit = async (transaction) => {
+    console.log('handle edit trans.: ', transaction)
+    if (transaction.type ==='Income') {
+      const fullIncome = await getIncomeById(transaction.id);
+      console.log('FullIncome fetch:', fullIncome)
+      onEditIncome(fullIncome);
+    } else {
+      const fullExpense = await getExpenseById(transaction.id);
+      onEditExpense(fullExpense);
+    }
+
+    setEditTransactionType(transaction.type)
+    setShowTransactionsModal(true)
+  };
 
 
   const handleDelete = async (id, type) => {
@@ -75,11 +84,7 @@ const AllTransactions = ({ editTransaction, setEditTransaction }) => {
                     <button
                       className="edit-btn"
                       onClick={() =>
-                        setEditTransaction((prev) => {
-                          return prev?.id === transaction.id
-                            ? null
-                            : transaction;
-                        })
+                        handleEdit((transaction))
                       }
                     >
                       <MdEdit />

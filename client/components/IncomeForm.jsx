@@ -4,15 +4,16 @@ import { addIncome, updateIncome } from '../services/api';
 import { initializeIncomeFormData } from '../src/helpers/initializeFormData';
 
 const IncomeForm = ({ editingIncome, setEditingIncome, onSubmitSuccess }) => {
-  const amountInputRef = useRef(null);
   // Track current formData
   const [formData, setFormData] = useState(() => initializeIncomeFormData(editingIncome));
   const [success, setSuccess] = useState(false);
 
   // Render income after submit
   useEffect(() => {
+    if (editingIncome && editingIncome) {
       setFormData(initializeIncomeFormData(editingIncome));
-  }, [editingIncome?.income_id]);
+    }
+  }, [editingIncome]);
 
   // Common income frequencies
   const frequencies = [
@@ -23,12 +24,6 @@ const IncomeForm = ({ editingIncome, setEditingIncome, onSubmitSuccess }) => {
     'Semi-Monthly',
     'Monthly'
   ];
-
-  useEffect(() => {
-    if (amountInputRef.current) {
-      amountInputRef.current.focus();
-    }
-  }, []);
 
   /**
    * Grabs the form data and updates the formData state
@@ -62,6 +57,7 @@ const IncomeForm = ({ editingIncome, setEditingIncome, onSubmitSuccess }) => {
     try {
       let response
       if (editingIncome?.income_id) {
+        console.log('handlesubmit: ', editingIncome)
         // Update existing income
         response = await updateIncome(editingIncome.income_id, newIncome);
       } else {
@@ -104,7 +100,6 @@ const IncomeForm = ({ editingIncome, setEditingIncome, onSubmitSuccess }) => {
         <div className="form-group">
           <label htmlFor="amount">Amount ($)</label>
           <input
-            ref={amountInputRef}
             type="number"
             id="amount"
             name="amount"
