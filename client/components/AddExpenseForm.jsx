@@ -65,7 +65,7 @@ const AddExpenseForm = ({ editingExpense, onSubmitSuccess, setEditSuccess, setLa
         if (!response) throw new Error('Failed to update expense record.')
 
         // Set edit state to true
-        setLastEditedId(editingExpense.expense_id)
+        setLastEditedId({ id: editingExpense.expense_id, type: 'Expense' })
         setLastEditedTransactionType('Expense')
         setEditSuccess(true);
         setTimeout(() => setEditSuccess(false), 2000); // clear success message

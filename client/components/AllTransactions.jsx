@@ -102,7 +102,12 @@ const AllTransactions = ({ setEditTransactionType, onEditIncome, onEditExpense, 
               {filteredTransactionList.map((transaction) => (
                 <tr
                   key={transaction.uid}
-                  className={transaction.id === lastEditedId ? 'highlight-row' : ''}
+                  className={
+                    lastEditedId?.id === transaction.id &&
+                    lastEditedId?.type === transaction.type
+                    ? 'highlight-row'
+                    : ''
+                  }
                 >
                   <td className="amount">{transaction.amount}</td>
                   <td>{formatDate(transaction.date)}</td>
