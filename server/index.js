@@ -17,6 +17,7 @@ const income = require('./routes/income');
 const savingsGoalsRouter = require('./routes/savingsGoals');
 const trophyRoutes = require('./routes/trophyRoutes');
 const transactions = require('./routes/transactions');
+const userTrophies = require('./routes/userTrophies');
 
 // middleware
 app.use(cors());
@@ -30,6 +31,7 @@ app.use('/api', income(db));
 app.use('/api', transactions(db));
 app.use('/api/savings-goals', savingsGoalsRouter);
 app.use('/api/trophies', trophyRoutes);
+app.use('/api/user-trophies/', userTrophies);
 
 
 app.get('/', (req, res) => {
