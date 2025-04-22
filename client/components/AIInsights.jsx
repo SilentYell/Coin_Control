@@ -57,11 +57,7 @@ const AIInsights = ({
             {displayParagraphs.map((paragraph, index) => (
               <p key={index}>{paragraph}</p>
             ))}
-            {preview && paragraphs.length > maxPreviewLines && (
-              <p className="truncated">...</p>
-            )}
           </div>
-
           {preview && (
             <button onClick={onViewFullInsights} className="view-more-button">
               View Complete Analysis <FaArrowRight />

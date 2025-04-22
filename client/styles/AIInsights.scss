@@ -5,15 +5,37 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 1.5rem;
   margin-bottom: 1.5rem;
+  height: 100%; // Add this to fill available space
 
   // Preview mode
   &.preview-mode {
-    padding: 1rem;
+    padding: 0.75rem;
     margin-bottom: 0;
 
     .truncated {
       font-style: italic;
       color: #876510;
+    }
+
+    .insights-content {
+      p {
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
+        line-height: 1.3;
+
+        // Add ellipsis for long lines
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+      }
+    }
+
+    .view-more-button {
+      margin-top: 0.5rem;
+      padding: 0.25rem 0.75rem;
+      font-size: 0.85rem;
     }
   }
 
