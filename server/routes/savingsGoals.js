@@ -51,10 +51,13 @@ router.put('/:goal_id', async (req, res) => {
 
     const updatedGoal = result.rows[0];
 
+    // Check percent of goal saved
+    const savedPercent = (updatedGoal.saved / updatedGoal.amount) * 100;
+
     // Check for trophy milestones
     const trophiesResult = await db.query(
       `SELECT * FROM trophies WHERE percent_required <= $1`,
-      [percent]
+      [savedPercent]
     );
   
     // Create array for trophies achieved
@@ -66,7 +69,7 @@ router.put('/:goal_id', async (req, res) => {
         `SELECT * FROM user_trophies WHERE user_id = $1 AND trophy_id = $2`,
         [updatedGoal.user_id, trophy.trophy_id]
       );
-
+      
       // If trophy has not been achieved, insert into user_trophies table
       if (existingTrophy.rows.length === 0) {
         await db.query(
