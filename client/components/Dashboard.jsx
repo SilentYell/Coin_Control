@@ -53,7 +53,7 @@ function Dashboard({ expenses = [], income = [] }) {
   // Fetch goal on mount and whenever income/expenses or goal changes
   useEffect(() => {
     fetchGoal();
-  }, [fetchGoal, income, expenses, goal]);
+  }, [fetchGoal, income, expenses]);
 
   useEffect(() => {
     const totalExpenses = expenses.reduce((sum, expense) => sum + Number(expense.amount || 0), 0);
