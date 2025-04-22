@@ -14,7 +14,7 @@
     padding-bottom: 0.75rem;
   }
 
-  /* Ensure the td elements are part of the animation */
+  // Successful Edit animation
   .expenses-table tbody tr.highlight-row td {
     animation: pulse 3.5s ease-in; /* Animation on each <td> */
     background-color: #d2b955; /* Override with highlight color */

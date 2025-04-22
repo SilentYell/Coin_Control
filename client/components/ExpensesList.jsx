@@ -61,6 +61,7 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess, editingE
     }
   }, [editingExpense]);
 
+
   // handle delete expense
   const handleDelete = async (id) => {
     try {
@@ -90,11 +91,13 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess, editingE
       await updateExpense(expenseToSave.expense_id, expenseToSave);
       console.log('Expense updated successfully');
       setEditSuccess(true);
+      setLastEditedId(updatedExpense.expense_id);
       setTimeout(() => setEditSuccess(false), 2000)
       await onSubmitSuccess(); // Re-fetch expenses
 
       // Close the modal after saving
       setEditingExpense(null);
+      setTimeout(() => setLastEditedId(null), 3500); // clear visual on edited record
     } catch (error) {
       console.error('Error editing expense:', error);
     }
@@ -108,7 +111,6 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess, editingE
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            setLastEditedId(editingExpense.expense_id)
             handleEdit(editingExpense);
           }}
         >
@@ -183,7 +185,8 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess, editingE
             type="button"
             className="cancel-btn"
             onClick={() => {
-              setEditingExpense(null)
+              setEditingExpense(null);
+              setLastEditedId(null);
             }}
           >
             Cancel
