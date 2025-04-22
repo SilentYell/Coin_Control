@@ -8,15 +8,40 @@ import ExpensesList from './ExpensesList';
 import IncomeList from './IncomeList';
 import useApplicationData from '../hooks/useApplicationData';
 import { FaBars, FaTimes } from 'react-icons/fa';
+import AllTransactions from './AllTransactions';
 
 const API_URL = 'http://localhost:3000/api';
 
-const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, getIncome, editingIncome, setEditingIncome, onSubmitSuccess, expensesList, setExpensesList, fetchExpensesList, onExpenseSubmitSuccess }) => {
-
+const Navbar = (
+  { user,
+    handleLogin,
+    handleLogout,
+    incomeList,
+    setIncomeList,
+    getIncome,
+    editingIncome,
+    setEditingIncome,
+    editingExpense,
+    setEditingExpense,
+    editTransactionType,
+    setEditTransactionType,
+    onSubmitSuccess,
+    expensesList,
+    setExpensesList,
+    fetchExpensesList,
+    onExpenseSubmitSuccess,
+    editSuccess,
+    setEditSuccess,
+    lastEditedTransactionType,
+    setLastEditedTransactionType,
+    lastEditedId,
+    setLastEditedId
+  }) => {
   const [showIncomeFormModal, setShowIncomeFormModal] = useState(false);
   const [showExpenseFormModal, setShowExpenseFormModal] = useState(false);
   const [showIncomeListModal, setShowIncomeListModal] = useState(false);
   const [showExpenseListModal, setShowExpenseListModal] = useState(false);
+  const [showTransactionsModal, setShowTransactionsModal] = useState(false);
   const [showGoalModal, setShowGoalModal] = useState(false);
   const [goalPercent, setGoalPercent] = useState('');
   const [goalName, setGoalName] = useState('');
@@ -73,7 +98,6 @@ const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, ge
                   const handleIncomeHistoryClick = async () => {
                     if (!incomeList || incomeList.length === 0) {
                       const updatedList = await getIncome();
-                      console.log("Updated Income List:", updatedList);
                       setIncomeList(updatedList);
                     }
                     setShowIncomeListModal(true);
@@ -84,6 +108,7 @@ const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, ge
                 </button>
               </li>
               <li><button onClick={() => setShowIncomeFormModal(true)}>Add Income</button></li>
+              <li><button onClick={() => setShowTransactionsModal(true)}>All Transactions</button></li>
               <li><button>Trophy Case</button></li>
               {user && (
                 <li className="mobile-logout">
@@ -113,6 +138,12 @@ const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, ge
             expensesList={expensesList}
             setExpensesList={setExpensesList}
             onSubmitSuccess={onExpenseSubmitSuccess}
+            editingExpense={editingExpense}
+            setEditingExpense={setEditingExpense}
+            editSuccess={editSuccess}
+            setEditSuccess={setEditSuccess}
+            lastEditedId={lastEditedId}
+            setLastEditedId={setLastEditedId}
           />
         </Modal>
       )}
@@ -130,6 +161,9 @@ const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, ge
             setIncomeList={setIncomeList}
             editingIncome={editingIncome}
             setEditingIncome={setEditingIncome}
+            editSuccess={editSuccess}
+            setEditSuccess={setEditSuccess}
+            lastEditedId={lastEditedId}
           />
         </Modal>
       )}
@@ -139,14 +173,90 @@ const Navbar = ({ user, handleLogin, handleLogout, incomeList, setIncomeList, ge
           setEditingIncome(undefined);
           setShowIncomeFormModal(false);
         }}>
-          <IncomeForm 
+          <IncomeForm
             editingIncome={editingIncome}
+            setEditingIncome={setEditingIncome}
+            setEditSuccess={setEditSuccess}
+            setLastEditedId={setLastEditedId}
+            setLastEditedTransactionType={setLastEditedTransactionType}
             onSubmitSuccess={async () => {
-              onSubmitSuccess();
+              await onSubmitSuccess();
               setEditingIncome(undefined);
             }}
             onClose={() => setShowIncomeFormModal(false)}
           />
+        </Modal>
+      )}
+
+      {/* Render the transaction list in a modal */}
+      {(showTransactionsModal || editTransactionType) && (
+        <Modal
+          isOpen={true}
+          onClose={() => {
+            setEditTransactionType(undefined);
+            setEditingIncome(undefined);
+            setEditingExpense(undefined);
+            setShowTransactionsModal(false);
+          }}
+        >
+        {/* If editing transaction, check the type and render appropriate form */}
+        {/* If not editing transaction, render all transacitons (i.e., wait for delete or edit) */}
+          {editTransactionType === 'Income' && editingIncome ? (
+              <IncomeForm
+                editingIncome={editingIncome}
+                setEditingIncome={setEditingIncome}
+                setEditSuccess={setEditSuccess}
+                setLastEditedId={setLastEditedId}
+                setLastEditedTransactionType={setLastEditedTransactionType}
+                onSubmitSuccess={async () => {
+                  await onSubmitSuccess();
+                  setEditingIncome(undefined);
+                  setEditTransactionType(undefined);
+                }}
+                onClose={() => {
+                  setEditingIncome(undefined);
+                  setEditTransactionType(undefined)
+                }}
+              />
+            ) : editTransactionType === 'Income' ? (
+              <div>Loading income record...</div>
+            ) : editTransactionType === 'Expense' && editingExpense ? (
+              <AddExpenseForm
+                editingExpense={editingExpense}
+                setEditSuccess={setEditSuccess}
+                setLastEditedId={setLastEditedId}
+                setLastEditedTransactionType={setLastEditedTransactionType}
+                onSubmitSuccess={ async () => {
+                  await onExpenseSubmitSuccess();
+                  setEditingExpense(undefined);
+                  setEditTransactionType(undefined);
+                }}
+                onClose={() => {
+                  setEditingExpense(undefined);
+                  setEditTransactionType(undefined);
+                }}
+              />
+          ) : (
+            <AllTransactions
+              onEditIncome={setEditingIncome}
+              onEditExpense={setEditingExpense}
+              editTransactionType={editTransactionType}
+              setEditTransactionType={setEditTransactionType}
+              lastEditedTransactionType={lastEditedTransactionType}
+              lastEditedId={lastEditedId}
+              setShowTransactionsModal={setShowTransactionsModal}
+              editSuccess={editSuccess}
+              onSubmitSuccess={async () => {
+                await onSubmitSuccess(); // handle income update
+                setEditTransactionType(undefined);
+              }}
+              onExpenseSubmitSuccess={async () => {
+                await onExpenseSubmitSuccess(); // handle expense update
+                setEditTransactionType(undefined);
+              }}
+              onClose={() => setShowTransactionsModal(false)}
+            />
+          )}
         </Modal>
       )}
 

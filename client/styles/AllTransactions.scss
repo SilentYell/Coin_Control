@@ -1,4 +1,4 @@
-.income-list {
+.transactions-list {
   padding: 1rem;
   background-color: #fcedd3; /* Light peach background */
   border-radius: 0.75rem;
@@ -25,8 +25,9 @@
     padding: 0.5rem;
   }
 
+
   /* Ensure the td elements are part of the animation */
-  .income-table tbody tr.highlight-row td {
+  .transactions-table tbody tr.highlight-row td {
     animation: pulse 3.5s ease-in; /* Animation on each <td> */
     background-color: #d2b955; /* Override with highlight color */
   }
@@ -42,7 +43,7 @@
     }
   }
 
-  .income-table {
+  .transactions-table {
     width: 100%;
     border-collapse: collapse;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
@@ -72,14 +73,27 @@
       background-color: rgba(230, 184, 0, 0.15);
     }
 
-    .income-table tbody tr.highlight-row:hover {
-      background-color: #b8f3b8 !important;
-    }
-
-
     .amount {
       font-weight: 600;
       color: #1e4210; /* Dark green for amounts */
+    }
+
+    .type-tag {
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-weight: 500;
+
+      // category colours
+      &.Income {
+        background-color: #e9f5e6;
+        color: #1e4210;
+        border-left: 4px solid #1e4210;
+      }
+      &.Expense {
+        background-color: #e6eff8;
+        color: #b03d2b;
+        border-left: 4px solid #ce3131;
+      }
     }
 
     .actions {
@@ -130,12 +144,54 @@
   }
 }
 
-.income-list .total-amount.positive {
+// Transaction type filter styling
+.filter-controls {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding: 0.75rem 1rem;
+  background-color: rgba(230, 184, 0, 0.15);
+  border-radius: 8px;
+  border: 1px solid #e6b800;
+
+  label {
+    margin-right: 10px;
+    font-weight: 500;
+    color: #876510;
+  }
+
+  select {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #876510;
+    background-color: #fcedd3;
+    min-width: 160px;
+    font-size: 0.9rem;
+    color: #1e4210;
+    cursor: pointer;
+    transition: border-color 0.15s ease;
+
+    &:hover,
+    &:focus {
+      border-color: #1e4210;
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(30, 66, 16, 0.2);
+    }
+
+    option {
+      background-color: #fcedd3;
+      color: #1e4210;
+    }
+  }
+}
+
+
+.transactions-list .total-amount.positive {
   color: #24ac18 !important; // Green color
   font-weight: 700;
 }
 
-.income-list .total-amount.negative {
+.transactions-list .total-amount.negative {
   color: #c53030 !important; // Red color
   font-weight: 700;
 }

@@ -16,6 +16,7 @@ const userRoutes = require('./routes/userRoutes');
 const income = require('./routes/income');
 const savingsGoalsRouter = require('./routes/savingsGoals');
 const trophyRoutes = require('./routes/trophyRoutes');
+const transactions = require('./routes/transactions');
 
 // middleware
 app.use(cors());
@@ -26,6 +27,7 @@ app.use(express.static(path.join(__dirname, '../public'))); // allows icons to b
 app.use('/api', expenseRoutes);
 app.use('/api', userRoutes);
 app.use('/api', income(db));
+app.use('/api', transactions(db));
 app.use('/api/savings-goals', savingsGoalsRouter);
 app.use('/api/trophies', trophyRoutes);
 

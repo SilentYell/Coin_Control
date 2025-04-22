@@ -12,11 +12,21 @@ function App() {
     getIncome,
     editingIncome,
     setEditingIncome,
+    editingExpense,
+    setEditingExpense,
+    editTransactionType,
+    setEditTransactionType,
     onSubmitSuccess,
     expensesList,
     setExpensesList,
     fetchExpensesList,
     onExpenseSubmitSuccess,
+    editSuccess,
+    setEditSuccess,
+    lastEditedTransactionType,
+    setLastEditedTransactionType,
+    lastEditedId,
+    setLastEditedId
   } = useApplicationData();
 
   const [user, setUser] = useState(null);
@@ -69,10 +79,20 @@ function App() {
         getIncome={getIncome}
         editingIncome={editingIncome}
         setEditingIncome={setEditingIncome}
+        editingExpense={editingExpense}
+        setEditingExpense={setEditingExpense}
+        editTransactionType={editTransactionType}
+        setEditTransactionType={setEditTransactionType}
         onSubmitSuccess={onSubmitSuccess}
         expensesList={expensesList}
         setExpensesList={setExpensesList}
         onExpenseSubmitSuccess={onExpenseSubmitSuccess}
+        editSuccess={editSuccess}
+        setEditSuccess={setEditSuccess}
+        lastEditedTransactionType={lastEditedTransactionType}
+        setLastEditedTransactionType={setLastEditedTransactionType}
+        lastEditedId={lastEditedId}
+        setLastEditedId={setLastEditedId}
       />
 
       {!user ? (
