@@ -189,7 +189,6 @@ export const deleteIncome = async (id) => {
   }
 };
 
-<<<<<<< HEAD
 // get AI insights
 export const getAIInsights = async (expenses, income) => {
   try {
@@ -199,7 +198,18 @@ export const getAIInsights = async (expenses, income) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ expenses, income }),
-=======
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error ${response.status}: ${response.statusText}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Failed to fetch AI insights:', error);
+    throw error;
+  }
+};
 
 // fetch all transactions (expense & income)
 export const getAllTransactions = async () => {
@@ -227,7 +237,6 @@ export const updateTransaction = async (id, transaction) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(transaction),
->>>>>>> 53dcc533aadf89f48368b05e22341b1cece5f498
     });
 
     if (!response.ok) {
@@ -236,17 +245,10 @@ export const updateTransaction = async (id, transaction) => {
 
     return await response.json();
   } catch (error) {
-<<<<<<< HEAD
-    console.error('Failed to fetch AI insights:', error);
-    throw error;
-  }
-};
-=======
     console.error(`Failed to update transaction with id ${id}:`, error);
     throw error;
   }
 };
-
 
 // delete an transaction entry
 export const deleteTransaction = async (id, type) => {
@@ -264,4 +266,3 @@ export const deleteTransaction = async (id, type) => {
     throw error;
   }
 };
->>>>>>> 53dcc533aadf89f48368b05e22341b1cece5f498
