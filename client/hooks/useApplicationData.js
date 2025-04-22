@@ -11,7 +11,7 @@ const useApplicationData = () => {
     const [expensesList, setExpensesList] = useState([]);
     const [editSuccess, setEditSuccess] = useState(false); // track edit success -- for success message
     const [lastEditedTransactionType, setLastEditedTransactionType] = useState(null); // track transaction type edited -- for success message
-    const [lastEditedId, setLastEditedId] = useState(null); // track last edit ID -- for visual edit confirmation
+    const [lastEditedId, setLastEditedId] = useState({ id : null, type: null }); // track last edit ID -- for visual edit confirmation
 
   // Fetch incomes after state changes //ph change - use callback to prevent recreation
   const fetchIncomeList = useCallback(async () => {

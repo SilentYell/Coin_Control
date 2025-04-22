@@ -64,7 +64,7 @@ const IncomeForm = ({ editingIncome, setEditingIncome, onSubmitSuccess, setEditS
         if (!response) throw new Error('Failed to update income record.');
 
         // Set edit state to true
-        setLastEditedId(editingIncome.income_id)
+        setLastEditedId({ id: editingIncome.income_id, type: 'Income' })
         setLastEditedTransactionType('Income')
         setEditSuccess(true);
         setTimeout(() => setEditSuccess(false), 2000); // clear success message

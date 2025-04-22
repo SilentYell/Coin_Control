@@ -91,7 +91,7 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess, editingE
       await updateExpense(expenseToSave.expense_id, expenseToSave);
       console.log('Expense updated successfully');
       setEditSuccess(true);
-      setLastEditedId(updatedExpense.expense_id);
+      setLastEditedId({ id: updatedExpense.expense_id, type: 'Expense' });
       setTimeout(() => setEditSuccess(false), 2000)
       await onSubmitSuccess(); // Re-fetch expenses
 
@@ -244,7 +244,7 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess, editingE
               {filteredExpenses.map((expense) => (
                 <tr
                   key={expense.expense_id}
-                  className={expense.expense_id === lastEditedId ? 'highlight-row' : ''}
+                  className={lastEditedId.type === 'Expense' && expense.expense_id === lastEditedId.id ? 'highlight-row' : ''}
                 >
                   <td className="amount">
                     ${Number(expense.amount).toFixed(2)}

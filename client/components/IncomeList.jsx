@@ -81,7 +81,7 @@ const IncomeList = ({ incomeList, setIncomeList, setEditingIncome, editSuccess, 
     {incomeList.map((income) => (
       <tr
         key={income.income_id}
-        className={income.income_id === lastEditedId ? 'highlight-row' : ''}
+        className={lastEditedId === 'Income' && income.income_id === lastEditedId.id ? 'highlight-row' : ''}
       >
         <td className="amount">${income.amount}</td>
         <td>{formatDate(income.last_payment_date)}</td>

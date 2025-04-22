@@ -9,6 +9,7 @@ module.exports = db => {
 
     const query = `
     SELECT
+        'income-' || income_id AS uid,
         income_id AS id,
         amount,
         last_payment_date AS date,
@@ -20,6 +21,7 @@ module.exports = db => {
     UNION
 
     SELECT
+      'expense-' || expense_id AS uid,
       expense_id AS id,
       amount,
       expense_date AS date,
