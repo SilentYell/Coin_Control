@@ -68,9 +68,8 @@
       color: #000000; /* Black text */
     }
 
-    tbody tr:hover {
-      width: 100%;
-      background-color: #e6b800; /* Gold hover effect */
+    tbody tr:hover td {
+      background-color: rgba(230, 184, 0, 0.15);
     }
 
     .income-table tbody tr.highlight-row:hover {
