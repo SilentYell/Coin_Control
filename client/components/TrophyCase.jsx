@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getUserTrophies  } from '../services/api';
+import '../styles/TrophyCase.scss';
 
 const TrophyCase = ({ userId }) => {
   const [trophies, setTrophies] = useState([]);
@@ -8,6 +9,7 @@ const TrophyCase = ({ userId }) => {
     const fetchTrophies = async () => {
       try {
         const data = await getUserTrophies(userId);
+        console.log('Fetched trophies: ', data);
         setTrophies(data);
       } catch (error) {
         console.log('Error fetching trophies: ', error);

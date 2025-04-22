@@ -1,0 +1,41 @@
+.trophy-case {
+  background-color: #f9f9f9;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+
+  p {
+    color: #555;
+    font-style: italic;
+    margin-top: 1rem;
+  }
+
+  .trophy {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 1rem;
+    margin: 1rem auto;
+    max-width: 400px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
+
+    h3 {
+      color: #333;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      color: #666;
+      font-size: 0.95rem;
+      margin-bottom: 0.75rem;
+    }
+
+    img {
+      max-width: 100px;
+      height: auto;
+    }
+  }
+}
