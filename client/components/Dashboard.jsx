@@ -175,7 +175,9 @@ function Dashboard({ expenses = [], income = [] }) {
             <h2>
               <FaLightbulb /> Financial Insights
             </h2>
-            <AIInsights expenses={expenses} income={income} preview={false} />
+            <div className="financial-insights-content">
+              <AIInsights expenses={expenses} income={income} preview={false} />
+            </div>
           </div>
         </Modal>
       )}

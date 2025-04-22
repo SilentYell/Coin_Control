@@ -85,7 +85,7 @@ router.post('/', async (req, res) => {
       4. Each tip should be directly related to the user's actual spending patterns
       5. Use a friendly, encouraging tone
       6. Include relevant emojis (money, savings, budget related)
-      7. Please keep the entire response under 200 words
+      7. Please keep the entire response under 400 words
 
       Format your response in clear paragraphs with the tips as a numbered list.`;
 

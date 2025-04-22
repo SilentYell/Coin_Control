@@ -66,3 +66,52 @@
     }
   }
 }
+
+.financial-insights {
+  h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0 0 1rem 0;
+    color: #1e4210;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid #e6b800;
+  }
+
+  .financial-insights-content {
+    max-height: 60vh;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+
+    // Scrollbar styling
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #fcedd3;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: #876510;
+      border-radius: 6px;
+    }
+  }
+
+  .ai-insights {
+    // Make the modal version more compact
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+    background: none;
+
+    .insights-content {
+      font-size: 0.95rem;
+      line-height: 1.5;
+
+      p {
+        margin-bottom: 0.5rem;
+      }
+    }
+  }
+}
