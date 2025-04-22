@@ -8,6 +8,7 @@ const AIInsights = ({
   income,
   preview = false,
   maxPreviewLines = 3,
+  onViewFullInsights = () => {},
 }) => {
   const [insights, setInsights] = useState('');
   const [loading, setLoading] = useState(false);
@@ -62,9 +63,9 @@ const AIInsights = ({
           </div>
 
           {preview && (
-            <Link to="/financial-assistant" className="view-more-button">
+            <button onClick={onViewFullInsights} className="view-more-button">
               View Complete Analysis <FaArrowRight />
-            </Link>
+            </button>
           )}
         </>
       )}
