@@ -15,6 +15,7 @@ const expenseRoutes = require('./routes/expenseRoutes');
 const userRoutes = require('./routes/userRoutes');
 const income = require('./routes/income')
 const savingsGoalsRouter = require('./routes/savingsGoals');
+const aiInsightsRouter = require('./routes/aiInsights');
 const transactions = require('./routes/transactions');
 
 // middleware
@@ -27,6 +28,7 @@ app.use('/api', userRoutes);
 app.use('/api', income(db));
 app.use('/api', transactions(db));
 app.use('/api/savings-goals', savingsGoalsRouter);
+app.use('/api/ai-insights', aiInsightsRouter);
 
 
 app.get('/', (req, res) => {

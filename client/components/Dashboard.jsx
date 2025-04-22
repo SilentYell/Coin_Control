@@ -3,7 +3,10 @@ import '../styles/Dashboard.scss';
 import Card from './Card';
 import GoalCard from './GoalCard';
 import ExpensesPieChart from './ExpensesPieChart';
+import AIInsights from './AIInsights';
 import { Responsive, WidthProvider } from 'react-grid-layout';
+import { FaLightbulb } from 'react-icons/fa';
+import Modal from './Modal';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -14,6 +17,7 @@ function Dashboard({ expenses = [], income = [] }) {
   const [totalSavings, setTotalSavings] = useState(0);
   const [goal, setGoal] = useState(null);
   const [isEditable, setIsEditable] = useState(false);
+  const [showFinancialInsights, setShowFinancialInsights] = useState(false);
 
   // Track layout state to detect width for compact mode
   const [layoutState, setLayoutState] = useState([
@@ -22,7 +26,8 @@ function Dashboard({ expenses = [], income = [] }) {
     { i: 'income', x: 2, y: 2, w: 2, h: 2 },
     { i: 'balance', x: 4, y: 2, w: 2, h: 2 },
     { i: 'savings', x: 0, y: 4, w: 2, h: 2 },
-    { i: 'pie-chart', x: 4, y: 4, w: 2, h: 6 }
+    { i: 'ai-insights', x: 2, y: 4, w: 2, h: 3 },
+    { i: 'pie-chart', x: 4, y: 4, w: 2, h: 6 },
   ]);
 
   // Helper to get the width of the goal card in grid columns
@@ -56,8 +61,14 @@ function Dashboard({ expenses = [], income = [] }) {
   }, [fetchGoal, income, expenses, goal]);
 
   useEffect(() => {
-    const totalExpenses = expenses.reduce((sum, expense) => sum + Number(expense.amount || 0), 0);
-    const totalIncome = income.reduce((sum, incomeItem) => sum + Number(incomeItem.amount || 0), 0);
+    const totalExpenses = expenses.reduce(
+      (sum, expense) => sum + Number(expense.amount || 0),
+      0
+    );
+    const totalIncome = income.reduce(
+      (sum, incomeItem) => sum + Number(incomeItem.amount || 0),
+      0
+    );
     setTotalExpenses(totalExpenses);
     setTotalIncome(totalIncome);
     setCurrentBalance(totalIncome - totalExpenses - totalSavings);
@@ -83,7 +94,13 @@ function Dashboard({ expenses = [], income = [] }) {
       <div className="dashboard-grid">
         <ResponsiveGridLayout
           className="layout"
-          layouts={{ lg: layoutState, md: layoutState, sm: layoutState, xs: layoutState, xxs: layoutState }}
+          layouts={{
+            lg: layoutState,
+            md: layoutState,
+            sm: layoutState,
+            xs: layoutState,
+            xxs: layoutState,
+          }}
           breakpoints={{ lg: 1000, md: 996, sm: 768, xs: 480, xxs: 0 }}
           cols={{ lg: 6, md: 4, sm: 2, xs: 1, xxs: 1 }}
           rowHeight={70}
@@ -96,7 +113,12 @@ function Dashboard({ expenses = [], income = [] }) {
           resizeHandles={['se', 'sw', 'ne', 'nw', 'n', 's', 'e', 'w']}
         >
           <div key="goal">
-            <GoalCard goal={goal} saved={totalSavings} compact={isGoalCardCompact} onGoalComplete={handleGoalComplete} />
+            <GoalCard
+              goal={goal}
+              saved={totalSavings}
+              compact={isGoalCardCompact}
+              onGoalComplete={handleGoalComplete}
+            />
           </div>
           <div key="expenses">
             <Card
@@ -126,6 +148,17 @@ function Dashboard({ expenses = [], income = [] }) {
               description="Total allocated to your savings goals."
             />
           </div>
+          <div key="ai-insights">
+            <Card title="Financial Insights">
+              <AIInsights
+                expenses={expenses}
+                income={income}
+                preview={true}
+                maxPreviewLines={2}
+                onViewFullInsights={() => setShowFinancialInsights(true)}
+              />
+            </Card>
+          </div>
           <div key="pie-chart">
             <Card title="Expenses Breakdown">
               <ExpensesPieChart />
@@ -133,6 +166,21 @@ function Dashboard({ expenses = [], income = [] }) {
           </div>
         </ResponsiveGridLayout>
       </div>
+      {showFinancialInsights && (
+        <Modal
+          isOpen={showFinancialInsights}
+          onClose={() => setShowFinancialInsights(false)}
+        >
+          <div className="financial-insights">
+            <h2>
+              <FaLightbulb /> Financial Insights
+            </h2>
+            <div className="financial-insights-content">
+              <AIInsights expenses={expenses} income={income} preview={false} />
+            </div>
+          </div>
+        </Modal>
+      )}
     </div>
   );
 }

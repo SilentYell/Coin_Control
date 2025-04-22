@@ -189,6 +189,27 @@ export const deleteIncome = async (id) => {
   }
 };
 
+// get AI insights
+export const getAIInsights = async (expenses, income) => {
+  try {
+    const response = await fetch('http://localhost:3000/api/ai-insights', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ expenses, income }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error ${response.status}: ${response.statusText}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Failed to fetch AI insights:', error);
+    throw error;
+  }
+};
 
 // fetch all transactions (expense & income)
 export const getAllTransactions = async () => {
@@ -228,7 +249,6 @@ export const updateTransaction = async (id, transaction) => {
     throw error;
   }
 };
-
 
 // delete an transaction entry
 export const deleteTransaction = async (id, type) => {
