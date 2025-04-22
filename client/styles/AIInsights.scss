@@ -1,3 +1,4 @@
+// Base styles for AI insights
 .ai-insights {
   background-color: #fcedd3;
   border-radius: 12px;
@@ -5,31 +6,32 @@
   padding: 1.5rem;
   margin-bottom: 1.5rem;
 
+  // Preview mode
   &.preview-mode {
     padding: 1rem;
     margin-bottom: 0;
 
-    .insights-content {
-      p {
-        margin-bottom: 0.5rem;
-      }
-
-      .truncated {
-        font-style: italic;
-        color: #876510;
-      }
+    .truncated {
+      font-style: italic;
+      color: #876510;
     }
+  }
+
+  // Status indicators
+  .loading,
+  .error {
+    font-style: italic;
   }
 
   .loading {
     color: #876510;
-    font-style: italic;
   }
 
   .error {
     color: #c53030;
   }
 
+  // Content
   .insights-content {
     line-height: 1.6;
     color: #1e4210;
@@ -39,6 +41,7 @@
     }
   }
 
+  // "View Complete Analysis" button
   .view-more-button {
     display: inline-flex;
     align-items: center;
@@ -55,19 +58,25 @@
 
     &:hover {
       background-color: #2a5a16;
+
+      svg {
+        transform: translateX(3px);
+      }
     }
 
     svg {
       transition: transform 0.2s;
     }
-
-    &:hover svg {
-      transform: translateX(3px);
-    }
   }
 }
 
+// Modal styling for financial insights - professional version
 .financial-insights {
+  background-color: #fcedd3;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  width: 100%;
+
   h2 {
     display: flex;
     align-items: center;
@@ -75,15 +84,18 @@
     margin: 0 0 1rem 0;
     color: #1e4210;
     padding-bottom: 0.75rem;
-    border-bottom: 2px solid #e6b800;
+    border-bottom: 2px solid #ffd700;
+    font-size: 1.4rem;
+    font-weight: 600;
   }
 
   .financial-insights-content {
-    max-height: 60vh;
+    max-height: 65vh;
     overflow-y: auto;
-    padding-right: 0.5rem;
+    padding: 0 0.5rem;
+    margin-bottom: 0.75rem;
 
-    // Scrollbar styling
+    // Custom scrollbar
     &::-webkit-scrollbar {
       width: 6px;
     }
@@ -96,21 +108,43 @@
       background-color: #876510;
       border-radius: 6px;
     }
-  }
 
-  .ai-insights {
-    // Make the modal version more compact
-    padding: 0;
-    margin: 0;
-    box-shadow: none;
-    background: none;
+    // Content styling
+    .ai-insights {
+      background: none;
+      box-shadow: none;
+      padding: 0;
+      margin: 0;
 
-    .insights-content {
-      font-size: 0.95rem;
-      line-height: 1.5;
+      .insights-content {
+        font-size: 0.95rem;
+        line-height: 1.6;
 
-      p {
-        margin-bottom: 0.5rem;
+        p {
+          margin-bottom: 1rem;
+          color: #333;
+        }
+
+        // Highlighted tips section
+        ol {
+          background-color: #fffbe6;
+          border: 1px solid #ffd700;
+          border-radius: 8px;
+          padding: 1rem 1rem 0.5rem 2.5rem;
+          margin: 1rem 0;
+
+          li {
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.5rem;
+            color: #1e4210;
+            font-weight: 500;
+
+            &:not(:last-child) {
+              border-bottom: 1px dashed #e6b800;
+              padding-bottom: 0.75rem;
+            }
+          }
+        }
       }
     }
   }
