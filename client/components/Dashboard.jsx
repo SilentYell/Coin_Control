@@ -43,17 +43,22 @@ function Dashboard({ expenses = [], income = [] }) {
       // Only one goal per user, so take the first
       setGoal(data[0] || null);
       setTotalSavings(data[0]?.saved ? Number(data[0].saved) : 0);
-    } catch (err) {
+    } catch {
       setGoal(null);
       setTotalSavings(0);
     }
   }, []);
 
   // Remove goal from dashboard state when completed
-  const handleGoalComplete = (goalId) => {
+  const handleGoalComplete = () => {
     setGoal(null);
     setTotalSavings(0);
   };
+
+  // Helper to format currency with commas and 2 decimals
+  function formatCurrency(amount) {
+    return (amount < 0 ? '-' : '') + '$' + Math.abs(amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
 
   // Fetch goal on mount and whenever income/expenses or goal changes
   useEffect(() => {
@@ -123,28 +128,28 @@ function Dashboard({ expenses = [], income = [] }) {
           <div key="expenses">
             <Card
               title="Total Expenses"
-              value={`$${Number(totalExpenses || 0).toFixed(2)}`}
+              value={formatCurrency(totalExpenses || 0)}
               description="Track your spending here."
             />
           </div>
           <div key="income">
             <Card
               title="Total Income"
-              value={`$${Number(totalIncome || 0).toFixed(2)}`}
+              value={formatCurrency(totalIncome || 0)}
               description="Monitor your earnings."
             />
           </div>
           <div key="balance">
             <Card
               title="Current Balance"
-              value={`$${Number(currentBalance || 0).toFixed(2)}`}
+              value={formatCurrency(currentBalance || 0)}
               description="Your current financial status (after savings)."
             />
           </div>
           <div key="savings">
             <Card
               title="Total Savings"
-              value={`$${Number(totalSavings || 0).toFixed(2)}`}
+              value={formatCurrency(totalSavings || 0)}
               description="Total allocated to your savings goals."
             />
           </div>
