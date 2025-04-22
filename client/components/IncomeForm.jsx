@@ -1,20 +1,21 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import '../styles/IncomeForm.scss'
 import { addIncome, updateIncome } from '../services/api';
-import initializeIncomeFormData from '../src/helpers/initializeIncomeFormData';
+import { initializeIncomeFormData } from '../src/helpers/initializeFormData';
 
-const IncomeForm = ({ editingIncome, onSubmitSuccess }) => {
-  const amountInputRef = useRef(null);
+const IncomeForm = ({ editingIncome, setEditingIncome, onSubmitSuccess, setEditSuccess, setLastEditedTransactionType, setLastEditedId }) => {
   // Track current formData
   const [formData, setFormData] = useState(() => initializeIncomeFormData(editingIncome));
   const [success, setSuccess] = useState(false);
 
   // Render income after submit
   useEffect(() => {
+    if (editingIncome && editingIncome) {
       setFormData(initializeIncomeFormData(editingIncome));
-  }, [editingIncome?.income_id]);
+    }
+  }, [editingIncome]);
 
-  // common expense categories
+  // Common income frequencies
   const frequencies = [
     'One-Time',
     'Daily',
@@ -23,12 +24,6 @@ const IncomeForm = ({ editingIncome, onSubmitSuccess }) => {
     'Semi-Monthly',
     'Monthly'
   ];
-
-  useEffect(() => {
-    if (amountInputRef.current) {
-      amountInputRef.current.focus();
-    }
-  }, []);
 
   /**
    * Grabs the form data and updates the formData state
@@ -64,30 +59,38 @@ const IncomeForm = ({ editingIncome, onSubmitSuccess }) => {
       if (editingIncome?.income_id) {
         // Update existing income
         response = await updateIncome(editingIncome.income_id, newIncome);
+
+        // Throw error if response fails
+        if (!response) throw new Error('Failed to update income record.');
+
+        // Set edit state to true
+        setLastEditedId(editingIncome.income_id)
+        setLastEditedTransactionType('Income')
+        setEditSuccess(true);
+        setTimeout(() => setEditSuccess(false), 2000); // clear success message
+        setTimeout(() => setLastEditedId(null), 3500); // clear visual on edited record
       } else {
         // Add new income
         response = await addIncome(newIncome);
-      }
 
-      // Throw error if response fails
-      if (!response) throw new Error('Failed to add income record.');
+        // Throw error if response fails
+        if (!response) throw new Error('Failed to add income record.');
+
+        // Show success message
+        setSuccess(true);
+        setTimeout(() => setSuccess(false), 2000);
+      }
 
       // Call parent to update list immediately
       if (onSubmitSuccess) await onSubmitSuccess();
-
-      // Show success message
-      setSuccess(true);
 
       // Reset the form
       setFormData({
         amount: 0,
         last_payment_date: new Date().toISOString().split('T')[0],
-        frequency: 'Semi-Monthly',
+        frequency: 'One-Time',
       });
 
-
-      // Notify parent component - hide message after delay
-      setTimeout(() => setSuccess(false), 2000);
     } catch (error) {
       console.error('Error adding income:', error.message)
     }
@@ -104,7 +107,6 @@ const IncomeForm = ({ editingIncome, onSubmitSuccess }) => {
         <div className="form-group">
           <label htmlFor="amount">Amount ($)</label>
           <input
-            ref={amountInputRef}
             type="number"
             id="amount"
             name="amount"
@@ -146,9 +148,21 @@ const IncomeForm = ({ editingIncome, onSubmitSuccess }) => {
 
         {/* Conditional Rendering for submit button (Add Income vs Edit Income */}
         {editingIncome
-          ? <button type="submit" className="submit-btn">Update Income</button>
+          ? (
+          <>
+            <button type="submit" className="submit-btn">Update Income</button>
+            <button
+              type="button"
+              className="cancel-btn"
+              onClick={() => setEditingIncome(null)}
+            >
+              Cancel
+            </button>
+            </>
+          )
           : <button type="submit" className="submit-btn">Add Income</button>
         }
+
       </form>
     </div>
   );

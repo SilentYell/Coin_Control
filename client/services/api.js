@@ -20,6 +20,21 @@ export const getExpenses = async () => {
   }
 };
 
+// Fetch expense by ID
+export const getExpenseById = async (id) => {
+  try {
+    const response = await fetch(`${API_URL}/expenses/${id}`);
+
+    if (!response.ok) {
+      throw new Error(`Error ${response.status}: ${response.statusText}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error(`Failed to fetch expense with ID ${id}`, error);
+    throw error;
+  }
+};
 
 // add a new expense
 export const addExpense = async (expense) => {
@@ -99,6 +114,20 @@ export const getIncome = async () => {
   }
 };
 
+// Fetch income by ID
+export const getIncomeById = async (id) => {
+  try {
+    const response = await fetch(`${API_URL}/income/${id}`);
+    if (!response.ok) {
+      throw new Error(`Error ${response.status}: ${response.statusText}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error(`Failed to fetch income with ID ${id}`, error);
+    throw error;
+  }
+};
+
 // add a new income entry
 export const addIncome = async (income) => {
   try {
@@ -156,6 +185,64 @@ export const deleteIncome = async (id) => {
     return;
   } catch (error) {
     console.error(`Failed to delete income with id ${id}:`, error);
+    throw error;
+  }
+};
+
+
+// fetch all transactions (expense & income)
+export const getAllTransactions = async () => {
+  try {
+    const response = await fetch(`${API_URL}/transactions`);
+
+    if (!response.ok) {
+      throw new Error(`Error ${response.status}: ${response.statusText}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Failed to fetch transactions', error);
+    throw error;
+  }
+};
+
+
+// update transaction by id
+export const updateTransaction = async (id, transaction) => {
+  try {
+    const response = await fetch(`${API_URL}/transactions/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(transaction),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error ${response.status}: ${response.statusText}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error(`Failed to update transaction with id ${id}:`, error);
+    throw error;
+  }
+};
+
+
+// delete an transaction entry
+export const deleteTransaction = async (id, type) => {
+  try {
+    const response = await fetch(`${API_URL}/delete/transactions/${type}/${id}`, {
+      method: 'DELETE',
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error ${response.status}: ${response.statusText}`);
+    }
+    return;
+  } catch (error) {
+    console.error(`Failed to delete transaction with id ${id}:`, error);
     throw error;
   }
 };
