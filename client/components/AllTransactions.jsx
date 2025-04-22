@@ -5,9 +5,6 @@ import { MdEdit, MdDelete } from 'react-icons/md';
 import '../styles/AllTransactions.scss'
 
 const AllTransactions = ({ setEditTransactionType, onEditIncome, onEditExpense, setShowTransactionsModal, editSuccess, lastEditedTransactionType, lastEditedId }) => {
-
-  console.log('last edited id: ', lastEditedId)
-
   const [transactionsList, setTransactionsList] = useState([]);
   const [selectedTransactionType, setSelectedTransactionType] = useState('All');
 

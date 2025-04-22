@@ -98,7 +98,6 @@ const Navbar = (
                   const handleIncomeHistoryClick = async () => {
                     if (!incomeList || incomeList.length === 0) {
                       const updatedList = await getIncome();
-                      console.log("Updated Income List:", updatedList);
                       setIncomeList(updatedList);
                     }
                     setShowIncomeListModal(true);
