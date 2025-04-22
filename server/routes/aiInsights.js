@@ -79,15 +79,15 @@ router.post('/', async (req, res) => {
       }
 
       INSTRUCTIONS:
-      1. Start with a brief unique greeting and ONE short unique financial wisdom quote
-      2. Analyze spending patterns focusing on the top categories
-      3. Provide exactly 3 specific, actionable tips to improve financial health
-      4. Each tip should be directly related to the user's actual spending patterns
-      5. Use a friendly, encouraging tone
-      6. Include relevant emojis (money, savings, budget related)
-      7. Please keep the entire response under 400 words
-
-      Format your response in clear paragraphs with the tips as a numbered list.`;
+  1. Start with a brief, unique greeting and a short financial wisdom quote.
+  2. Then create a SHORT PREVIEW paragraph (under 100 words) that summarizes the user's financial health.
+  3. Then include the text "Financial Tips:" as a heading on its own line.
+  4. After this heading, provide exactly 3 specific, actionable tips as an HTML <ol> with <li> for each tip.
+  5. Do not escape HTML tags. Do NOT use markdown.
+  6. Each tip should be directly related to the user's actual spending patterns.
+  7. Use a friendly, encouraging tone and include relevant emojis.
+  8. Keep the entire response under 400 words.
+      `;
 
     // Generate content
     const result = await model.generateContent(prompt);

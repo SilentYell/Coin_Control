@@ -154,7 +154,7 @@ function Dashboard({ expenses = [], income = [] }) {
                 expenses={expenses}
                 income={income}
                 preview={true}
-                maxPreviewLines={2}
+                maxPreviewLines={5}
                 onViewFullInsights={() => setShowFinancialInsights(true)}
               />
             </Card>

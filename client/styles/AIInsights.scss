@@ -5,7 +5,7 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 1.5rem;
   margin-bottom: 1.5rem;
-  height: 100%; // Add this to fill available space
+  height: 100%; 
 
   // Preview mode
   &.preview-mode {
@@ -20,14 +20,15 @@
     .insights-content {
       p {
         margin-bottom: 0.5rem;
-        font-size: 0.9rem;
+        font-size: 0.99rem;
         line-height: 1.3;
 
-        // Add ellipsis for long lines
+        // ellipsis for long lines
         overflow: hidden;
         text-overflow: ellipsis;
         display: -webkit-box;
         -webkit-line-clamp: 2;
+        line-clamp: 2;
         -webkit-box-orient: vertical;
       }
     }
@@ -63,7 +64,7 @@
     }
   }
 
-  // "View Complete Analysis" button
+  // View Complete Analysis button
   .view-more-button {
     display: inline-flex;
     align-items: center;
@@ -92,7 +93,7 @@
   }
 }
 
-// Modal styling for financial insights - professional version
+// Modal styling for financial insights
 .financial-insights {
   background-color: #fcedd3;
   border-radius: 8px;
