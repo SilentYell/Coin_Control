@@ -63,8 +63,8 @@ router.post('/', async (req, res) => {
       - Total Expenses: $${totalExpenses.toFixed(2)}
       - Available Balance: $${(totalIncome - totalExpenses).toFixed(2)}
       - Top spending categories: ${topCategories
-            .map((c) => `${c.name} ($${c.amount.toFixed(2)}, ${c.percentage}%)`)
-            .join(', ')}
+        .map((c) => `${c.name} ($${c.amount.toFixed(2)}, ${c.percentage}%)`)
+        .join(', ')}
       ${
         goal
           ? `- Savings Goal: ${goal.name} - $${goal.amount} (${
@@ -79,14 +79,17 @@ router.post('/', async (req, res) => {
       }
 
       INSTRUCTIONS:
-  1. Start with a brief, unique greeting and a short financial wisdom quote.
-  2. Then create a SHORT PREVIEW paragraph (under 100 words) that summarizes the user's financial health.
-  3. Then include the text "Financial Tips:" as a heading on its own line.
-  4. After this heading, provide exactly 3 specific, actionable tips as an HTML <ol> with <li> for each tip.
-  5. Do not escape HTML tags. Do NOT use markdown.
-  6. Each tip should be directly related to the user's actual spending patterns.
-  7. Use a friendly, encouraging tone and include relevant emojis.
-  8. Keep the entire response under 400 words.
+      1. Begin with a personalized greeting and relevant financial wisdom quote.
+      2. Provide a CONCISE overview paragraph (60-80 words) analyzing their financial health, income-to-expense ratio, and savings progress.
+      3. On a new line, include "Financial Tips:" as a section heading.
+      4. Provide exactly 3 actionable, specific tips.
+      5. Each tip must directly address one of these areas:
+        - Specific spending patterns in their top categories
+        - Savings goal progress and strategies
+        - Budget optimization based on income frequency
+      6. Use a conversational, encouraging tone with strategic emoji placement.
+      7. End with a brief motivational statement about their next financial steps.
+      8. Keep the entire response under 350 words, prioritizing quality over quantity.
       `;
 
     // Generate content
