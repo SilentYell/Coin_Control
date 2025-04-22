@@ -2,12 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import { getExpenses, deleteExpense, updateExpense } from '../services/api';
 import '../styles/ExpensesList.scss';
 import { MdEdit, MdDelete } from 'react-icons/md';
+import formatDate from '../src/helpers/formatDate';
 
-const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess }) => {
+const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess, editingExpense, setEditingExpense, editSuccess, setEditSuccess, lastEditedId, setLastEditedId }) => {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [editingExpense, setEditingExpense] = useState(null);
   const editAmountInputRef = useRef(null);
 
   const categories = [
@@ -54,21 +54,13 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess }) => {
     }
   }, []); //empty dependency array - only run on mount
 
-  // format date for display
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    });
-  };
 
   useEffect(() => {
     if (editingExpense && editAmountInputRef.current) {
       editAmountInputRef.current.focus();
     }
   }, [editingExpense]);
+
 
   // handle delete expense
   const handleDelete = async (id) => {
@@ -98,10 +90,14 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess }) => {
       };
       await updateExpense(expenseToSave.expense_id, expenseToSave);
       console.log('Expense updated successfully');
+      setEditSuccess(true);
+      setLastEditedId({ id: updatedExpense.expense_id, type: 'Expense' });
+      setTimeout(() => setEditSuccess(false), 2000)
       await onSubmitSuccess(); // Re-fetch expenses
 
       // Close the modal after saving
       setEditingExpense(null);
+      setTimeout(() => setLastEditedId(null), 3500); // clear visual on edited record
     } catch (error) {
       console.error('Error editing expense:', error);
     }
@@ -188,7 +184,10 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess }) => {
           <button
             type="button"
             className="cancel-btn"
-            onClick={() => setEditingExpense(null)}
+            onClick={() => {
+              setEditingExpense(null);
+              setLastEditedId(null);
+            }}
           >
             Cancel
           </button>
@@ -200,6 +199,10 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess }) => {
   return (
     <div className="expenses-list">
       <h2>Your Expenses</h2>
+
+      {editSuccess && (
+        <div className="success-message">Expense updated successfully!</div>
+      )}
 
       {/* Add category filter */}
       <div className="filter-controls">
@@ -234,12 +237,19 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess }) => {
                 <th>Category</th>
                 <th>Description</th>
                 {/* OA - Kept "Actions" th for styling structure but header seemed unnecessary as buttons are intuitive */}
-                <th className='actions-header' aria-hidden="true"></th> 
+                <th className='actions-header' aria-hidden="true"></th>
               </tr>
             </thead>
             <tbody>
               {filteredExpenses.map((expense) => (
-                <tr key={expense.expense_id}>
+                <tr
+                  key={expense.expense_id}
+                  className={
+                    lastEditedId?.type === 'Expense' && lastEditedId?.id === expense.expense_id
+                      ? 'highlight-row'
+                      : ''
+                  }
+                >
                   <td className="amount">
                     ${Number(expense.amount).toFixed(2)}
                   </td>

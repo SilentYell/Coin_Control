@@ -16,6 +16,7 @@ const userRoutes = require('./routes/userRoutes');
 const income = require('./routes/income')
 const savingsGoalsRouter = require('./routes/savingsGoals');
 const aiInsightsRouter = require('./routes/aiInsights');
+const transactions = require('./routes/transactions');
 
 // middleware
 app.use(cors());
@@ -25,6 +26,7 @@ app.use(express.json()); // allows parsing JSON request bodies
 app.use('/api', expenseRoutes);
 app.use('/api', userRoutes);
 app.use('/api', income(db));
+app.use('/api', transactions(db));
 app.use('/api/savings-goals', savingsGoalsRouter);
 app.use('/api/ai-insights', aiInsightsRouter);
 

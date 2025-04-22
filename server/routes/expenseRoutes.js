@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db/database');
+const { escapeLiteral } = require('pg');
 
 // GET /api/expenses - get all expenses for user
 router.get('/expenses', async (req, res) => {
@@ -15,6 +16,25 @@ router.get('/expenses', async (req, res) => {
     console.error('Error fetching expenses', error);
     res.status(500).json({ error: 'Failed to fetch expenses' });
   }
+});
+
+// GET /api/expenses - get all expenses for user
+router.get('/expenses/:id', (req, res) => {
+  const { id } = req.params;
+
+  const query = `
+  SELECT
+    *
+  FROM expenses
+  WHERE expense_id = $1;
+  `
+  db.query(query, [id])
+  .then(({ rows }) => {
+    res.json(rows[0]);
+  })
+  .catch((err) => {
+    console.error(`Error fetching expense ID ${id}`, err);
+  })
 });
 
 // POST /api/expenses - create a new expense
@@ -92,7 +112,7 @@ router.delete('/expenses/:id', async (req, res) => {
       return res.status(404).json({ error: 'Expense not found or unauthorized' });
     }
 
-    res.json({ 
+    res.json({
       message: 'Expense deleted successfully',
       deletedExpense: result.rows[0]
     });

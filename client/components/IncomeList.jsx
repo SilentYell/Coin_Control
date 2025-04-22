@@ -4,7 +4,7 @@ import { deleteIncome, getIncome, updateIncome } from '../services/api';
 import formatDate from '../src/helpers/formatDate';
 import { MdEdit, MdDelete } from 'react-icons/md';
 
-const IncomeList = ({ incomeList, setIncomeList, setEditingIncome }) => {
+const IncomeList = ({ incomeList, setIncomeList, setEditingIncome, editSuccess, lastEditedId }) => {
   useEffect(() => {
     // Fetch income data from the backend when the component mounts
     const fetchIncome = async () => {
@@ -21,6 +21,19 @@ const IncomeList = ({ incomeList, setIncomeList, setEditingIncome }) => {
       fetchIncome();
     }
   }, []); // PH change - empty dependency array - only run on mount
+
+
+  useEffect(() => {
+    if (editSuccess && lastEditedId) {
+      const timer = setTimeout(() => {
+        // Clear the highlight after the animation finishes
+        setEditingIncome(null); // assuming this resets lastEditedId to null or undefined
+      }, 1500); // match your CSS animation duration
+
+      return () => clearTimeout(timer);
+    }
+  }, [editSuccess, lastEditedId]);
+
 
   /**
    * Deletes an income entry by ID from the db via the API,
@@ -45,6 +58,10 @@ const IncomeList = ({ incomeList, setIncomeList, setEditingIncome }) => {
     <div className="income-list">
       <h2>Income History</h2>
 
+      {editSuccess && (
+        <div className="success-message">Income updated successfully!</div>
+      )}
+
       {incomeList.length === 0 ? (
         <div className="empty-state">
           <p>No income found. Add income to get started!</p>
@@ -55,40 +72,37 @@ const IncomeList = ({ incomeList, setIncomeList, setEditingIncome }) => {
             <thead>
               <tr>
                 <th>Amount</th>
-                <th>Frequency</th>
                 <th>Last Payment Date</th>
+                <th>Frequency</th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
-              {incomeList.map((income) => (
-                <tr key={income.income_id}>
-                  <td className="amount">${income.amount}</td>
-                  <td>{formatDate(income.last_payment_date)}</td>
-                  <td className="frequency">{income.frequency}</td>
-                  <td className="actions">
-                    <button
-                      className="edit-btn"
-                      onClick={() =>
-                        setEditingIncome((prev) => {
-                          return prev?.income_id === income.income_id
-                            ? null
-                            : income;
-                        })
-                      }
-                    >
-                      <MdEdit />
-                    </button>
-                    <button
-                      className="delete-btn"
-                      onClick={() => handleDelete(income.income_id)}
-                    >
-                      <MdDelete />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
+    {incomeList.map((income) => (
+      <tr
+        key={income.income_id}
+        className={lastEditedId === 'Income' && income.income_id === lastEditedId.id ? 'highlight-row' : ''}
+      >
+        <td className="amount">${income.amount}</td>
+        <td>{formatDate(income.last_payment_date)}</td>
+        <td className="frequency">{income.frequency}</td>
+        <td className="actions">
+          <button
+            className="edit-btn"
+            onClick={() => setEditingIncome((prev) => prev?.income_id === income.income_id ? null : income)}
+          >
+            <MdEdit />
+          </button>
+          <button
+            className="delete-btn"
+            onClick={() => handleDelete(income.income_id)}
+          >
+            <MdDelete />
+          </button>
+        </td>
+      </tr>
+    ))}
+  </tbody>
             <tfoot>
               <tr className="total-row">
                 <td className="total-label">Total</td>

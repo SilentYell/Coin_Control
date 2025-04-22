@@ -1,16 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { addExpense } from '../services/api'; // importing api function
+import { addExpense, updateExpense } from '../services/api'; // importing api function
 import '../styles/AddExpenseForm.scss';
+import { initializeExpenseFormData } from '../src/helpers/initializeFormData';
 
-const AddExpenseForm = ({ onSubmitSuccess }) => {
+const AddExpenseForm = ({ editingExpense, onSubmitSuccess, setEditSuccess, setLastEditedTransactionType, setLastEditedId}) => {
   // form state
   const amountInputRef = useRef(null);
-  const [formData, setFormData] = useState({
-    name: '',
-    amount: '',
-    expense_date: new Date().toISOString().split('T')[0], // set to todays date
-    category: 'Groceries',
-  });
+  const [formData, setFormData] = useState(() => initializeExpenseFormData(editingExpense));
 
   // state for tracking form submission status
   const [isLoading, setIsLoading] = useState(false);
@@ -53,17 +49,39 @@ const AddExpenseForm = ({ onSubmitSuccess }) => {
     setError(null);
     setSuccess(false);
 
-    try {
-      // create expense object
-      const newExpense = {
-        ...formData,
-        amount: -Math.abs(parseFloat(formData.amount)), // expense number will always be stored as negative
-      };
+    // create expense object
+    const newExpense = {
+      ...formData,
+      amount: -Math.abs(parseFloat(formData.amount)), // expense number will always be stored as negative
+    };
 
-      // send to api
-      await addExpense(newExpense);
-      console.log('Expense added successfully'); // Debugging log
-      setSuccess(true);
+    try {
+      let response
+      if (editingExpense?.expense_id) {
+        // update existing expense
+        response = await updateExpense(editingExpense.expense_id, newExpense)
+
+        // Throw error if response fails
+        if (!response) throw new Error('Failed to update expense record.')
+
+        // Set edit state to true
+        setLastEditedId({ id: editingExpense.expense_id, type: 'Expense' })
+        setLastEditedTransactionType('Expense')
+        setEditSuccess(true);
+        setTimeout(() => setEditSuccess(false), 2000); // clear success message
+        setTimeout(() => setLastEditedId(null), 3500); // clear visual on edited record
+      } else {
+        // Add new expense
+        response = await addExpense(newExpense)
+
+        // Throw error if response fails
+        if (!response) throw new Error('Failed to add expense record.')
+
+        // If no errors, show success message
+        console.log('Expense added successfully'); // Debugging log
+        setSuccess(true);
+        setTimeout(() => setEditSuccess(false), 2000);
+      }
 
       // reset the form
       setFormData({
@@ -74,6 +92,7 @@ const AddExpenseForm = ({ onSubmitSuccess }) => {
       });
 
       if (onSubmitSuccess) await onSubmitSuccess(); // Re-fetch expenses
+
     } catch (error) {
       setError(error.message || 'Failed to add expense');
       console.error('Error adding expense', error);
@@ -84,7 +103,7 @@ const AddExpenseForm = ({ onSubmitSuccess }) => {
 
   return (
     <div className="add-expense-form">
-      <h2>Add New Expense</h2>
+      <h2>{editingExpense ? 'Update Expense' : 'Add New Expense'}</h2>
 
       {/* UI feedback for expense */}
       {error && <div className="error-message">{error}</div>}
@@ -152,10 +171,13 @@ const AddExpenseForm = ({ onSubmitSuccess }) => {
           />
         </div>
 
-        {/* submit button - add expense */}
-        <button type="submit" className="submit-btn" disabled={isLoading}>
-          {isLoading ? 'Adding...' : 'Add Expense'}
-        </button>
+        {/* submit button - add or update expense */}
+        {editingExpense
+          ? <button type="submit" className="submit-btn" disabled={isLoading}>Update Expense</button>
+          : <button type="submit" className="submit-btn" disabled={isLoading}>
+              {isLoading ? 'Adding...' : 'Add Expense'}
+            </button>
+        }
       </form>
     </div>
   );

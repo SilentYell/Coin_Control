@@ -3,7 +3,7 @@
  * @param {Object} income - the income object to render as a form
  * @returns - the income form data (updated vs new)
  */
-const initializeFormData = (income) => ({
+export const initializeIncomeFormData = (income) => ({
     amount: income?.amount || '',
     last_payment_date: income?.last_payment_date
       ? new Date(income.last_payment_date).toISOString().split('T')[0]
@@ -11,5 +11,15 @@ const initializeFormData = (income) => ({
     frequency: income?.frequency || 'Semi-Monthly',
 });
 
-export default initializeFormData;
+
+export const initializeExpenseFormData = (expense) => ({
+  name: expense?.name || '',
+  amount: expense?.amount || '',
+  expense_date: expense?.expense_date
+    ? new Date(expense.expense_date).toISOString().split('T')[0]
+    : new Date().toISOString().split('T')[0],
+  category: expense?.category || 'Groceries',
+});
+
+
 
