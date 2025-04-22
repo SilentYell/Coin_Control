@@ -244,7 +244,11 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess, editingE
               {filteredExpenses.map((expense) => (
                 <tr
                   key={expense.expense_id}
-                  className={lastEditedId.type === 'Expense' && expense.expense_id === lastEditedId.id ? 'highlight-row' : ''}
+                  className={
+                    lastEditedId?.type === 'Expense' && lastEditedId?.id === expense.expense_id
+                      ? 'highlight-row'
+                      : ''
+                  }
                 >
                   <td className="amount">
                     ${Number(expense.amount).toFixed(2)}
