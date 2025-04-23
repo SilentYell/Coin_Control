@@ -7,7 +7,6 @@ import AddExpenseForm from './AddExpenseForm';
 import ExpensesList from './ExpensesList';
 import IncomeList from './IncomeList';
 import TrophyCase from './TrophyCase';
-import useApplicationData from '../hooks/useApplicationData';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import AllTransactions from './AllTransactions';
 
