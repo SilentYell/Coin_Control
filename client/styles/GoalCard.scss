@@ -4,7 +4,6 @@
   border-radius: 12px;
   box-shadow: 0 4px 16px rgba(0,0,0,0.07);
   padding: 1.2rem 1.5rem;
-  margin-bottom: 1rem;
   min-height: 60px;
   display: flex;
   flex-direction: column;
@@ -37,4 +36,56 @@
   0% { transform: scale(0.7); opacity: 0; }
   60% { transform: scale(1.1); opacity: 1; }
   100% { transform: scale(1); }
+}
+
+.goal-card-title {
+  font-weight: 700;
+  font-size: 1.15rem;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.goal-card-desc {
+  font-size: 0.98rem;
+  color: #876510;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.goal-card-progress-bar {
+  background: #eee;
+  border-radius: 8px;
+  height: 22px;
+  margin: 8px 0;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.goal-card-progress {
+  background: #FFD700;
+  height: 22px;
+  transition: width 0.5s;
+  border-radius: 8px 0 0 8px;
+}
+
+.goal-card-progress-label {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: #876510;
+  font-size: 0.97rem;
+  pointer-events: none;
+}
+
+.goal-card-compact {
+  text-align: center;
+  font-weight: 600;
+  font-size: 1rem;
 }

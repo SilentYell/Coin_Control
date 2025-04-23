@@ -12,7 +12,7 @@ const ResponsiveGridLayout = WidthProvider(Responsive);
 
 // Default layout for dashboard cards
 const defaultLayout = [
-  { i: 'goal', x: 0, y: 0, w: 6, h: 1 },
+  { i: 'goal', x: 0, y: 0, w: 6, h: 1.5 },
   { i: 'expenses', x: 0, y: 2, w: 2, h: 2 },
   { i: 'income', x: 2, y: 2, w: 2, h: 2 },
   { i: 'balance', x: 4, y: 2, w: 2, h: 2 },
