@@ -9,6 +9,7 @@ import IncomeList from './IncomeList';
 import useApplicationData from '../hooks/useApplicationData';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import AllTransactions from './AllTransactions';
+import { getUserTrophies } from '../services/api';
 
 const API_URL = 'http://localhost:3000/api';
 
@@ -339,7 +340,14 @@ const Navbar = (
                   headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify(payload),
                 });
+
+                // Update trophiesList with any newly earned trophies
                 const data = await res.json();
+                if (data.earnedTrophies?.length > 0) {
+                  const updatedTrophies = await getUserTrophies(user.user_id);
+                  setTrophiesList(updatedTrophies);
+                }
+
                 setGoalName('');
                 setGoalAmount('');
                 setGoalPercent('');
