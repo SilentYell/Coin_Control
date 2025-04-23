@@ -1,4 +1,5 @@
 .goal-card {
+  @extend .card-base !optional;
   box-sizing: border-box;
   width: 100%;
   height: 100%;
