@@ -1,6 +1,6 @@
 // Function to track states and Handle API fetches to render data
 import { useState, useCallback } from "react"
-import { getIncome, getExpenses } from "../services/api"
+import { getIncome, getExpenses, getUserTrophies } from "../services/api"
 
 const useApplicationData = () => {
   // Track income state --> maybe use reducer later?
@@ -12,6 +12,7 @@ const useApplicationData = () => {
     const [editSuccess, setEditSuccess] = useState(false); // track edit success -- for success message
     const [lastEditedTransactionType, setLastEditedTransactionType] = useState(null); // track transaction type edited -- for success message
     const [lastEditedId, setLastEditedId] = useState({ id : null, type: null }); // track last edit ID -- for visual edit confirmation
+    const [trophiesList, setTrophiesList] = useState([]);
 
   // Fetch incomes after state changes //ph change - use callback to prevent recreation
   const fetchIncomeList = useCallback(async () => {
@@ -36,6 +37,18 @@ const useApplicationData = () => {
       return [];
     }
   }, []);
+
+  const fetchTrophiesList = useCallback(async () => {
+    try {
+      const data = await getUserTrophies();
+      setTrophiesList(data);
+      return data;
+    } catch (error) {
+      console.error('Error fetching trophy data:', error);
+      return [];
+    }
+  }, []);
+
 
   const onSubmitSuccess = useCallback(async () => {
     const updatedData = await fetchIncomeList();
@@ -67,7 +80,9 @@ const useApplicationData = () => {
     lastEditedTransactionType,
     setLastEditedTransactionType,
     lastEditedId,
-    setLastEditedId
+    setLastEditedId,
+    trophiesList,
+    setTrophiesList
   }
 }
 
