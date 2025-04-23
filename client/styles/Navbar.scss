@@ -27,8 +27,22 @@ $shadow-color: rgba(0, 0, 0, 0.15);
   z-index: 1000;
 
   .navbar-logo {
-    font-size: 20px;
-    font-weight: bold;
+    display: flex;
+    padding-left: 12px;
+
+    // hover animation
+    transition: transform 0.3s ease;
+    
+    &:hover {
+      transform: translateY(2px) scale(1.05);
+    }
+    
+    span {
+      margin-left: 12px;
+      font-weight: 600;
+      font-size: 20px;
+      letter-spacing: 0.5px;
+    }
   }
 
   .navbar-links {
