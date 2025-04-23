@@ -31,6 +31,8 @@ function App() {
 
   const [user, setUser] = useState(null);
   const [showLogo, setShowLogo] = useState(false); // don't show logo immediately on load
+  const [goalRefreshTrigger, setGoalRefreshTrigger] = useState(0);
+  const handleGoalChanged = () => setGoalRefreshTrigger(prev => prev + 1);
 
   useEffect(() => {
     if (!user) {
@@ -93,6 +95,7 @@ function App() {
         setLastEditedTransactionType={setLastEditedTransactionType}
         lastEditedId={lastEditedId}
         setLastEditedId={setLastEditedId}
+        onGoalChanged={handleGoalChanged}
       />
 
       {!user ? (
@@ -107,7 +110,7 @@ function App() {
         </div>
       </>
       ) : (
-        <Dashboard expenses={expensesList} income={incomeList} />
+        <Dashboard expenses={expensesList} income={incomeList} goalRefreshTrigger={goalRefreshTrigger} />
       )}
     </div>
   );

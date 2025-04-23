@@ -36,7 +36,8 @@ const Navbar = (
     lastEditedTransactionType,
     setLastEditedTransactionType,
     lastEditedId,
-    setLastEditedId
+    setLastEditedId,
+    onGoalChanged
   }) => {
   const [showIncomeFormModal, setShowIncomeFormModal] = useState(false);
   const [showExpenseFormModal, setShowExpenseFormModal] = useState(false);
@@ -288,6 +289,10 @@ const Navbar = (
                 fetch(`${API_URL}/savings-goals/${user.user_id}`)
                   .then(res => res.json())
                   .then(data => setGoals(data));
+                // Trigger dashboard goal refresh
+                if (typeof onGoalChanged === 'function') {
+                  onGoalChanged();
+                }
               }}
             >
               <label>
@@ -346,6 +351,10 @@ const Navbar = (
                 fetch(`${API_URL}/savings-goals/${user.user_id}`)
                   .then(res => res.json())
                   .then(data => setGoals(data));
+                // Trigger dashboard goal refresh
+                if (typeof onGoalChanged === 'function') {
+                  onGoalChanged();
+                }
               }}
             >
               <label>
