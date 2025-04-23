@@ -1,23 +1,31 @@
 .income-form {
-  padding: 1.5rem;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 2rem;
   background-color: #FCEDD3; /* Light peach background */
   border-radius: 0.75rem;
   color: #000000; /* Black text color */
-  max-width: 700px;
-  margin: 0 auto 2rem;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 
   h2 {
     margin-bottom: 1.5rem;
     text-align: center;
     color: #1E4210; /* Dark green for headings */
+    font-size: 2rem;
+    font-weight: 700;
   }
 
   .form-group {
     margin-bottom: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 
     label {
-      display: block;
       margin-bottom: 0.5rem;
       color: #876510; /* Brown for labels */
       font-weight: 500;
