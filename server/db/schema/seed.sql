@@ -32,7 +32,7 @@ VALUES
   ('First steps', 'Add your first income or expense', '', 'first_transaction'),
   ('Savings Starter', 'Set your first savings goal', '', 'first_savings'),
   ('Consistent Logger', 'Add a transaction every day for 7 days', '', 'transaction_for_7_days'),
-  ('Goal Getter', 'Rech a savings goal', '', 'equal_to_goal'),
+  ('Goal Getter', 'Reach a savings goal', '', 'equal_to_goal'),
   ('All-In-One', 'Use all features at least once (income, expense, goal, etc.)', '', 'use_all_features'),
   ('Big Saver', 'Save over $1,000', '', 'save_income_1000');
 
