@@ -256,7 +256,7 @@ export const getUserTrophies = async (userId) => {
 
     if (!response.ok) throw new Error(`Error ${response.status}: ${response.statusText}`);
 
-    return;
+    return await response.json();
   } catch (error) {
     console.error(`Failed to retrieve trophies for user id ${userId}`, error);
     throw error;
