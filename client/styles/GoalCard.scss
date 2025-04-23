@@ -1,4 +1,4 @@
-$goalcard-accent: #FFD700;
+$goalcard-accent: #876510; // Use brown for accent text instead of yellow
 
 .goal-card {
   @extend .card-base !optional;
@@ -36,13 +36,13 @@ $goalcard-accent: #FFD700;
   font-size: 1.15rem;
   font-weight: bold;
   margin-bottom: 0.5rem;
-  color: #876510;
+  color: $goalcard-accent;
   text-align: center;
 }
 
 .goal-card-desc {
   font-size: 0.98rem;
-  color: #876510;
+  color: $goalcard-accent;
   margin-bottom: 0.5rem;
   text-align: center;
 }
@@ -58,7 +58,7 @@ $goalcard-accent: #FFD700;
 }
 
 .goal-card-progress {
-  background: $goalcard-accent;
+  background: #FFD700; // Keep progress bar gold for visual progress
   height: 22px;
   transition: width 0.5s;
   border-radius: 8px 0 0 8px;
@@ -74,7 +74,7 @@ $goalcard-accent: #FFD700;
   align-items: center;
   justify-content: center;
   font-weight: 600;
-  color: #876510;
+  color: $goalcard-accent;
   font-size: 0.97rem;
   pointer-events: none;
 }
