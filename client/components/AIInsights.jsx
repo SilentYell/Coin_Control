@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { getAIInsights } from '../services/api';
-import { FaLightbulb, FaArrowRight } from 'react-icons/fa';
+import { FaArrowRight } from 'react-icons/fa';
 import '../styles/AIInsights.scss';
 
 const AIInsights = ({
   expenses,
   income,
   preview = false,
-  maxPreviewLines = 3,
   onViewFullInsights = () => {},
 }) => {
   const [insights, setInsights] = useState('');
@@ -16,36 +15,35 @@ const AIInsights = ({
 
   useEffect(() => {
     const fetchInsights = async () => {
-      // fetch if there is data
-      if (!expenses.length || !income.length) {
-        return;
-      }
-
+      if (!expenses.length || !income.length) return;
       setLoading(true);
       try {
-        const data = await getAIInsights(expenses, income);
+        const data = await getAIInsights(
+          expenses,
+          income,
+          preview ? 'overview' : 'detailed'
+        );
         setInsights(data.insights);
       } catch (err) {
-        console.error('Error fetching insights:', err);
         setError('Failed to load insights');
       } finally {
         setLoading(false);
       }
     };
-
     fetchInsights();
-  }, [expenses, income]);
+  }, [expenses, income, preview]);
 
   if (!expenses.length || !income.length) {
     return null; // no render if no data
   }
 
-  // split text into paragraphs
-  const paragraphs = insights.split('\n').filter((p) => p.trim());
-  // preview mode
-  const displayParagraphs = preview
-    ? paragraphs.slice(0, maxPreviewLines)
-    : paragraphs;
+  // preview until financial tips
+  const parts = insights ? insights.split('Financial Tips:') : ['', ''];
+  const previewContent = parts[0];
+
+  // content displayed in preview mod
+  const contentToRender = preview ? previewContent : insights;
+  const paragraphs = contentToRender.split('\n').filter((p) => p.trim());
 
   return (
     <div className={`ai-insights ${preview ? 'preview-mode' : ''}`}>
@@ -54,14 +52,10 @@ const AIInsights = ({
       {!loading && !error && insights && (
         <>
           <div className="insights-content">
-            {displayParagraphs.map((paragraph, index) => (
+            {paragraphs.map((paragraph, index) => (
               <p key={index}>{paragraph}</p>
             ))}
-            {preview && paragraphs.length > maxPreviewLines && (
-              <p className="truncated">...</p>
-            )}
           </div>
-
           {preview && (
             <button onClick={onViewFullInsights} className="view-more-button">
               View Complete Analysis <FaArrowRight />

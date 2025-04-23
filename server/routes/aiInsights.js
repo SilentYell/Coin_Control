@@ -63,8 +63,8 @@ router.post('/', async (req, res) => {
       - Total Expenses: $${totalExpenses.toFixed(2)}
       - Available Balance: $${(totalIncome - totalExpenses).toFixed(2)}
       - Top spending categories: ${topCategories
-            .map((c) => `${c.name} ($${c.amount.toFixed(2)}, ${c.percentage}%)`)
-            .join(', ')}
+        .map((c) => `${c.name} ($${c.amount.toFixed(2)}, ${c.percentage}%)`)
+        .join(', ')}
       ${
         goal
           ? `- Savings Goal: ${goal.name} - $${goal.amount} (${
@@ -79,15 +79,18 @@ router.post('/', async (req, res) => {
       }
 
       INSTRUCTIONS:
-      1. Start with a brief unique greeting and ONE short unique financial wisdom quote
-      2. Analyze spending patterns focusing on the top categories
-      3. Provide exactly 3 specific, actionable tips to improve financial health
-      4. Each tip should be directly related to the user's actual spending patterns
-      5. Use a friendly, encouraging tone
-      6. Include relevant emojis (money, savings, budget related)
-      7. Please keep the entire response under 400 words
-
-      Format your response in clear paragraphs with the tips as a numbered list.`;
+      1. Begin with a personalized greeting and relevant financial wisdom quote.
+      2. Provide a CONCISE overview paragraph (60-80 words) analyzing their financial health, income-to-expense ratio, and savings progress.
+      3. On a new line, include "Financial Tips:" as a section heading.
+      4. Provide exactly 3 actionable, specific tips.
+      5. Each tip must directly address one of these areas:
+        - Specific spending patterns in their top categories
+        - Savings goal progress and strategies
+        - Budget optimization based on income frequency
+      6. Use a conversational, encouraging tone with strategic emoji placement.
+      7. End with a brief motivational statement about their next financial steps.
+      8. Keep the entire response under 350 words, prioritizing quality over quantity.
+      `;
 
     // Generate content
     const result = await model.generateContent(prompt);
