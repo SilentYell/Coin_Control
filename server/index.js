@@ -16,7 +16,7 @@ const userRoutes = require('./routes/userRoutes');
 const income = require('./routes/income')
 const savingsGoalsRouter = require('./routes/savingsGoals');
 const transactions = require('./routes/transactions');
-const badges = require('./routes/badges');
+const trophies = require('./routes/trophies');
 
 
 // middleware
@@ -28,7 +28,7 @@ app.use('/api', expenseRoutes);
 app.use('/api', userRoutes);
 app.use('/api', income(db));
 app.use('/api', transactions(db));
-app.use('/api', badges(db));
+app.use('/api', trophies(db));
 app.use('/api/savings-goals', savingsGoalsRouter);
 
 

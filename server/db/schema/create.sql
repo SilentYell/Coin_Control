@@ -3,8 +3,8 @@ DROP TABLE IF EXISTS Income CASCADE;
 DROP TABLE IF EXISTS Expenses CASCADE;
 DROP TABLE IF EXISTS Users CASCADE;
 DROP TABLE IF EXISTS SavingsGoals CASCADE;
-DROP TABLE IF EXISTS Badges CASCADE;
-DROP TABLE IF EXISTS User_Badges CASCADE;
+DROP TABLE IF EXISTS Trophies CASCADE;
+DROP TABLE IF EXISTS User_Trophies CASCADE;
 
 
 -- Create USERS table
@@ -46,19 +46,19 @@ CREATE TABLE SavingsGoals (
   created_at TIMESTAMP DEFAULT NOW()
 );
 
-CREATE TABLE Badges (
-  badge_id SERIAL PRIMARY KEY,
+CREATE TABLE Trophies (
+  trophy_id SERIAL PRIMARY KEY,
   name TEXT NOT NULL,
   description TEXT,
   icon TEXT, -- Optional, e.g. emoji or image URL
   criteria_key TEXT UNIQUE -- Used in logic to check eligibility
 );
 
-CREATE TABLE User_Badges (
+CREATE TABLE User_Trophies (
   user_id INTEGER REFERENCES users(user_id),
-  badge_id INTEGER REFERENCES badges(badge_id),
+  trophy_id INTEGER REFERENCES trophies(trophy_id),
   earned_at TIMESTAMP DEFAULT NOW(),
-  PRIMARY KEY (user_id, badge_id)
+  PRIMARY KEY (user_id, trophy_id)
 );
 
 -- Reset the sequence for the expense_id column

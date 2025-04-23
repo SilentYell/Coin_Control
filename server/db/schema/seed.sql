@@ -27,7 +27,7 @@ VALUES
   (4, 1, 'Weekly Groceries', -250, TO_DATE('25/03/2025', 'DD/MM/YYYY'), 'Groceries');
 
 
-INSERT INTO badges (name, description, icon, criteria_key)
+INSERT INTO Trophies(name, description, icon, criteria_key)
 VALUES
   ('First steps', 'Add your first income or expense', '', 1),
   ('Savings Starter', 'Set your first savings goal', '', 2),
@@ -37,7 +37,7 @@ VALUES
   ('Big Saver', 'Save over $1,000', '', 6);
 
 
-INSERT INTO user_badges (user_id, badge_id, earned_at)
+INSERT INTO User_Trophies (user_id, trophy_id, earned_at)
 VALUES
   (1, 1, '2024-12-23 01:18:36'),
   (2, 2, '2025-04-01 01:18:36'),

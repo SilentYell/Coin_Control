@@ -247,10 +247,10 @@ export const deleteTransaction = async (id, type) => {
   }
 };
 
-// Get badges for specific user
-export const getUserBadges = async (userId) => {
+// Get trophies for specific user
+export const getUserTrophies = async (userId) => {
   try {
-    const response = await fetch(`${API_URL}/badges/${userId}`, {
+    const response = await fetch(`${API_URL}/trophies/${userId}`, {
       method: 'GET',
     });
 
@@ -258,7 +258,7 @@ export const getUserBadges = async (userId) => {
 
     return;
   } catch (error) {
-    console.error(`Failed to retrieve badges for user id ${userId}`, error);
+    console.error(`Failed to retrieve trophies for user id ${userId}`, error);
     throw error;
   }
 };
