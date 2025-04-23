@@ -20,6 +20,8 @@
 
   .table-container {
     overflow-x: auto;
+    overflow-y: scroll;
+    max-height: 400px;
     background-color: #fcedd3; /* Light peach background */
     border-radius: 0.5rem;
     padding: 0.5rem;
