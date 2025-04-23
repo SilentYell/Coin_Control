@@ -98,7 +98,7 @@
 
     .actions {
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       gap: 0.5rem;
 
       button {
@@ -138,7 +138,7 @@
       }
 
       td.total-amount {
-        text-align: center;
+        text-align: right;
       }
     }
   }

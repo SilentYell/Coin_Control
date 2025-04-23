@@ -141,7 +141,7 @@
 
   .amount {
     font-weight: 600;
-    color: #1e4210;
+    color: #1e4210 !important;
   }
 
   .category-tag {
@@ -201,7 +201,7 @@
 
   .actions {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     gap: 0.5rem;
   }
 }
