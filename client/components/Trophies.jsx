@@ -3,10 +3,11 @@ import { getUserTrophies } from '../services/api';
 import formatDate from '../src/helpers/formatDate';
 
 export const Trophies = ({trophiesList, setTrophiesList}) => {
+  console.log("Trophies list: ", trophiesList)
 
   useEffect(() => {
     // Fetch trophies data from the backend when the component mounts
-    const fetchTophies = async () => {
+    const fetchTrophies = async () => {
       try {
         const data = await getUserTrophies();
         setTrophiesList(data); // Updates the state with fetched data
@@ -15,15 +16,8 @@ export const Trophies = ({trophiesList, setTrophiesList}) => {
       }
     };
 
-    // PH change - only fetch if we dont have data
-    if (!trophiesList || trophiesList.length === 0) {
-      fetchTophies();
-    }
+    fetchTrophies();
   }, []); // PH change - empty dependency array - only run on mount
-
-  console.log("trophies list:", trophiesList)
-
-
 
   return (
     <div className="trophies-list">
