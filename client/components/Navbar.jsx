@@ -6,6 +6,7 @@ import IncomeForm from './IncomeForm';
 import AddExpenseForm from './AddExpenseForm';
 import ExpensesList from './ExpensesList';
 import IncomeList from './IncomeList';
+import TrophyCase from './TrophyCase';
 import useApplicationData from '../hooks/useApplicationData';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import AllTransactions from './AllTransactions';
@@ -44,6 +45,7 @@ const Navbar = (
   const [showExpenseListModal, setShowExpenseListModal] = useState(false);
   const [showTransactionsModal, setShowTransactionsModal] = useState(false);
   const [showGoalModal, setShowGoalModal] = useState(false);
+  const [showTrophyCaseModal, setShowTrophyCaseModal] = useState(false);
   const [goalPercent, setGoalPercent] = useState('');
   const [goalName, setGoalName] = useState('');
   const [goalAmount, setGoalAmount] = useState('');
@@ -110,7 +112,7 @@ const Navbar = (
               </li>
               <li><button onClick={() => setShowIncomeFormModal(true)}>Add Income</button></li>
               <li><button onClick={() => setShowTransactionsModal(true)}>All Transactions</button></li>
-              <li><button>Trophy Case</button></li>
+              <li><button onClick={() => setShowTrophyCaseModal(true)}>Trophy Case</button></li>
               {user && (
                 <li className="mobile-logout">
                   <button className="logout-btn" onClick={handleLogout}>Logout</button>
@@ -410,6 +412,11 @@ const Navbar = (
               </div>
             ))}
           </div>
+        </Modal>
+      )}
+      {showTrophyCaseModal && (
+        <Modal isOpen={showTrophyCaseModal} onClose={() => setShowTrophyCaseModal(false)}>
+          <TrophyCase userId={user.user_id} />
         </Modal>
       )}
     </>

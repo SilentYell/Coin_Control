@@ -1,5 +1,6 @@
 // Handles income-related API routes
 const router = require("express").Router();
+const { checkAndAwardTrophies } = require('../helpers/trophyHelpers');
 
 module.exports = db => {
   // Get all income entries for the user
@@ -64,7 +65,7 @@ module.exports = db => {
         `SELECT * FROM SavingsGoals WHERE user_id = $1 ORDER BY created_at DESC LIMIT 1`,
         [user_id]
       );
-      const goal = goalResult.rows[0];
+      let goal = goalResult.rows[0];
 
       let allocated = 0;
       if (goal) {
@@ -77,13 +78,23 @@ module.exports = db => {
             `UPDATE SavingsGoals SET saved = saved + $1 WHERE goal_id = $2`,
             [allocated, goal.goal_id]
           );
+
+          // Querying the database for the updated SavingsGoal once new income is added for proper trophy implementation
+          const updatedGoalResult = await db.query(
+            `SELECT * FROM SavingsGoals WHERE goal_id = $1`, 
+            [goal.goal_id]
+          );
+          goal = updatedGoalResult.rows[0];
         }
       }
 
       // (Optional) Deduct allocated from user's current_balance
       await db.query(`UPDATE Users SET current_balance = current_balance - $1 WHERE user_id = $2`, [allocated, user_id]);
 
-      res.status(201).json(newIncome);
+      // Checking for and then awarding trophies using helper function
+      const newTrophies = await checkAndAwardTrophies(user_id, goal);
+
+      res.status(201).json({ newIncome, newTrophies });
     } catch (err) {
       console.error('Error inserting income and allocating to savings goal', err);
       res.status(500).json({error: 'Internal Server Error'});
