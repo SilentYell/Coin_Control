@@ -27,8 +27,11 @@ $shadow-color: rgba(0, 0, 0, 0.15);
   z-index: 1000;
 
   .navbar-logo {
+    position: relative;
+    align-items: center;
     display: flex;
     padding-left: 12px;
+    cursor: pointer;
 
     // hover animation
     transition: transform 0.3s ease;
@@ -36,12 +39,30 @@ $shadow-color: rgba(0, 0, 0, 0.15);
     &:hover {
       transform: translateY(2px) scale(1.05);
     }
-    
-    span {
-      margin-left: 12px;
-      font-weight: 600;
-      font-size: 20px;
-      letter-spacing: 0.5px;
+
+    // Subtle coin glint
+    &::after {
+      content: '';
+      position: absolute;
+      top: 18%;
+      left: 18%;
+      width: 32%;
+      height: 32%;
+      pointer-events: none;
+      border-radius: 50%;
+      background: radial-gradient(
+        circle,
+        rgba(255,255,255,0.8) 0%,
+        rgba(255,255,255,0.2) 60%,
+        rgba(255,255,255,0) 100%
+      );
+      opacity: 0;
+      z-index: 2;
+      transition: opacity 0.3s;
+    }
+
+    &:hover::after {
+      opacity: 1;
     }
   }
 
