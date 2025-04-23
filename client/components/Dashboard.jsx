@@ -26,7 +26,7 @@ function Dashboard({ expenses = [], income = [] }) {
     { i: 'income', x: 2, y: 2, w: 2, h: 2 },
     { i: 'balance', x: 4, y: 2, w: 2, h: 2 },
     { i: 'savings', x: 0, y: 4, w: 2, h: 2 },
-    { i: 'ai-insights', x: 2, y: 4, w: 2, h: 3 },
+    { i: 'ai-insights', x: 2, y: 4, w: 2, h: 4 },
     { i: 'pie-chart', x: 4, y: 4, w: 2, h: 6 },
   ]);
 
@@ -154,7 +154,7 @@ function Dashboard({ expenses = [], income = [] }) {
                 expenses={expenses}
                 income={income}
                 preview={true}
-                maxPreviewLines={2}
+                maxPreviewLines={5}
                 onViewFullInsights={() => setShowFinancialInsights(true)}
               />
             </Card>
