@@ -79,6 +79,7 @@ module.exports = db => {
             [allocated, goal.goal_id]
           );
 
+          // Querying the database for the updated SavingsGoal once new income is added for proper trophy implementation
           const updatedGoalResult = await db.query(
             `SELECT * FROM SavingsGoals WHERE goal_id = $1`, 
             [goal.goal_id]
@@ -90,6 +91,7 @@ module.exports = db => {
       // (Optional) Deduct allocated from user's current_balance
       await db.query(`UPDATE Users SET current_balance = current_balance - $1 WHERE user_id = $2`, [allocated, user_id]);
 
+      // Checking for and then awarding trophies using helper function
       const newTrophies = await checkAndAwardTrophies(user_id, goal);
 
       res.status(201).json({ newIncome, newTrophies });
