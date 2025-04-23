@@ -25,6 +25,10 @@ const AIInsights = ({
           preview ? 'overview' : 'detailed'
         );
         setInsights(data.insights);
+
+        setTimeout(() => {
+          window.dispatchEvent(new Event('resize'));
+        }, 100);
       } catch (err) {
         setError('Failed to load insights');
       } finally {
@@ -44,8 +48,7 @@ const AIInsights = ({
 
   // content displayed in preview mod
   const contentToRender = preview ? previewContent : insights;
-  const paragraphs = contentToRender.split('\n').filter(p => p.trim());
-
+  const paragraphs = contentToRender.split('\n').filter((p) => p.trim());
 
   return (
     <div
