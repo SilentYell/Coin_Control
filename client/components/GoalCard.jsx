@@ -7,10 +7,9 @@ import '../styles/GoalCard.scss';
  * @param {Object} props
  * @param {Object} props.goal - The savings goal object
  * @param {number} props.saved - Amount saved so far
- * @param {boolean} props.compact - If true, show compact view
  * @param {Function} props.onGoalComplete - Callback when goal is completed
  */
-const GoalCard = ({ goal, saved, compact, onGoalComplete }) => {
+const GoalCard = ({ goal, saved, onGoalComplete }) => {
   const [completed, setCompleted] = useState(false);
 
   useEffect(() => {
@@ -41,22 +40,14 @@ const GoalCard = ({ goal, saved, compact, onGoalComplete }) => {
   const percent = goal.amount > 0 ? Math.min((saved / goal.amount) * 100, 100) : 0;
   return (
     <div className="goal-card">
-      {compact ? (
-        <div className="goal-card-compact">
-          ${Number(saved).toFixed(2)} / ${Number(goal.amount).toFixed(2)} ({percent.toFixed(0)}%)
+      <div className="goal-card-title">{goal.name}</div>
+      <div className="goal-card-desc">Goal: ${Number(goal.amount).toFixed(2)} &nbsp;|&nbsp; Save {goal.percent}% of income</div>
+      <div className="goal-card-progress-bar">
+        <div className="goal-card-progress" style={{ width: `${percent}%` }} />
+        <div className="goal-card-progress-label">
+          Saved: ${Number(saved).toFixed(2)} / ${Number(goal.amount).toFixed(2)} ({percent.toFixed(0)}%)
         </div>
-      ) : (
-        <>
-          <div className="goal-card-title">{goal.name}</div>
-          <div className="goal-card-desc">Goal: ${Number(goal.amount).toFixed(2)} &nbsp;|&nbsp; Save {goal.percent}% of income</div>
-          <div className="goal-card-progress-bar">
-            <div className="goal-card-progress" style={{ width: `${percent}%` }} />
-            <div className="goal-card-progress-label">
-              Saved: ${Number(saved).toFixed(2)} / ${Number(goal.amount).toFixed(2)} ({percent.toFixed(0)}%)
-            </div>
-          </div>
-        </>
-      )}
+      </div>
     </div>
   );
 };
