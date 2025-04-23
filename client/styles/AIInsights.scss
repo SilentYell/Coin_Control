@@ -2,34 +2,21 @@
 .ai-insights {
   background-color: #fcedd3;
   border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 1.25rem;
   width: 100%;
-  position: relative;
-  overflow: hidden;
 
   // Preview mode enhancements
   &.preview-mode {
     .insights-content {
       overflow: hidden;
       position: relative;
-
-      // Gradient fade at bottom for preview mode
-      &:after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 60px; // Taller gradient
-        background: linear-gradient(transparent, #fcedd3);
-      }
+      padding-bottom: 15px;
     }
 
     .view-more-button {
       position: absolute;
-      bottom: 10px;
-      left: 15px;
+      bottom: 35px;
+      left: 35px;
       font-size: 0.8rem;
       padding: 4px 12px;
       background-color: #1e4210; // Theme green color
@@ -79,7 +66,7 @@
       }
 
       // Style the "Financial Tips:" heading
-      &:contains('Financial Tips:') {
+      &.financial-tips-heading {
         font-weight: 600;
         color: #1e4210;
         margin-top: 1rem;
