@@ -25,7 +25,9 @@ $incomelist-accent: #876510;
 
   .table-container {
     overflow-x: auto;
-    background-color: $incomelist-bg;
+    overflow-y: scroll;
+    max-height: 450px;
+    background-color: #fcedd3; /* Light peach background */
     border-radius: 0.5rem;
     padding: 0.5rem;
   }
