@@ -15,8 +15,6 @@
   }
 
   .layout {
-    background-image: linear-gradient(to right, #876510 1px, transparent 1px),
-      linear-gradient(to bottom, #876510 1px, transparent 1px);
     background-size: 100px 100px;
     position: relative;
   }
@@ -42,90 +40,93 @@
 .react-resizable-handle {
   width: 18px;
   height: 18px;
-  background: #ffd700;
-  border: 2px solid #876510;
   border-radius: 50%;
   position: absolute;
   z-index: 20;
-  opacity: 0.95;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 }
 
 // Enable all 8 resize handles for react-grid-layout
 .react-resizable-handle {
   &.react-resizable-handle-se {
     cursor: se-resize;
-    right: -9px;
-    bottom: -9px;
+    right: 0px;
+    bottom: 0px;
   }
   &.react-resizable-handle-sw {
     cursor: sw-resize;
-    left: -9px;
-    bottom: -9px;
+    left: 0px;
+    bottom: 0px;
   }
   &.react-resizable-handle-nw {
     cursor: nw-resize;
-    left: -9px;
-    top: -9px;
+    left: 0px;
+    top: 0px;
   }
   &.react-resizable-handle-ne {
     cursor: ne-resize;
-    right: -9px;
-    top: -9px;
+    right: 0px;
+    top: 0px;
   }
   &.react-resizable-handle-n {
     cursor: n-resize;
     left: 50%;
-    top: -9px;
+    top: 0px;
     transform: translateX(-50%);
   }
   &.react-resizable-handle-s {
     cursor: s-resize;
     left: 50%;
-    bottom: -9px;
+    bottom: 0px;
     transform: translateX(-50%);
   }
   &.react-resizable-handle-e {
     cursor: e-resize;
-    right: -9px;
+    right: 0px;
     top: 50%;
     transform: translateY(-50%);
   }
   &.react-resizable-handle-w {
     cursor: w-resize;
-    left: -9px;
+    left: 0px;
     top: 50%;
     transform: translateY(-50%);
   }
 }
 
-.react-resizable-handle::after {
-  content: 'Resize';
-  position: absolute;
-  top: -20px;
-  left: 0;
-  font-size: 0.75rem;
-  color: #3182ce;
-}
+.shine-btn {
+  position: relative;
+  overflow: hidden;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  letter-spacing: 0.3px;
+  background-color: #876510;
 
-.goal-card {
-  background: #fffbe6;
-  border: 2px solid #ffd700;
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
-  padding: 1.2rem 1.5rem;
-  margin-bottom: 1rem;
-  min-height: 60px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  font-size: 1.1rem;
-  transition: box-shadow 0.2s;
-}
-
-.goal-card.empty {
-  background: #fcedd3;
-  border: 1.5px dashed #ffd700;
-  color: #876510;
-  text-align: center;
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 100%);
+    transition: left 0.6s ease;
+  }
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.25);
+    &::before {
+      left: 100%;
+    }
+  }
+  &:active {
+    transform: translateY(1px);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  }
 }

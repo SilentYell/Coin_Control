@@ -1,8 +1,8 @@
 import anime from 'animejs/lib/anime.es.js';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, memo } from 'react';
 import '../styles/Card.scss';
 
-function Card({ title, value, description, children }) {
+function Card({ title, value, children }) {
   const cardRef = useRef(null);
 
   useEffect(() => {
@@ -21,10 +21,9 @@ function Card({ title, value, description, children }) {
     <div className="card" ref={cardRef}>
       <div className="card-title">{title}</div>
       <div className="card-value">{value}</div>
-      <div className="card-description">{description}</div>
       <div className="card-children">{children}</div>
     </div>
   );
 }
 
-export default Card;
+export default memo(Card);
