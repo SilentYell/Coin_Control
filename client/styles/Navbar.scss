@@ -1,12 +1,16 @@
 // Navbar.scss
 
 // Variables for colors and fonts (optional)
-$navbar-bg: #333;
-$navbar-link-color: white;
-$navbar-link-hover: #555;
-$logout-btn-bg: #f44336; // Red color for logout button
-$logout-btn-hover: #d32f2f;
-$login-btn-bg: #4CAF50;
+$navbar-bg: #1E4210; // Dark green from your theme
+$navbar-text: #FCEDD3; // Light gold text
+$navbar-link-color: #FCEDD3;
+$navbar-accent: #FFD700; // Gold accent
+$navbar-link-hover: rgba(255, 215, 0, 0.15); // Subtle gold hover
+$logout-btn-bg: #876510; // Gold brown for logout
+$logout-btn-hover: #9e7712; // Lighter gold on hover
+$login-btn-bg: #876510; // Gold brown for login
+$login-btn-hover: #9e7712; // Lighter gold on hover
+$shadow-color: rgba(0, 0, 0, 0.15);
 
 
 .navbar {
