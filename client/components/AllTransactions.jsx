@@ -140,7 +140,7 @@ const AllTransactions = ({ setEditTransactionType, onEditIncome, onEditExpense, 
               <tr className="total-row">
                 <td className="total-label">Total</td>
                 <td
-                  colSpan="2"
+                  colSpan="4"
                   className={
                     'total-amount ' +
                     (filteredTransactionList.reduce(
