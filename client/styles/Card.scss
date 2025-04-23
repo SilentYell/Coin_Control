@@ -1,11 +1,17 @@
+$card-bg: #FCEDD3;
+$card-border: #876510;
+$card-title: #876510;
+$card-value: #1E4210;
+$card-accent: #FFD700;
+
 .card-base {
   box-sizing: border-box;
   width: 100%;
   height: 100%;
-  background-color: #FCEDD3;
+  background-color: $card-bg;
   border-radius: 0.5rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border: 1px solid #876510;
+  border: 1px solid $card-border;
   padding: 0.75rem 1rem;
   text-align: center;
   color: #000000;
@@ -28,19 +34,19 @@
   font-size: 1.15rem;
   font-weight: bold;
   margin-bottom: 0.5rem;
-  color: #876510;
+  color: $card-title;
   text-align: center;
 }
 
 .card-value {
   font-size: 1.3rem;
-  color: #1E4210;
+  color: $card-value;
   text-align: center;
 }
 
 .card-description {
   font-size: 0.97rem;
-  color: #E6B800;
+  color: $card-accent;
   margin-top: 0.5rem;
   text-align: center;
 }

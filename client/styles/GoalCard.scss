@@ -1,3 +1,5 @@
+$goalcard-accent: #FFD700;
+
 .goal-card {
   @extend .card-base !optional;
 }
@@ -56,7 +58,7 @@
 }
 
 .goal-card-progress {
-  background: #FFD700;
+  background: $goalcard-accent;
   height: 22px;
   transition: width 0.5s;
   border-radius: 8px 0 0 8px;

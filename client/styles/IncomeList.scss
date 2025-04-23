@@ -1,26 +1,31 @@
+$incomelist-bg: #FCEDD3;
+$incomelist-primary: #1E4210;
+$incomelist-accent: #FFD700;
+
 .income-list {
-  padding: 1rem;
-  background-color: #fcedd3; /* Light peach background */
-  border-radius: 0.75rem;
-  color: #000000; /* Black text color */
+  background: $incomelist-bg;
+  color: $incomelist-primary;
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(30, 66, 16, 0.08);
 
   h2 {
     margin-bottom: 1.5rem;
     text-align: center;
-    color: #1e4210; /* Dark green for headings */
+    color: $incomelist-accent;
   }
 
   .empty-state {
-    background-color: #e6b800; /* Gold background */
+    background-color: $incomelist-accent;
     padding: 2rem;
     border-radius: 0.5rem;
     text-align: center;
-    color: #876510; /* Brown text color */
+    color: $incomelist-primary;
   }
 
   .table-container {
     overflow-x: auto;
-    background-color: #fcedd3; /* Light peach background */
+    background-color: $incomelist-bg;
     border-radius: 0.5rem;
     padding: 0.5rem;
   }
@@ -28,14 +33,14 @@
   /* Ensure the td elements are part of the animation */
   .income-table tbody tr.highlight-row td {
     animation: pulse 3.5s ease-in; /* Animation on each <td> */
-    background-color: #d2b955; /* Override with highlight color */
+    background-color: $incomelist-accent; /* Override with highlight color */
   }
   @keyframes pulse {
     0% {
-      background-color: #d2b955;
+      background-color: $incomelist-accent;
     }
     50% {
-      background-color: #fcedd3; /* Fade back to original color */
+      background-color: $incomelist-bg; /* Fade back to original color */
     }
     100% {
       background-color: transparent;
@@ -56,30 +61,29 @@
     }
 
     th {
-      background-color: #876510; /* Brown background */
+      background-color: $incomelist-primary; /* Brown background */
       font-weight: 600;
-      color: #fcedd3; /* Light peach text */
-      border-bottom: 2px solid #e6b800; /* Gold border */
+      color: $incomelist-bg; /* Light peach text */
+      border-bottom: 2px solid $incomelist-accent; /* Gold border */
     }
 
     td {
-      border-bottom: 1px solid #e6b800; /* Gold border */
-      background-color: #fcedd3; /* Light peach background */
-      color: #000000; /* Black text */
+      border-bottom: 1px solid $incomelist-accent; /* Gold border */
+      background-color: $incomelist-bg; /* Light peach background */
+      color: $incomelist-primary; /* Black text */
     }
 
     tbody tr:hover td {
-      background-color: rgba(230, 184, 0, 0.15);
+      background-color: rgba(255, 215, 0, 0.15);
     }
 
     .income-table tbody tr.highlight-row:hover {
       background-color: #b8f3b8 !important;
     }
 
-
     .amount {
       font-weight: 600;
-      color: #1e4210; /* Dark green for amounts */
+      color: $incomelist-primary; /* Dark green for amounts */
     }
 
     .actions {
@@ -96,7 +100,7 @@
         transition: background-color 0.2s ease;
 
         &.edit-btn {
-          background-color: #1e4210;
+          background-color: $incomelist-primary;
           color: white;
 
           &:hover {
@@ -138,4 +142,8 @@
 .income-list .total-amount.negative {
   color: #c53030 !important; // Red color
   font-weight: 700;
+}
+
+.income-list .income-amount {
+  color: $incomelist-accent;
 }
