@@ -29,12 +29,12 @@ VALUES
 
 INSERT INTO Trophies(name, description, icon, criteria_key)
 VALUES
-  ('First steps', 'Add your first income or expense', '', 1),
-  ('Savings Starter', 'Set your first savings goal', '', 2),
-  ('Consistent Logger', 'Add a transaction every day for 7 days', '', 3),
-  ('Goal Getter', 'Rech a savings goal', '', 4),
-  ('All-In-One', 'Use all features at least once (income, expense, goal, etc.)', '', 5),
-  ('Big Saver', 'Save over $1,000', '', 6);
+  ('First steps', 'Add your first income or expense', '', 'first_transaction'),
+  ('Savings Starter', 'Set your first savings goal', '', 'first_savings'),
+  ('Consistent Logger', 'Add a transaction every day for 7 days', '', 'transaction_for_7_days'),
+  ('Goal Getter', 'Rech a savings goal', '', 'equal_to_goal'),
+  ('All-In-One', 'Use all features at least once (income, expense, goal, etc.)', '', 'use_all_features'),
+  ('Big Saver', 'Save over $1,000', '', 'save_income_1000');
 
 
 INSERT INTO User_Trophies (user_id, trophy_id, earned_at)
