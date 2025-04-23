@@ -14,24 +14,6 @@
     padding-bottom: 0.75rem;
   }
 
-  // Successful Edit animation
-  .expenses-table tbody tr.highlight-row td {
-    animation: pulse 3.5s ease-in; /* Animation on each <td> */
-    background-color: #d2b955; /* Override with highlight color */
-  }
-  @keyframes pulse {
-    0% {
-      background-color: #d2b955;
-    }
-    50% {
-      background-color: #fcedd3; /* Fade back to original color */
-    }
-    100% {
-      background-color: transparent;
-    }
-  }
-
-  // category filter styling
   .filter-controls {
     display: flex;
     align-items: center;
@@ -63,11 +45,6 @@
         border-color: #1e4210;
         outline: none;
         box-shadow: 0 0 0 2px rgba(30, 66, 16, 0.2);
-      }
-
-      option {
-        background-color: #fcedd3;
-        color: #1e4210;
       }
     }
   }
@@ -101,12 +78,15 @@
     background-color: #fcedd3;
     border-radius: 0.5rem;
     overflow-x: auto;
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    max-height: 400px;
+    overflow-y: auto;
   }
 
   .expenses-table {
     width: 100%;
+    table-layout: fixed;
     border-collapse: separate;
     border-spacing: 0;
     border-radius: 0.5rem;
@@ -137,6 +117,17 @@
     tbody tr:hover td {
       background-color: rgba(230, 184, 0, 0.15);
     }
+
+    th.actions-header,
+    td.actions {
+      width: 110px;
+      min-width: 110px;
+      max-width: 110px;
+      text-align: right;
+      vertical-align: middle;
+      padding-right: 1rem;
+      box-sizing: border-box;
+    }
   }
 
   .amount {
@@ -151,67 +142,30 @@
     font-size: 0.85rem;
     font-weight: 500;
 
-    // category colours
-    &.Groceries {
-      background-color: #e9f5e6;
-      color: #1e4210;
-      border-left: 4px solid #1e4210;
-    }
-    &.Transportation {
-      background-color: #e6eff8;
-      color: #2b6cb0;
-      border-left: 4px solid #3182ce;
-    }
-    &.Entertainment {
-      background-color: #fcf3e2;
-      color: #876510;
-      border-left: 4px solid #b7791f;
-    }
-    &.Utilities {
-      background-color: #ede2f8;
-      color: #553c9a;
-      border-left: 4px solid #6b46c1;
-    }
-    &.Housing {
-      background-color: #fae9e7;
-      color: #822727;
-      border-left: 4px solid #c53030;
-    }
-    &.Healthcare {
-      background-color: #e7f7f2;
-      color: #1e584b;
-      border-left: 4px solid #2c7a7b;
-    }
-    &.Education {
-      background-color: #e6f2fa;
-      color: #2b6cb0;
-      border-left: 4px solid #2b6cb0;
-    }
-    &.Personal {
-      background-color: #f2e9f9;
-      color: #553c9a;
-      border-left: 4px solid #6b46c1;
-    }
-    &.Other {
-      background-color: #e2e8f0;
-      color: #4a5568;
-      border-left: 4px solid #718096;
-    }
+    &.Groceries { background-color: #e9f5e6; color: #1e4210; border-left: 4px solid #1e4210; }
+    &.Transportation { background-color: #e6eff8; color: #2b6cb0; border-left: 4px solid #3182ce; }
+    &.Entertainment { background-color: #fcf3e2; color: #876510; border-left: 4px solid #b7791f; }
+    &.Utilities { background-color: #ede2f8; color: #553c9a; border-left: 4px solid #6b46c1; }
+    &.Housing { background-color: #fae9e7; color: #822727; border-left: 4px solid #c53030; }
+    &.Healthcare { background-color: #e7f7f2; color: #1e584b; border-left: 4px solid #2c7a7b; }
+    &.Education { background-color: #e6f2fa; color: #2b6cb0; border-left: 4px solid #2b6cb0; }
+    &.Personal { background-color: #f2e9f9; color: #553c9a; border-left: 4px solid #6b46c1; }
+    &.Other { background-color: #e2e8f0; color: #4a5568; border-left: 4px solid #718096; }
   }
 
   .actions {
     display: flex;
-    flex-direction: row;
     gap: 0.5rem;
+    align-items: center;
+    justify-content: flex-end;
   }
 }
 
-.edit-btn {
+.edit-btn,
+.delete-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background-color: #1E4210;
-  color: #FCEDD3;
   border: none;
   border-radius: 0.375rem;
   padding: 0.4rem;
@@ -219,7 +173,11 @@
   height: 2.5rem;
   cursor: pointer;
   transition: background 0.2s;
+}
 
+.edit-btn {
+  background-color: #1e4210;
+  color: #fcedd3;
   &:hover {
     background-color: #2b6cb0;
     color: #fcedd3;
@@ -227,19 +185,8 @@
 }
 
 .delete-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   background-color: #c53030;
   color: #fff;
-  border: none;
-  border-radius: 0.375rem;
-  padding: 0.4rem;
-  width: 2.5rem;
-  height: 2.5rem;
-  cursor: pointer;
-  transition: background 0.2s;
-
   &:hover {
     background-color: #a81d1d;
   }
@@ -293,50 +240,32 @@
     }
   }
 
-  .submit-btn {
-    width: 100%;
-    padding: 0.75rem 1rem;
-    border: none;
-    border-radius: 0.375rem;
-    background-color: #1e4210;
-    color: #fcedd3;
-    font-weight: 600;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    box-sizing: border-box;
-
-    &:hover {
-      background-color: #2b6cb0;
-    }
-
-    &:active {
-      background-color: #2c5282;
-    }
-
-    &:focus {
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
-    }
-  }
-
+  .submit-btn,
   .cancel-btn {
     width: 100%;
     padding: 0.75rem 1rem;
     border: none;
     border-radius: 0.375rem;
-    background-color: #c53030;
-    color: #fff;
     font-weight: 600;
     font-size: 1rem;
     cursor: pointer;
-    margin-top: 0.5rem;
     box-sizing: border-box;
     transition: background-color 0.2s;
+  }
 
-    &:hover {
-      background-color: #a81d1d;
-    }
+  .submit-btn {
+    background-color: #1e4210;
+    color: #fcedd3;
+    &:hover { background-color: #2b6cb0; }
+    &:active { background-color: #2c5282; }
+    &:focus { outline: none; box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5); }
+  }
+
+  .cancel-btn {
+    background-color: #c53030;
+    color: #fff;
+    margin-top: 0.5rem;
+    &:hover { background-color: #a81d1d; }
   }
 }
 
