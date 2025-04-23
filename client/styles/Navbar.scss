@@ -171,6 +171,11 @@ $shadow-color: rgba(0, 0, 0, 0.15);
     color: $navbar-link-color;
     cursor: pointer;
     margin-left: auto;
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: $navbar-accent;
+    }
   }
   .mobile-logout {
     display: none;
@@ -186,14 +191,16 @@ $shadow-color: rgba(0, 0, 0, 0.15);
         flex-direction: column;
         align-items: center;
         position: absolute;
-        top: 75px;
+        top: 64px;
         left: 10px;
         right: 10px;
         background-color: $navbar-bg;
-        width: 100%;
+        width: calc(100% - 20px);
         transform: translateY(-100%);
         transition: transform 0.3s ease;
         z-index: 10;
+        border-radius: 0 0 8px 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   
         &.open {
           display: flex;
@@ -201,12 +208,26 @@ $shadow-color: rgba(0, 0, 0, 0.15);
           border-radius: 10px;
           width: auto;
           gap: 0px;
-          padding: 5px;
+          padding: 8px 0;
         }
   
         li {
           padding: 10px;
           text-align: center;
+
+          button {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 16px;
+
+            &:hover {
+              background-color: $navbar-link-hover;
+            }
+
+            &::after {
+              display: none;
+            }
+          }
         }
   
         a {
@@ -219,18 +240,23 @@ $shadow-color: rgba(0, 0, 0, 0.15);
           }
         }
       }
+      
       .hamburger {
         display: block;
       }
 
       .mobile-logout {
         display: block;
+
+        button {
+          background-color: $logout-btn-bg;
+          color: white;
+        }
       }
       
       .user-info {
         display: none;
       }
     }
-
 }
 
