@@ -38,18 +38,6 @@ const useApplicationData = () => {
     }
   }, []);
 
-  const fetchTrophiesList = useCallback(async () => {
-    try {
-      const data = await getUserTrophies();
-      setTrophiesList(data);
-      return data;
-    } catch (error) {
-      console.error('Error fetching trophy data:', error);
-      return [];
-    }
-  }, []);
-
-
   const onSubmitSuccess = useCallback(async () => {
     const updatedData = await fetchIncomeList();
     setEditingIncome(null);

@@ -96,6 +96,7 @@ function App() {
         setLastEditedTransactionType={setLastEditedTransactionType}
         lastEditedId={lastEditedId}
         setLastEditedId={setLastEditedId}
+        setTrophiesList={setTrophiesList}
       />
 
       {!user ? (

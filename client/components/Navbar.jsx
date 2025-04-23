@@ -35,7 +35,8 @@ const Navbar = (
     lastEditedTransactionType,
     setLastEditedTransactionType,
     lastEditedId,
-    setLastEditedId
+    setLastEditedId,
+    setTrophiesList
   }) => {
   const [showIncomeFormModal, setShowIncomeFormModal] = useState(false);
   const [showExpenseFormModal, setShowExpenseFormModal] = useState(false);
@@ -179,6 +180,7 @@ const Navbar = (
             setEditSuccess={setEditSuccess}
             setLastEditedId={setLastEditedId}
             setLastEditedTransactionType={setLastEditedTransactionType}
+            setTrophiesList={setTrophiesList}
             onSubmitSuccess={async () => {
               await onSubmitSuccess();
               setEditingIncome(undefined);
