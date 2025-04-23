@@ -40,70 +40,57 @@
 .react-resizable-handle {
   width: 18px;
   height: 18px;
-  background: #ffd700;
-  border: 2px solid #876510;
   border-radius: 50%;
   position: absolute;
   z-index: 20;
-  opacity: 0.95;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 }
 
 // Enable all 8 resize handles for react-grid-layout
 .react-resizable-handle {
   &.react-resizable-handle-se {
     cursor: se-resize;
-    right: -9px;
-    bottom: -9px;
+    right: 0px;
+    bottom: 0px;
   }
   &.react-resizable-handle-sw {
     cursor: sw-resize;
-    left: -9px;
-    bottom: -9px;
+    left: 0px;
+    bottom: 0px;
   }
   &.react-resizable-handle-nw {
     cursor: nw-resize;
-    left: -9px;
-    top: -9px;
+    left: 0px;
+    top: 0px;
   }
   &.react-resizable-handle-ne {
     cursor: ne-resize;
-    right: -9px;
-    top: -9px;
+    right: 0px;
+    top: 0px;
   }
   &.react-resizable-handle-n {
     cursor: n-resize;
     left: 50%;
-    top: -9px;
+    top: 0px;
     transform: translateX(-50%);
   }
   &.react-resizable-handle-s {
     cursor: s-resize;
     left: 50%;
-    bottom: -9px;
+    bottom: 0px;
     transform: translateX(-50%);
   }
   &.react-resizable-handle-e {
     cursor: e-resize;
-    right: -9px;
+    right: 0px;
     top: 50%;
     transform: translateY(-50%);
   }
   &.react-resizable-handle-w {
     cursor: w-resize;
-    left: -9px;
+    left: 0px;
     top: 50%;
     transform: translateY(-50%);
   }
-}
-
-.react-resizable-handle::after {
-  content: 'Resize';
-  position: absolute;
-  top: -20px;
-  left: 0;
-  font-size: 0.75rem;
-  color: #3182ce;
 }
 
 .goal-card {
