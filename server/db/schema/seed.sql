@@ -37,6 +37,15 @@ VALUES
   ('Big Saver', 'Save over $1,000', '', 6);
 
 
+INSERT INTO user_badges (user_id, badge_id, earned_at)
+VALUES
+  (1, 1, '2024-12-23 01:18:36'),
+  (2, 2, '2025-04-01 01:18:36'),
+  (1, 3, '2025-03-04 01:18:36'),
+  (3, 4, '2025-02-11 01:18:36'),
+  (2, 5, '2025-01-18 01:18:36'),
+  (4, 6, '2025-01-23 01:18:36');
+
 -- Reset the sequence for the expense_id column
 DO $$
 DECLARE
