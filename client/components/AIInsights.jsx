@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { getAIInsights } from '../services/api';
 import { FaArrowRight } from 'react-icons/fa';
 import '../styles/AIInsights.scss';
@@ -12,7 +12,6 @@ const AIInsights = ({
   const [insights, setInsights] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const containerRef = useRef(null);
 
   useEffect(() => {
     const fetchInsights = async () => {
@@ -25,10 +24,6 @@ const AIInsights = ({
           preview ? 'overview' : 'detailed'
         );
         setInsights(data.insights);
-
-        setTimeout(() => {
-          window.dispatchEvent(new Event('resize'));
-        }, 100);
       } catch (err) {
         setError('Failed to load insights');
       } finally {
@@ -51,10 +46,7 @@ const AIInsights = ({
   const paragraphs = contentToRender.split('\n').filter((p) => p.trim());
 
   return (
-    <div
-      ref={containerRef}
-      className={`ai-insights ${preview ? 'preview-mode' : ''}`}
-    >
+    <div className={`ai-insights ${preview ? 'preview-mode' : ''}`}>
       {loading && <p className="loading">Analyzing your finances...</p>}
       {error && <p className="error">{error}</p>}
       {!loading && !error && insights && (
