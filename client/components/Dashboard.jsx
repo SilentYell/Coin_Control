@@ -76,7 +76,7 @@ function Dashboard({ expenses = [], income = [] }) {
     );
     setTotalExpenses(totalExpenses);
     setTotalIncome(totalIncome);
-    setCurrentBalance(totalIncome - totalExpenses - totalSavings);
+    setCurrentBalance(totalIncome + totalExpenses - totalSavings);
   }, [expenses, income, totalSavings, goal]);
 
   return (
