@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import '../styles/Dashboard.scss';
 import '../styles/GoalCard.scss';
 
@@ -7,10 +7,9 @@ import '../styles/GoalCard.scss';
  * @param {Object} props
  * @param {Object} props.goal - The savings goal object
  * @param {number} props.saved - Amount saved so far
- * @param {boolean} props.compact - If true, show compact view
  * @param {Function} props.onGoalComplete - Callback when goal is completed
  */
-const GoalCard = ({ goal, saved, compact, onGoalComplete }) => {
+const GoalCard = ({ goal, saved, onGoalComplete }) => {
   const [completed, setCompleted] = useState(false);
 
   useEffect(() => {
@@ -41,24 +40,16 @@ const GoalCard = ({ goal, saved, compact, onGoalComplete }) => {
   const percent = goal.amount > 0 ? Math.min((saved / goal.amount) * 100, 100) : 0;
   return (
     <div className="goal-card">
-      {compact ? (
-        <div style={{ textAlign: 'center', fontWeight: 600 }}>
-          ${Number(saved).toFixed(2)} / ${Number(goal.amount).toFixed(2)} ({percent.toFixed(0)}%)
+      <div className="goal-card-title">{goal.name}</div>
+      <div className="goal-card-desc">Goal: ${Number(goal.amount).toFixed(2)} &nbsp;|&nbsp; Save {goal.percent}% of income</div>
+      <div className="goal-card-progress-bar">
+        <div className="goal-card-progress" style={{ width: `${percent}%` }} />
+        <div className="goal-card-progress-label">
+          Saved: ${Number(saved).toFixed(2)} / ${Number(goal.amount).toFixed(2)} ({percent.toFixed(0)}%)
         </div>
-      ) : (
-        <>
-          <div style={{ fontWeight: 700, fontSize: 18, marginBottom: 8 }}>{goal.name}</div>
-          <div style={{ fontSize: 14, color: '#876510', marginBottom: 8 }}>Goal: ${Number(goal.amount).toFixed(2)} &nbsp;|&nbsp; Save {goal.percent}% of income</div>
-          <div style={{ background: '#eee', borderRadius: 8, height: 22, margin: '8px 0', overflow: 'hidden', position: 'relative' }}>
-            <div style={{ width: `${percent}%`, background: '#FFD700', height: 22, transition: 'width 0.5s' }} />
-            <div style={{ position: 'absolute', left: 0, right: 0, top: 0, height: 22, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 600, color: percent > 50 ? '#222' : '#876510' }}>
-              Saved: ${Number(saved).toFixed(2)} / ${Number(goal.amount).toFixed(2)} ({percent.toFixed(0)}%)
-            </div>
-          </div>
-        </>
-      )}
+      </div>
     </div>
   );
 };
 
-export default GoalCard;
+export default memo(GoalCard);

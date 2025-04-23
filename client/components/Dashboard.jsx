@@ -5,43 +5,43 @@ import GoalCard from './GoalCard';
 import ExpensesPieChart from './ExpensesPieChart';
 import AIInsights from './AIInsights';
 import { Responsive, WidthProvider } from 'react-grid-layout';
-import { FaLightbulb } from 'react-icons/fa';
+import { FaLightbulb, FaLock, FaLockOpen } from 'react-icons/fa';
 import Modal from './Modal';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
-// Default layout for dashboard cards
-const defaultLayout = [
-  { i: 'goal', x: 0, y: 0, w: 6, h: 1 },
-  { i: 'expenses', x: 0, y: 2, w: 2, h: 2 },
-  { i: 'income', x: 2, y: 2, w: 2, h: 2 },
-  { i: 'balance', x: 4, y: 2, w: 2, h: 2 },
-  { i: 'savings', x: 0, y: 4, w: 2, h: 2 },
-  { i: 'ai-insights', x: 2, y: 4, w: 2, h: 4.5 },
-  { i: 'pie-chart', x: 4, y: 4, w: 2, h: 6 },
-];
-
-// Preset layouts
 const compactLayout = [
-  { i: 'goal', x: 0, y: 0, w: 6, h: 1 },
-  { i: 'expenses', x: 0, y: 2, w: 6, h: 2 },
-  { i: 'income', x: 0, y: 4, w: 6, h: 2 },
-  { i: 'balance', x: 0, y: 6, w: 6, h: 2 },
-  { i: 'savings', x: 0, y: 8, w: 6, h: 2 },
-  { i: 'ai-insights', x: 0, y: 10, w: 6, h: 4.5 },
-  { i: 'pie-chart', x: 0, y: 15, w: 6, h: 6 },
+  { i: 'goal', x: 0, y: 0, w: 6, h: 2, minW: 2, minH: 2 },
+  { i: 'expenses', x: 0, y: 2, w: 6, h: 2, minW: 2, minH: 2 },
+  { i: 'income', x: 0, y: 4, w: 6, h: 2, minW: 2, minH: 2 },
+  { i: 'balance', x: 0, y: 6, w: 6, h: 2, minW: 2, minH: 2 },
+  { i: 'savings', x: 0, y: 8, w: 6, h: 2, minW: 2, minH: 2 },
+  { i: 'ai-insights', x: 0, y: 10, w: 6, h: 4.5, minW: 2, minH: 6 },
+  { i: 'pie-chart', x: 0, y: 15, w: 6, h: 6, minW: 2, minH: 2 },
 ];
 const wideLayout = [
-  { i: 'goal', x: 0, y: 0, w: 2, h: 1 },
-  { i: 'expenses', x: 2, y: 0, w: 2, h: 2 },
-  { i: 'income', x: 4, y: 0, w: 2, h: 2 },
-  { i: 'balance', x: 0, y: 2, w: 2, h: 2 },
-  { i: 'savings', x: 2, y: 2, w: 2, h: 2 },
-  { i: 'ai-insights', x: 4, y: 2, w: 2, h: 8 },
-  { i: 'pie-chart', x: 0, y: 4, w: 4, h: 6 },
+  { i: 'goal', x: 0, y: 0, w: 2, h: 2, minW: 2, minH: 2 },
+  { i: 'expenses', x: 2, y: 0, w: 2, h: 2, minW: 1, minH: 1 },
+  { i: 'income', x: 4, y: 0, w: 2, h: 2, minW: 1, minH: 1 },
+  { i: 'balance', x: 0, y: 2, w: 2, h: 2, minW: 1, minH: 1 },
+  { i: 'savings', x: 2, y: 2, w: 2, h: 2, minW: 1, minH: 1 },
+  { i: 'ai-insights', x: 4, y: 2, w: 2, h: 8, minW: 1, minH: 6 },
+  { i: 'pie-chart', x: 0, y: 4, w: 4, h: 6, minW: 2, minH: 2 },
 ];
 
-function Dashboard({ expenses = [], income = [], goalRefreshTrigger }) {
+function getInitialLayout() {
+  const saved = localStorage.getItem('dashboardLayout');
+  if (saved) {
+    try {
+      return JSON.parse(saved);
+    } catch {
+      return wideLayout;
+    }
+  }
+  return wideLayout;
+}
+
+function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout }) {
   const [totalExpenses, setTotalExpenses] = useState(0);
   const [totalIncome, setTotalIncome] = useState(0);
   const [currentBalance, setCurrentBalance] = useState(0);
@@ -50,8 +50,7 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger }) {
   const [isEditable, setIsEditable] = useState(false);
   const [showFinancialInsights, setShowFinancialInsights] = useState(false);
 
-  // Track layout state to detect width for compact mode
-  const [layoutState, setLayoutState] = useState(defaultLayout);
+  const [layoutState, setLayoutState] = useState(getInitialLayout);
 
   // Helper to get the width of the goal card in grid columns
   const goalCardWidth = layoutState.find((l) => l.i === 'goal')?.w || 6;
@@ -102,40 +101,52 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger }) {
     setCurrentBalance(totalIncome + totalExpenses - totalSavings);
   }, [expenses, income, totalSavings, goal]);
 
+  useEffect(() => {
+    if (typeof onLogout === 'function') {
+      onLogout(() => {
+        localStorage.removeItem('dashboardLayout');
+      });
+    }
+  }, [onLogout]);
+
+  // Save only the layout array (not a preset name)
+  const handleSaveLayout = () => {
+    localStorage.setItem('dashboardLayout', JSON.stringify(layoutState));
+  };
+
+  // Update layoutState on drag/resize stop
+  const handleLayoutChange = (newLayout) => {
+    setLayoutState(newLayout);
+  };
+
   return (
     <div className="dashboard">
       <h1>Dashboard</h1>
       <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
         <button
           onClick={() => setIsEditable((prev) => !prev)}
-          style={{
-            padding: '0.5rem 1rem',
-            backgroundColor: isEditable ? '#e53e3e' : '#3182ce',
-            color: 'white',
-            border: 'none',
-            borderRadius: '0.25rem',
-            cursor: 'pointer',
-          }}
+          className="shine-btn"
+          title={isEditable ? 'Lock Layout' : 'Unlock Layout'}
         >
-          {isEditable ? 'Lock Layout' : 'Unlock Layout'}
-        </button>
-        <button
-          onClick={() => setLayoutState(defaultLayout)}
-          style={{ padding: '0.5rem 1rem', backgroundColor: '#3182ce', color: 'white', border: 'none', borderRadius: '0.25rem', cursor: 'pointer' }}
-        >
-          Default
+          {isEditable ? <FaLockOpen /> : <FaLock />}
         </button>
         <button
           onClick={() => setLayoutState(compactLayout)}
-          style={{ padding: '0.5rem 1rem', backgroundColor: '#3182ce', color: 'white', border: 'none', borderRadius: '0.25rem', cursor: 'pointer' }}
+          className="shine-btn"
         >
           Compact
         </button>
         <button
           onClick={() => setLayoutState(wideLayout)}
-          style={{ padding: '0.5rem 1rem', backgroundColor: '#3182ce', color: 'white', border: 'none', borderRadius: '0.25rem', cursor: 'pointer' }}
+          className="shine-btn"
         >
           Wide
+        </button>
+        <button
+          onClick={handleSaveLayout}
+          className="shine-btn"
+        >
+          Save Layout
         </button>
       </div>
       <div className="dashboard-grid">
@@ -153,7 +164,8 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger }) {
           rowHeight={70}
           isResizable={isEditable}
           isDraggable={isEditable}
-          onResizeStop={(newLayout) => setLayoutState(newLayout)}
+          onResizeStop={handleLayoutChange}
+          onDragStop={handleLayoutChange}
           preventCollision={false}
           compactType={'vertical'}
           margin={[16, 16]}
