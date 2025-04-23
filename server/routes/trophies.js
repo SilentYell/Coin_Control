@@ -3,7 +3,7 @@ const router = require("express").Router();
 
 module.exports = db => {
   // Get all trophies for the user
-  router.get("/trophies", (req, res) => {
+  router.get("/trophies/:userId", (req, res) => {
     const userId = 1; // change this later to be dynamic
 
     const query = `
