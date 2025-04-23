@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import '../styles/IncomeForm.scss'
-import { addIncome, updateIncome } from '../services/api';
+import { addIncomeAndCheckTrophies, updateIncome, getUserTrophies } from '../services/api';
 import { initializeIncomeFormData } from '../src/helpers/initializeFormData';
 
-const IncomeForm = ({ editingIncome, setEditingIncome, onSubmitSuccess, setEditSuccess, setLastEditedTransactionType, setLastEditedId }) => {
+const IncomeForm = ({ editingIncome, setEditingIncome, onSubmitSuccess, setEditSuccess, setLastEditedTransactionType, setLastEditedId, setTrophiesList }) => {
   // Track current formData
   const [formData, setFormData] = useState(() => initializeIncomeFormData(editingIncome));
   const [success, setSuccess] = useState(false);
@@ -71,26 +71,31 @@ const IncomeForm = ({ editingIncome, setEditingIncome, onSubmitSuccess, setEditS
         setTimeout(() => setLastEditedId(null), 3500); // clear visual on edited record
       } else {
         // Add new income
-        response = await addIncome(newIncome);
-
+        response = await addIncomeAndCheckTrophies(newIncome);
+        console.log('response: ', response)
         // Throw error if response fails
         if (!response) throw new Error('Failed to add income record.');
+
+        // Update trophiesList with any newly earned trophies
+        if (response.earnedTrophies?.length) {
+          await setTrophiesList(await getUserTrophies());
+        }
 
         // Show success message
         setSuccess(true);
         setTimeout(() => setSuccess(false), 2000);
       }
 
-      // Call parent to update list immediately
-      if (onSubmitSuccess) await onSubmitSuccess();
-
-      // Reset the form
-      setFormData({
-        amount: 0,
-        last_payment_date: new Date().toISOString().split('T')[0],
-        frequency: 'One-Time',
-      });
-
+      // Trigger list update and from reset if the trophy check worked
+      if (response) {
+        if (onSubmitSuccess) await onSubmitSuccess();
+        // Reset the form
+        setFormData({
+          amount: 0,
+          last_payment_date: new Date().toISOString().split('T')[0],
+          frequency: 'One-Time',
+        });
+      }
     } catch (error) {
       console.error('Error adding income:', error.message)
     }
