@@ -7,38 +7,36 @@ import AddExpenseForm from './AddExpenseForm';
 import ExpensesList from './ExpensesList';
 import IncomeList from './IncomeList';
 import TrophyCase from './TrophyCase';
-import useApplicationData from '../hooks/useApplicationData';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import AllTransactions from './AllTransactions';
 
 const API_URL = 'http://localhost:3000/api';
 
-const Navbar = (
-  { user,
-    handleLogin,
-    handleLogout,
-    incomeList,
-    setIncomeList,
-    getIncome,
-    editingIncome,
-    setEditingIncome,
-    editingExpense,
-    setEditingExpense,
-    editTransactionType,
-    setEditTransactionType,
-    onSubmitSuccess,
-    expensesList,
-    setExpensesList,
-    fetchExpensesList,
-    onExpenseSubmitSuccess,
-    editSuccess,
-    setEditSuccess,
-    lastEditedTransactionType,
-    setLastEditedTransactionType,
-    lastEditedId,
-    setLastEditedId,
-    onGoalChanged
-  }) => {
+function Navbar({
+  user,
+  handleLogin,
+  handleLogout,
+  incomeList,
+  setIncomeList,
+  getIncome,
+  editingIncome,
+  setEditingIncome,
+  editingExpense,
+  setEditingExpense,
+  editTransactionType,
+  setEditTransactionType,
+  onSubmitSuccess,
+  expensesList,
+  setExpensesList,
+  onExpenseSubmitSuccess,
+  editSuccess,
+  setEditSuccess,
+  lastEditedTransactionType,
+  setLastEditedTransactionType,
+  lastEditedId,
+  setLastEditedId,
+  onGoalChanged
+}) {
   const [showIncomeFormModal, setShowIncomeFormModal] = useState(false);
   const [showExpenseFormModal, setShowExpenseFormModal] = useState(false);
   const [showIncomeListModal, setShowIncomeListModal] = useState(false);
@@ -345,6 +343,7 @@ const Navbar = (
                   body: JSON.stringify(payload),
                 });
                 const data = await res.json();
+                console.log(data);
                 setGoalName('');
                 setGoalAmount('');
                 setGoalPercent('');
@@ -393,21 +392,21 @@ const Navbar = (
           <div style={{ marginTop: '2rem' }}>
             <h3>Your Savings Goals</h3>
             {goals.length === 0 && <div>No goals yet.</div>}
-            {goals.map(goal => (
-              <div key={goal.goal_id} style={{ marginBottom: '1.5rem', background: '#fcedd3', borderRadius: 8, padding: 12 }}>
-                <div style={{ fontWeight: 600 }}>{goal.name} (${goal.amount})</div>
-                <div style={{ fontSize: 14, color: '#876510' }}>Saving {goal.percent}% of future income</div>
+            {goals.map(goalItem => (
+              <div key={goalItem.goal_id} style={{ marginBottom: '1.5rem', background: '#fcedd3', borderRadius: 8, padding: 12 }}>
+                <div style={{ fontWeight: 600 }}>{goalItem.name} (${goalItem.amount})</div>
+                <div style={{ fontSize: 14, color: '#876510' }}>Saving {goalItem.percent}% of future income</div>
                 <div style={{ background: '#eee', borderRadius: 8, height: 16, margin: '8px 0', overflow: 'hidden' }}>
-                  <div style={{ width: `${getProgress(goal)}%`, background: '#FFD700', height: 16, transition: 'width 0.5s' }} />
+                  <div style={{ width: `${getProgress(goalItem)}%`, background: '#FFD700', height: 16, transition: 'width 0.5s' }} />
                 </div>
                 <div style={{ fontSize: 13 }}>
-                  Saved: ${Number(goal.saved || 0).toFixed(2)} / ${Number(goal.amount).toFixed(2)}
+                  Saved: ${Number(goalItem.saved || 0).toFixed(2)} / ${Number(goalItem.amount).toFixed(2)}
                 </div>
                 <button style={{marginTop:8}} onClick={() => {
-                  setEditingGoal(goal);
-                  setEditName(goal.name);
-                  setEditAmount(goal.amount);
-                  setEditPercent(goal.percent);
+                  setEditingGoal(goalItem);
+                  setEditName(goalItem.name);
+                  setEditAmount(goalItem.amount);
+                  setEditPercent(goalItem.percent);
                 }}>Edit</button>
               </div>
             ))}

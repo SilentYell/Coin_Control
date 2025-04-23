@@ -10,6 +10,37 @@ import Modal from './Modal';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
+// Default layout for dashboard cards
+const defaultLayout = [
+  { i: 'goal', x: 0, y: 0, w: 6, h: 1 },
+  { i: 'expenses', x: 0, y: 2, w: 2, h: 2 },
+  { i: 'income', x: 2, y: 2, w: 2, h: 2 },
+  { i: 'balance', x: 4, y: 2, w: 2, h: 2 },
+  { i: 'savings', x: 0, y: 4, w: 2, h: 2 },
+  { i: 'ai-insights', x: 2, y: 4, w: 2, h: 4.5 },
+  { i: 'pie-chart', x: 4, y: 4, w: 2, h: 6 },
+];
+
+// Preset layouts
+const compactLayout = [
+  { i: 'goal', x: 0, y: 0, w: 6, h: 1 },
+  { i: 'expenses', x: 0, y: 2, w: 6, h: 2 },
+  { i: 'income', x: 0, y: 4, w: 6, h: 2 },
+  { i: 'balance', x: 0, y: 6, w: 6, h: 2 },
+  { i: 'savings', x: 0, y: 8, w: 6, h: 2 },
+  { i: 'ai-insights', x: 0, y: 10, w: 6, h: 4.5 },
+  { i: 'pie-chart', x: 0, y: 15, w: 6, h: 6 },
+];
+const wideLayout = [
+  { i: 'goal', x: 0, y: 0, w: 2, h: 1 },
+  { i: 'expenses', x: 2, y: 0, w: 2, h: 2 },
+  { i: 'income', x: 4, y: 0, w: 2, h: 2 },
+  { i: 'balance', x: 0, y: 2, w: 2, h: 2 },
+  { i: 'savings', x: 2, y: 2, w: 2, h: 2 },
+  { i: 'ai-insights', x: 4, y: 2, w: 2, h: 8 },
+  { i: 'pie-chart', x: 0, y: 4, w: 4, h: 6 },
+];
+
 function Dashboard({ expenses = [], income = [], goalRefreshTrigger }) {
   const [totalExpenses, setTotalExpenses] = useState(0);
   const [totalIncome, setTotalIncome] = useState(0);
@@ -20,15 +51,7 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger }) {
   const [showFinancialInsights, setShowFinancialInsights] = useState(false);
 
   // Track layout state to detect width for compact mode
-  const [layoutState, setLayoutState] = useState([
-    { i: 'goal', x: 0, y: 0, w: 6, h: 2, minW: 2, minH: 1 },
-    { i: 'expenses', x: 0, y: 2, w: 2, h: 2 },
-    { i: 'income', x: 2, y: 2, w: 2, h: 2 },
-    { i: 'balance', x: 4, y: 2, w: 2, h: 2 },
-    { i: 'savings', x: 0, y: 4, w: 2, h: 2 },
-    { i: 'ai-insights', x: 2, y: 4, w: 2, h: 4.5 },
-    { i: 'pie-chart', x: 4, y: 4, w: 2, h: 6 },
-  ]);
+  const [layoutState, setLayoutState] = useState(defaultLayout);
 
   // Helper to get the width of the goal card in grid columns
   const goalCardWidth = layoutState.find((l) => l.i === 'goal')?.w || 6;
@@ -82,20 +105,39 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger }) {
   return (
     <div className="dashboard">
       <h1>Dashboard</h1>
-      <button
-        onClick={() => setIsEditable((prev) => !prev)}
-        style={{
-          marginBottom: '1rem',
-          padding: '0.5rem 1rem',
-          backgroundColor: isEditable ? '#e53e3e' : '#3182ce',
-          color: 'white',
-          border: 'none',
-          borderRadius: '0.25rem',
-          cursor: 'pointer',
-        }}
-      >
-        {isEditable ? 'Lock Layout' : 'Unlock Layout'}
-      </button>
+      <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
+        <button
+          onClick={() => setIsEditable((prev) => !prev)}
+          style={{
+            padding: '0.5rem 1rem',
+            backgroundColor: isEditable ? '#e53e3e' : '#3182ce',
+            color: 'white',
+            border: 'none',
+            borderRadius: '0.25rem',
+            cursor: 'pointer',
+          }}
+        >
+          {isEditable ? 'Lock Layout' : 'Unlock Layout'}
+        </button>
+        <button
+          onClick={() => setLayoutState(defaultLayout)}
+          style={{ padding: '0.5rem 1rem', backgroundColor: '#3182ce', color: 'white', border: 'none', borderRadius: '0.25rem', cursor: 'pointer' }}
+        >
+          Default
+        </button>
+        <button
+          onClick={() => setLayoutState(compactLayout)}
+          style={{ padding: '0.5rem 1rem', backgroundColor: '#3182ce', color: 'white', border: 'none', borderRadius: '0.25rem', cursor: 'pointer' }}
+        >
+          Compact
+        </button>
+        <button
+          onClick={() => setLayoutState(wideLayout)}
+          style={{ padding: '0.5rem 1rem', backgroundColor: '#3182ce', color: 'white', border: 'none', borderRadius: '0.25rem', cursor: 'pointer' }}
+        >
+          Wide
+        </button>
+      </div>
       <div className="dashboard-grid">
         <ResponsiveGridLayout
           className="layout"
@@ -112,7 +154,8 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger }) {
           isResizable={isEditable}
           isDraggable={isEditable}
           onResizeStop={(newLayout) => setLayoutState(newLayout)}
-          preventCollision={true}
+          preventCollision={false}
+          compactType={'vertical'}
           margin={[16, 16]}
           containerPadding={[16, 16]}
           resizeHandles={['se', 'sw', 'ne', 'nw', 'n', 's', 'e', 'w']}

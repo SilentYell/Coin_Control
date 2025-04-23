@@ -56,7 +56,7 @@ function App() {
 
       fetchData();
     }
-  }, [user, setIncomeList, fetchExpensesList]);
+  }, [user, setIncomeList, fetchExpensesList, getIncome]);
 
   const handleLogin = () => {
     setUser({
