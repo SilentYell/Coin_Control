@@ -21,6 +21,26 @@ const defaultLayout = [
   { i: 'pie-chart', x: 4, y: 4, w: 2, h: 6 },
 ];
 
+// Preset layouts
+const compactLayout = [
+  { i: 'goal', x: 0, y: 0, w: 6, h: 2 },
+  { i: 'expenses', x: 0, y: 2, w: 6, h: 2 },
+  { i: 'income', x: 0, y: 4, w: 6, h: 2 },
+  { i: 'balance', x: 0, y: 6, w: 6, h: 2 },
+  { i: 'savings', x: 0, y: 8, w: 6, h: 2 },
+  { i: 'ai-insights', x: 0, y: 10, w: 6, h: 4.5 },
+  { i: 'pie-chart', x: 0, y: 15, w: 6, h: 6 },
+];
+const wideLayout = [
+  { i: 'goal', x: 0, y: 0, w: 2, h: 2 },
+  { i: 'expenses', x: 2, y: 0, w: 2, h: 2 },
+  { i: 'income', x: 4, y: 0, w: 2, h: 2 },
+  { i: 'balance', x: 0, y: 2, w: 2, h: 2 },
+  { i: 'savings', x: 2, y: 2, w: 2, h: 2 },
+  { i: 'ai-insights', x: 4, y: 2, w: 2, h: 4.5 },
+  { i: 'pie-chart', x: 0, y: 4, w: 6, h: 6 },
+];
+
 function Dashboard({ expenses = [], income = [], goalRefreshTrigger }) {
   const [totalExpenses, setTotalExpenses] = useState(0);
   const [totalIncome, setTotalIncome] = useState(0);
@@ -117,6 +137,24 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger }) {
         >
           Reset Layout
         </button>
+        <button
+          onClick={() => setLayoutState(defaultLayout)}
+          style={{ padding: '0.5rem 1rem', backgroundColor: '#3182ce', color: 'white', border: 'none', borderRadius: '0.25rem', cursor: 'pointer' }}
+        >
+          Default
+        </button>
+        <button
+          onClick={() => setLayoutState(compactLayout)}
+          style={{ padding: '0.5rem 1rem', backgroundColor: '#3182ce', color: 'white', border: 'none', borderRadius: '0.25rem', cursor: 'pointer' }}
+        >
+          Compact
+        </button>
+        <button
+          onClick={() => setLayoutState(wideLayout)}
+          style={{ padding: '0.5rem 1rem', backgroundColor: '#3182ce', color: 'white', border: 'none', borderRadius: '0.25rem', cursor: 'pointer' }}
+        >
+          Wide
+        </button>
       </div>
       <div className="dashboard-grid">
         <ResponsiveGridLayout
@@ -134,7 +172,8 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger }) {
           isResizable={isEditable}
           isDraggable={isEditable}
           onResizeStop={(newLayout) => setLayoutState(newLayout)}
-          preventCollision={true}
+          preventCollision={false}
+          compactType={'vertical'}
           margin={[16, 16]}
           containerPadding={[16, 16]}
           resizeHandles={['se', 'sw', 'ne', 'nw', 'n', 's', 'e', 'w']}
