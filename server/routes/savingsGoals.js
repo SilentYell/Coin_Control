@@ -39,11 +39,19 @@ router.put('/:goal_id', async (req, res) => {
   const { goal_id } = req.params;
   const { name, amount, percent, saved } = req.body;
   try {
+    // Update the savings goal
     const result = await db.query(
       'UPDATE SavingsGoals SET name = $1, amount = $2, percent = $3, saved = $4 WHERE goal_id = $5 RETURNING *',
       [name, amount, percent, saved, goal_id]
     );
-    res.json(result.rows[0]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Savings goal not found.' });
+    }
+
+    const updatedGoal = result.rows[0];
+
+    res.json(updatedGoal);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
