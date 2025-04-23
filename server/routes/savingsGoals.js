@@ -34,7 +34,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-// Update a savings goal & check/add trophy if milestone met
+// Update a savings goal
 router.put('/:goal_id', async (req, res) => {
   const { goal_id } = req.params;
   const { name, amount, percent, saved } = req.body;
@@ -51,36 +51,7 @@ router.put('/:goal_id', async (req, res) => {
 
     const updatedGoal = result.rows[0];
 
-    // Check percent of goal saved
-    const savedPercent = (updatedGoal.saved / updatedGoal.amount) * 100;
-
-    // Check for trophy milestones
-    const trophiesResult = await db.query(
-      `SELECT * FROM trophies WHERE percent_required <= $1`,
-      [savedPercent]
-    );
-  
-    // Create array for trophies achieved
-    const newTrophies = [];
-
-    // Check if trophy has already been awarded 
-    for (const trophy of trophiesResult.rows) {
-      const existingTrophy = await db.query(
-        `SELECT * FROM user_trophies WHERE user_id = $1 AND trophy_id = $2`,
-        [updatedGoal.user_id, trophy.trophy_id]
-      );
-      
-      // If trophy has not been achieved, insert into user_trophies table
-      if (existingTrophy.rows.length === 0) {
-        await db.query(
-          `INSERT INTO user_trophies (user_id, trophy_id) VALUES ($1, $2)`,
-          [updatedGoal.user_id, trophy.trophy_id]
-        );
-        newTrophies.push(trophy);
-      }
-    }
-
-    res.json({ updatedGoal, newTrophies });
+    res.json(updatedGoal);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

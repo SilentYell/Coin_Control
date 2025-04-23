@@ -26,7 +26,7 @@ const TrophyCase = ({ userId }) => {
           <div key={trophy.trophy_id} className='trophy'>
             <h3>{trophy.name}</h3>
             <p>{trophy.description}</p>
-            <img src={trophy.image_url} alt={trophy.name}/>
+            <img src={trophy.icon_url} alt={trophy.name}/>
           </div>
         ))
       ) : (
