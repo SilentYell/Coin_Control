@@ -9,6 +9,7 @@ import IncomeList from './IncomeList';
 import TrophyCase from './TrophyCase';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import AllTransactions from './AllTransactions';
+import NavbarLogo from './NavbarLogo';
 
 const API_URL = 'http://localhost:3000/api';
 
@@ -76,7 +77,9 @@ function Navbar({
     <>
       <nav className='navbar'>
         <div className='navbar-logo'>
-          <span>Coin Control</span>
+          <NavbarLogo size="small" />
+          <span style={{ marginLeft: '10px', fontWeight: 'bold', fontSize: '18px' }}>
+          </span>
         </div>
         {user && (
           menuOpen ? (
