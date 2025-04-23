@@ -12,7 +12,7 @@ const ResponsiveGridLayout = WidthProvider(Responsive);
 
 // Default layout for dashboard cards
 const defaultLayout = [
-  { i: 'goal', x: 0, y: 0, w: 6, h: 2, minW: 2, minH: 1 },
+  { i: 'goal', x: 0, y: 0, w: 6, h: 1 },
   { i: 'expenses', x: 0, y: 2, w: 2, h: 2 },
   { i: 'income', x: 2, y: 2, w: 2, h: 2 },
   { i: 'balance', x: 4, y: 2, w: 2, h: 2 },
@@ -23,7 +23,7 @@ const defaultLayout = [
 
 // Preset layouts
 const compactLayout = [
-  { i: 'goal', x: 0, y: 0, w: 6, h: 2 },
+  { i: 'goal', x: 0, y: 0, w: 6, h: 1 },
   { i: 'expenses', x: 0, y: 2, w: 6, h: 2 },
   { i: 'income', x: 0, y: 4, w: 6, h: 2 },
   { i: 'balance', x: 0, y: 6, w: 6, h: 2 },
@@ -32,13 +32,13 @@ const compactLayout = [
   { i: 'pie-chart', x: 0, y: 15, w: 6, h: 6 },
 ];
 const wideLayout = [
-  { i: 'goal', x: 0, y: 0, w: 2, h: 2 },
+  { i: 'goal', x: 0, y: 0, w: 2, h: 1 },
   { i: 'expenses', x: 2, y: 0, w: 2, h: 2 },
   { i: 'income', x: 4, y: 0, w: 2, h: 2 },
   { i: 'balance', x: 0, y: 2, w: 2, h: 2 },
   { i: 'savings', x: 2, y: 2, w: 2, h: 2 },
-  { i: 'ai-insights', x: 4, y: 2, w: 2, h: 4.5 },
-  { i: 'pie-chart', x: 0, y: 4, w: 6, h: 6 },
+  { i: 'ai-insights', x: 4, y: 2, w: 2, h: 8 },
+  { i: 'pie-chart', x: 0, y: 4, w: 4, h: 6 },
 ];
 
 function Dashboard({ expenses = [], income = [], goalRefreshTrigger }) {
@@ -83,11 +83,6 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger }) {
     return (amount < 0 ? '-' : '') + '$' + Math.abs(amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
 
-  // Handler to reset dashboard layout
-  const handleResetLayout = () => {
-    setLayoutState(defaultLayout);
-  };
-
   // Fetch goal on mount and whenever income/expenses or goal changes
   useEffect(() => {
     fetchGoal();
@@ -123,19 +118,6 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger }) {
           }}
         >
           {isEditable ? 'Lock Layout' : 'Unlock Layout'}
-        </button>
-        <button
-          onClick={handleResetLayout}
-          style={{
-            padding: '0.5rem 1rem',
-            backgroundColor: '#aaa',
-            color: 'white',
-            border: 'none',
-            borderRadius: '0.25rem',
-            cursor: 'pointer',
-          }}
-        >
-          Reset Layout
         </button>
         <button
           onClick={() => setLayoutState(defaultLayout)}
