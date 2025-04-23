@@ -101,8 +101,10 @@
     background-color: #fcedd3;
     border-radius: 0.5rem;
     overflow-x: auto;
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    max-height: 400px;
+    overflow-y: auto;
   }
 
   .expenses-table {
