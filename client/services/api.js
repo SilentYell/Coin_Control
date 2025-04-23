@@ -246,3 +246,19 @@ export const deleteTransaction = async (id, type) => {
     throw error;
   }
 };
+
+// Get badges for specific user
+export const getUserBadges = async (user_id) => {
+  try {
+    const response = await fetch(`${API_URL}/badges/${user_id}`, {
+      method: 'GET',
+    });
+
+    if (!response.ok) throw new Error(`Error ${response.status}: ${response.statusText}`);
+
+    return;
+  } catch (error) {
+    console.error(`Failed to retrieve badges for user id ${user_id}`, error);
+    throw error;
+  }
+};
