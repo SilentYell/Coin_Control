@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import '../styles/Dashboard.scss';
 import '../styles/GoalCard.scss';
 
@@ -61,4 +61,4 @@ const GoalCard = ({ goal, saved, compact, onGoalComplete }) => {
   );
 };
 
-export default GoalCard;
+export default memo(GoalCard);

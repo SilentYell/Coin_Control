@@ -16,6 +16,7 @@
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  will-change: transform;
 }
 
 .card-title {
@@ -50,5 +51,9 @@
   margin: 0;
   line-height: 1.5;
   // text-align: left;
+}
+
+.goal-card {
+  will-change: transform;
 }
 

@@ -5,7 +5,7 @@ import GoalCard from './GoalCard';
 import ExpensesPieChart from './ExpensesPieChart';
 import AIInsights from './AIInsights';
 import { Responsive, WidthProvider } from 'react-grid-layout';
-import { FaLightbulb } from 'react-icons/fa';
+import { FaLightbulb, FaLock, FaLockOpen } from 'react-icons/fa';
 import Modal from './Modal';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
@@ -114,7 +114,7 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout })
     localStorage.setItem('dashboardLayout', JSON.stringify(layoutState));
   };
 
-  // Update layoutState on any layout change (drag/resize)
+  // Update layoutState on drag/resize stop
   const handleLayoutChange = (newLayout) => {
     setLayoutState(newLayout);
   };
@@ -132,9 +132,14 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout })
             border: 'none',
             borderRadius: '0.25rem',
             cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+            fontSize: '1.1rem',
           }}
+          title={isEditable ? 'Lock Layout' : 'Unlock Layout'}
         >
-          {isEditable ? 'Lock Layout' : 'Unlock Layout'}
+          {isEditable ? <FaLockOpen /> : <FaLock />}
         </button>
         <button
           onClick={() => setLayoutState(compactLayout)}
@@ -170,8 +175,8 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout })
           rowHeight={70}
           isResizable={isEditable}
           isDraggable={isEditable}
-          onLayoutChange={handleLayoutChange}
           onResizeStop={handleLayoutChange}
+          onDragStop={handleLayoutChange}
           preventCollision={false}
           compactType={'vertical'}
           margin={[16, 16]}
