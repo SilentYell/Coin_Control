@@ -36,10 +36,10 @@ VALUES
 -- Insert trophy data into the Trophies table
 INSERT INTO Trophies(trophy_id, name, description, percent_required, icon_url)
 VALUES
-  (1, 'Bronze Saver', 'Reached 25% of Savings Goal', 25, '/icons/trophy-25.svg'),
-  (2, 'Silver Saver', 'Reached 50% of Savings Goal', 50, '/icons/trophy-50.svg'),
-  (3, 'Gold Saver', 'Reached 75% of Savings Goal', 75, '/icons/trophy-75.svg'),
-  (4, 'Platinum Saver', 'Reached 100% of Savings Goal', 100, '/icons/trophy-100.svg');
+  (1, 'Bronze Saver', 'Reached 25% of Savings Goal', 25, '/icons/bronze.png'),
+  (2, 'Silver Saver', 'Reached 50% of Savings Goal', 50, '/icons/silver.png'),
+  (3, 'Gold Saver', 'Reached 75% of Savings Goal', 75, '/icons/gold.png'),
+  (4, 'Platinum Saver', 'Reached 100% of Savings Goal', 100, '/icons/platinum.png');
 
 -- Reset the sequence for the expense_id column
 DO $$
