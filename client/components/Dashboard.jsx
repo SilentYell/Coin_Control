@@ -10,7 +10,7 @@ import Modal from './Modal';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
-function Dashboard({ expenses = [], income = [] }) {
+function Dashboard({ expenses = [], income = [], goalRefreshTrigger }) {
   const [totalExpenses, setTotalExpenses] = useState(0);
   const [totalIncome, setTotalIncome] = useState(0);
   const [currentBalance, setCurrentBalance] = useState(0);
@@ -63,7 +63,7 @@ function Dashboard({ expenses = [], income = [] }) {
   // Fetch goal on mount and whenever income/expenses or goal changes
   useEffect(() => {
     fetchGoal();
-  }, [fetchGoal, income, expenses, goal]);
+  }, [fetchGoal, income, expenses, goalRefreshTrigger]);
 
   useEffect(() => {
     const totalExpenses = expenses.reduce(
