@@ -24,7 +24,7 @@ const AIInsights = ({
           preview ? 'overview' : 'detailed'
         );
         setInsights(data.insights);
-      } catch (err) {
+      } catch {
         setError('Failed to load insights');
       } finally {
         setLoading(false);

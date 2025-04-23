@@ -109,7 +109,10 @@ const AllTransactions = ({ setEditTransactionType, onEditIncome, onEditExpense, 
                     : ''
                   }
                 >
-                  <td className="amount">{transaction.amount}</td>
+                  <td className="amount">
+                    {/* Format transaction amounts and totals with commas and two decimals for better readability */}
+                    {Number(transaction.amount).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+                  </td>
                   <td>{formatDate(transaction.date)}</td>
                   <td>
                     <span className={`type-tag ${transaction.type}`}>{transaction.type}</span>
@@ -148,10 +151,10 @@ const AllTransactions = ({ setEditTransactionType, onEditIncome, onEditExpense, 
                       : 'positive')
                   }
                 >
-                  $
-                  {filteredTransactionList
+                  {/* Format transaction amounts and totals with commas and two decimals for better readability */}
+                  ${filteredTransactionList
                     .reduce((sum, transaction) => sum + Number(transaction.amount), 0)
-                    .toFixed(2)}
+                    .toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
                 </td>
               </tr>
             </tfoot>
