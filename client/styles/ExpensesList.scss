@@ -109,6 +109,7 @@
 
   .expenses-table {
     width: 100%;
+    table-layout: fixed;
     border-collapse: separate;
     border-spacing: 0;
     border-radius: 0.5rem;
@@ -138,6 +139,17 @@
 
     tbody tr:hover td {
       background-color: rgba(230, 184, 0, 0.15);
+    }
+
+    th.actions-header,
+    td.actions {
+      width: 110px;
+      min-width: 110px;
+      max-width: 110px;
+      text-align: right;
+      vertical-align: middle;
+      padding-right: 1rem;
+      box-sizing: border-box;
     }
   }
 
@@ -203,7 +215,6 @@
 
   .actions {
     display: flex;
-    flex-direction: row;
     gap: 0.5rem;
   }
 }
@@ -212,8 +223,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background-color: #1E4210;
-  color: #FCEDD3;
+  background-color: #1e4210;
+  color: #fcedd3;
   border: none;
   border-radius: 0.375rem;
   padding: 0.4rem;
