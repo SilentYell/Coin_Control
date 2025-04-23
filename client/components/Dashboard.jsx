@@ -125,37 +125,26 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout })
       <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
         <button
           onClick={() => setIsEditable((prev) => !prev)}
-          style={{
-            padding: '0.5rem 1rem',
-            backgroundColor: isEditable ? '#e53e3e' : '#3182ce',
-            color: 'white',
-            border: 'none',
-            borderRadius: '0.25rem',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.5rem',
-            fontSize: '1.1rem',
-          }}
+          className="shine-btn"
           title={isEditable ? 'Lock Layout' : 'Unlock Layout'}
         >
           {isEditable ? <FaLockOpen /> : <FaLock />}
         </button>
         <button
           onClick={() => setLayoutState(compactLayout)}
-          style={{ padding: '0.5rem 1rem', backgroundColor: '#3182ce', color: 'white', border: 'none', borderRadius: '0.25rem', cursor: 'pointer' }}
+          className="shine-btn"
         >
           Compact
         </button>
         <button
           onClick={() => setLayoutState(wideLayout)}
-          style={{ padding: '0.5rem 1rem', backgroundColor: '#3182ce', color: 'white', border: 'none', borderRadius: '0.25rem', cursor: 'pointer' }}
+          className="shine-btn"
         >
           Wide
         </button>
         <button
           onClick={handleSaveLayout}
-          style={{ padding: '0.5rem 1rem', backgroundColor: '#3182ce', color: 'white', border: 'none', borderRadius: '0.25rem', cursor: 'pointer' }}
+          className="shine-btn"
         >
           Save Layout
         </button>
