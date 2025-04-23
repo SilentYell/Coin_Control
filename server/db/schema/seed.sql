@@ -26,6 +26,17 @@ VALUES
   (3, 1, 'Phone Bill', -85, TO_DATE('20/03/2025', 'DD/MM/YYYY'), 'Utilities'),
   (4, 1, 'Weekly Groceries', -250, TO_DATE('25/03/2025', 'DD/MM/YYYY'), 'Groceries');
 
+
+INSERT INTO badges (name, description, icon, criteria_key)
+VALUES
+  ('First steps', 'Add your first income or expense', '', 1),
+  ('Savings Starter', 'Set your first savings goal', '', 2),
+  ('Consistent Logger', 'Add a transaction every day for 7 days', '', 3),
+  ('Goal Getter', 'Rech a savings goal', '', 4),
+  ('All-In-One', 'Use all features at least once (income, expense, goal, etc.)', '', 5),
+  ('Big Saver', 'Save over $1,000', '', 6);
+
+
 -- Reset the sequence for the expense_id column
 DO $$
 DECLARE
