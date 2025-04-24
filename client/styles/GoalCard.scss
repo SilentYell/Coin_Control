@@ -1,3 +1,5 @@
+@use "sass:color";
+
 $goalcard-accent: #876510; // Use brown for accent text instead of yellow
 $main-bg: #F3F4F6;
 $secondary: #2C3E50;
@@ -44,7 +46,7 @@ $text-light: #fff;
     color: $text-light;
 
     &:hover {
-      background: darken($cta, 10%);
+      background: color.adjust($cta, $lightness: -10%);
       color: $text-light;
     }
   }
