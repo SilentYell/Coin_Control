@@ -1,12 +1,27 @@
+$main-bg: #F3F4F6;
+$secondary: #2C3E50;
+$alt-btn: #1ABC9C;
+$cta: #E67E22;
+$accent: #BDC3C7;
+$text-dark: #2C3E50;
+$text-light: #fff;
+
 .savings-goal-modal {
+  // Glassmorphism styles
+  background: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 1rem;
+  border: 1.5px solid rgba(255, 255, 255, 0.28);
+  color: $text-dark;
+  padding: 2rem;
+  margin: 0;
   width: 100%;
   max-width: none;
-  margin: 0;
-  padding: 2rem;
-  background-color: #fcedd3;
-  border-radius: 0.75rem;
-  color: #000000;
   box-sizing: border-box;
+  position: relative;
+  animation: modal-fade-in 0.7s cubic-bezier(0.23, 1, 0.32, 1);
 
   // Header styling
   .modal-header {
@@ -68,10 +83,18 @@
   }
 
   button[type='submit'] {
-    background-color: #1e4210;
-    color: #fcedd3;
+    background: $secondary;
+    color: $text-light;
+    border-radius: 0.5rem;
+    font-weight: 700;
+    font-size: 1.1rem;
+    box-shadow: 0 2px 8px rgba(44,62,80,0.08);
+    transition: background 0.2s, transform 0.15s;
+
     &:hover {
-      background-color: #2b6cb0;
+      background: $alt-btn;
+      color: $text-dark;
+      transform: scale(1.04) rotate(-1deg);
     }
   }
 
@@ -152,4 +175,9 @@
       background: #2b6cb0;
     }
   }
+}
+
+@keyframes modal-fade-in {
+  0% { opacity: 0; transform: translateY(40px) scale(0.98); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
 }

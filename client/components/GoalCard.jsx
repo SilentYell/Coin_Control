@@ -97,8 +97,8 @@ const GoalCard = ({ goal, saved, onGoalComplete, isEditable }) => {
   }
   
   return (
-    <Card title={goal.name} isEditable={isEditable}>
-      <div className="goal-card-desc">Goal: ${Number(goal.amount).toFixed(2)} &nbsp;|&nbsp; Save {goal.percent}% of income</div>
+    <Card title={`Goal: ${goal.name}`} isEditable={isEditable}>
+      <div className="goal-card-desc">{parseInt(goal.percent, 10)}% of income being saved!</div>
       <div className="goal-card-progress-bar">
         <div className="goal-card-progress" ref={progressRef}>
           <div className="goal-card-shimmer" ref={shimmerRef} />
