@@ -95,7 +95,7 @@ const GoalCard = ({ goal, saved, onGoalComplete, isEditable }) => {
       </Card>
     );
   }
-  const percent = goal.amount > 0 ? Math.min((saved / goal.amount) * 100, 100) : 0;
+  
   return (
     <Card title={goal.name} isEditable={isEditable}>
       <div className="goal-card-desc">Goal: ${Number(goal.amount).toFixed(2)} &nbsp;|&nbsp; Save {goal.percent}% of income</div>
