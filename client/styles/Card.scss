@@ -12,6 +12,8 @@ $accent: #BDC3C7;
 $text-dark: #2C3E50;
 $text-light: #fff;
 
+$finance-font: 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
+
 .card-base {
   box-sizing: border-box;
   width: 100%;
@@ -31,6 +33,7 @@ $text-light: #fff;
   align-items: center;
   overflow: hidden;
   will-change: transform;
+  font-family: $finance-font;
 }
 
 .card {
@@ -54,15 +57,35 @@ $text-light: #fff;
 }
 
 .card-title {
-  font-size: 1.15rem;
-  font-weight: bold;
+  font-size: 1.4rem;
+  font-weight: 700;
+  font-family: $finance-font;
   margin-bottom: 0.5rem;
   text-align: center;
 }
 
 .card-value {
-  font-size: 1.3rem;
+  font-size: 2.2rem;
+  font-weight: 800;
+  font-family: $finance-font;
   text-align: center;
+  letter-spacing: 0.5px;
+}
+
+.card-value--expenses {
+  color: #c53030 !important;
+}
+
+.card-value--savings {
+  color: #E67E22 !important;
+}
+
+.card-value--positive {
+  color: #1E4210 !important;
+}
+
+.card-value--negative {
+  color: #c53030 !important;
 }
 
 .card-description {

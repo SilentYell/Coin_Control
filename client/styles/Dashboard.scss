@@ -105,6 +105,83 @@ $dashboard-accent: #E1B000;
   }
 }
 
+// Placement shadow for react-grid-layout
+.react-grid-placeholder {
+  background: rgba($dashboard-primary, 0.10); // subtle green shadow
+  border: 2px dashed $cta; // orange border
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba($dashboard-primary, 0.15);
+  transition: all 0.2s;
+  z-index: 10;
+}
+
+.dashboard-controls {
+  display: flex;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.lock-switch {
+  display: flex;
+  align-items: center;
+  width: 64px;
+  height: 36px;
+  background: $secondary;
+  border-radius: 50px;
+  position: relative;
+  cursor: pointer;
+  border: 2px solid $secondary;
+  transition: background 0.2s;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.12);
+  .switch-icon {
+    position: absolute;
+    top: 50%;
+    left: 16px; // Center of left circle (3px + 13px)
+    transform: translate(-50%, -50%);
+    color: $secondary;
+    font-size: 1.1rem;
+    z-index: 2;
+    transition: left 0.2s, color 0.2s;
+    pointer-events: none;
+  }
+  .switch-icon.lock {
+    left: 16px; // Center of left circle (3px + 13px)
+    color: $secondary;
+  }
+  .switch-icon.unlock {
+    left: 48px; // Center of right circle (31px + 13px)
+    color: $secondary;
+  }
+  .switch-circle {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 26px;
+    height: 26px;
+    background: $text-light;
+    border-radius: 50%;
+    transition: left 0.2s, background 0.2s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.10);
+  }
+  &.unlocked {
+    background: $cta;
+    border: 2px solid $cta;
+    .switch-circle {
+      left: 31px;
+      background: $text-light;
+    }
+    .switch-icon.lock {
+      color: $secondary;
+    }
+    .switch-icon.unlock {
+      color: $secondary;
+    }
+  }
+}
+
 .shine-btn {
   position: relative;
   overflow: hidden;
