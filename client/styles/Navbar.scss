@@ -22,8 +22,11 @@ $shadow-color: rgba(0, 0, 0, 0.15);
   justify-content: space-between; // Space out logo, links, and logout button
   align-items: center;
   background-color: $navbar-bg;
-  padding: 20px 20px;
+  height: 70px;
+  padding: 0px 20px;
   color: $navbar-link-color;
+  box-sizing: border-box;
+  box-shadow: 0 2px 5px $shadow-color;
   z-index: 1000;
 
   .navbar-logo {
@@ -78,8 +81,8 @@ $shadow-color: rgba(0, 0, 0, 0.15);
     gap: 20px;
     list-style: none;
     padding: 10;
-    padding-left: 200px;
-    margin: 0;
+    margin: 0 auto;
+    justify-content: center;
 
     li {
       position: relative;
