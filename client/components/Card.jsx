@@ -5,6 +5,7 @@ import '../styles/Card.scss';
 function Card({ title, value, valueClassName = '', children, isEditable = false, animateValue = false }) {
   const cardRef = useRef(null);
   const valueRef = useRef(null);
+  const shineRef = useRef(null);
   const [displayedValue, setDisplayedValue] = useState(value);
 
   // Wiggle animation function (reduced wiggle)
@@ -19,6 +20,23 @@ function Card({ title, value, valueClassName = '', children, isEditable = false,
     }
   };
 
+  // Shine effect on hover
+  const handleMouseEnter = () => {
+    if (shineRef.current) {
+      anime({
+        targets: shineRef.current,
+        translateX: ['-120%', '120%'],
+        opacity: [0, 0.7, 0],
+        duration: 700,
+        easing: 'easeOutCubic',
+        complete: () => {
+          shineRef.current.style.transform = 'translateX(-120%)';
+          shineRef.current.style.opacity = 0;
+        }
+      });
+    }
+  };
+
   // Animate value (number) if enabled
   useEffect(() => {
     if (!animateValue) {
@@ -27,7 +45,8 @@ function Card({ title, value, valueClassName = '', children, isEditable = false,
     }
     let from = 0;
     let to = value;
-    // Try to parse numbers from formatted strings
+// Try to parse numbers from formatted strings
+// Try to parse numbers from formatted strings
     if (typeof value === 'string' && value.match(/[-\d,.]+/)) {
       const match = value.match(/-?[\d,.]+/);
       to = match ? parseFloat(match[0].replace(/,/g, '')) : 0;
@@ -42,7 +61,7 @@ function Card({ title, value, valueClassName = '', children, isEditable = false,
       update: anim => {
         let v = anim.animations[0].currentValue;
         if (typeof value === 'string') {
-          // Format as currency if original value is currency
+// Format as currency if original value is currency
           if (value.includes('$')) {
             v = (v < 0 ? '-' : '') + '$' + Math.abs(v).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
           } else {
@@ -56,7 +75,7 @@ function Card({ title, value, valueClassName = '', children, isEditable = false,
     // eslint-disable-next-line
   }, [value, animateValue]);
 
-  // Wiggle on editable
+// Wiggle on editable
   useEffect(() => {
     if (isEditable) {
       wiggle();
@@ -81,7 +100,9 @@ function Card({ title, value, valueClassName = '', children, isEditable = false,
       className={`card${isEditable ? ' card--editable' : ''}`}
       ref={cardRef}
       style={isEditable ? { cursor: 'grab' } : {}}
+      onMouseEnter={handleMouseEnter}
     >
+      <div className="card-shine" ref={shineRef} />
       <div className="card-title">{title}</div>
       <div className={`card-value ${valueClassName}`} ref={valueRef}>
         {animateValue ? displayedValue : value}
