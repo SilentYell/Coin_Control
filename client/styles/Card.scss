@@ -72,6 +72,22 @@ $finance-font: 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
   letter-spacing: 0.5px;
 }
 
+.card-value--expenses {
+  color: #c53030 !important;
+}
+
+.card-value--savings {
+  color: #E67E22 !important;
+}
+
+.card-value--positive {
+  color: #1E4210 !important;
+}
+
+.card-value--negative {
+  color: #c53030 !important;
+}
+
 .card-description {
   font-size: 0.97rem;
   margin-top: 0.5rem;

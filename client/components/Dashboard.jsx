@@ -185,6 +185,7 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout })
               title="Total Expenses"
               value={formatCurrency(totalExpenses || 0)}
               description="Track your spending here."
+              valueClassName="card-value--expenses"
             />
           </div>
           <div key="income">
@@ -199,6 +200,7 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout })
               title="Current Balance"
               value={formatCurrency(currentBalance || 0)}
               description="Your current financial status (after savings)."
+              valueClassName={currentBalance >= 0 ? "card-value--positive" : "card-value--negative"}
             />
           </div>
           <div key="savings">
@@ -206,6 +208,7 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout })
               title="Total Savings"
               value={formatCurrency(totalSavings || 0)}
               description="Total allocated to your savings goals."
+              valueClassName="card-value--savings"
             />
           </div>
           <div key="ai-insights">
