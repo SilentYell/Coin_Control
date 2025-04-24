@@ -106,8 +106,13 @@ function Card({ title, value, valueClassName = '', children, isEditable = false,
     >
       <div className="card-shine" ref={shineRef} />
       <div className="card-title">{title}</div>
-      <div className={`card-value ${valueClassName}`} ref={valueRef}>
-        {animateValue ? displayedValue : value}
+      <div className={`card-value ${valueClassName}${title && [
+        'Current Balance',
+        'Total Expenses',
+        'Total Income',
+        'Total Savings'
+      ].includes(title) ? ' card-value--shine' : ''}`} ref={valueRef}>
+        <span className="shine-effect">{animateValue ? displayedValue : value}</span>
       </div>
       <div className="card-children">{children}</div>
     </div>
