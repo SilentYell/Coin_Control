@@ -20,7 +20,7 @@ const compactLayout = [
   { i: 'pie-chart', x: 0, y: 15, w: 6, h: 6, minW: 2, minH: 2 },
 ];
 const wideLayout = [
-  { i: 'goal', x: 0, y: 0, w: 2, h: 2, minW: 2, minH: 2 },
+  { i: 'goal', x: 0, y: 0, w: 6, h: 2, minW: 2, minH: 2 },
   { i: 'expenses', x: 2, y: 0, w: 2, h: 2, minW: 1, minH: 1 },
   { i: 'income', x: 4, y: 0, w: 2, h: 2, minW: 1, minH: 1 },
   { i: 'balance', x: 0, y: 2, w: 2, h: 2, minW: 1, minH: 1 },
