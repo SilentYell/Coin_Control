@@ -30,8 +30,10 @@ function Card({ title, value, valueClassName = '', children, isEditable = false,
         duration: 700,
         easing: 'easeOutCubic',
         complete: () => {
-          shineRef.current.style.transform = 'translateX(-120%)';
-          shineRef.current.style.opacity = 0;
+          if (shineRef.current) {
+            shineRef.current.style.transform = 'translateX(-120%)';
+            shineRef.current.style.opacity = 0;
+          }
         }
       });
     }
@@ -104,8 +106,13 @@ function Card({ title, value, valueClassName = '', children, isEditable = false,
     >
       <div className="card-shine" ref={shineRef} />
       <div className="card-title">{title}</div>
-      <div className={`card-value ${valueClassName}`} ref={valueRef}>
-        {animateValue ? displayedValue : value}
+      <div className={`card-value ${valueClassName}${title && [
+        'Current Balance',
+        'Total Expenses',
+        'Total Income',
+        'Total Savings'
+      ].includes(title) ? ' card-value--shine' : ''}`} ref={valueRef}>
+        <span className="shine-effect">{animateValue ? displayedValue : value}</span>
       </div>
       <div className="card-children">{children}</div>
     </div>
