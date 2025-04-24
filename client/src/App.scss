@@ -1,3 +1,12 @@
+// Color scheme variables
+$app-bg: #F3F4F6; // Main Background
+$app-primary: #2C3E50; // Secondary (Headers & Primary Buttons)
+$app-accent: #1ABC9C; // Alternate Button
+$app-cta: #E67E22; // Call to Action
+$app-light-accent: #BDC3C7; // Accents
+$app-text-dark: #2C3E50; // Text on light
+$app-text-light: #FFFFFF; // Text on dark
+
 #root {
   flex: 1;
   width: 100%;
@@ -10,13 +19,24 @@
   padding-top: 60px;
 }
 
+// Animation keyframes
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 @keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 @media (prefers-reduced-motion: no-preference) {
