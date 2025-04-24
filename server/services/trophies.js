@@ -16,33 +16,36 @@ async function checkAndAwardTrophies(userId) {
       WHERE ut.user_id = $1;
     `, [userId])
 
-  console.log("earned trophies: ", earned.rows);
+
+  console.log('earned trophies query: ', earned)
+
 
   const earnedKeys = earned.rows.map(r => r.criteria_key);
 
-  console.log("earned trophies KEYS: ", earnedKeys);
+  console.log('Already earned keys: ', earnedKeys)
   const trophiesToAward = [];
 
   // Loop through defined checks in trophyChecks.js
   for (const [key, checkFn] of Object.entries(trophyChecks)) {
     if (!earnedKeys.includes(key)) {
       const passed = await checkFn(db, userId);
-      console.log('checkFn used?', checkFn)
-      console.log('checkFn passed?', passed)
-
       if (passed) {
-        console.log('inside passed if: ', key)
         const trophy = await db.query(`SELECT trophy_id FROM trophies WHERE criteria_key = $1`, [key]);
-        console.log(`Query all trophies with key: ${key}`, trophy)
-        if (trophy.rows.length) {
-          await db.query(`INSERT INTO user_trophies (user_id, trophy_id) VALUES ($1, $2)`, [userId, trophy.rows[0].trophy_id]);
+
+        console.log('trophy', trophy)
+
+        if (trophy.rows.length > 0) {
+          await db.query(`
+            INSERT INTO user_trophies (user_id, trophy_id)
+            VALUES ($1, $2)
+            `, [userId, trophy.rows[0].trophy_id]);
           trophiesToAward.push(key);
+        } else {
+          console.warn(`No trophy found for criteria key: ${key}`)
         }
       }
     }
   }
-
-  console.log('trophiesToAward', trophiesToAward);
 
   return trophiesToAward;
 };
