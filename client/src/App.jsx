@@ -110,7 +110,8 @@ function App() {
         </div>
       </>
       ) : (
-        <Dashboard expenses={expensesList} income={incomeList} goalRefreshTrigger={goalRefreshTrigger} />
+        <Dashboard expenses={expensesList} income={incomeList} goalRefreshTrigger={goalRefreshTrigger} user={user}
+        />
       )}
     </div>
   );
