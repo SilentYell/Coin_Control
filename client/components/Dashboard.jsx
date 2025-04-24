@@ -56,20 +56,27 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout, u
   const [newTrophy, setNewTrophy] = useState(null);
 
   const [layoutState, setLayoutState] = useState(getInitialLayout);
+  const [layoutMode, setLayoutMode] = useState(() => {
+    const saved = localStorage.getItem('dashboardLayoutMode');
+    if (saved === 'compact' || saved === 'wide') return saved;
+    return 'wide';
+  });
+
+  useEffect(() => {
+    if (layoutMode === 'compact') {
+      setLayoutState(compactLayout);
+    } else {
+      setLayoutState(wideLayout);
+    }
+  }, [layoutMode]);
+
+  useEffect(() => {
+    localStorage.setItem('dashboardLayoutMode', layoutMode);
+  }, [layoutMode]);
 
   // Helper to get the width of the goal card in grid columns
   const goalCardWidth = layoutState.find((l) => l.i === 'goal')?.w || 6;
   const isGoalCardCompact = goalCardWidth < 3;
-
-  // Helper to determine if current layout is compact
-  const isCompact = layoutState.every((item, idx) => {
-    return (
-      compactLayout[idx] &&
-      item.i === compactLayout[idx].i &&
-      item.w === compactLayout[idx].w &&
-      item.h === compactLayout[idx].h
-    );
-  });
 
   // Helper to fetch the latest goal
   const fetchGoal = useCallback(async () => {
@@ -195,8 +202,8 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout, u
           )}
         </div>
         <ToggleLayoutButton
-          isCompact={isCompact}
-          onToggle={() => setLayoutState(isCompact ? wideLayout : compactLayout)}
+          isCompact={layoutMode === 'compact'}
+          onToggle={() => setLayoutMode(layoutMode === 'compact' ? 'wide' : 'compact')}
         />
         <button
           onClick={handleSaveLayout}

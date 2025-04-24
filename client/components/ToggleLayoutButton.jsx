@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import anime from 'animejs/lib/anime.es.js';
 import '../styles/Dashboard.scss';
 
@@ -7,82 +7,49 @@ const BUTTON_MAX_WIDTH = 180;
 
 export default function ToggleLayoutButton({ isCompact, onToggle }) {
   const [displayText, setDisplayText] = useState(isCompact ? 'Compact' : 'Wide');
-  const [animating, setAnimating] = useState(false);
   const btnRef = useRef(null);
+
+  // Keep displayText in sync with isCompact prop
+  useEffect(() => {
+    setDisplayText(isCompact ? 'Compact' : 'Wide');
+  }, [isCompact]);
 
   // Animate to wide on click (if compact), then change text
   const handleClick = () => {
-    if (animating) return;
-    setAnimating(true);
+    anime.remove(btnRef.current);
     anime({
       targets: btnRef.current,
       width: isCompact ? BUTTON_MAX_WIDTH : BUTTON_MIN_WIDTH,
       duration: 350,
       easing: 'easeInOutQuad',
       complete: () => {
-        setDisplayText(isCompact ? 'Wide' : 'Compact');
-        setAnimating(false);
         onToggle();
       },
     });
   };
 
-  // Animate stretch on hover (if compact), then change text after animation
+  // Animate stretch on hover
   const handleMouseEnter = () => {
-    if (isCompact && !animating) {
-      setAnimating(true);
-      anime({
-        targets: btnRef.current,
-        width: BUTTON_MAX_WIDTH,
-        duration: 250,
-        easing: 'easeInOutQuad',
-        complete: () => {
-          setDisplayText('Wide');
-          setAnimating(false);
-        },
-      });
-    } else if (!isCompact && !animating) {
-      setAnimating(true);
-      anime({
-        targets: btnRef.current,
-        width: BUTTON_MIN_WIDTH,
-        duration: 250,
-        easing: 'easeInOutQuad',
-        complete: () => {
-          setDisplayText('Compact');
-          setAnimating(false);
-        },
-      });
-    }
+    anime.remove(btnRef.current);
+    anime({
+      targets: btnRef.current,
+      width: isCompact ? BUTTON_MAX_WIDTH : BUTTON_MIN_WIDTH,
+      duration: 250,
+      easing: 'easeInOutQuad',
+    });
+    setDisplayText(isCompact ? 'Wide' : 'Compact');
   };
 
-  // Animate back to compact on mouse leave (if compact)
+  // Animate back on mouse leave
   const handleMouseLeave = () => {
-    if (isCompact && !animating) {
-      setAnimating(true);
-      anime({
-        targets: btnRef.current,
-        width: BUTTON_MIN_WIDTH,
-        duration: 250,
-        easing: 'easeInOutQuad',
-        complete: () => {
-          setDisplayText('Compact');
-          setAnimating(false);
-        },
-      });
-    } else if (!isCompact && !animating) {
-      setAnimating(true);
-      anime({
-        targets: btnRef.current,
-        width: BUTTON_MAX_WIDTH,
-        duration: 250,
-        easing: 'easeInOutQuad',
-        complete: () => {
-          setDisplayText('Wide');
-          setAnimating(false);
-        },
-      });
-    }
+    anime.remove(btnRef.current);
+    anime({
+      targets: btnRef.current,
+      width: isCompact ? BUTTON_MIN_WIDTH : BUTTON_MAX_WIDTH,
+      duration: 250,
+      easing: 'easeInOutQuad',
+    });
+    setDisplayText(isCompact ? 'Compact' : 'Wide');
   };
 
   return (
@@ -93,7 +60,6 @@ export default function ToggleLayoutButton({ isCompact, onToggle }) {
       onClick={handleClick}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      disabled={animating}
       aria-label={isCompact ? 'Switch to Wide layout' : 'Switch to Compact layout'}
     >
       {displayText}
