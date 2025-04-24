@@ -26,8 +26,8 @@ $shadow-color: rgba(0, 0, 0, 0.15);
   padding: 0px 20px;
   color: $navbar-link-color;
   box-sizing: border-box;
-  box-shadow: 0 2px 5px $shadow-color;
-  z-index: 1000;
+  box-shadow: 0 6px 24px 0 rgba(44,62,80,0.18), 0 1.5px 6px 0 rgba(44,62,80,0.10);
+  z-index: 100;
 
   .navbar-logo {
     position: relative;
