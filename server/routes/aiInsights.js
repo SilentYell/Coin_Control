@@ -80,7 +80,7 @@ router.post('/', async (req, res) => {
 
       INSTRUCTIONS:
       1. Begin with a personalized greeting and relevant financial wisdom quote.
-      2. Provide a CONCISE overview paragraph (60-80 words) analyzing their financial health, income-to-expense ratio, and savings progress.
+      2. Provide a CONCISE overview paragraph (200 words) analyzing their financial health, income-to-expense ratio, and savings progress.
       3. On a new line, include "Financial Tips:" as a section heading.
       4. Provide exactly 3 actionable, specific tips.
       5. Each tip must directly address one of these areas:
@@ -89,7 +89,8 @@ router.post('/', async (req, res) => {
         - Budget optimization based on income frequency
       6. Use a conversational, encouraging tone with strategic emoji placement.
       7. End with a brief motivational statement about their next financial steps.
-      8. Keep the entire response under 350 words, prioritizing quality over quantity.
+      8. Keep the entire response under 500 words, prioritizing quality over quantity.
+      9. Separate the overview and tips with a clear "Financial Tips:" heading on its own line
       `;
 
     // Generate content
