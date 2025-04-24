@@ -44,7 +44,6 @@ VALUES
   ('HUGE Spender', 'Spend over $1,000', '', 'spend_1000');
 
 
-
 INSERT INTO User_Trophies (user_id, trophy_id, earned_at)
 VALUES
   (1, 1, '2024-12-23 01:18:36'),
