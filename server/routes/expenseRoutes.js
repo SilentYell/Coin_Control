@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db/database');
 const { escapeLiteral } = require('pg');
+const { checkAndAwardTrophies } = require("../services/trophies");
 
 // GET /api/expenses - get all expenses for user
 router.get('/expenses', async (req, res) => {
@@ -55,6 +56,14 @@ router.post('/expenses', async (req, res) => {
       'INSERT INTO Expenses (user_id, amount, expense_date, category, name) VALUES ($1, $2, $3, $4, $5) RETURNING *',
       [userId, amount, expense_date, category, name]
     );
+
+    // Check user trophies after successful income post
+    let earnedTrophies = [];
+    try {
+      earnedTrophies = await checkAndAwardTrophies(userId);
+    } catch (error) {
+      console.error(`Error checking trophies`, error);
+    }
     res.status(201).json(result.rows[0]);
   } catch (error) {
     console.error('Error creating expense!', error);
