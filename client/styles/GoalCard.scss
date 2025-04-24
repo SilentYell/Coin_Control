@@ -13,14 +13,8 @@ $text-light: #fff;
   color: $text-dark;
   border: 1px solid $accent;
 
-  .goal-title {
-    color: $secondary;
-  }
-
-  .goal-value {
-    color: $secondary;
-  }
-
+  .goal-title,
+  .goal-value,
   .goal-description {
     color: $text-dark;
   }
@@ -88,13 +82,13 @@ $text-light: #fff;
   font-size: 1.15rem;
   font-weight: bold;
   margin-bottom: 0.5rem;
-  color: $goalcard-accent;
+  color: $secondary;
   text-align: center;
 }
 
 .goal-card-desc {
   font-size: 0.98rem;
-  color: $goalcard-accent;
+  color: $text-dark;
   margin-bottom: 0.5rem;
   text-align: center;
 }
@@ -126,7 +120,7 @@ $text-light: #fff;
   align-items: center;
   justify-content: center;
   font-weight: 600;
-  color: $goalcard-accent;
+  color: $secondary;
   font-size: 0.97rem;
   pointer-events: none;
 }
