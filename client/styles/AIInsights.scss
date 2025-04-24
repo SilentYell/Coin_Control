@@ -20,6 +20,10 @@ $text-light: #fff;
       overflow: hidden;
       position: relative;
       padding-bottom: 15px;
+
+      p {
+        text-align: left;
+      }
     }
 
     .view-more-button {
