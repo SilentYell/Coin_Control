@@ -111,3 +111,26 @@ $finance-font: 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
   will-change: transform;
 }
 
+.card--editable {
+  cursor: grab !important;
+  transition: box-shadow 0.2s;
+  box-shadow: 0 0 0 2px #E67E22, 0 4px 12px rgba(0,0,0,0.12);
+}
+.card--editable:active {
+  cursor: grabbing !important;
+}
+.card--editable:hover {
+  animation: card-wiggle 0.5s;
+}
+
+@keyframes card-wiggle {
+  0% { transform: translateX(0); }
+  10% { transform: translateX(-8px); }
+  20% { transform: translateX(8px); }
+  30% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  50% { transform: translateX(-4px); }
+  60% { transform: translateX(4px); }
+  100% { transform: translateX(0); }
+}
+
