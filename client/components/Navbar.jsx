@@ -427,24 +427,22 @@ function Navbar({
                   <button 
                     className="delete-goal"
                     onClick={async () => {
-                      if (window.confirm(`Are you sure you want to delete the goal "${goalItem.name}"?`)) {
-                        try {
-                          await fetch(`${API_URL}/savings-goals/${goalItem.goal_id}`, {
-                            method: 'DELETE',
-                          });
-                          
-                          // Update the goals list
-                          const updatedGoals = goals.filter(g => g.goal_id !== goalItem.goal_id);
-                          setGoals(updatedGoals);
-                          
-                          // Trigger dashboard refresh
-                          if (typeof onGoalChanged === 'function') {
-                            onGoalChanged();
-                          }
-                        } catch (error) {
-                          console.error('Error deleting goal:', error);
-                          alert('Failed to delete goal. Please try again.');
+                      try {
+                        await fetch(`${API_URL}/savings-goals/${goalItem.goal_id}`, {
+                          method: 'DELETE',
+                        });
+                        
+                        // Update the goals list
+                        const updatedGoals = goals.filter(g => g.goal_id !== goalItem.goal_id);
+                        setGoals(updatedGoals);
+                        
+                        // Trigger dashboard refresh
+                        if (typeof onGoalChanged === 'function') {
+                          onGoalChanged();
                         }
+                      } catch (error) {
+                        console.error('Error deleting goal:', error);
+                        alert('Failed to delete goal. Please try again.');
                       }
                     }}
                   >
