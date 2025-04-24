@@ -57,3 +57,64 @@ export const featureUsageCheck = async (db, userId, tablesToCheck) => {
   return true;
 ;}
 
+/**
+ * Functions takes in an array of dates and check if there are 7 days in a row
+ * @param {Array} dates - the array of dates
+ * @returns {Boolean} true if there are 7 conescutive days, false otherwise
+ */
+const sevenConsecutiveDaysCalc = (dates) => {
+  // Remove duplicates, sort ascending
+  const uniqueSorted = [...new Set(dates.map(date => date.toISOString().slice(0,10)))]
+    .map(date => new Date(date))
+    .sort((a,b) => a - b);
+
+    console.log('dates sorted and cleaned: ', uniqueSorted);
+
+  let maxStreak = 1;
+  let currentStreak = 1;
+
+  for (let i = 1; i < uniqueSorted.length; i++) {
+    const prev = uniqueSorted[i - 1];
+    const curr = uniqueSorted[i];
+
+    const diffInDays = Math.floor((curr - prev) / (1000 * 60 * 60 * 24));
+
+
+    if (diffInDays === 1) {
+      currentStreak++;
+      maxStreak = Math.max(maxStreak, currentStreak);
+    } else if (diffInDays > 1) {
+      currentStreak = 1;
+    }
+  }
+
+  return maxStreak >= 7;
+};
+
+/**
+ * Takes a database config and userId and queries the database for dates from income and expense tables for the user.
+ * @param {Files} db - database to query
+ * @param {Number} userId - - ID of the user to check data for
+ * @returns {Boolean} true if the sevenConsecutiveDaysCalc function is true, false otherwise
+ */
+export const transactionDatesCheck = async (db, userId) => {
+  const transactionDatesQuery = `
+  SELECT
+    DATE(last_payment_date) AS txn_date,
+    'Income' AS type
+  FROM income
+  WHERE user_id = $1
+
+  UNION
+
+  SELECT
+  DATE(expense_date) AS txn_date,
+  'Expense' AS type
+  FROM expenses
+  WHERE user_id = $1
+  `;
+
+  const { rows } = await db.query(transactionDatesQuery, [userId]);
+  const dates = rows.map(row => new Date(row.txn_date));
+  return sevenConsecutiveDaysCalc(dates);
+};

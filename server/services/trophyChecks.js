@@ -1,4 +1,4 @@
-const { featureUsageCheck, savingsMilestonesCheck, spendingMilestonesCheck } = require('./trophyCheckHelpers')
+const { featureUsageCheck, savingsMilestonesCheck, spendingMilestonesCheck, transactionDatesCheck } = require('./trophyCheckHelpers')
 
 
 const trophyChecks = {
@@ -59,10 +59,9 @@ const trophyChecks = {
     if (!spendings) return false;
     return Number(spendings?.total) > 1000;
   },
-    //transaction_for_7_days: async (db, userId)  => {
-  //  const result = await db.query(``, []);
-  //  return ;
-  //},
+  transaction_for_7_days: async (db, userId)  => {
+    return await transactionDatesCheck(db, userId);
+  },
   use_all_features: async (db, userId)  => {
     const tablesToCheck = {
       expenses: 'expenses',
