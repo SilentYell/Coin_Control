@@ -10,8 +10,8 @@ function Card({ title, value, valueClassName = '', children, isEditable = false 
     if (cardRef.current) {
       anime({
         targets: cardRef.current,
-        rotateZ: [0, -4, 4, -4, 4, -4, 4, 0],
-        duration: 200,
+        rotateZ: [0, -2, 2, -1.5, 1.5, -1, 1, 0],
+        duration: 900,
         easing: 'easeInOutSine',
       });
     }
@@ -30,6 +30,7 @@ function Card({ title, value, valueClassName = '', children, isEditable = false 
         targets: cardRef.current,
         opacity: [0, 1],
         translateY: [40, 0],
+        rotateZ: 0, // Ensure no leftover rotation
         duration: 800,
         easing: 'easeOutExpo',
       });
