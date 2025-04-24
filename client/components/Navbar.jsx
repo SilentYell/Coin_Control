@@ -402,21 +402,55 @@ function Navbar({
             <h3>Your Savings Goals</h3>
             {goals.length === 0 && <div>No goals yet.</div>}
             {goals.map(goalItem => (
-              <div key={goalItem.goal_id} className="goal-item">
+              <div key={goalItem.goal_id} className={`goal-item ${getProgress(goalItem) >= 100 ? 'completed-goal' : ''}`}>
                 <div className="goal-title">{goalItem.name} (${goalItem.amount})</div>
                 <div className="goal-percent">Saving {goalItem.percent}% of future income</div>
                 <div className="progress-bar">
                   <div className="progress-fill" style={{ width: `${getProgress(goalItem)}%` }}></div>
                 </div>
                 <div className="goal-saved">
-                  Saved: ${Number(goalItem.saved || 0).toFixed(2)} / ${Number(goalItem.amount).toFixed(2)}
+                  <span className="current-amount">${Number(goalItem.saved || 0).toFixed(2)}</span>
+                  <span> / </span>
+                  <span className="target-amount">${Number(goalItem.amount).toFixed(2)}</span>
                 </div>
-                <button onClick={() => {
-                  setEditingGoal(goalItem);
-                  setEditName(goalItem.name);
-                  setEditAmount(goalItem.amount); 
-                  setEditPercent(goalItem.percent);
-                }}>Edit</button>
+                <div className="goal-actions">
+                  <button 
+                    onClick={() => {
+                      setEditingGoal(goalItem);
+                      setEditName(goalItem.name);
+                      setEditAmount(goalItem.amount); 
+                      setEditPercent(goalItem.percent);
+                    }}
+                  >
+                    Edit
+                  </button>
+                  <button 
+                    className="delete-goal"
+                    onClick={async () => {
+                      if (window.confirm(`Are you sure you want to delete the goal "${goalItem.name}"?`)) {
+                        try {
+                          await fetch(`${API_URL}/savings-goals/${goalItem.goal_id}`, {
+                            method: 'DELETE',
+                          });
+                          
+                          // Update the goals list
+                          const updatedGoals = goals.filter(g => g.goal_id !== goalItem.goal_id);
+                          setGoals(updatedGoals);
+                          
+                          // Trigger dashboard refresh
+                          if (typeof onGoalChanged === 'function') {
+                            onGoalChanged();
+                          }
+                        } catch (error) {
+                          console.error('Error deleting goal:', error);
+                          alert('Failed to delete goal. Please try again.');
+                        }
+                      }
+                    }}
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
             ))}
           </div>

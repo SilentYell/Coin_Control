@@ -205,7 +205,9 @@ $savings-text-light: #ffffff; // Text on dark
     text-align: center;
     font-weight: 600;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
     animation: goal-desc-fadein 1.1s cubic-bezier(0.23, 1, 0.32, 1);
 
     .current-amount {
