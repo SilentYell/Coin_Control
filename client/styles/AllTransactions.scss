@@ -1,44 +1,70 @@
+// Colour Scheme
+$transaction-bg: #f3f4f6; // Main Background
+$transaction-primary: #2c3e50; // Secondary (Headers & Primary Buttons)
+$transaction-accent: #1abc9c; // Alternate Button
+$transaction-cta: #e67e22; // Call to Action
+$transaction-light-accent: #bdc3c7; // Accents
+$transaction-text-dark: #2c3e50; // Text on light
+$transaction-text-light: #ffffff; // Text on dark
+
 .transactions-list {
-  padding: 1rem;
-  background-color: #fcedd3; /* Light peach background */
+  padding: 2rem;
+  background-color: $transaction-bg;
   border-radius: 0.75rem;
-  color: #000000; /* Black text color */
+  color: $transaction-text-dark;
+  box-shadow: 0 4px 6px rgba(44, 62, 80, 0.1);
+  border: 1px solid $transaction-light-accent;
 
   h2 {
     margin-bottom: 1.5rem;
     text-align: center;
-    color: #1e4210; /* Dark green for headings */
+    color: $transaction-primary;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 2px solid $transaction-light-accent;
+    padding-bottom: 0.75rem;
+  }
+
+  .success-message {
+    background-color: rgba(46, 204, 113, 0.2);
+    color: #27ae60;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    text-align: center;
   }
 
   .empty-state {
-    background-color: #e6b800; /* Gold background */
+    background-color: $transaction-accent;
     padding: 2rem;
     border-radius: 0.5rem;
     text-align: center;
-    color: #876510; /* Brown text color */
+    color: $transaction-text-light;
+    margin: 1rem 0;
   }
 
   .table-container {
     overflow-x: auto;
-    overflow-y: scroll;
+    overflow-y: auto;
     max-height: 450px;
-    background-color: #fcedd3; /* Light peach background */
+    background-color: $transaction-bg;
     border-radius: 0.5rem;
-    padding: 0.5rem;
+    box-shadow: 0 2px 8px rgba(44, 62, 80, 0.08);
+    margin-bottom: 1rem;
   }
 
-
-  /* Ensure the td elements are part of the animation */
+  /* Highlight animation for edited rows */
   .transactions-table tbody tr.highlight-row td {
-    animation: pulse 3.5s ease-in; /* Animation on each <td> */
-    background-color: #d2b955; /* Override with highlight color */
+    animation: pulse 3.5s ease-in;
+    background-color: rgba(26, 188, 156, 0.2);
   }
+
   @keyframes pulse {
     0% {
-      background-color: #d2b955;
+      background-color: rgba(26, 188, 156, 0.4);
     }
     50% {
-      background-color: #fcedd3; /* Fade back to original color */
+      background-color: rgba(26, 188, 156, 0.2);
     }
     100% {
       background-color: transparent;
@@ -48,9 +74,8 @@
   .transactions-table {
     width: 100%;
     border-collapse: collapse;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-    border-radius: 0.5rem;
     overflow: hidden;
+    border-radius: 0.5rem;
 
     th,
     td {
@@ -59,42 +84,47 @@
     }
 
     th {
-      background-color: #876510; /* Brown background */
+      background-color: $transaction-primary;
       font-weight: 600;
-      color: #fcedd3; /* Light peach text */
-      border-bottom: 2px solid #e6b800; /* Gold border */
+      color: $transaction-text-light;
+      border-bottom: 2px solid $transaction-light-accent;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
     }
 
     td {
-      border-bottom: 1px solid #e6b800; /* Gold border */
-      background-color: #fcedd3; /* Light peach background */
-      color: #000000; /* Black text */
+      border-bottom: 1px solid $transaction-light-accent;
+      background-color: $transaction-bg;
+      color: $transaction-text-dark;
     }
 
     tbody tr:hover td {
-      background-color: rgba(230, 184, 0, 0.15);
+      background-color: rgba(26, 188, 156, 0.1);
     }
 
     .amount {
       font-weight: 600;
-      color: #1e4210; /* Dark green for amounts */
+      color: $transaction-text-dark;
     }
 
     .type-tag {
+      display: inline-block;
       padding: 5px 10px;
       border-radius: 4px;
+      font-size: 0.85rem;
       font-weight: 500;
 
-      // category colours
       &.Income {
-        background-color: #e9f5e6;
-        color: #1e4210;
-        border-left: 4px solid #1e4210;
+        background-color: rgba(26, 188, 156, 0.1);
+        color: $transaction-text-dark;
+        border-left: 4px solid $transaction-accent;
       }
+
       &.Expense {
-        background-color: #e6eff8;
-        color: #b03d2b;
-        border-left: 4px solid #ce3131;
+        background-color: rgba(230, 126, 34, 0.1);
+        color: $transaction-text-dark;
+        border-left: 4px solid $transaction-cta;
       }
     }
 
@@ -105,28 +135,33 @@
       gap: 0.5rem;
 
       button {
-        padding: 0.25rem 0.5rem;
+        padding: 0.4rem;
         font-size: 0.875rem;
         border: none;
-        border-radius: 0.25rem;
+        border-radius: 0.375rem;
         cursor: pointer;
         transition: background-color 0.2s ease;
+        width: 2.5rem;
+        height: 2.5rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
 
         &.edit-btn {
-          background-color: #1e4210;
-          color: white;
+          background-color: $transaction-primary;
+          color: $transaction-text-light;
 
           &:hover {
-            background-color: #2b6cb0;
+            background-color: $transaction-accent;
           }
         }
 
         &.delete-btn {
-          background-color: #e53e3e;
-          color: white;
+          background-color: $transaction-cta;
+          color: $transaction-text-light;
 
           &:hover {
-            background-color: #c53030;
+            background-color: darken($transaction-cta, 10%);
           }
         }
       }
@@ -154,48 +189,47 @@
   align-items: center;
   margin-bottom: 1.5rem;
   padding: 0.75rem 1rem;
-  background-color: rgba(230, 184, 0, 0.15);
+  background-color: rgba(26, 188, 156, 0.1);
   border-radius: 8px;
-  border: 1px solid #e6b800;
+  border: 1px solid $transaction-light-accent;
 
   label {
     margin-right: 10px;
     font-weight: 500;
-    color: #876510;
+    color: $transaction-text-dark;
   }
 
   select {
     padding: 8px 12px;
     border-radius: 6px;
-    border: 1px solid #876510;
-    background-color: #fcedd3;
+    border: 1px solid $transaction-light-accent;
+    background-color: $transaction-bg;
     min-width: 160px;
     font-size: 0.9rem;
-    color: #1e4210;
+    color: $transaction-text-dark;
     cursor: pointer;
     transition: border-color 0.15s ease;
 
     &:hover,
     &:focus {
-      border-color: #1e4210;
+      border-color: $transaction-accent;
       outline: none;
-      box-shadow: 0 0 0 2px rgba(30, 66, 16, 0.2);
+      box-shadow: 0 0 0 2px rgba(26, 188, 156, 0.2);
     }
 
     option {
-      background-color: #fcedd3;
-      color: #1e4210;
+      background-color: $transaction-bg;
+      color: $transaction-text-dark;
     }
   }
 }
 
-
 .transactions-list .total-amount.positive {
-  color: #24ac18 !important; // Green color
+  color: #2ecc71 !important; // Green color
   font-weight: 700;
 }
 
 .transactions-list .total-amount.negative {
-  color: #c53030 !important; // Red color
+  color: #e74c3c !important; // Red color
   font-weight: 700;
 }
