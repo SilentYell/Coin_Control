@@ -30,8 +30,13 @@ $shadow-color: rgba(0, 0, 0, 0.15);
     position: relative;
     align-items: center;
     display: flex;
-    padding-left: 12px;
+    padding-left: 14px;
     cursor: pointer;
+
+    svg, img {
+      transform: scale(1.15);
+      transform-origin: center center;
+    }
 
     // hover animation
     perspective: 800px;
@@ -72,7 +77,8 @@ $shadow-color: rgba(0, 0, 0, 0.15);
     display: flex;
     gap: 20px;
     list-style: none;
-    padding: 0;
+    padding: 10;
+    padding-left: 200px;
     margin: 0;
 
     li {
