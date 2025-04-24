@@ -30,8 +30,10 @@ function Card({ title, value, valueClassName = '', children, isEditable = false,
         duration: 700,
         easing: 'easeOutCubic',
         complete: () => {
-          shineRef.current.style.transform = 'translateX(-120%)';
-          shineRef.current.style.opacity = 0;
+          if (shineRef.current) {
+            shineRef.current.style.transform = 'translateX(-120%)';
+            shineRef.current.style.opacity = 0;
+          }
         }
       });
     }
