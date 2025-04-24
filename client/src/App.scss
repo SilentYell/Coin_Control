@@ -23,22 +23,22 @@ $app-text-light: #FFFFFF; // Text on dark
   min-height: 100vh;
   background: linear-gradient(135deg, $app-bg 0%, darken($app-bg, 5%) 100%);
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  padding-top: 70px; 
+  padding-top: 40px; 
   
   .hero-section {
     display: flex;
-    padding: 4rem 2rem;
+    padding: 2rem 2rem;
     max-width: 1200px;
     margin: 0 auto;
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: 2rem;
+    gap: 1rem;
     
     @media (max-width: 768px) {
       flex-direction: column-reverse;
       text-align: center;
-      padding: 2rem 1rem;
+      padding: 1.5rem 1rem;
     }
     
     .hero-content {
@@ -67,7 +67,7 @@ $app-text-light: #FFFFFF; // Text on dark
       justify-content: center;
       align-items: center;
       min-width: 300px;
-      min-height: 300px;
+      min-height: 200px;
       position: relative;
       
       .logo-animation {
@@ -119,10 +119,10 @@ $app-text-light: #FFFFFF; // Text on dark
   
   .landing-footer {
     text-align: center;
-    padding: 2rem;
+    padding: 1rem;
     color: lighten($app-text-dark, 30%);
     font-size: 0.875rem;
-    margin-top: 3rem;
+    margin-top: 1.5rem;
   }
 }
 
