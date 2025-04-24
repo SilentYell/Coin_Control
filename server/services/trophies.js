@@ -23,26 +23,17 @@ async function checkAndAwardTrophies(userId) {
   console.log("earned trophies KEYS: ", earnedKeys);
   const trophiesToAward = [];
 
-  let saved;
-
   // Loop through defined checks in trophyChecks.js
   for (const [key, checkFn] of Object.entries(trophyChecks)) {
     if (!earnedKeys.includes(key)) {
-      // only fetch 'saved' if current checkFn needs it
-      let context = {};
-      if (checkFn.length >= 3) {
-        // Lazy fetch savings
-        if (saved === undefined) {
-          const savingsResult = await db.query(`SELECT saved FROM SavingsGoals WHERE user_id = $1`, [userId]);
-          saved = Number(savingsResult.rows[0]?.saved | 0);
-        }
-
-        context.saved = saved
-      }
-      const passed = await checkFn(db, userId, context);
+      const passed = await checkFn(db, userId);
+      console.log('checkFn used?', checkFn)
       console.log('checkFn passed?', passed)
+
       if (passed) {
+        console.log('inside passed if: ', key)
         const trophy = await db.query(`SELECT trophy_id FROM trophies WHERE criteria_key = $1`, [key]);
+        console.log(`Query all trophies with key: ${key}`, trophy)
         if (trophy.rows.length) {
           await db.query(`INSERT INTO user_trophies (user_id, trophy_id) VALUES ($1, $2)`, [userId, trophy.rows[0].trophy_id]);
           trophiesToAward.push(key);
