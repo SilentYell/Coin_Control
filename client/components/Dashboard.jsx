@@ -12,18 +12,18 @@ const ResponsiveGridLayout = WidthProvider(Responsive);
 
 const compactLayout = [
   { i: 'goal', x: 0, y: 0, w: 6, h: 2, minW: 2, minH: 2 },
-  { i: 'expenses', x: 0, y: 2, w: 6, h: 2, minW: 2, minH: 2 },
-  { i: 'income', x: 0, y: 4, w: 6, h: 2, minW: 2, minH: 2 },
-  { i: 'balance', x: 0, y: 6, w: 6, h: 2, minW: 2, minH: 2 },
-  { i: 'savings', x: 0, y: 8, w: 6, h: 2, minW: 2, minH: 2 },
+  { i: 'balance', x: 0, y: 2, w: 3, h: 2, minW: 2, minH: 2 },
+  { i: 'expenses', x: 3, y: 4, w: 3, h: 2, minW: 2, minH: 2 },
+  { i: 'income', x: 0, y: 6, w: 3, h: 2, minW: 2, minH: 2 },
+  { i: 'savings', x: 3, y: 8, w: 3, h: 2, minW: 2, minH: 2 },
   { i: 'ai-insights', x: 0, y: 10, w: 6, h: 4.5, minW: 2, minH: 6 },
   { i: 'pie-chart', x: 0, y: 15, w: 6, h: 6, minW: 2, minH: 2 },
 ];
 const wideLayout = [
   { i: 'goal', x: 0, y: 0, w: 6, h: 2, minW: 2, minH: 2 },
   { i: 'expenses', x: 2, y: 0, w: 2, h: 2, minW: 1, minH: 1 },
-  { i: 'income', x: 4, y: 0, w: 2, h: 2, minW: 1, minH: 1 },
-  { i: 'balance', x: 0, y: 2, w: 2, h: 2, minW: 1, minH: 1 },
+  { i: 'income', x: 0, y: 2, w: 2, h: 2, minW: 1, minH: 1 },
+  { i: 'balance', x: 0, y: 0, w: 2, h: 2, minW: 1, minH: 1 },
   { i: 'savings', x: 2, y: 2, w: 2, h: 2, minW: 1, minH: 1 },
   { i: 'ai-insights', x: 4, y: 2, w: 2, h: 8, minW: 1, minH: 6 },
   { i: 'pie-chart', x: 0, y: 4, w: 4, h: 6, minW: 2, minH: 2 },
@@ -123,13 +123,27 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout })
     <div className="dashboard">
       <h1>Dashboard</h1>
       <div className="dashboard-controls">
-        <button
+        {/* Lock/Unlock Switch */}
+        <div
+          className={`lock-switch${isEditable ? ' unlocked' : ''}`}
           onClick={() => setIsEditable((prev) => !prev)}
-          className={`shine-btn${isEditable ? ' unlocked' : ''}`}
-          title={isEditable ? 'Lock Layout' : 'Unlock Layout'}
+          title={isEditable ? 'Unlocked: Drag/resize enabled' : 'Locked: Layout fixed'}
+          role="button"
+          tabIndex={0}
+          aria-pressed={isEditable}
         >
-          {isEditable ? <FaLockOpen /> : <FaLock />}
-        </button>
+          {isEditable ? (
+            <>
+              <span className="switch-icon unlock"><FaLockOpen /></span>
+              <span className="switch-circle" />
+            </>
+          ) : (
+            <>
+              <span className="switch-icon lock"><FaLock /></span>
+              <span className="switch-circle" />
+            </>
+          )}
+        </div>
         <button
           onClick={() => setLayoutState(compactLayout)}
           className="shine-btn"
