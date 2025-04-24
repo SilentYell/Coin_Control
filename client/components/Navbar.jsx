@@ -228,6 +228,7 @@ const Navbar = (
                 editingExpense={editingExpense}
                 setEditSuccess={setEditSuccess}
                 setLastEditedId={setLastEditedId}
+                setTrophiesList={setTrophiesList}
                 setLastEditedTransactionType={setLastEditedTransactionType}
                 onSubmitSuccess={ async () => {
                   await onExpenseSubmitSuccess();

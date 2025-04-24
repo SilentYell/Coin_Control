@@ -72,7 +72,6 @@ const IncomeForm = ({ editingIncome, setEditingIncome, onSubmitSuccess, setEditS
       } else {
         // Add new income
         response = await addIncomeAndCheckTrophies(newIncome);
-        console.log('response: ', response)
         // Throw error if response fails
         if (!response) throw new Error('Failed to add income record.');
 
