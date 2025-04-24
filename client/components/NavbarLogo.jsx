@@ -23,9 +23,9 @@ const NavbarLogo = ({ size = 'small' }) => {
         
         {/* letters */}
         <text className="nav-coin-c" x="100" y="175" 
-          fontFamily="Arial-BoldMT, Arial" fontSize="120" fontWeight="700">C</text>
+          fontFamily="Arial-BoldMT, Arial" fontSize="120" fontWeight="700" fill="#876510">C</text>
         <text className="nav-coin-c" x="120" y="210" 
-          fontFamily="Arial-BoldMT, Arial" fontSize="120" fontWeight="700">C</text>
+          fontFamily="Arial-BoldMT, Arial" fontSize="120" fontWeight="700" fill="#876510">C</text>
         
         {/* vertical lines */}
         <path d="M150,40 L150,70" fill="none" stroke="#000000" strokeWidth="5" />
