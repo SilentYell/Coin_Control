@@ -267,3 +267,23 @@ $dashboard-accent: #E1B000;
     box-shadow: 0 1px 2px rgba(0,0,0,0.2);
   }
 }
+
+.toggle-layout-btn {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  .toggle-btn-label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  }
+  .toggle-btn-letter {
+    font-size: 1em;
+    transition: opacity 0.18s;
+    margin: 0 1px;
+  }
+}
+.toggle-layout-btn.wide-mode .toggle-btn-label {
+  letter-spacing: 0.6em;
+}
