@@ -192,6 +192,7 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout })
               saved={totalSavings}
               compact={isGoalCardCompact}
               onGoalComplete={handleGoalComplete}
+              isEditable={isEditable}
             />
           </div>
           <div key="expenses">
@@ -200,6 +201,7 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout })
               value={formatCurrency(totalExpenses || 0)}
               description="Track your spending here."
               valueClassName="card-value--expenses"
+              isEditable={isEditable}
             />
           </div>
           <div key="income">
@@ -207,6 +209,7 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout })
               title="Total Income"
               value={formatCurrency(totalIncome || 0)}
               description="Monitor your earnings."
+              isEditable={isEditable}
             />
           </div>
           <div key="balance">
@@ -215,6 +218,7 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout })
               value={formatCurrency(currentBalance || 0)}
               description="Your current financial status (after savings)."
               valueClassName={currentBalance >= 0 ? "card-value--positive" : "card-value--negative"}
+              isEditable={isEditable}
             />
           </div>
           <div key="savings">
@@ -223,10 +227,11 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout })
               value={formatCurrency(totalSavings || 0)}
               description="Total allocated to your savings goals."
               valueClassName="card-value--savings"
+              isEditable={isEditable}
             />
           </div>
           <div key="ai-insights">
-            <Card title="Financial Insights">
+            <Card title="Financial Insights" isEditable={isEditable}>
               <AIInsights
                 expenses={expenses}
                 income={income}
@@ -237,7 +242,7 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout })
             </Card>
           </div>
           <div key="pie-chart">
-            <Card title="Expenses Breakdown">
+            <Card title="Expenses Breakdown" isEditable={isEditable}>
               <ExpensesPieChart />
             </Card>
           </div>
