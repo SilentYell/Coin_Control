@@ -1,3 +1,5 @@
+@use "sass:color";
+
 $card-bg: #F3F4F6;
 $card-border: #BDC3C7;
 $card-title: #2C3E50;
@@ -104,7 +106,7 @@ $finance-font: 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
 }
 .card--editable:hover {
   animation: card-wiggle 0.5s;
-  background: darken($card-bg, 8%);
+  background: color.adjust($card-bg, $lightness: -8%);
   box-shadow: 0 8px 32px 0 rgba(44,62,80,0.22), 0 2px 8px 0 rgba(44,62,80,0.16);
   border-style: dashed;
   border-width: 2px;

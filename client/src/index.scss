@@ -1,5 +1,5 @@
-@import '../styles/Card.scss';
-@import '../styles/GoalCard.scss';
+@use '../styles/Card.scss' as *;
+@use '../styles/GoalCard.scss' as *;
 
 *,
 *::before,
