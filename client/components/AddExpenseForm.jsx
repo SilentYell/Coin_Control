@@ -3,7 +3,7 @@ import { addExpense, updateExpense } from '../services/api'; // importing api fu
 import '../styles/AddExpenseForm.scss';
 import { initializeExpenseFormData } from '../src/helpers/initializeFormData';
 
-const AddExpenseForm = ({ editingExpense, onSubmitSuccess, setEditSuccess, setLastEditedTransactionType, setLastEditedId}) => {
+const AddExpenseForm = ({ editingExpense, onSubmitSuccess, setEditSuccess, setLastEditedTransactionType, setLastEditedId, setTrophiesList }) => {
   // form state
   const amountInputRef = useRef(null);
   const [formData, setFormData] = useState(() => initializeExpenseFormData(editingExpense));
@@ -77,10 +77,14 @@ const AddExpenseForm = ({ editingExpense, onSubmitSuccess, setEditSuccess, setLa
         // Throw error if response fails
         if (!response) throw new Error('Failed to add expense record.')
 
+        // Update trophiesList with any newly earned trophies
+        if (response.earnedTrophies?.length) {
+          await setTrophiesList(await getUserTrophies());
+        }
+
         // If no errors, show success message
         console.log('Expense added successfully'); // Debugging log
         setSuccess(true);
-        setTimeout(() => setEditSuccess(false), 2000);
       }
 
       // reset the form
