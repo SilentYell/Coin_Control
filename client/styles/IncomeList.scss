@@ -64,6 +64,7 @@ $incomelist-text-light: #FFFFFF;
 
   .income-table {
     width: 100%;
+    table-layout: fixed;
     border-collapse: collapse;
     border-radius: 0.5rem;
     overflow: hidden;
