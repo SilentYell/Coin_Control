@@ -64,7 +64,7 @@ router.post('/expenses', async (req, res) => {
     } catch (error) {
       console.error(`Error checking trophies`, error);
     }
-    res.status(201).json(result.rows[0]);
+    res.status(201).json({ ...result.rows[0], earnedTrophies });
   } catch (error) {
     console.error('Error creating expense!', error);
     res.status(500).json({ error: 'Failed to create expense' });
