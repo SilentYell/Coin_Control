@@ -2,6 +2,11 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db/database');
 
+// Helper for consistent error responses
+function sendError(res, status, message) {
+  return res.status(status).json({ error: message });
+}
+
 // GET route for trophies specific to a user
 router.get('/:user_id', async (req, res) => {
   const { user_id } = req.params;
@@ -17,7 +22,7 @@ router.get('/:user_id', async (req, res) => {
 
     res.json(result.rows); 
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    sendError(res, 500, 'Failed to fetch user trophies');
   }
 });
 

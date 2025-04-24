@@ -3,6 +3,11 @@ const router = express.Router();
 const db = require('../db/database');
 const { escapeLiteral } = require('pg');
 
+// Helper for consistent error responses
+function sendError(res, status, message) {
+  return res.status(status).json({ error: message });
+}
+
 // GET /api/expenses - get all expenses for user
 router.get('/expenses', async (req, res) => {
   try {
@@ -14,11 +19,11 @@ router.get('/expenses', async (req, res) => {
     res.json(result.rows);
   } catch (error) {
     console.error('Error fetching expenses', error);
-    res.status(500).json({ error: 'Failed to fetch expenses' });
+    sendError(res, 500, 'Failed to fetch expenses');
   }
 });
 
-// GET /api/expenses - get all expenses for user
+// GET /api/expenses/:id
 router.get('/expenses/:id', (req, res) => {
   const { id } = req.params;
 
@@ -34,6 +39,7 @@ router.get('/expenses/:id', (req, res) => {
   })
   .catch((err) => {
     console.error(`Error fetching expense ID ${id}`, err);
+    sendError(res, 500, 'Failed to fetch expense');
   })
 });
 
@@ -45,9 +51,7 @@ router.post('/expenses', async (req, res) => {
 
     // validate fields that are required
     if (!amount || !expense_date) {
-      return res
-        .status(400)
-        .json({ error: 'Amount and date are required to proceed' });
+      return sendError(res, 400, 'Amount and date are required to proceed');
     }
 
     // insert the new expense into the database
@@ -58,7 +62,7 @@ router.post('/expenses', async (req, res) => {
     res.status(201).json(result.rows[0]);
   } catch (error) {
     console.error('Error creating expense!', error);
-    res.status(500).json({ error: 'Failed to create expense' });
+    sendError(res, 500, 'Failed to create expense');
   }
 });
 
@@ -71,9 +75,7 @@ router.put('/expenses/:id', async (req, res) => {
 
     // validate fields that are required
     if (!amount || !expense_date) {
-      return res
-        .status(400)
-        .json({ error: 'Amount and date are required to proceed' });
+      return sendError(res, 400, 'Amount and date are required to proceed');
     }
 
     // update the expense in the database
@@ -84,14 +86,12 @@ router.put('/expenses/:id', async (req, res) => {
 
     // if no rows were affected, the expense might not exist or doesn't belong to this user
     if (result.rows.length === 0) {
-      return res
-        .status(404)
-        .json({ error: 'Expense not found or unauthorized' });
+      return sendError(res, 404, 'Expense not found or unauthorized');
     }
     res.json(result.rows[0]);
   } catch (error) {
     console.error('Error updating expense!', error);
-    res.status(500).json({ error: 'Failed to update expense' });
+    sendError(res, 500, 'Failed to update expense');
   }
 });
 
@@ -109,7 +109,7 @@ router.delete('/expenses/:id', async (req, res) => {
 
     // if no rows were affected, the expense might not exist or doesn't belong to this user
     if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'Expense not found or unauthorized' });
+      return sendError(res, 404, 'Expense not found or unauthorized');
     }
 
     res.json({
@@ -118,7 +118,7 @@ router.delete('/expenses/:id', async (req, res) => {
     });
   } catch (error) {
     console.error('Error deleting expense!', error);
-    res.status(500).json({ error: 'Failed to delete expense' });
+    sendError(res, 500, 'Failed to delete expense');
   }
 });
 

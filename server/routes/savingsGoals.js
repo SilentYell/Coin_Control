@@ -2,6 +2,11 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db/database');
 
+// Helper for consistent error responses
+function sendError(res, status, message) {
+  return res.status(status).json({ error: message });
+}
+
 // Get all savings goals for a user
 router.get('/:user_id', async (req, res) => {
   const { user_id } = req.params;
@@ -12,7 +17,7 @@ router.get('/:user_id', async (req, res) => {
     );
     res.json(result.rows);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    sendError(res, 500, 'Failed to fetch savings goals');
   }
 });
 
@@ -27,10 +32,9 @@ router.post('/', async (req, res) => {
       'INSERT INTO SavingsGoals (user_id, name, amount, percent) VALUES ($1, $2, $3, $4) RETURNING *',
       [user_id, name, amount, percent]
     );
-    console.log('Savings goal added:', result.rows[0]);
     res.status(201).json(result.rows[0]);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    sendError(res, 500, 'Failed to add savings goal');
   }
 });
 
@@ -46,14 +50,14 @@ router.put('/:goal_id', async (req, res) => {
     );
 
     if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'Savings goal not found.' });
+      return sendError(res, 404, 'Savings goal not found.');
     }
 
     const updatedGoal = result.rows[0];
 
     res.json(updatedGoal);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    sendError(res, 500, 'Failed to update savings goal');
   }
 });
 
@@ -64,7 +68,7 @@ router.delete('/:goal_id', async (req, res) => {
     await db.query('DELETE FROM SavingsGoals WHERE goal_id = $1', [goal_id]);
     res.json({ success: true });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    sendError(res, 500, 'Failed to delete savings goal');
   }
 });
 

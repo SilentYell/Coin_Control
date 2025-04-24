@@ -1,6 +1,11 @@
 // Handles income-related API routes
 const router = require("express").Router();
 
+// Helper for consistent error responses
+function sendError(res, status, message) {
+  return res.status(status).json({ error: message });
+}
+
 module.exports = db => {
   // Get all income entries for the user
   router.get("/transactions", (req, res) => {
@@ -66,13 +71,13 @@ module.exports = db => {
     db.query(query, [id])
     .then(result => {
       if (result.rows.length === 0) {
-        return res.status(404).json({ error: `Transaction record with ID ${id} and type ${type} not found.` });
+        return sendError(res, 404, `Transaction record with ID ${id} and type ${type} not found.`);
       }
       res.status(200).json({ message: "Transaction record deleted successfully." });
     })
     .catch((err) => {
       console.error('Error deleting transaction record:', err);
-      res.status(500).json({error: 'Internal Server Error'});
+      sendError(res, 500, 'Failed to delete transaction');
     });
   });
 
