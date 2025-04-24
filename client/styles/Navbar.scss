@@ -1,15 +1,15 @@
 // Navbar.scss
 
-// Variables for colors and fonts (optional)
-$navbar-bg: #1E4210; // Dark green from your theme
-$navbar-text: #FCEDD3; // Light gold text
-$navbar-link-color: #FCEDD3;
-$navbar-accent: #FFD700; // Gold accent
-$navbar-link-hover: rgba(255, 215, 0, 0.15); // Subtle gold hover
-$logout-btn-bg: #876510; // Gold brown for logout
-$logout-btn-hover: #9e7712; // Lighter gold on hover
-$login-btn-bg: #876510; // Gold brown for login
-$login-btn-hover: #9e7712; // Lighter gold on hover
+// Variables for colors and fonts (new colour scheme)
+$navbar-bg: #2C3E50; // Secondary color (dark blue)
+$navbar-text: #FFFFFF; // White text on dark background
+$navbar-link-color: #FFFFFF; // White text for links
+$navbar-accent: #1ABC9C; // Teal accent (Alternate Button)
+$navbar-link-hover: rgba(26, 188, 156, 0.15); // Subtle teal hover
+$logout-btn-bg: #E67E22; // Orange Call to Action for logout
+$logout-btn-hover: #d35400; // Darker orange on hover
+$login-btn-bg: #E67E22; // Orange Call to Action for login
+$login-btn-hover: #d35400; // Darker orange on hover
 $shadow-color: rgba(0, 0, 0, 0.15);
 
 
@@ -30,8 +30,13 @@ $shadow-color: rgba(0, 0, 0, 0.15);
     position: relative;
     align-items: center;
     display: flex;
-    padding-left: 12px;
+    padding-left: 14px;
     cursor: pointer;
+
+    svg, img {
+      transform: scale(1.15);
+      transform-origin: center center;
+    }
 
     // hover animation
     perspective: 800px;
@@ -72,7 +77,8 @@ $shadow-color: rgba(0, 0, 0, 0.15);
     display: flex;
     gap: 20px;
     list-style: none;
-    padding: 0;
+    padding: 10;
+    padding-left: 200px;
     margin: 0;
 
     li {
