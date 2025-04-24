@@ -34,10 +34,12 @@ $shadow-color: rgba(0, 0, 0, 0.15);
     cursor: pointer;
 
     // hover animation
-    transition: transform 0.3s ease;
+    perspective: 800px;
+    transform-style: preserve-3d;
+    transition: transform 0.6s ease;
     
     &:hover {
-      transform: translateY(2px) scale(1.05);
+      transform: translateY(2px) scale(1.05) rotateY(360deg);
     }
 
     // Subtle coin glint
