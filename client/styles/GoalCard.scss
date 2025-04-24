@@ -1,7 +1,29 @@
 $goalcard-accent: #876510; // Use brown for accent text instead of yellow
+$main-bg: #F3F4F6;
+$secondary: #2C3E50;
+$alt-btn: #1ABC9C;
+$cta: #E67E22;
+$accent: #BDC3C7;
+$text-dark: #2C3E50;
+$text-light: #fff;
 
 .goal-card {
   @extend .card-base !optional;
+  background: $main-bg;
+  color: $text-dark;
+  border: 1px solid $accent;
+
+  .goal-title {
+    color: $secondary;
+  }
+
+  .goal-value {
+    color: $secondary;
+  }
+
+  .goal-description {
+    color: $text-dark;
+  }
 }
 
 .goal-card.empty {
