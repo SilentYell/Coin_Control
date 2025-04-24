@@ -7,8 +7,10 @@ import AIInsights from './AIInsights';
 import Modal from './Modal';
 import TrophyPopup from './TrophyPopup';
 import { Responsive, WidthProvider } from 'react-grid-layout';
-import { FaLightbulb, FaLock, FaLockOpen } from 'react-icons/fa';
+import { FaLightbulb, FaLock, FaLockOpen, FaRegSave } from 'react-icons/fa';
 import { getUserTrophies } from '../services/api';
+import ToggleLayoutButton from './ToggleLayoutButton';
+import anime from 'animejs/lib/anime.es.js';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -51,10 +53,26 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout, u
   const [goal, setGoal] = useState(null);
   const [isEditable, setIsEditable] = useState(false);
   const [showFinancialInsights, setShowFinancialInsights] = useState(false);
-  const [earnedTrophies, setEarnedTrophies] = useState([]);
   const [newTrophy, setNewTrophy] = useState(null);
 
   const [layoutState, setLayoutState] = useState(getInitialLayout);
+  const [layoutMode, setLayoutMode] = useState(() => {
+    const saved = localStorage.getItem('dashboardLayoutMode');
+    if (saved === 'compact' || saved === 'wide') return saved;
+    return 'wide';
+  });
+
+  useEffect(() => {
+    if (layoutMode === 'compact') {
+      setLayoutState(compactLayout);
+    } else {
+      setLayoutState(wideLayout);
+    }
+  }, [layoutMode]);
+
+  useEffect(() => {
+    localStorage.setItem('dashboardLayoutMode', layoutMode);
+  }, [layoutMode]);
 
   // Helper to get the width of the goal card in grid columns
   const goalCardWidth = layoutState.find((l) => l.i === 'goal')?.w || 6;
@@ -85,17 +103,17 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout, u
   const fetchTrophies = useCallback(async () => {
     try {
       const trophies = await getUserTrophies(user.user_id);
-
-      const previousIds = new Set(earnedTrophies.map(t => t.trophy_id));
-      const newTrophies = trophies.filter(t => !previousIds.has(t.trophy_id));
-
-      if (newTrophies.length > 0) {
-        const mostRecentTrophy = newTrophies.sort((a, b) => b.trophy_id - a.trophy_id)[0];
-        setNewTrophy(mostRecentTrophy);
-        setTimeout(() => setNewTrophy(null), 4000);
-      }
-
-      setEarnedTrophies(trophies);
+      // Only set new trophy popup if there are new trophies
+      setNewTrophy((prev) => {
+        const previousIds = new Set((prev?.map?.(t => t.trophy_id)) || []);
+        const newTrophies = trophies.filter(t => !previousIds.has(t.trophy_id));
+        if (newTrophies.length > 0) {
+          const mostRecentTrophy = newTrophies.sort((a, b) => b.trophy_id - a.trophy_id)[0];
+          setTimeout(() => setNewTrophy(null), 4000);
+          return mostRecentTrophy;
+        }
+        return prev;
+      });
     } catch (error) {
       console.error('Error fetching trophies: ', error);
     }
@@ -138,6 +156,12 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout, u
   // Save only the layout array (not a preset name)
   const handleSaveLayout = () => {
     localStorage.setItem('dashboardLayout', JSON.stringify(layoutState));
+    anime({
+      targets: '.save-layout-btn',
+      scale: [1, 1.15, 1],
+      duration: 400,
+      easing: 'easeInOutQuad',
+    });
   };
 
   // Update layoutState on drag/resize stop
@@ -177,23 +201,18 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout, u
             </>
           )}
         </div>
-        <button
-          onClick={() => setLayoutState(compactLayout)}
-          className="shine-btn"
-        >
-          Compact
-        </button>
-        <button
-          onClick={() => setLayoutState(wideLayout)}
-          className="shine-btn"
-        >
-          Wide
-        </button>
+        <ToggleLayoutButton
+          isCompact={layoutMode === 'compact'}
+          onToggle={() => setLayoutMode(layoutMode === 'compact' ? 'wide' : 'compact')}
+        />
         <button
           onClick={handleSaveLayout}
-          className="shine-btn"
+          className={`shine-btn save-layout-btn`}
+          style={{ display: 'flex', alignItems: 'center', gap: 8 }}
+          aria-label="Save Layout"
         >
-          Save Layout
+          <FaRegSave style={{ fontSize: 18 }} />
+          <span>Save Layout</span>
         </button>
       </div>
       <div className="dashboard-grid">

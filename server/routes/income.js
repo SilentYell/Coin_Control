@@ -2,6 +2,11 @@
 const router = require("express").Router();
 const { checkAndAwardTrophies } = require('../helpers/trophyHelpers');
 
+// Helper for consistent error responses
+function sendError(res, status, message) {
+  return res.status(status).json({ error: message });
+}
+
 module.exports = db => {
   // Get all income entries for the user
   router.get("/income", (req, res) => {
@@ -19,6 +24,10 @@ module.exports = db => {
     db.query(query, queryParams)
     .then(({ rows }) => {
       res.json(rows);
+    })
+    .catch((err) => {
+      console.error('Error fetching income:', err);
+      sendError(res, 500, 'Failed to fetch income records');
     });
   });
 

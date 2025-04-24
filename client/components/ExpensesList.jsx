@@ -72,6 +72,7 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess, editingE
         prevList.filter((expense) => expense.expense_id !== id)
       );
     } catch (error) {
+      setError('Failed to delete expense. Please try again later.');
       console.error('Error deleting expense:', error);
     }
   };
@@ -99,6 +100,7 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess, editingE
       setEditingExpense(null);
       setTimeout(() => setLastEditedId(null), 3500); // clear visual on edited record
     } catch (error) {
+      setError('Failed to update expense. Please try again later.');
       console.error('Error editing expense:', error);
     }
   };
@@ -203,6 +205,8 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess, editingE
       {editSuccess && (
         <div className="success-message">Expense updated successfully!</div>
       )}
+
+      {error && <div className="error-message">{error}</div>}
 
       {/* Add category filter */}
       <div className="filter-controls">

@@ -7,6 +7,7 @@ import '../styles/AllTransactions.scss'
 const AllTransactions = ({ setEditTransactionType, onEditIncome, onEditExpense, setShowTransactionsModal, editSuccess, lastEditedTransactionType, lastEditedId }) => {
   const [transactionsList, setTransactionsList] = useState([]);
   const [selectedTransactionType, setSelectedTransactionType] = useState('All');
+  const [error, setError] = useState(null);
 
   // filter transactions by selected type
   const filteredTransactionList =
@@ -57,6 +58,7 @@ const AllTransactions = ({ setEditTransactionType, onEditIncome, onEditExpense, 
         prevList.filter((item) => !(item.id === id && item.type === type))
       );
     } catch (error) {
+      setError('Failed to delete transaction. Please try again later.');
       console.error('Error deleting transaction:', error.message);
     }
   };
@@ -68,6 +70,8 @@ const AllTransactions = ({ setEditTransactionType, onEditIncome, onEditExpense, 
       {editSuccess && (
         <div className="success-message">{lastEditedTransactionType} updated successfully!</div>
       )}
+
+      {error && <div className="error-message">{error}</div>}
 
       {/* Add transaction type filter */}
       <div className="filter-controls">
