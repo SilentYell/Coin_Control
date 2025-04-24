@@ -1,3 +1,7 @@
+$modal-bg: #FCEDD3;
+$modal-primary: #1E4210;
+$modal-accent: #FFD700;
+
 .modal-backdrop {
   position: fixed;
   top: 0;
@@ -12,12 +16,17 @@
 }
 
 .modal-content {
-  background: white;
+  background: $modal-bg;
+  color: $modal-primary;
   padding: 2rem;
   border-radius: 10px;
-  max-width: 700px;
+  max-width: 900px;
   width: 90%;
   position: relative;
+}
+
+.modal-header {
+  color: $modal-accent;
 }
 
 .modal-close {
@@ -27,8 +36,12 @@
   font-size: 1.5rem;
   background: none;
   border: none;
-  color: black;
+  color: $modal-primary;
   cursor: pointer;
+
+  &:hover {
+    color: $modal-accent;
+  }
 }
 
 .modal-content .expenses-list {

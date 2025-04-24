@@ -20,6 +20,8 @@
 
   .table-container {
     overflow-x: auto;
+    overflow-y: scroll;
+    max-height: 450px;
     background-color: #fcedd3; /* Light peach background */
     border-radius: 0.5rem;
     padding: 0.5rem;
@@ -98,6 +100,7 @@
 
     .actions {
       display: flex;
+      justify-content: center;
       flex-direction: row;
       gap: 0.5rem;
 
@@ -139,6 +142,7 @@
 
       td.total-amount {
         text-align: right;
+        padding-right: 4rem;
       }
     }
   }

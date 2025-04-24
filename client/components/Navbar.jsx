@@ -296,6 +296,9 @@ function Navbar({
                 }
               }}
             >
+              <div className="modal-header">
+                <h2>Edit Savings Goal</h2>
+              </div>
               <label>
                 Goal Name:
                 <input
@@ -316,7 +319,7 @@ function Navbar({
                 />
               </label>
               <label>
-                % of future income to save:
+                % of Future Income to Save:
                 <input
                   type="number"
                   min="1"
@@ -359,6 +362,9 @@ function Navbar({
                 }
               }}
             >
+              <div className="modal-header">
+                <h2>Savings Goal</h2>
+              </div>
               <label>
                 Goal Name:
                 <input
@@ -392,23 +398,23 @@ function Navbar({
               <button type="submit">Save Goal</button>
             </form>
           )}
-          <div style={{ marginTop: '2rem' }}>
+          <div className="savings-goals-list">
             <h3>Your Savings Goals</h3>
             {goals.length === 0 && <div>No goals yet.</div>}
             {goals.map(goalItem => (
-              <div key={goalItem.goal_id} style={{ marginBottom: '1.5rem', background: '#fcedd3', borderRadius: 8, padding: 12 }}>
-                <div style={{ fontWeight: 600 }}>{goalItem.name} (${goalItem.amount})</div>
-                <div style={{ fontSize: 14, color: '#876510' }}>Saving {goalItem.percent}% of future income</div>
-                <div style={{ background: '#eee', borderRadius: 8, height: 16, margin: '8px 0', overflow: 'hidden' }}>
-                  <div style={{ width: `${getProgress(goalItem)}%`, background: '#FFD700', height: 16, transition: 'width 0.5s' }} />
+              <div key={goalItem.goal_id} className="goal-item">
+                <div className="goal-title">{goalItem.name} (${goalItem.amount})</div>
+                <div className="goal-percent">Saving {goalItem.percent}% of future income</div>
+                <div className="progress-bar">
+                  <div className="progress-fill" style={{ width: `${getProgress(goalItem)}%` }}></div>
                 </div>
-                <div style={{ fontSize: 13 }}>
+                <div className="goal-saved">
                   Saved: ${Number(goalItem.saved || 0).toFixed(2)} / ${Number(goalItem.amount).toFixed(2)}
                 </div>
-                <button style={{marginTop:8}} onClick={() => {
+                <button onClick={() => {
                   setEditingGoal(goalItem);
                   setEditName(goalItem.name);
-                  setEditAmount(goalItem.amount);
+                  setEditAmount(goalItem.amount); 
                   setEditPercent(goalItem.percent);
                 }}>Edit</button>
               </div>

@@ -3,7 +3,7 @@ import React from 'react';
 const NavbarLogo = ({ size = 'small' }) => {
   // different sizes for different contexts
   const sizes = {
-    small: { width: '40px', height: '40px' },
+    small: { width: '45px', height: '45px' },
     medium: { width: '60px', height: '60px' },
     large: { width: '100px', height: '100px' },
   };
@@ -23,12 +23,12 @@ const NavbarLogo = ({ size = 'small' }) => {
         
         {/* letters */}
         <text className="nav-coin-c" x="100" y="175" 
-          fontFamily="Arial-BoldMT, Arial" fontSize="120" fontWeight="700">C</text>
+          fontFamily="Arial-BoldMT, Arial" fontSize="120" fontWeight="700" fill="#000000">C</text>
         <text className="nav-coin-c" x="120" y="210" 
-          fontFamily="Arial-BoldMT, Arial" fontSize="120" fontWeight="700">C</text>
+          fontFamily="Arial-BoldMT, Arial" fontSize="120" fontWeight="700" fill="#000000">C</text>
         
         {/* vertical lines */}
-        <path d="M150,40 L150,70" fill="none" stroke="#000000" strokeWidth="5" />
+        <path d="M150,55 L150,85" fill="none" stroke="#000000" strokeWidth="5" />
         <path d="M170,200 L170,230" fill="none" stroke="#000000" strokeWidth="5" />
       </svg>
     </div>
