@@ -104,6 +104,12 @@ $finance-font: 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
 }
 .card--editable:hover {
   animation: card-wiggle 0.5s;
+  background: darken($card-bg, 8%);
+  box-shadow: 0 8px 32px 0 rgba(44,62,80,0.22), 0 2px 8px 0 rgba(44,62,80,0.16);
+  border-style: dashed;
+  border-width: 2px;
+  border-color: $cta;
+  transition: border-style 0.2s, border-width 0.2s, border-color 0.2s;
 }
 
 .card-shine {

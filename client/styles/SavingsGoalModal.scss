@@ -121,10 +121,6 @@ $text-light: #fff;
     margin-bottom: 1.5rem;
     transition: box-shadow 0.2s, background 0.2s;
     position: relative;
-    &:hover {
-      background: $alt-btn;
-      color: $text-dark;
-    }
   }
   .goal-title {
     font-weight: 600;
@@ -139,9 +135,22 @@ $text-light: #fff;
   .progress-bar {
     background: #eee;
     border-radius: 8px;
-    height: 16px;
+    height: 18px;
     margin: 8px 0;
     overflow: hidden;
+    position: relative;
+    &::after {
+      content: '';
+      position: absolute;
+      top: -4px; left: -4px; right: -4px; bottom: -4px;
+      border: 12px solid transparent;
+      border-radius: 14px;
+      pointer-events: none;
+      box-sizing: border-box;
+      opacity: 0.85;
+      filter: blur(4px);
+      animation: progress-outline-glow 1.8s infinite ease-in-out;
+    }
     .progress-fill {
       background: linear-gradient(90deg, #ffe066 0%, #ffd700 60%, #E67E22 100%);
       height: 16px;
@@ -180,4 +189,10 @@ $text-light: #fff;
 @keyframes goal-desc-fadein {
   0% { opacity: 0; transform: translateY(12px); }
   100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes progress-outline-glow {
+  0% { box-shadow: 0 0 0 0 #ffe066, 0 0 0 0 $alt-btn, 0 0 0 0 #ffd700; opacity: 0.85; }
+  40% { box-shadow: 0 0 32px 12px #ffe066, 0 0 48px 18px $alt-btn, 0 0 64px 28px #ffd700; opacity: 1; }
+  100% { box-shadow: 0 0 0 0 #ffe066, 0 0 0 0 $alt-btn, 0 0 0 0 #ffd700; opacity: 0.85; }
 }
