@@ -193,7 +193,7 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout, u
           onClick={handleSaveLayout}
           className="shine-btn"
         >
-          Save Layout
+          Save View
         </button>
       </div>
       <div className="dashboard-grid">
