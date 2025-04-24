@@ -105,6 +105,15 @@ $dashboard-accent: #E1B000;
   }
 }
 
+.dashboard-controls {
+  display: flex;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
 .shine-btn {
   position: relative;
   overflow: hidden;

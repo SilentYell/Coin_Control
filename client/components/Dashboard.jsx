@@ -122,17 +122,11 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout })
   return (
     <div className="dashboard">
       <h1>Dashboard</h1>
-      <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
+      <div className="dashboard-controls">
         <button
           onClick={() => setIsEditable((prev) => !prev)}
-          className="shine-btn"
+          className={`shine-btn${isEditable ? ' unlocked' : ''}`}
           title={isEditable ? 'Lock Layout' : 'Unlock Layout'}
-          style={{
-            backgroundColor: isEditable ? '#FFD700' : '#876510',
-            color: isEditable ? '#876510' : '#fff',
-            border: isEditable ? '2px solid #876510' : '2px solid transparent', // always 2px border
-            transition: 'background 0.2s, color 0.2s, border 0.2s',
-          }}
         >
           {isEditable ? <FaLockOpen /> : <FaLock />}
         </button>
