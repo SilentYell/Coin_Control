@@ -1,9 +1,8 @@
-$card-bg: #FCEDD3;
-$card-border: #876510;
-$card-title: #876510;
-$card-value: #1E4210;
-$card-accent: #876510; // Use brown for accent text instead of yellow
-
+$card-bg: #F3F4F6;
+$card-border: #BDC3C7;
+$card-title: #2C3E50;
+$card-value: #2C3E50;
+$card-accent: #BDC3C7;
 $main-bg: #F3F4F6;
 $secondary: #2C3E50;
 $alt-btn: #1ABC9C;
@@ -11,7 +10,6 @@ $cta: #E67E22;
 $accent: #BDC3C7;
 $text-dark: #2C3E50;
 $text-light: #fff;
-
 $finance-font: 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
 
 .card-base {
@@ -19,12 +17,12 @@ $finance-font: 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
   width: 100%;
   height: 100%;
   background-color: $card-bg;
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border: 1px solid $card-border;
+  border-radius: 0.75rem;
+  box-shadow: 0 6px 24px 0 rgba(44,62,80,0.18), 0 1.5px 6px 0 rgba(44,62,80,0.10);
+  border: 1.5px solid $card-border;
   padding: 0.75rem 1rem;
   text-align: center;
-  color: #000000;
+  color: $text-dark;
   -webkit-user-select: none;
   user-select: none;
   display: flex;
@@ -39,27 +37,16 @@ $finance-font: 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
 .card {
   @extend .card-base;
   text-align: center;
-  background: rgba(255, 255, 255, 0.18);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border-radius: 1rem;
-  border: 1.5px solid rgba(255, 255, 255, 0.28);
+  background: $card-bg;
+  box-shadow: 0 6px 24px 0 rgba(44,62,80,0.18), 0 1.5px 6px 0 rgba(44,62,80,0.10);
+  border-radius: 0.75rem;
+  border: 1.5px solid $card-border;
   position: relative;
   overflow: hidden;
   color: $text-dark;
-
-  .card-title {
-    color: $secondary;
-  }
-
-  .card-value {
-    color: $secondary;
-  }
-
-  .card-description {
-    color: $text-dark;
-  }
+  .card-title { color: $secondary; }
+  .card-value { color: $secondary; }
+  .card-description { color: $text-dark; }
 }
 
 .card-title {
@@ -82,21 +69,10 @@ $finance-font: 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
   letter-spacing: 0.5px;
 }
 
-.card-value--expenses {
-  color: #c53030 !important;
-}
-
-.card-value--savings {
-  color: #E67E22 !important;
-}
-
-.card-value--positive {
-  color: #1E4210 !important;
-}
-
-.card-value--negative {
-  color: #c53030 !important;
-}
+.card-value--expenses { color: #c53030 !important; }
+.card-value--savings { color: #E67E22 !important; }
+.card-value--positive { color: #1E4210 !important; }
+.card-value--negative { color: #c53030 !important; }
 
 .card-description {
   font-size: 0.97rem;
@@ -114,14 +90,6 @@ $finance-font: 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
   justify-content: flex-start;
 }
 
-.dashboard {
-  color: #2d3748;
-  font-size: 1rem;
-  margin: 0;
-  line-height: 1.5;
-  // text-align: left;
-}
-
 .goal-card {
   will-change: transform;
 }
@@ -129,7 +97,7 @@ $finance-font: 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
 .card--editable {
   cursor: grab !important;
   transition: box-shadow 0.2s;
-  box-shadow: 0 0 0 2px #E67E22, 0 4px 12px rgba(0,0,0,0.12);
+  box-shadow: 0 0 0 2px $cta, 0 4px 12px rgba(0,0,0,0.12);
 }
 .card--editable:active {
   cursor: grabbing !important;
