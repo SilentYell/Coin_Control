@@ -53,7 +53,6 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout, u
   const [goal, setGoal] = useState(null);
   const [isEditable, setIsEditable] = useState(false);
   const [showFinancialInsights, setShowFinancialInsights] = useState(false);
-  const [earnedTrophies, setEarnedTrophies] = useState([]);
   const [newTrophy, setNewTrophy] = useState(null);
 
   const [layoutState, setLayoutState] = useState(getInitialLayout);
@@ -97,21 +96,21 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout, u
   const fetchTrophies = useCallback(async () => {
     try {
       const trophies = await getUserTrophies(user.user_id);
-
-      const previousIds = new Set(earnedTrophies.map(t => t.trophy_id));
-      const newTrophies = trophies.filter(t => !previousIds.has(t.trophy_id));
-
-      if (newTrophies.length > 0) {
-        const mostRecentTrophy = newTrophies.sort((a, b) => b.trophy_id - a.trophy_id)[0];
-        setNewTrophy(mostRecentTrophy);
-        setTimeout(() => setNewTrophy(null), 4000);
-      }
-
-      setEarnedTrophies(trophies);
+      // Only set new trophy popup if there are new trophies
+      setNewTrophy((prev) => {
+        const previousIds = new Set((prev?.map?.(t => t.trophy_id)) || []);
+        const newTrophies = trophies.filter(t => !previousIds.has(t.trophy_id));
+        if (newTrophies.length > 0) {
+          const mostRecentTrophy = newTrophies.sort((a, b) => b.trophy_id - a.trophy_id)[0];
+          setTimeout(() => setNewTrophy(null), 4000);
+          return mostRecentTrophy;
+        }
+        return prev;
+      });
     } catch (error) {
       console.error('Error fetching trophies: ', error);
     }
-  }, [user.user_id, earnedTrophies]);
+  }, [user.user_id]);
 
   // Helper to format currency with commas and 2 decimals
   function formatCurrency(amount) {
