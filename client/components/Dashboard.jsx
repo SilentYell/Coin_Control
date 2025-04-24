@@ -202,6 +202,7 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout })
               description="Track your spending here."
               valueClassName="card-value--expenses"
               isEditable={isEditable}
+              animateValue={true}
             />
           </div>
           <div key="income">
@@ -210,6 +211,7 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout })
               value={formatCurrency(totalIncome || 0)}
               description="Monitor your earnings."
               isEditable={isEditable}
+              animateValue={true}
             />
           </div>
           <div key="balance">
@@ -219,6 +221,7 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout })
               description="Your current financial status (after savings)."
               valueClassName={currentBalance >= 0 ? "card-value--positive" : "card-value--negative"}
               isEditable={isEditable}
+              animateValue={true}
             />
           </div>
           <div key="savings">
@@ -228,6 +231,7 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout })
               description="Total allocated to your savings goals."
               valueClassName="card-value--savings"
               isEditable={isEditable}
+              animateValue={true}
             />
           </div>
           <div key="ai-insights">
