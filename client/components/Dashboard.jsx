@@ -4,9 +4,11 @@ import Card from './Card';
 import GoalCard from './GoalCard';
 import ExpensesPieChart from './ExpensesPieChart';
 import AIInsights from './AIInsights';
+import Modal from './Modal';
+import TrophyPopup from './TrophyPopup';
 import { Responsive, WidthProvider } from 'react-grid-layout';
 import { FaLightbulb, FaLock, FaLockOpen } from 'react-icons/fa';
-import Modal from './Modal';
+import { getUserTrophies } from '../services/api';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -41,7 +43,7 @@ function getInitialLayout() {
   return wideLayout;
 }
 
-function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout }) {
+function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout, user }) {
   const [totalExpenses, setTotalExpenses] = useState(0);
   const [totalIncome, setTotalIncome] = useState(0);
   const [currentBalance, setCurrentBalance] = useState(0);
@@ -49,6 +51,8 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout })
   const [goal, setGoal] = useState(null);
   const [isEditable, setIsEditable] = useState(false);
   const [showFinancialInsights, setShowFinancialInsights] = useState(false);
+  const [earnedTrophies, setEarnedTrophies] = useState([]);
+  const [newTrophy, setNewTrophy] = useState(null);
 
   const [layoutState, setLayoutState] = useState(getInitialLayout);
 
@@ -77,6 +81,26 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout })
     setTotalSavings(0);
   };
 
+  // Fetch the trophies whenever income/expenses or savings update
+  const fetchTrophies = useCallback(async () => {
+    try {
+      const trophies = await getUserTrophies(user.user_id);
+
+      const previousIds = new Set(earnedTrophies.map(t => t.trophy_id));
+      const newTrophies = trophies.filter(t => !previousIds.has(t.trophy_id));
+
+      if (newTrophies.length > 0) {
+        const mostRecentTrophy = newTrophies.sort((a, b) => b.trophy_id - a.trophy_id)[0];
+        setNewTrophy(mostRecentTrophy);
+        setTimeout(() => setNewTrophy(null), 4000);
+      }
+
+      setEarnedTrophies(trophies);
+    } catch (error) {
+      console.error('Error fetching trophies: ', error);
+    }
+  }, [user.user_id]);
+
   // Helper to format currency with commas and 2 decimals
   function formatCurrency(amount) {
     return (amount < 0 ? '-' : '') + '$' + Math.abs(amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -84,8 +108,10 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout })
 
   // Fetch goal on mount and whenever income/expenses or goal changes
   useEffect(() => {
-    fetchGoal();
-  }, [fetchGoal, income, expenses, goalRefreshTrigger]);
+    fetchGoal().then(() => {
+      fetchTrophies();
+    });
+  }, [fetchGoal, income, expenses, goalRefreshTrigger, fetchTrophies]);
 
   useEffect(() => {
     const totalExpenses = expenses.reduce(
@@ -242,6 +268,9 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout })
             </Card>
           </div>
         </ResponsiveGridLayout>
+        {newTrophy && (
+        <TrophyPopup trophy={newTrophy} />
+        )}
       </div>
       {showFinancialInsights && (
         <Modal

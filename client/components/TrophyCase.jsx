@@ -10,6 +10,7 @@ const TrophyCase = ({ userId }) => {
       try {
         const data = await getUserTrophies(userId);
         console.log('Fetched trophies: ', data);
+        
         setTrophies(data);
       } catch (error) {
         console.log('Error fetching trophies: ', error);
@@ -25,12 +26,14 @@ const TrophyCase = ({ userId }) => {
         trophies.map((trophy) => (
           <div key={trophy.trophy_id} className='trophy'>
             <h3>{trophy.name}</h3>
-            <p>{trophy.description}</p>
-            <img src={trophy.icon_url} alt={trophy.name}/>
+            <img src={trophy.icon_url} alt={trophy.name} />
+            <div className='trophy-info'>
+              {trophy.percent_required}% of your savings goal reached! 
+            </div>
           </div>
         ))
       ) : (
-        <p>No trophies earned yet.</p>
+        <p className='trophy-case-empty'>No trophies earned yet.</p>
       )}
     </div>
   );
