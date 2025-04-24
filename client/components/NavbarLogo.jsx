@@ -8,6 +8,25 @@ const NavbarLogo = ({ size = 'small' }) => {
     large: { width: '100px', height: '100px' },
   };
 
+  // Positioning for different sizes - to make C C more clear
+  const letterPositions = {
+    small: {
+      firstC: { x: "90", y: "170", fontSize: "110" },
+      secondC: { x: "130", y: "200", fontSize: "110" }
+    },
+    medium: {
+      firstC: { x: "100", y: "175", fontSize: "120" },
+      secondC: { x: "120", y: "210", fontSize: "120" }
+    },
+    large: {
+      firstC: { x: "100", y: "175", fontSize: "120" },
+      secondC: { x: "120", y: "210", fontSize: "120" }
+    }
+  };
+
+  // Get the right positioning based on size
+  const pos = letterPositions[size];
+
   return (
     <div style={sizes[size]}>
       <svg
@@ -23,9 +42,9 @@ const NavbarLogo = ({ size = 'small' }) => {
         
         {/* letters */}
         <text className="nav-coin-c" x="100" y="175" 
-          fontFamily="Arial-BoldMT, Arial" fontSize="120" fontWeight="700" fill="#876510">C</text>
+          fontFamily="Arial-BoldMT, Arial" fontSize="120" fontWeight="700" fill="#000000">C</text>
         <text className="nav-coin-c" x="120" y="210" 
-          fontFamily="Arial-BoldMT, Arial" fontSize="120" fontWeight="700" fill="#876510">C</text>
+          fontFamily="Arial-BoldMT, Arial" fontSize="120" fontWeight="700" fill="#000000">C</text>
         
         {/* vertical lines */}
         <path d="M150,40 L150,70" fill="none" stroke="#000000" strokeWidth="5" />
