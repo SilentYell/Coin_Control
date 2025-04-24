@@ -1,0 +1,27 @@
+.trophy-popup {
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff3cd;
+  border: 2px solid #ffeeba;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  text-align: center;
+  z-index: 9999;
+  animation: fadeInOut 4s ease forwards;
+
+  img {
+    width: 80px;
+    height: auto;
+    margin-bottom: 1rem;
+  }
+
+  @keyframes fadeInOut {
+    0% { opacity: 0; transform: translate(-50%, -20%); }
+    10% { opacity: 1; transform: translate(-50%, 0); }
+    90% { opacity: 1; }
+    100% { opacity: 0; transform: translate(-50%, -20%); }
+  }
+}
