@@ -105,6 +105,16 @@ $dashboard-accent: #E1B000;
   }
 }
 
+// Placement shadow for react-grid-layout
+.react-grid-placeholder {
+  background: rgba($dashboard-primary, 0.10); // subtle green shadow
+  border: 2px dashed $cta; // orange border
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba($dashboard-primary, 0.15);
+  transition: all 0.2s;
+  z-index: 10;
+}
+
 .dashboard-controls {
   display: flex;
   gap: 1.25rem;
