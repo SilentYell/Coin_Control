@@ -4,6 +4,8 @@ import '../styles/Dashboard.scss';
 
 const BUTTON_MIN_WIDTH = 120;
 const BUTTON_MAX_WIDTH = 180;
+const WIDTH_DURATION = 200;
+const FADE_DURATION = 80;
 
 function getDisplayLetters(isCompact) {
   return isCompact ? 'COMPACT'.split('') : 'W I D E'.split(' ');
@@ -20,11 +22,12 @@ export default function ToggleLayoutButton({ isCompact, onToggle }) {
   useEffect(() => {
     if (!pendingToggle) {
       const targets = lettersRef.current.filter(Boolean);
+      anime.remove(targets);
       if (targets.length > 0) {
         anime({
           targets,
           opacity: 0,
-          duration: 120,
+          duration: FADE_DURATION,
           easing: 'easeInOutQuad',
           complete: () => {
             setLetters(getDisplayLetters(isCompact));
@@ -43,11 +46,12 @@ export default function ToggleLayoutButton({ isCompact, onToggle }) {
   useEffect(() => {
     if (pendingFadeIn) {
       const targets = lettersRef.current.filter(Boolean);
+      anime.remove(targets);
       if (targets.length > 0) {
         anime({
           targets,
           opacity: 1,
-          duration: 180,
+          duration: FADE_DURATION,
           easing: 'easeInOutQuad',
         });
       }
@@ -63,32 +67,36 @@ export default function ToggleLayoutButton({ isCompact, onToggle }) {
   // On click: animate width, then animate text
   const handleClick = () => {
     anime.remove(btnRef.current);
+    anime.remove(lettersRef.current);
+    if (pendingToggle) return;
     setPendingToggle(true);
     anime({
       targets: btnRef.current,
       width: isCompact ? BUTTON_MAX_WIDTH : BUTTON_MIN_WIDTH,
-      duration: 350,
+      duration: WIDTH_DURATION,
       easing: 'easeInOutQuad',
       complete: () => {
         // Now animate text out, then toggle, then fade in
         const targets = lettersRef.current.filter(Boolean);
+        anime.remove(targets);
         anime({
           targets,
           opacity: 0,
-          duration: 120,
+          duration: FADE_DURATION,
           easing: 'easeInOutQuad',
           complete: () => {
             onToggle();
             setLetters(getDisplayLetters(!isCompact));
             setTimeout(() => {
               const newTargets = lettersRef.current.filter(Boolean);
+              anime.remove(newTargets);
               anime({
                 targets: newTargets,
                 opacity: 1,
-                duration: 180,
+                duration: FADE_DURATION,
                 easing: 'easeInOutQuad',
+                complete: () => setPendingToggle(false),
               });
-              setPendingToggle(false);
             }, 10);
           },
         });
@@ -102,7 +110,7 @@ export default function ToggleLayoutButton({ isCompact, onToggle }) {
     anime({
       targets: btnRef.current,
       width: isCompact ? BUTTON_MAX_WIDTH : BUTTON_MIN_WIDTH,
-      duration: 250,
+      duration: WIDTH_DURATION,
       easing: 'easeInOutQuad',
     });
   };
@@ -112,7 +120,7 @@ export default function ToggleLayoutButton({ isCompact, onToggle }) {
     anime({
       targets: btnRef.current,
       width: isCompact ? BUTTON_MIN_WIDTH : BUTTON_MAX_WIDTH,
-      duration: 250,
+      duration: WIDTH_DURATION,
       easing: 'easeInOutQuad',
     });
   };
