@@ -74,6 +74,10 @@ $app-text-light: #FFFFFF; // Text on dark
         width: 100%;
         height: 100%;
         position: relative;
+
+        svg text, svg path {
+          stroke: #000 !important;
+        }
       }
     }
   }
