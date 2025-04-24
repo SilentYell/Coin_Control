@@ -1,10 +1,19 @@
 // Handles trophies-related API routes
 const router = require("express").Router();
+const { checkAndAwardTrophies } = require("../services/trophies");
 
 module.exports = db => {
   // Get all trophies for the user
-  router.get("/trophies/:userId", (req, res) => {
+  router.get("/trophies/:userId", async (req, res) => {
     const userId = 1; // change this later to be dynamic
+
+    // Check user trophies after successful income post
+    let earnedTrophies = [];
+    try {
+      earnedTrophies = await checkAndAwardTrophies(userId);
+    } catch (error) {
+      console.error(`Error checking trophies`, error);
+    }
 
     const query = `
     SELECT
@@ -15,10 +24,16 @@ module.exports = db => {
     ORDER BY earned_at;
     `;
 
-    db.query(query, [userId])
-    .then(({ rows }) => {
-      res.json(rows);
-    });
+    try {
+      const { rows } = await db.query(query, [userId]);
+      res.json({
+        allTrophies: rows,
+        earnedTrophies
+      })
+    } catch (error) {
+      console.error(`Error fetching trophies: `, error);
+      res.status(500).json({ error: "Error fetching trophies"});
+    }
   });
 
   return router;
