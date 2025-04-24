@@ -1,16 +1,16 @@
 .expenses-list {
   width: 100%;
   padding: 1.5rem;
-  background-color: #fcedd3;
+  background-color: #F3F4F6;
   border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px rgba(44, 62, 80, 0.1);
 
   h2 {
     margin-bottom: 1.5rem;
-    color: #1e4210;
+    color: #2C3E50;
     font-weight: 700;
     font-size: 1.8rem;
-    border-bottom: 2px solid #e6b800;
+    border-bottom: 2px solid #BDC3C7;
     padding-bottom: 0.75rem;
   }
 
@@ -19,32 +19,32 @@
     align-items: center;
     margin-bottom: 1.5rem;
     padding: 0.75rem 1rem;
-    background-color: rgba(230, 184, 0, 0.15);
+    background-color: rgba(26, 188, 156, 0.1);
     border-radius: 8px;
-    border: 1px solid #e6b800;
+    border: 1px solid #BDC3C7;
 
     label {
       margin-right: 10px;
       font-weight: 500;
-      color: #876510;
+      color: #2C3E50;
     }
 
     select {
       padding: 8px 12px;
       border-radius: 6px;
-      border: 1px solid #876510;
-      background-color: #fcedd3;
+      border: 1px solid #BDC3C7;
+      background-color: #F3F4F6;
       min-width: 160px;
       font-size: 0.9rem;
-      color: #1e4210;
+      color: #2C3E50;
       cursor: pointer;
       transition: border-color 0.15s ease;
 
       &:hover,
       &:focus {
-        border-color: #1e4210;
+        border-color: #1ABC9C;
         outline: none;
-        box-shadow: 0 0 0 2px rgba(30, 66, 16, 0.2);
+        box-shadow: 0 0 0 2px rgba(26, 188, 156, 0.2);
       }
     }
   }
