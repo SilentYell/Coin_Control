@@ -26,13 +26,13 @@ function App() {
     lastEditedTransactionType,
     setLastEditedTransactionType,
     lastEditedId,
-    setLastEditedId
+    setLastEditedId,
   } = useApplicationData();
 
   const [user, setUser] = useState(null);
   const [showLogo, setShowLogo] = useState(false); // don't show logo immediately on load
   const [goalRefreshTrigger, setGoalRefreshTrigger] = useState(0);
-  const handleGoalChanged = () => setGoalRefreshTrigger(prev => prev + 1);
+  const handleGoalChanged = () => setGoalRefreshTrigger((prev) => prev + 1);
 
   useEffect(() => {
     if (!user) {
@@ -99,18 +99,57 @@ function App() {
       />
 
       {!user ? (
-      <>
-        <h3>Please click the login button to view your dashboard.</h3>
-        <div className="logo-container" style={{ minHeight: 200 }}>
-          {showLogo && (
-            <div style={{ animation: 'fadeIn 1s' }}>
-              <Logo />
+        <div className="landing-page">
+          <div className="hero-section">
+            <div className="hero-content">
+              <h1>Take Control of Your Finances</h1>
+              <p className="hero-subtitle">
+                Track expenses, manage income, and achieve your savings goals
+                with Coin Control
+              </p>
             </div>
-          )}
+            <div className="logo-container">
+              {showLogo && (
+                <div className="logo-animation">
+                  <Logo />
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="features-section">
+            <div className="feature-card">
+              <div className="feature-icon expense-icon">💰</div>
+              <h3>Expense Tracking</h3>
+              <p>Easily track and categorize all your expenses in one place</p>
+            </div>
+            <div className="feature-card">
+              <div className="feature-icon income-icon">📈</div>
+              <h3>Income Management</h3>
+              <p>Keep track of all your income sources and payment schedules</p>
+            </div>
+            <div className="feature-card">
+              <div className="feature-icon goal-icon">🎯</div>
+              <h3>Savings Goals</h3>
+              <p>Set savings goals and watch your progress in real-time</p>
+            </div>
+            <div className="feature-card">
+              <div className="feature-icon insight-icon">💡</div>
+              <h3>AI Insights</h3>
+              <p>Get personalized financial insights powered by AI</p>
+            </div>
+          </div>
+
+          <footer className="landing-footer">
+            <p>© 2025 Coin Control | A Personal Finance Management Tool</p>
+          </footer>
         </div>
-      </>
       ) : (
-        <Dashboard expenses={expensesList} income={incomeList} goalRefreshTrigger={goalRefreshTrigger} user={user}
+        <Dashboard
+          expenses={expensesList}
+          income={incomeList}
+          goalRefreshTrigger={goalRefreshTrigger}
+          user={user}
         />
       )}
     </div>
