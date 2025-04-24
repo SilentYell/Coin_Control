@@ -34,7 +34,11 @@ VALUES
   ('Consistent Logger', 'Add a transaction every day for 7 days', '', 'transaction_for_7_days'),
   ('Goal Getter', 'Reach a savings goal', '', 'equal_to_goal'),
   ('All-In-One', 'Use all features at least once (income, expense, goal, etc.)', '', 'use_all_features'),
-  ('Big Saver', 'Save over $1,000', '', 'save_income_1000');
+  ('Small Saver', 'Save $10', '', 'save_income_10'),
+  ('Medium Saver', 'Save $50', '', 'save_income_50'),
+  ('Big Saver', 'Save $100', '', 'save_income_100'),
+  ('HUGE Saver', 'Save over $1,000', '', 'save_income_1000');
+
 
 
 INSERT INTO User_Trophies (user_id, trophy_id, earned_at)
