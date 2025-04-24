@@ -344,9 +344,10 @@ const Navbar = (
 
                 // Update trophiesList with any newly earned trophies
                 const data = await res.json();
+                console.log('data from savings POST:', data)
                 if (data.earnedTrophies?.length > 0) {
                   const updatedTrophies = await getUserTrophies(user.user_id);
-                  setTrophiesList(updatedTrophies);
+                  setTrophiesList(updatedTrophies.allTrophies);
                 }
 
                 setGoalName('');

@@ -79,7 +79,8 @@ const AddExpenseForm = ({ editingExpense, onSubmitSuccess, setEditSuccess, setLa
 
         // Update trophiesList with any newly earned trophies
         if (response.earnedTrophies?.length) {
-          await setTrophiesList(await getUserTrophies());
+          const data = await getUserTrophies();
+          await setTrophiesList(data.allTrophies);
         }
 
         // If no errors, show success message

@@ -3,6 +3,8 @@ import { getUserTrophies } from '../services/api';
 import formatDate from '../src/helpers/formatDate';
 
 export const Trophies = ({trophiesList, setTrophiesList}) => {
+
+  console.log('trophiesList', trophiesList)
   useEffect(() => {
     // Fetch trophies data from the backend when the component mounts
     const fetchTrophies = async () => {

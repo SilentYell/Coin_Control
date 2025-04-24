@@ -77,7 +77,8 @@ const IncomeForm = ({ editingIncome, setEditingIncome, onSubmitSuccess, setEditS
 
         // Update trophiesList with any newly earned trophies
         if (response.earnedTrophies?.length) {
-          await setTrophiesList(await getUserTrophies());
+          const data = await getUserTrophies();
+          await setTrophiesList(data.allTrophies);
         }
 
         // Show success message
