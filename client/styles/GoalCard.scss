@@ -24,6 +24,36 @@ $text-light: #fff;
   .goal-description {
     color: $text-dark;
   }
+
+  .goal-btn,
+  .edit-btn,
+  .delete-btn {
+    background: $secondary;
+    color: $text-light;
+    border: none;
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    margin: 0.25rem 0.5rem 0.25rem 0;
+    transition: background 0.2s, color 0.2s;
+
+    &:hover {
+      background: $alt-btn;
+      color: $text-dark;
+    }
+  }
+
+  .delete-btn {
+    background: $cta;
+    color: $text-light;
+
+    &:hover {
+      background: darken($cta, 10%);
+      color: $text-light;
+    }
+  }
 }
 
 .goal-card.empty {
