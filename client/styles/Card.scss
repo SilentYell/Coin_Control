@@ -39,9 +39,15 @@ $finance-font: 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
 .card {
   @extend .card-base;
   text-align: center;
-  background: $main-bg;
+  background: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 1rem;
+  border: 1.5px solid rgba(255, 255, 255, 0.28);
+  position: relative;
+  overflow: hidden;
   color: $text-dark;
-  border: 1px solid $accent;
 
   .card-title {
     color: $secondary;
@@ -62,6 +68,10 @@ $finance-font: 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
   font-family: $finance-font;
   margin-bottom: 0.5rem;
   text-align: center;
+  flex-shrink: 0;
+  min-height: 2.2em;
+  z-index: 1;
+  background: transparent;
 }
 
 .card-value {
@@ -95,8 +105,13 @@ $finance-font: 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
 }
 
 .card-children {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
   width: 100%;
-  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 .dashboard {
@@ -111,3 +126,18 @@ $finance-font: 'Inter', 'Roboto', 'Segoe UI', Arial, sans-serif;
   will-change: transform;
 }
 
+.card--editable {
+  cursor: grab !important;
+  transition: box-shadow 0.2s;
+  box-shadow: 0 0 0 2px #E67E22, 0 4px 12px rgba(0,0,0,0.12);
+}
+.card--editable:active {
+  cursor: grabbing !important;
+}
+.card--editable:hover {
+  animation: card-wiggle 0.5s;
+}
+
+.card-shine {
+  display: none;
+}
