@@ -9,6 +9,7 @@ import TrophyPopup from './TrophyPopup';
 import { Responsive, WidthProvider } from 'react-grid-layout';
 import { FaLightbulb, FaLock, FaLockOpen } from 'react-icons/fa';
 import { getUserTrophies } from '../services/api';
+import ToggleLayoutButton from './ToggleLayoutButton';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -59,6 +60,16 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout, u
   // Helper to get the width of the goal card in grid columns
   const goalCardWidth = layoutState.find((l) => l.i === 'goal')?.w || 6;
   const isGoalCardCompact = goalCardWidth < 3;
+
+  // Helper to determine if current layout is compact
+  const isCompact = layoutState.every((item, idx) => {
+    return (
+      compactLayout[idx] &&
+      item.i === compactLayout[idx].i &&
+      item.w === compactLayout[idx].w &&
+      item.h === compactLayout[idx].h
+    );
+  });
 
   // Helper to fetch the latest goal
   const fetchGoal = useCallback(async () => {
@@ -177,18 +188,10 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout, u
             </>
           )}
         </div>
-        <button
-          onClick={() => setLayoutState(compactLayout)}
-          className="shine-btn"
-        >
-          Compact
-        </button>
-        <button
-          onClick={() => setLayoutState(wideLayout)}
-          className="shine-btn"
-        >
-          Wide
-        </button>
+        <ToggleLayoutButton
+          isCompact={isCompact}
+          onToggle={() => setLayoutState(isCompact ? wideLayout : compactLayout)}
+        />
         <button
           onClick={handleSaveLayout}
           className="shine-btn"
