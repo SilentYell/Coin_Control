@@ -167,8 +167,8 @@ $dashboard-accent: #E1B000;
 .lock-switch {
   display: flex;
   align-items: center;
-  width: 64px;
-  height: 36px;
+  width: 70px; // Reduced width for a more compact switch
+  height: 44px;
   background: $secondary;
   border-radius: 50px;
   position: relative;
@@ -179,28 +179,28 @@ $dashboard-accent: #E1B000;
   .switch-icon {
     position: absolute;
     top: 50%;
-    left: 16px; // Center of left circle (3px + 13px)
+    left: 18px; // Centered over the circle when locked
     transform: translate(-50%, -50%);
     color: $secondary;
-    font-size: 1.1rem;
+    font-size: 1.3rem;
     z-index: 2;
     transition: left 0.2s, color 0.2s;
     pointer-events: none;
   }
   .switch-icon.lock {
-    left: 16px; // Center of left circle (3px + 13px)
+    left: 22px; // Centered over the circle when locked
     color: $secondary;
   }
   .switch-icon.unlock {
-    left: 48px; // Center of right circle (31px + 13px)
+    left: 49px; // Centered over the circle when unlocked
     color: $secondary;
   }
   .switch-circle {
     position: absolute;
-    top: 3px;
-    left: 3px;
-    width: 26px;
-    height: 26px;
+    top: 4px;
+    left: 6px;
+    width: 32px;
+    height: 32px;
     background: $text-light;
     border-radius: 50%;
     transition: left 0.2s, background 0.2s;
@@ -210,7 +210,7 @@ $dashboard-accent: #E1B000;
     background: $cta;
     border: 2px solid $cta;
     .switch-circle {
-      left: 31px;
+      left: 32px; // Moves to the right, but stays inside the switch
       background: $text-light;
     }
     .switch-icon.lock {
