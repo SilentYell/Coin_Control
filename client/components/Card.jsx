@@ -5,19 +5,19 @@ import '../styles/Card.scss';
 function Card({ title, value, valueClassName = '', children, isEditable = false }) {
   const cardRef = useRef(null);
 
-  // Wiggle animation function
+  // Wiggle animation function (reduced wiggle)
   const wiggle = () => {
     if (cardRef.current) {
       anime({
         targets: cardRef.current,
-        rotateZ: [0, -2, 2, -1.5, 1.5, -1, 1, 0],
-        duration: 900,
+        rotateZ: [0, -0.5, 0.5, -0.25, 0.25, 0], // further reduced wiggle
+        duration: 700,
         easing: 'easeInOutSine',
       });
     }
   };
 
-  // Trigger wiggle when isEditable becomes true
+  // Trigger wiggle when isEditable becomes true (initial wiggle only)
   useEffect(() => {
     if (isEditable) {
       wiggle();
@@ -37,18 +37,10 @@ function Card({ title, value, valueClassName = '', children, isEditable = false 
     }
   }, []);
 
-  // Handle hover wiggle
-  const handleMouseEnter = () => {
-    if (isEditable) {
-      wiggle();
-    }
-  };
-
   return (
     <div
       className={`card${isEditable ? ' card--editable' : ''}`}
       ref={cardRef}
-      onMouseEnter={handleMouseEnter}
       style={isEditable ? { cursor: 'grab' } : {}}
     >
       <div className="card-title">{title}</div>
