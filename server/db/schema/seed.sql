@@ -37,7 +37,11 @@ VALUES
   ('Small Saver', 'Save $10', '', 'save_income_10'),
   ('Medium Saver', 'Save $50', '', 'save_income_50'),
   ('Big Saver', 'Save $100', '', 'save_income_100'),
-  ('HUGE Saver', 'Save over $1,000', '', 'save_income_1000');
+  ('HUGE Saver', 'Save over $1,000', '', 'save_income_1000'),
+  ('Small Spender', 'Spend $10', '', 'spend_10'),
+  ('Medium Spender', 'Spend $50', '', 'spend_50'),
+  ('Big Spender', 'Spend $100', '', 'spend_100'),
+  ('HUGE Spender', 'Spend over $1,000', '', 'spend_1000');
 
 
 
