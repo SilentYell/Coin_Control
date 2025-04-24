@@ -7,9 +7,10 @@ import AIInsights from './AIInsights';
 import Modal from './Modal';
 import TrophyPopup from './TrophyPopup';
 import { Responsive, WidthProvider } from 'react-grid-layout';
-import { FaLightbulb, FaLock, FaLockOpen } from 'react-icons/fa';
+import { FaLightbulb, FaLock, FaLockOpen, FaRegSave } from 'react-icons/fa';
 import { getUserTrophies } from '../services/api';
 import ToggleLayoutButton from './ToggleLayoutButton';
+import anime from 'animejs/lib/anime.es.js';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -110,7 +111,7 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout, u
     } catch (error) {
       console.error('Error fetching trophies: ', error);
     }
-  }, [user.user_id]);
+  }, [user.user_id, earnedTrophies]);
 
   // Helper to format currency with commas and 2 decimals
   function formatCurrency(amount) {
@@ -149,6 +150,12 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout, u
   // Save only the layout array (not a preset name)
   const handleSaveLayout = () => {
     localStorage.setItem('dashboardLayout', JSON.stringify(layoutState));
+    anime({
+      targets: '.save-layout-btn',
+      scale: [1, 1.15, 1],
+      duration: 400,
+      easing: 'easeInOutQuad',
+    });
   };
 
   // Update layoutState on drag/resize stop
@@ -194,9 +201,12 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout, u
         />
         <button
           onClick={handleSaveLayout}
-          className="shine-btn"
+          className={`shine-btn save-layout-btn`}
+          style={{ display: 'flex', alignItems: 'center', gap: 8 }}
+          aria-label="Save Layout"
         >
-          Save View
+          <FaRegSave style={{ fontSize: 18 }} />
+          <span>Save Layout</span>
         </button>
       </div>
       <div className="dashboard-grid">
