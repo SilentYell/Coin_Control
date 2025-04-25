@@ -1,5 +1,3 @@
-const { checkAndAwardTrophies } = require("../services/trophies");
-
 // Handles income-related API routes
 const router = require("express").Router();
 const { checkAndAwardTrophies } = require('../helpers/trophyHelpers');
@@ -92,7 +90,7 @@ module.exports = db => {
 
           // Querying the database for the updated SavingsGoal once new income is added for proper trophy implementation
           const updatedGoalResult = await db.query(
-            `SELECT * FROM SavingsGoals WHERE goal_id = $1`, 
+            `SELECT * FROM SavingsGoals WHERE goal_id = $1`,
             [goal.goal_id]
           );
           goal = updatedGoalResult.rows[0];
