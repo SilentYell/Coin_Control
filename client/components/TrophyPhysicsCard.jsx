@@ -14,68 +14,23 @@ const CARD_WIDTH = 400;
 const CARD_HEIGHT = 260;
 const BADGE_SIZE = 64;
 
-const MOCK_TROPHIES = [
-  {
-    trophy_id: 1,
-    name: 'First Steps',
-    icon_url: '/icons/first_steps.svg',
-  },
-  {
-    trophy_id: 2,
-    name: 'Consistent Logger',
-    icon_url: '/icons/consistent_logger.svg',
-  },
-  {
-    trophy_id: 3,
-    name: 'Save $10',
-    icon_url: '/icons/save_10.svg',
-  },
-  {
-    trophy_id: 4,
-    name: 'Save $50',
-    icon_url: '/icons/save_50.svg',
-  },
-  {
-    trophy_id: 5,
-    name: 'Save $100',
-    icon_url: '/icons/save_100.svg',
-  },
-  {
-    trophy_id: 6,
-    name: 'Spend $10',
-    icon_url: '/icons/spend_10.svg',
-  },
-  {
-    trophy_id: 7,
-    name: 'Spend $50',
-    icon_url: '/icons/spend_50.svg',
-  },
-  {
-    trophy_id: 8,
-    name: 'Spend $100',
-    icon_url: '/icons/spend_100.svg',
-  },
-];
-
 const TrophyPhysicsCard = ({ userId, isEditable, cardX, cardY }) => {
   const sceneRef = useRef(null);
   const engineRef = useRef(null);
   const prevPos = useRef({ x: cardX, y: cardY });
-  // Swap to mock data for now
-  const [trophies, setTrophies] = React.useState(MOCK_TROPHIES);
+  const [trophies, setTrophies] = React.useState([]);
 
-  // Commenting out the real fetch for now
-  // useEffect(() => {
-  //   async function fetchTrophies() {
-  //     try {
-  //       const data = await getUserTrophies(userId);
-  //       setTrophies(data);
-  //     } catch (err) {
-  //       setTrophies([]);
-  //     }
-  //   }
-  //   fetchTrophies();
-  // }, [userId]);
+  useEffect(() => {
+    async function fetchTrophies() {
+      try {
+        const data = await getUserTrophies(userId);
+        setTrophies(data);
+      } catch {
+        setTrophies([]);
+      }
+    }
+    fetchTrophies();
+  }, [userId]);
 
   useEffect(() => {
     prevPos.current = { x: cardX, y: cardY };
