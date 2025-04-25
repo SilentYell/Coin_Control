@@ -267,8 +267,24 @@ export const deleteTransaction = async (id, type) => {
   }
 };
 
-// Get trophies for specific user
+
+// Fetch trophies earned by user
 export const getUserTrophies = async (userId) => {
+  try {
+    const response = await fetch(`${API_URL}/user-trophies/${userId}`);
+
+    if (!response.ok) {
+      throw new Error(`Error ${response.status}: ${response.statusText}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error(`Failed to fetch trophies for user ${userId}`, error);
+    throw error;
+  }
+};
+
+// Get badge trophies for specific user
+export const getUserBadgeTrophies = async (userId) => {
   try {
     const response = await fetch(`${API_URL}/trophies/${userId}`, {
       method: 'GET',
