@@ -9,35 +9,37 @@ import IncomeList from './IncomeList';
 import TrophyCase from './TrophyCase';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import AllTransactions from './AllTransactions';
-import NavbarLogo from './NavbarLogo';
+import { getUserTrophies } from '../services/api';
 
 const API_URL = 'http://localhost:3000/api';
 
-function Navbar({
-  user,
-  handleLogin,
-  handleLogout,
-  incomeList,
-  setIncomeList,
-  getIncome,
-  editingIncome,
-  setEditingIncome,
-  editingExpense,
-  setEditingExpense,
-  editTransactionType,
-  setEditTransactionType,
-  onSubmitSuccess,
-  expensesList,
-  setExpensesList,
-  onExpenseSubmitSuccess,
-  editSuccess,
-  setEditSuccess,
-  lastEditedTransactionType,
-  setLastEditedTransactionType,
-  lastEditedId,
-  setLastEditedId,
-  onGoalChanged
-}) {
+const Navbar = (
+  { user,
+    handleLogin,
+    handleLogout,
+    incomeList,
+    setIncomeList,
+    getIncome,
+    editingIncome,
+    setEditingIncome,
+    editingExpense,
+    setEditingExpense,
+    editTransactionType,
+    setEditTransactionType,
+    onSubmitSuccess,
+    expensesList,
+    setExpensesList,
+    fetchExpensesList,
+    onExpenseSubmitSuccess,
+    editSuccess,
+    setEditSuccess,
+    lastEditedTransactionType,
+    setLastEditedTransactionType,
+    lastEditedId,
+    setLastEditedId,
+    setTrophiesList
+  }) => {
+
   const [showIncomeFormModal, setShowIncomeFormModal] = useState(false);
   const [showExpenseFormModal, setShowExpenseFormModal] = useState(false);
   const [showIncomeListModal, setShowIncomeListModal] = useState(false);
@@ -183,6 +185,7 @@ function Navbar({
             setEditSuccess={setEditSuccess}
             setLastEditedId={setLastEditedId}
             setLastEditedTransactionType={setLastEditedTransactionType}
+            setTrophiesList={setTrophiesList}
             onSubmitSuccess={async () => {
               await onSubmitSuccess();
               setEditingIncome(undefined);
@@ -229,6 +232,7 @@ function Navbar({
                 editingExpense={editingExpense}
                 setEditSuccess={setEditSuccess}
                 setLastEditedId={setLastEditedId}
+                setTrophiesList={setTrophiesList}
                 setLastEditedTransactionType={setLastEditedTransactionType}
                 onSubmitSuccess={ async () => {
                   await onExpenseSubmitSuccess();
@@ -348,8 +352,15 @@ function Navbar({
                   headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify(payload),
                 });
+
+                // Update trophiesList with any newly earned trophies
                 const data = await res.json();
-                console.log(data);
+                console.log('data from savings POST:', data)
+                if (data.earnedTrophies?.length > 0) {
+                  const updatedTrophies = await getUserTrophies(user.user_id);
+                  setTrophiesList(updatedTrophies.allTrophies);
+                }
+
                 setGoalName('');
                 setGoalAmount('');
                 setGoalPercent('');

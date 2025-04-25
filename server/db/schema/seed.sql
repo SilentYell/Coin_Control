@@ -33,6 +33,7 @@ VALUES
   (3, 1, 'Phone Bill', -85, TO_DATE('20/03/2025', 'DD/MM/YYYY'), 'Utilities'),
   (4, 1, 'Weekly Groceries', -250, TO_DATE('25/03/2025', 'DD/MM/YYYY'), 'Groceries');
 
+
 -- Insert trophy data into the Trophies table
 INSERT INTO Trophies(trophy_id, name, description, percent_required, icon_url)
 VALUES

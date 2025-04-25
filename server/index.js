@@ -18,6 +18,10 @@ const savingsGoalsRouter = require('./routes/savingsGoals');
 const trophyRoutes = require('./routes/trophyRoutes');
 const aiInsightsRouter = require('./routes/aiInsights');
 const transactions = require('./routes/transactions');
+
+const trophies = require('./routes/trophies');
+
+
 const userTrophies = require('./routes/userTrophies');
 
 // middleware
@@ -25,11 +29,16 @@ app.use(cors());
 app.use(express.json()); // allows parsing JSON request bodies
 app.use(express.static(path.join(__dirname, '../public'))); // allows icons to be accessible via the browser at the root path
 
+// Get backend images
+app.use('/images', express.static(path.join(__dirname, 'public/images')));
+
+console.log('__dirname:', __dirname)
 // use routes
 app.use('/api', expenseRoutes);
 app.use('/api', userRoutes);
 app.use('/api', income(db));
 app.use('/api', transactions(db));
+app.use('/api', trophies(db));
 app.use('/api/savings-goals', savingsGoalsRouter);
 app.use('/api/trophies', trophyRoutes);
 app.use('/api/user-trophies/', userTrophies);

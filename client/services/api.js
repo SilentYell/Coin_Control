@@ -128,8 +128,8 @@ export const getIncomeById = async (id) => {
   }
 };
 
-// add a new income entry
-export const addIncome = async (income) => {
+// add new income entry and check the trophies
+export const addIncomeAndCheckTrophies = async (income) => {
   try {
     const response = await fetch(`${API_URL}/income`, {
       method: 'POST',
@@ -142,8 +142,8 @@ export const addIncome = async (income) => {
     if (!response.ok) {
       throw new Error(`Error ${response.status}: ${response.statusText}`);
     }
-
-    return await response.json();
+    const result = await response.json()
+    return result;
   } catch (error) {
     console.error('Failed to add income:', error);
     throw error;
@@ -267,17 +267,18 @@ export const deleteTransaction = async (id, type) => {
   }
 };
 
-// Fetch trophies earned by user
+// Get trophies for specific user
 export const getUserTrophies = async (userId) => {
   try {
-    const response = await fetch(`${API_URL}/user-trophies/${userId}`);
+    const response = await fetch(`${API_URL}/trophies/${userId}`, {
+      method: 'GET',
+    });
 
-    if (!response.ok) {
-      throw new Error(`Error ${response.status}: ${response.statusText}`);
-    }
+    if (!response.ok) throw new Error(`Error ${response.status}: ${response.statusText}`);
+
     return await response.json();
   } catch (error) {
-    console.error(`Failed to fetch trophies for user ${userId}`, error);
+    console.error(`Failed to retrieve trophies for user id ${userId}`, error);
     throw error;
   }
 };

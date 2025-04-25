@@ -1,3 +1,5 @@
+const { checkAndAwardTrophies } = require("../services/trophies");
+
 // Handles income-related API routes
 const router = require("express").Router();
 const { checkAndAwardTrophies } = require('../helpers/trophyHelpers');
@@ -52,7 +54,7 @@ module.exports = db => {
   // Add a new income entry, allocate savings if applicable
   router.post("/income", async (req, res) => {
     const { amount, last_payment_date, frequency } = req.body;
-    const user_id = 1; // should come from req.body, will change to handle dynamic user ID later
+    const user_id = 1; // will change to handle dynamic user ID later
 
     // Validate required fields
     if (!amount || !last_payment_date || !frequency) {
@@ -100,10 +102,22 @@ module.exports = db => {
       // (Optional) Deduct allocated from user's current_balance
       await db.query(`UPDATE Users SET current_balance = current_balance - $1 WHERE user_id = $2`, [allocated, user_id]);
 
+
+      // Check user trophies after successful income post
+      let earnedTrophies = [];
+      try {
+        earnedTrophies = await checkAndAwardTrophies(user_id);
+      } catch (error) {
+        console.error(`Error checking trophies`, error);
+      }
+
+      res.status(201).json({ ...newIncome, earnedTrophies });
+
       // Checking for and then awarding trophies using helper function
       const newTrophies = await checkAndAwardTrophies(user_id, goal);
 
       res.status(201).json({ newIncome, newTrophies });
+
     } catch (err) {
       console.error('Error inserting income and allocating to savings goal', err);
       res.status(500).json({error: 'Internal Server Error'});

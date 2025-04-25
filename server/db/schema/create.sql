@@ -4,7 +4,7 @@ DROP TABLE IF EXISTS Expenses CASCADE;
 DROP TABLE IF EXISTS Users CASCADE;
 DROP TABLE IF EXISTS SavingsGoals CASCADE;
 DROP TABLE IF EXISTS Trophies CASCADE;
-DROP TABLE IF EXISTS User_trophies CASCADE;
+DROP TABLE IF EXISTS User_Trophies CASCADE;
 
 -- Create USERS table
 CREATE TABLE Users (
@@ -45,6 +45,7 @@ CREATE TABLE SavingsGoals (
   created_at TIMESTAMP DEFAULT NOW()
 );
 
+
 -- Create TROPHIES table 
 CREATE TABLE Trophies (
   trophy_id SERIAL PRIMARY KEY NOT NULL,
@@ -61,6 +62,7 @@ CREATE TABLE User_trophies (
   trophy_id INTEGER REFERENCES Trophies(trophy_id) ON DELETE CASCADE,
   awarded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   UNIQUE (user_id, trophy_id)
+
 );
 
 -- Reset the sequence for the expense_id column

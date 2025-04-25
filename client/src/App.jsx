@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar';
 import Dashboard from '../components/Dashboard';
 import useApplicationData from '../hooks/useApplicationData';
 import Logo from '../components/Logo';
+import Trophies from '../components/Trophies';
 
 function App() {
   const {
@@ -27,6 +28,8 @@ function App() {
     setLastEditedTransactionType,
     lastEditedId,
     setLastEditedId,
+    trophiesList,
+    setTrophiesList
   } = useApplicationData();
 
   const [user, setUser] = useState(null);
@@ -95,7 +98,9 @@ function App() {
         setLastEditedTransactionType={setLastEditedTransactionType}
         lastEditedId={lastEditedId}
         setLastEditedId={setLastEditedId}
+        setTrophiesList={setTrophiesList}
         onGoalChanged={handleGoalChanged}
+
       />
 
       {!user ? (
@@ -145,12 +150,10 @@ function App() {
           </footer>
         </div>
       ) : (
-        <Dashboard
-          expenses={expensesList}
-          income={incomeList}
-          goalRefreshTrigger={goalRefreshTrigger}
-          user={user}
-        />
+        <>
+          <Dashboard expenses={expensesList} income={incomeList} />
+          < Trophies trophiesList={trophiesList} setTrophiesList={setTrophiesList}/>
+        </>
       )}
     </div>
   );
