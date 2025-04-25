@@ -132,22 +132,22 @@ const TrophyPhysicsCard = ({ userId, isEditable, cardX, cardY }) => {
     Matter.World.add(world, bodies);
     // Mouse bumping (locked mode)
     if (!isEditable) {
+      // Enable click-and-drag for badges
       const mouse = Matter.Mouse.create(render.canvas);
-      Matter.Events.on(render.canvas, 'mousemove', () => {
-        const mousePos = mouse.position;
-        bodies.forEach((body) => {
-          const dx = body.position.x - mousePos.x;
-          const dy = body.position.y - mousePos.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < BADGE_SIZE) {
-            // Apply a small force away from the mouse
-            Matter.Body.applyForce(body, body.position, {
-              x: dx * 0.0005,
-              y: dy * 0.0005,
-            });
-          }
-        });
+      const mouseConstraint = Matter.MouseConstraint.create(engine, {
+        mouse,
+        constraint: {
+          stiffness: 0.2,
+          render: { visible: false },
+        },
+        // Only allow dragging badge bodies
+        collisionFilter: {
+          mask: 0x0001,
+        },
       });
+      // Set all badge bodies to the same collision group
+      bodies.forEach(body => { body.collisionFilter = { group: 0, category: 0x0001, mask: 0xFFFFFFFF }; });
+      Matter.World.add(world, mouseConstraint);
     }
     // Run engine
     Matter.Render.run(render);
