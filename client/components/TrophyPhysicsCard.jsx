@@ -3,14 +3,6 @@ import Matter from 'matter-js';
 import Card from './Card';
 import { getUserTrophies } from '../services/api';
 
-// Helper to get the icon path (SVGs in public/icons/)
-const getIconUrl = (iconPath) => {
-  if (!iconPath) return '';
-  if (iconPath.endsWith('.svg')) return `/icons/${iconPath}`;
-  if (iconPath.endsWith('.png')) return `/icons/${iconPath}`;
-  return `/images/trophies/${iconPath}`;
-};
-
 // Mock badge SVGs for TrophyPhysicsCard
 const mockBadges = [
   { trophy_id: 'mock1', name: 'First Steps', icon_path: 'first_steps.svg', description: 'Add your first income or expense', percent_required: 0 },
@@ -76,21 +68,21 @@ const TrophyPhysicsCard = ({ userId, isEditable, cardX, cardY, trophiesList }) =
     return '';
   }
 
-  // Preload all trophy images before creating Matter.js bodies
-  function preloadImages(trophies) {
-    return Promise.all(
-      trophies.map(trophy => {
-        return new Promise(resolve => {
-          const img = new window.Image();
-          img.onload = () => resolve({ ...trophy, _img: img });
-          img.onerror = () => resolve(null); // skip broken images
-          img.src = getTrophyIconUrl(trophy);
-        });
-      })
-    ).then(results => results.filter(Boolean));
-  }
-
   useEffect(() => {
+    // Preload all trophy images before creating Matter.js bodies
+    function preloadImages(trophies) {
+      return Promise.all(
+        trophies.map(trophy => {
+          return new Promise(resolve => {
+            const img = new window.Image();
+            img.onload = () => resolve({ ...trophy, _img: img });
+            img.onerror = () => resolve(null); // skip broken images
+            img.src = getTrophyIconUrl(trophy);
+          });
+        })
+      ).then(results => results.filter(Boolean));
+    }
+
     let cleanup = () => {};
     if (!sceneRef.current || trophies.length === 0) return;
     let cancelled = false;
