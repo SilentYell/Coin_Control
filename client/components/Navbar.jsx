@@ -7,6 +7,7 @@ import AddExpenseForm from './AddExpenseForm';
 import ExpensesList from './ExpensesList';
 import IncomeList from './IncomeList';
 import TrophyCase from './TrophyCase';
+import NavbarLogo from './NavbarLogo'
 import { FaBars, FaTimes } from 'react-icons/fa';
 import AllTransactions from './AllTransactions';
 import { getUserTrophies } from '../services/api';
@@ -425,28 +426,28 @@ const Navbar = (
                   <span className="target-amount">${Number(goalItem.amount).toFixed(2)}</span>
                 </div>
                 <div className="goal-actions">
-                  <button 
+                  <button
                     onClick={() => {
                       setEditingGoal(goalItem);
                       setEditName(goalItem.name);
-                      setEditAmount(goalItem.amount); 
+                      setEditAmount(goalItem.amount);
                       setEditPercent(goalItem.percent);
                     }}
                   >
                     Edit
                   </button>
-                  <button 
+                  <button
                     className="delete-goal"
                     onClick={async () => {
                       try {
                         await fetch(`${API_URL}/savings-goals/${goalItem.goal_id}`, {
                           method: 'DELETE',
                         });
-                        
+
                         // Update the goals list
                         const updatedGoals = goals.filter(g => g.goal_id !== goalItem.goal_id);
                         setGoals(updatedGoals);
-                        
+
                         // Trigger dashboard refresh
                         if (typeof onGoalChanged === 'function') {
                           onGoalChanged();
