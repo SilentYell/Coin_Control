@@ -23,6 +23,10 @@ const trophies = require('./routes/trophies');
 app.use(cors());
 app.use(express.json()); // allows parsing JSON request bodies
 
+// Get backend images
+app.use('/images', express.static(path.join(__dirname, 'public/images')));
+
+console.log('__dirname:', __dirname)
 // use routes
 app.use('/api', expenseRoutes);
 app.use('/api', userRoutes);
