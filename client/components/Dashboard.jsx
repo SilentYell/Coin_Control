@@ -80,8 +80,17 @@ function Dashboard({ expenses = [], income = [], user, goal, totalSavings, refre
   const isGoalCardCompact = goalCardWidth < 3;
 
   // Remove goal from dashboard state when completed
-  const handleGoalComplete = () => {
-    refreshGoal && refreshGoal();
+  const handleGoalComplete = async (goalId) => {
+    if (!goalId) return;
+    try {
+      await fetch(`http://localhost:3000/api/savings-goals/${goalId}`, {
+        method: 'DELETE',
+      });
+      if (refreshGoal) refreshGoal();
+    } catch (err) {
+      console.error('Failed to delete goal on completion:', err);
+      if (refreshGoal) refreshGoal(); // fallback to refresh
+    }
   };
 
   // Fetch the trophies whenever income/expenses or savings update
