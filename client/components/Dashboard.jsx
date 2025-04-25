@@ -64,6 +64,14 @@ function Dashboard({ expenses = [], income = [], user, goal, totalSavings, refre
   });
 
   useEffect(() => {
+    if (layoutMode === 'compact') {
+      setLayoutState(compactLayout);
+    } else {
+      setLayoutState(wideLayout);
+    }
+  }, [layoutMode]);
+
+  useEffect(() => {
     localStorage.setItem('dashboardLayoutMode', layoutMode);
   }, [layoutMode]);
 
