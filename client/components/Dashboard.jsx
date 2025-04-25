@@ -48,12 +48,10 @@ function getInitialLayout() {
   return wideLayout;
 }
 
-function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout, user, trophiesList = [] }) {
+function Dashboard({ expenses = [], income = [], user, goal, totalSavings, refreshGoal, trophiesList = [], onLogout, ...rest }) {
   const [totalExpenses, setTotalExpenses] = useState(0);
   const [totalIncome, setTotalIncome] = useState(0);
   const [currentBalance, setCurrentBalance] = useState(0);
-  const [totalSavings, setTotalSavings] = useState(0);
-  const [goal, setGoal] = useState(null);
   const [isEditable, setIsEditable] = useState(false);
   const [showFinancialInsights, setShowFinancialInsights] = useState(false);
   const [newTrophy, setNewTrophy] = useState(null);
@@ -81,19 +79,9 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout, u
   const goalCardWidth = layoutState.find((l) => l.i === 'goal')?.w || 6;
   const isGoalCardCompact = goalCardWidth < 3;
 
-  // Helper to fetch the latest goal
-  const fetchGoal = useCallback(async () => {
-    if (!user?.user_id) return;
-    const res = await fetch(`http://localhost:3000/api/savings-goals/${user.user_id}?ts=${Date.now()}`);
-    const data = await res.json();
-    setGoal(data[0] || null);
-    setTotalSavings(data[0]?.saved ? Number(data[0].saved) : 0);
-  }, [user]);
-
   // Remove goal from dashboard state when completed
   const handleGoalComplete = () => {
-    setGoal(null);
-    setTotalSavings(0);
+    refreshGoal && refreshGoal();
   };
 
   // Fetch the trophies whenever income/expenses or savings update
@@ -121,12 +109,10 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout, u
     return (amount < 0 ? '-' : '') + '$' + Math.abs(amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
 
-  // Fetch goal on mount and whenever income/expenses or goal changes
+  // Fetch trophies on mount and whenever income/expenses or user changes
   useEffect(() => {
-    fetchGoal().then(() => {
-      fetchTrophies();
-    });
-  }, [fetchGoal, income, expenses, goalRefreshTrigger, fetchTrophies, user]);
+    fetchTrophies();
+  }, [income, expenses, fetchTrophies, user]);
 
   useEffect(() => {
     const totalExpenses = expenses.reduce(
@@ -140,7 +126,7 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout, u
     setTotalExpenses(totalExpenses);
     setTotalIncome(totalIncome);
     setCurrentBalance(totalIncome + totalExpenses - totalSavings);
-  }, [expenses, income, totalSavings, goal]);
+  }, [expenses, income, totalSavings]);
 
   useEffect(() => {
     if (typeof onLogout === 'function') {

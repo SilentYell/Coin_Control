@@ -35,7 +35,28 @@ function App() {
   const [user, setUser] = useState(null);
   const [showLogo, setShowLogo] = useState(false); // don't show logo immediately on load
   const [goalRefreshTrigger, setGoalRefreshTrigger] = useState(0);
+  const [goal, setGoal] = useState(null);
+  const [totalSavings, setTotalSavings] = useState(0);
+
   const handleGoalChanged = () => setGoalRefreshTrigger((prev) => prev + 1);
+
+  // Fetch the latest goal for the user
+  const fetchGoal = async (userId) => {
+    if (!userId) {
+      setGoal(null);
+      setTotalSavings(0);
+      return;
+    }
+    try {
+      const res = await fetch(`http://localhost:3000/api/savings-goals/${userId}`);
+      const data = await res.json();
+      setGoal(data[0] || null);
+      setTotalSavings(data[0]?.saved ? Number(data[0].saved) : 0);
+    } catch (e) {
+      setGoal(null);
+      setTotalSavings(0);
+    }
+  };
 
   useEffect(() => {
     if (!user) {
@@ -60,6 +81,15 @@ function App() {
       fetchData();
     }
   }, [user, setIncomeList, fetchExpensesList, getIncome]);
+
+  useEffect(() => {
+    if (user?.user_id) {
+      fetchGoal(user.user_id);
+    } else {
+      setGoal(null);
+      setTotalSavings(0);
+    }
+  }, [user, goalRefreshTrigger]);
 
   const handleLogin = () => {
     setUser({
@@ -100,7 +130,9 @@ function App() {
         setLastEditedId={setLastEditedId}
         setTrophiesList={setTrophiesList}
         onGoalChanged={handleGoalChanged}
-
+        goal={goal}
+        totalSavings={totalSavings}
+        refreshGoal={() => fetchGoal(user?.user_id)}
       />
 
       {!user ? (
@@ -151,8 +183,15 @@ function App() {
         </div>
       ) : (
         <>
-          <Dashboard expenses={expensesList} income={incomeList} user={user} />
-          < Trophies trophiesList={trophiesList} setTrophiesList={setTrophiesList}/>
+          <Dashboard
+            expenses={expensesList}
+            income={incomeList}
+            user={user}
+            goal={goal}
+            totalSavings={totalSavings}
+            refreshGoal={() => fetchGoal(user?.user_id)}
+          />
+          <Trophies trophiesList={trophiesList} setTrophiesList={setTrophiesList}/>
         </>
       )}
     </div>
