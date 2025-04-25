@@ -1,7 +1,22 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { getUserBadgeTrophies } from '../services/api';
 import formatDate from '../src/helpers/formatDate';
 
 export const Trophies = ({trophiesList, setTrophiesList}) => {
+  useEffect(() => {
+    // Fetch trophies data from the backend when the component mounts
+    const fetchTrophies = async () => {
+      try {
+        const data = await getUserBadgeTrophies();
+        setTrophiesList(data.allTrophies); // Updates the state with fetched data
+      } catch (error) {
+        console.error('Failed to fetch trophies:', error);
+      }
+    };
+
+    fetchTrophies();
+  }, []);
+
   return (
     <div className="trophies-list">
       <h2>Trophies</h2>
