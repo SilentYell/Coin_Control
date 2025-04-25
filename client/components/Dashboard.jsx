@@ -156,6 +156,12 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout, u
     }
   }, [onLogout]);
 
+  // Track previous trophy card position
+  const [trophyCardPos, setTrophyCardPos] = useState(() => {
+    const item = getInitialLayout().find(l => l.i === 'trophy-physics');
+    return item ? { x: item.x, y: item.y } : { x: 0, y: 0 };
+  });
+
   // Save only the layout array (not a preset name)
   const handleSaveLayout = () => {
     localStorage.setItem('dashboardLayout', JSON.stringify(layoutState));
@@ -167,7 +173,7 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout, u
     });
   };
 
-  // Update layoutState on drag/resize stop
+  // Update layoutState on drag/resize stop and track trophy card position
   const handleLayoutChange = (newLayout) => {
     setLayoutState(
       newLayout.map(item => {
@@ -177,6 +183,11 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout, u
         return item;
       })
     );
+    // Find trophy card and update position
+    const trophyItem = newLayout.find(l => l.i === 'trophy-physics');
+    if (trophyItem) {
+      setTrophyCardPos({ x: trophyItem.x, y: trophyItem.y });
+    }
   };
 
   return (
@@ -306,7 +317,7 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout, u
             </Card>
           </div>
           <div key="trophy-physics">
-            <TrophyPhysicsCard userId={user.user_id} isEditable={isEditable} />
+            <TrophyPhysicsCard userId={user.user_id} isEditable={isEditable} cardX={trophyCardPos.x} cardY={trophyCardPos.y} />
           </div>
         </ResponsiveGridLayout>
         {newTrophy && (

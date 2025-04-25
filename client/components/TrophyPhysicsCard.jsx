@@ -57,9 +57,10 @@ const MOCK_TROPHIES = [
   },
 ];
 
-const TrophyPhysicsCard = ({ userId, isEditable }) => {
+const TrophyPhysicsCard = ({ userId, isEditable, cardX, cardY }) => {
   const sceneRef = useRef(null);
   const engineRef = useRef(null);
+  const prevPos = useRef({ x: cardX, y: cardY });
   // Swap to mock data for now
   const [trophies, setTrophies] = React.useState(MOCK_TROPHIES);
 
@@ -75,6 +76,10 @@ const TrophyPhysicsCard = ({ userId, isEditable }) => {
   //   }
   //   fetchTrophies();
   // }, [userId]);
+
+  useEffect(() => {
+    prevPos.current = { x: cardX, y: cardY };
+  }, []); // set initial position only once
 
   // Physics setup
   useEffect(() => {
@@ -108,7 +113,7 @@ const TrophyPhysicsCard = ({ userId, isEditable }) => {
     const rightWall = Matter.Bodies.rectangle(CARD_WIDTH + 10, CARD_HEIGHT / 2, 20, CARD_HEIGHT, { isStatic: true });
     Matter.World.add(world, [ground, leftWall, rightWall]);
     // Add trophy/badge bodies
-    const bodies = trophies.map((trophy, i) => {
+    const bodies = trophies.map((trophy) => {
       const x = 60 + Math.random() * (CARD_WIDTH - 120);
       const y = 30 + Math.random() * 40;
       return Matter.Bodies.circle(x, y, BADGE_SIZE / 2, {
@@ -128,7 +133,7 @@ const TrophyPhysicsCard = ({ userId, isEditable }) => {
     // Mouse bumping (locked mode)
     if (!isEditable) {
       const mouse = Matter.Mouse.create(render.canvas);
-      Matter.Events.on(render.canvas, 'mousemove', (event) => {
+      Matter.Events.on(render.canvas, 'mousemove', () => {
         const mousePos = mouse.position;
         bodies.forEach((body) => {
           const dx = body.position.x - mousePos.x;
@@ -148,7 +153,8 @@ const TrophyPhysicsCard = ({ userId, isEditable }) => {
     Matter.Render.run(render);
     const runner = Matter.Runner.create();
     Matter.Runner.run(runner, engine);
-    engineRef.current = { engine, render, runner };
+    // Save bodies for later use
+    engineRef.current = { engine, render, runner, bodies };
     // Clean up
     return () => {
       Matter.Render.stop(render);
@@ -160,6 +166,24 @@ const TrophyPhysicsCard = ({ userId, isEditable }) => {
       }
     };
   }, [trophies, isEditable]);
+
+  // React to card movement (when unlocked)
+  useEffect(() => {
+    if (!isEditable || !engineRef.current || !engineRef.current.bodies) return;
+    const prev = prevPos.current;
+    const dx = cardX - prev.x;
+    const dy = cardY - prev.y;
+    if (dx !== 0 || dy !== 0) {
+      // Apply velocity to all badge bodies
+      engineRef.current.bodies.forEach(body => {
+        Matter.Body.setVelocity(body, {
+          x: dx * 2, // tune multiplier for effect
+          y: dy * 2,
+        });
+      });
+    }
+    prevPos.current = { x: cardX, y: cardY };
+  }, [cardX, cardY, isEditable]);
 
   return (
     <Card title="Trophy Case" isEditable={isEditable}>
