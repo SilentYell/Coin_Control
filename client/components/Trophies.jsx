@@ -32,6 +32,7 @@ export const Trophies = ({trophiesList, setTrophiesList}) => {
         <table className="trophies-table">
           <thead>
             <tr>
+              <th></th>
               <th>Name</th>
               <th>Description</th>
               <th>Earned</th>
@@ -41,6 +42,7 @@ export const Trophies = ({trophiesList, setTrophiesList}) => {
           <tbody>
           { trophiesList.map((trophy) => (
               <tr key={trophy.trophy_id}>
+                <td><img src={`http://localhost:3000/images/${trophy.icon_path}`} alt={trophy.name} /></td>
                 <td className="name">{trophy.name}</td>
                 <td className='description'>{trophy.description}</td>
                 <td className="earned-at">{formatDate(trophy.earned_at)}</td>
