@@ -81,7 +81,7 @@ const GoalCard = ({ goal, saved, onGoalComplete, isEditable }) => {
     return (
       <Card isEditable={isEditable}>
         <div className="goal-card empty">
-          <div style={{ color: '#876510', fontWeight: 600 }}>No savings goal set.</div>
+          <div className="no-goal-message">No savings goal set.</div>
         </div>
       </Card>
     );

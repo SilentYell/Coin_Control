@@ -1,6 +1,6 @@
 @use "sass:color";
 
-$goalcard-accent: #876510; // Use brown for accent text instead of yellow
+$goalcard-accent: #E1B000; // Update to match dashboard accent
 $main-bg: #F3F4F6;
 $secondary: #2C3E50;
 $alt-btn: #1ABC9C;
@@ -14,6 +14,8 @@ $text-light: #fff;
   background: $main-bg;
   color: $text-dark;
   border: 1px solid $accent;
+  overflow: hidden;
+  height: auto;
 
   .goal-title,
   .goal-value,
@@ -53,10 +55,26 @@ $text-light: #fff;
 }
 
 .goal-card.empty {
-  background: #fcedd3;
-  border: 1.5px dashed #876510;
-  color: #876510;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  min-height: 60px;
+  overflow: visible;
+  
+  .no-goal-message {
+    color: $goalcard-accent;
+    font-weight: 600;
+    font-size: 1.1rem;
+    text-align: center;
+    padding: 0.75rem;
+    border: 1px dashed $goalcard-accent;
+    border-radius: 8px;
+    background-color: rgba($goalcard-accent, 0.05);
+    margin: 0.5rem 0;
+    width: 100%;
+    height: 90%;
+  }
 }
 
 .goal-card .completed {
