@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import '../styles/Navbar.scss';
 import '../styles/SavingsGoalModal.scss';
 import Modal from './Modal';
@@ -38,7 +38,10 @@ const Navbar = (
     setLastEditedTransactionType,
     lastEditedId,
     setLastEditedId,
-    setTrophiesList
+    setTrophiesList,
+    goal,
+    totalSavings,
+    refreshGoal
   }) => {
 
   const [showIncomeFormModal, setShowIncomeFormModal] = useState(false);
@@ -51,7 +54,6 @@ const Navbar = (
   const [goalPercent, setGoalPercent] = useState('');
   const [goalName, setGoalName] = useState('');
   const [goalAmount, setGoalAmount] = useState('');
-  const [goals, setGoals] = useState([]);
   const [menuOpen, setMenuOpen] = useState(false);
   const [editingGoal, setEditingGoal] = useState(null);
   const [editPercent, setEditPercent] = useState('');
@@ -61,15 +63,6 @@ const Navbar = (
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
-
-  useEffect(() => {
-    if (showGoalModal && user) {
-      fetch(`${API_URL}/savings-goals/${user.user_id}`)
-        .then(res => res.json())
-        .then(data => setGoals(data))
-        .catch(() => setGoals([]));
-    }
-  }, [showGoalModal, user]);
 
   const getProgress = (goal) => {
     if (!goal.amount || !goal.saved) return 0;
@@ -101,7 +94,6 @@ const Navbar = (
               <li><button onClick={() => setShowGoalModal(true)}>Savings Goal</button></li>
               <li>
                 <button onClick={() => {
-                  //ph change - dont fetch every time, only if needed
                   const handleIncomeHistoryClick = async () => {
                     if (!incomeList || incomeList.length === 0) {
                       const updatedList = await getIncome();
@@ -196,7 +188,6 @@ const Navbar = (
         </Modal>
       )}
 
-      {/* Render the transaction list in a modal */}
       {(showTransactionsModal || editTransactionType) && (
         <Modal
           isOpen={true}
@@ -207,8 +198,6 @@ const Navbar = (
             setShowTransactionsModal(false);
           }}
         >
-        {/* If editing transaction, check the type and render appropriate form */}
-        {/* If not editing transaction, render all transacitons (i.e., wait for delete or edit) */}
           {editTransactionType === 'Income' && editingIncome ? (
               <IncomeForm
                 editingIncome={editingIncome}
@@ -249,18 +238,18 @@ const Navbar = (
             <AllTransactions
               onEditIncome={setEditingIncome}
               onEditExpense={setEditingExpense}
-              editTransactionType={editTransactionType}
+              editTransactionType={setEditTransactionType}
               setEditTransactionType={setEditTransactionType}
               lastEditedTransactionType={lastEditedTransactionType}
               lastEditedId={lastEditedId}
               setShowTransactionsModal={setShowTransactionsModal}
               editSuccess={editSuccess}
               onSubmitSuccess={async () => {
-                await onSubmitSuccess(); // handle income update
+                await onSubmitSuccess();
                 setEditTransactionType(undefined);
               }}
               onExpenseSubmitSuccess={async () => {
-                await onExpenseSubmitSuccess(); // handle expense update
+                await onExpenseSubmitSuccess();
                 setEditTransactionType(undefined);
               }}
               onClose={() => setShowTransactionsModal(false)}
@@ -291,14 +280,7 @@ const Navbar = (
                 setEditName('');
                 setEditAmount('');
                 setEditPercent('');
-                // Refresh goals
-                fetch(`${API_URL}/savings-goals/${user.user_id}`)
-                  .then(res => res.json())
-                  .then(data => setGoals(data));
-                // Trigger dashboard goal refresh
-                if (typeof onGoalChanged === 'function') {
-                  onGoalChanged();
-                }
+                if (refreshGoal) refreshGoal();
               }}
             >
               <div className="modal-header">
@@ -354,7 +336,6 @@ const Navbar = (
                   body: JSON.stringify(payload),
                 });
 
-                // Update trophiesList with any newly earned trophies
                 const data = await res.json();
                 if (data.earnedTrophies?.length > 0) {
                   const updatedTrophies = await getUserBadgeTrophies(user.user_id);
@@ -364,13 +345,7 @@ const Navbar = (
                 setGoalName('');
                 setGoalAmount('');
                 setGoalPercent('');
-                fetch(`${API_URL}/savings-goals/${user.user_id}`)
-                  .then(res => res.json())
-                  .then(data => setGoals(data));
-                // Trigger dashboard goal refresh
-                if (typeof onGoalChanged === 'function') {
-                  onGoalChanged();
-                }
+                if (refreshGoal) refreshGoal();
               }}
             >
               <div className="modal-header">
@@ -411,26 +386,26 @@ const Navbar = (
           )}
           <div className="savings-goals-list">
             <h3>Your Savings Goals</h3>
-            {goals.length === 0 && <div>No goals yet.</div>}
-            {goals.map(goalItem => (
-              <div key={goalItem.goal_id} className={`goal-item ${getProgress(goalItem) >= 100 ? 'completed-goal' : ''}`}>
-                <div className="goal-title">{goalItem.name} (${goalItem.amount})</div>
-                <div className="goal-percent">Saving {goalItem.percent}% of future income</div>
+            {(!goal) && <div>No goals yet.</div>}
+            {goal && (
+              <div key={goal.goal_id} className={`goal-item ${getProgress(goal) >= 100 ? 'completed-goal' : ''}`}>
+                <div className="goal-title">{goal.name} (${goal.amount})</div>
+                <div className="goal-percent">Saving {goal.percent}% of future income</div>
                 <div className="progress-bar">
-                  <div className="progress-fill" style={{ width: `${getProgress(goalItem)}%` }}></div>
+                  <div className="progress-fill" style={{ width: `${getProgress(goal)}%` }}></div>
                 </div>
                 <div className="goal-saved">
-                  <span className="current-amount">${Number(goalItem.saved || 0).toFixed(2)}</span>
+                  <span className="current-amount">${Number(goal.saved || 0).toFixed(2)}</span>
                   <span> / </span>
-                  <span className="target-amount">${Number(goalItem.amount).toFixed(2)}</span>
+                  <span className="target-amount">${Number(goal.amount).toFixed(2)}</span>
                 </div>
                 <div className="goal-actions">
                   <button
                     onClick={() => {
-                      setEditingGoal(goalItem);
-                      setEditName(goalItem.name);
-                      setEditAmount(goalItem.amount);
-                      setEditPercent(goalItem.percent);
+                      setEditingGoal(goal);
+                      setEditName(goal.name);
+                      setEditAmount(goal.amount);
+                      setEditPercent(goal.percent);
                     }}
                   >
                     Edit
@@ -439,18 +414,10 @@ const Navbar = (
                     className="delete-goal"
                     onClick={async () => {
                       try {
-                        await fetch(`${API_URL}/savings-goals/${goalItem.goal_id}`, {
+                        await fetch(`${API_URL}/savings-goals/${goal.goal_id}`, {
                           method: 'DELETE',
                         });
-
-                        // Update the goals list
-                        const updatedGoals = goals.filter(g => g.goal_id !== goalItem.goal_id);
-                        setGoals(updatedGoals);
-
-                        // Trigger dashboard refresh
-                        if (typeof onGoalChanged === 'function') {
-                          onGoalChanged();
-                        }
+                        if (refreshGoal) refreshGoal();
                       } catch (error) {
                         console.error('Error deleting goal:', error);
                         alert('Failed to delete goal. Please try again.');
@@ -461,7 +428,7 @@ const Navbar = (
                   </button>
                 </div>
               </div>
-            ))}
+            )}
           </div>
         </Modal>
       )}

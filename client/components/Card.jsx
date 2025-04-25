@@ -74,7 +74,6 @@ function Card({ title, value, valueClassName = '', children, isEditable = false,
       },
       complete: () => setDisplayedValue(value)
     });
-    // eslint-disable-next-line
   }, [value, animateValue]);
 
 // Wiggle on editable
