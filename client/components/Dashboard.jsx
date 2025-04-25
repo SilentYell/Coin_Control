@@ -103,10 +103,11 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout, u
   const fetchTrophies = useCallback(async () => {
     try {
       const trophies = await getUserTrophies(user.user_id);
+      console.log('trophies inside dashbaord:', trophies)
       // Only set new trophy popup if there are new trophies
       setNewTrophy((prev) => {
         const previousIds = new Set((prev?.map?.(t => t.trophy_id)) || []);
-        const newTrophies = trophies.filter(t => !previousIds.has(t.trophy_id));
+        const newTrophies = trophies.allTrophies.filter(t => !previousIds.has(t.trophy_id));
         if (newTrophies.length > 0) {
           const mostRecentTrophy = newTrophies.sort((a, b) => b.trophy_id - a.trophy_id)[0];
           setTimeout(() => setNewTrophy(null), 4000);
