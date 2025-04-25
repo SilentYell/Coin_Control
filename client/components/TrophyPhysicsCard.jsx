@@ -33,24 +33,48 @@ const TrophyPhysicsCard = ({ userId, isEditable, cardX, cardY, trophiesList }) =
   const containerRef = useRef(null);
 
   useEffect(() => {
-    if (trophiesList && trophiesList.length > 0) {
-      setTrophies([...mockBadges, ...trophiesList]);
-      return;
-    }
+    let didCancel = false;
     async function fetchTrophies() {
       try {
-        const data = await getUserTrophies(userId);
-        setTrophies([...mockBadges, ...data]);
+        let data = [];
+        if (trophiesList && trophiesList.length > 0) {
+          data = trophiesList;
+        } else {
+          data = await getUserTrophies(userId);
+        }
+        if (!didCancel) {
+          // Log backend trophies for debugging
+          console.log('TrophyPhysicsCard: backend trophies:', data);
+          setTrophies((data && data.length > 0) ? data : mockBadges);
+        }
       } catch {
-        setTrophies(mockBadges);
+        if (!didCancel) setTrophies(mockBadges);
       }
     }
     fetchTrophies();
+    return () => { didCancel = true; };
   }, [userId, trophiesList]);
 
   useEffect(() => {
     prevPos.current = { x: cardX, y: cardY };
   }, [cardX, cardY]);
+
+  // Helper to robustly get the icon url from trophy object
+  function getTrophyIconUrl(trophy) {
+    // Prefer icon_url if present and not empty
+    if (trophy.icon_url && trophy.icon_url.trim() !== '') {
+      if (trophy.icon_url.startsWith('/')) return trophy.icon_url;
+      if (trophy.icon_url.endsWith('.svg') || trophy.icon_url.endsWith('.png')) return `/icons/${trophy.icon_url}`;
+      return `/images/trophies/${trophy.icon_url}`;
+    }
+    // Fallback to icon_path
+    if (trophy.icon_path && trophy.icon_path.trim() !== '') {
+      if (trophy.icon_path.startsWith('/')) return trophy.icon_path;
+      if (trophy.icon_path.endsWith('.svg') || trophy.icon_path.endsWith('.png')) return `/icons/${trophy.icon_path}`;
+      return `/images/trophies/${trophy.icon_path}`;
+    }
+    return '';
+  }
 
   // Preload all trophy images before creating Matter.js bodies
   function preloadImages(trophies) {
@@ -60,7 +84,7 @@ const TrophyPhysicsCard = ({ userId, isEditable, cardX, cardY, trophiesList }) =
           const img = new window.Image();
           img.onload = () => resolve({ ...trophy, _img: img });
           img.onerror = () => resolve(null); // skip broken images
-          img.src = getIconUrl(trophy.icon_url || trophy.icon_path);
+          img.src = getTrophyIconUrl(trophy);
         });
       })
     ).then(results => results.filter(Boolean));
@@ -107,7 +131,7 @@ const TrophyPhysicsCard = ({ userId, isEditable, cardX, cardY, trophiesList }) =
           friction: 0.2,
           render: {
             sprite: {
-              texture: getIconUrl(trophy.icon_url || trophy.icon_path),
+              texture: getTrophyIconUrl(trophy),
               xScale: BADGE_SIZE / 175.46,
               yScale: BADGE_SIZE / 175.46,
               img: trophy._img,
@@ -133,6 +157,22 @@ const TrophyPhysicsCard = ({ userId, isEditable, cardX, cardY, trophiesList }) =
         Matter.World.add(world, mouseConstraint);
       }
       Matter.Render.run(render);
+      // Fix: ensure border is applied after canvas is rendered
+      setTimeout(() => {
+        if (sceneRef.current) {
+          const canvas = sceneRef.current.querySelector('canvas');
+          if (canvas) {
+            canvas.style.border = '3px solid #1a237e';
+            canvas.style.borderRadius = '18px';
+            canvas.style.boxShadow = '0 2px 12px rgba(26,35,126,0.3)';
+            canvas.style.display = 'block';
+            canvas.style.width = '100%';
+            canvas.style.height = '100%';
+            canvas.width = width;
+            canvas.height = height;
+          }
+        }
+      }, 0);
       const runner = Matter.Runner.create();
       Matter.Runner.run(runner, engine);
       engineRef.current = { engine, render, runner, bodies, ground, leftWall, rightWall };
@@ -151,30 +191,6 @@ const TrophyPhysicsCard = ({ userId, isEditable, cardX, cardY, trophiesList }) =
       cleanup();
     };
   }, [trophies, isEditable]);
-
-  useEffect(() => {
-    function updateCanvasBorder() {
-      if (sceneRef.current) {
-        const canvas = sceneRef.current.querySelector('canvas');
-        if (canvas) {
-          canvas.style.border = '3px solid #1a237e';
-          canvas.style.borderRadius = '18px';
-          canvas.style.boxShadow = '0 2px 12px rgba(26,35,126,0.3)';
-          canvas.style.display = 'block';
-          canvas.style.width = '100%';
-          canvas.style.height = '100%';
-          canvas.width = width;
-          canvas.height = height;
-        }
-      }
-    }
-    // Call immediately on mount
-    updateCanvasBorder();
-    window.addEventListener('resize', updateCanvasBorder);
-    return () => {
-      window.removeEventListener('resize', updateCanvasBorder);
-    };
-  }, []);
 
   useEffect(() => {
     if (!isEditable || !engineRef.current || !engineRef.current.bodies) return;
