@@ -10,6 +10,7 @@ export const Trophies = ({trophiesList, setTrophiesList}) => {
     const fetchTrophies = async () => {
       try {
         const data = await getUserTrophies();
+        console.log('data returned from fetchTrophies', data)
         setTrophiesList(data.allTrophies); // Updates the state with fetched data
       } catch (error) {
         console.error('Failed to fetch trophies:', error);
@@ -41,7 +42,7 @@ export const Trophies = ({trophiesList, setTrophiesList}) => {
           </thead>
           <tbody>
           { trophiesList.map((trophy) => (
-              <tr key={trophy.trophy_id}>
+              <tr key={trophy.id}>
                 <td><img src={`http://localhost:3000/images/${trophy.icon_path}`} alt={trophy.name} /></td>
                 <td className="name">{trophy.name}</td>
                 <td className='description'>{trophy.description}</td>
