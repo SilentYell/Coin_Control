@@ -148,6 +148,32 @@ const TrophyPhysicsCard = ({ userId, isEditable, cardX, cardY, gridW = 2, gridH 
     };
   }, []);
 
+  // Apply border styling directly to canvas
+  useEffect(() => {
+    function updateCanvasBorder() {
+      if (sceneRef.current) {
+        // Find the canvas element inside sceneRef
+        const canvas = sceneRef.current.querySelector('canvas');
+        if (canvas) {
+          canvas.style.border = '3px solid #1a237e';
+          canvas.style.borderRadius = '18px';
+          canvas.style.boxShadow = '0 2px 12px rgba(26,35,126,0.12)';
+        }
+      }
+    }
+    updateCanvasBorder();
+    let observer;
+    if (containerRef.current && typeof ResizeObserver !== 'undefined') {
+      observer = new ResizeObserver(updateCanvasBorder);
+      observer.observe(containerRef.current);
+    }
+    window.addEventListener('resize', updateCanvasBorder);
+    return () => {
+      window.removeEventListener('resize', updateCanvasBorder);
+      if (observer && containerRef.current) observer.disconnect();
+    };
+  }, []);
+
   // React to card movement (when unlocked)
   useEffect(() => {
     if (!isEditable || !engineRef.current || !engineRef.current.bodies) return;
@@ -169,10 +195,7 @@ const TrophyPhysicsCard = ({ userId, isEditable, cardX, cardY, gridW = 2, gridH 
   return (
     <Card title="Trophy Case" isEditable={isEditable}>
       <div ref={containerRef} style={{ width: '100%', height: '100%' }}>
-        <div
-          ref={sceneRef}
-          style={{ width: '100%', height: '100%', margin: '0 auto', background: 'transparent' }}
-        />
+        <div ref={sceneRef} style={{ width: '100%', height: '100%' }} />
       </div>
     </Card>
   );
