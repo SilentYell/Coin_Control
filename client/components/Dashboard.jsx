@@ -83,18 +83,12 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout, u
 
   // Helper to fetch the latest goal
   const fetchGoal = useCallback(async () => {
-    try {
-      // Hardcoded user_id 1 for now
-      const res = await fetch('http://localhost:3000/api/savings-goals/1');
-      const data = await res.json();
-      // Only one goal per user, so take the first
-      setGoal(data[0] || null);
-      setTotalSavings(data[0]?.saved ? Number(data[0].saved) : 0);
-    } catch {
-      setGoal(null);
-      setTotalSavings(0);
-    }
-  }, []);
+    if (!user?.user_id) return;
+    const res = await fetch(`http://localhost:3000/api/savings-goals/${user.user_id}?ts=${Date.now()}`);
+    const data = await res.json();
+    setGoal(data[0] || null);
+    setTotalSavings(data[0]?.saved ? Number(data[0].saved) : 0);
+  }, [user]);
 
   // Remove goal from dashboard state when completed
   const handleGoalComplete = () => {
