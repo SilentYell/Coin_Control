@@ -1,22 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, memo } from 'react';
+import anime from 'animejs/lib/anime.es.js';
 import '../styles/Dashboard.scss';
 import '../styles/GoalCard.scss';
+import Card from './Card';
 
 /**
  * GoalCard displays the savings goal progress as a bar or compact summary.
  * @param {Object} props
  * @param {Object} props.goal - The savings goal object
  * @param {number} props.saved - Amount saved so far
- * @param {boolean} props.compact - If true, show compact view
  * @param {Function} props.onGoalComplete - Callback when goal is completed
+ * @param {boolean} props.isEditable - Whether the card is editable
  */
-const GoalCard = ({ goal, saved, compact, onGoalComplete }) => {
+const GoalCard = ({ goal, saved, onGoalComplete, isEditable }) => {
   const [completed, setCompleted] = useState(false);
+  const [displayedSaved, setDisplayedSaved] = useState(0);
+  const [displayedPercent, setDisplayedPercent] = useState(0);
+  const progressRef = useRef(null);
+  const shimmerRef = useRef(null);
+  const labelRef = useRef(null);
+  const confettiRef = useRef(null);
 
   useEffect(() => {
     if (goal && goal.amount > 0 && saved >= goal.amount) {
       setCompleted(true);
-      // Remove goal after a short delay for animation
       setTimeout(() => {
         setCompleted(false);
         if (onGoalComplete) onGoalComplete(goal.goal_id);
@@ -24,41 +31,85 @@ const GoalCard = ({ goal, saved, compact, onGoalComplete }) => {
     }
   }, [goal, saved, onGoalComplete]);
 
+  useEffect(() => {
+    if (!goal) return;
+    const percent = goal.amount > 0 ? Math.min((saved / goal.amount) * 100, 100) : 0;
+    // Animate progress bar width (no elastic)
+    anime({
+      targets: progressRef.current,
+      width: percent + '%',
+      easing: 'easeOutCubic',
+      duration: 900,
+    });
+    // Animate shimmer
+    if (shimmerRef.current) {
+      shimmerRef.current.classList.remove('shimmer-animate');
+      void shimmerRef.current.offsetWidth;
+      shimmerRef.current.classList.add('shimmer-animate');
+    }
+    // Animate glow pulse
+    if (progressRef.current) {
+      progressRef.current.classList.remove('glow-pulse');
+      void progressRef.current.offsetWidth;
+      progressRef.current.classList.add('glow-pulse');
+    }
+    // Animate label number counting up
+    anime({
+      targets: { val: displayedSaved },
+      val: saved,
+      round: 100,
+      duration: 1000,
+      easing: 'easeOutExpo',
+      update: anim => {
+        setDisplayedSaved(anim.animations[0].currentValue);
+        setDisplayedPercent(percent * (anim.progress / 100));
+      },
+      complete: () => {
+        setDisplayedSaved(saved);
+        setDisplayedPercent(percent);
+      }
+    });
+    // Confetti on 100%
+    if (percent === 100 && confettiRef.current) {
+      confettiRef.current.classList.add('confetti-burst');
+      setTimeout(() => confettiRef.current && confettiRef.current.classList.remove('confetti-burst'), 1200);
+    }
+    // eslint-disable-next-line
+  }, [goal, saved]);
+
   if (!goal) {
     return (
-      <div className="goal-card empty">
-        <div style={{ color: '#876510', fontWeight: 600 }}>No savings goal set.</div>
-      </div>
+      <Card isEditable={isEditable}>
+        <div className="goal-card empty">
+          <div style={{ color: '#876510', fontWeight: 600 }}>No savings goal set.</div>
+        </div>
+      </Card>
     );
   }
   if (completed) {
     return (
-      <div className="goal-card">
-        <div className="completed">🎉 GOAL COMPLETED! 🎉</div>
-      </div>
+      <Card isEditable={isEditable}>
+        <div className="goal-card">
+          <div className="completed">🎉 GOAL COMPLETED! 🎉</div>
+        </div>
+      </Card>
     );
   }
-  const percent = goal.amount > 0 ? Math.min((saved / goal.amount) * 100, 100) : 0;
+  
   return (
-    <div className="goal-card">
-      {compact ? (
-        <div style={{ textAlign: 'center', fontWeight: 600 }}>
-          ${Number(saved).toFixed(2)} / ${Number(goal.amount).toFixed(2)} ({percent.toFixed(0)}%)
+    <Card title={`Goal: ${goal.name}`} isEditable={isEditable}>
+      <div className="goal-card-desc">{parseInt(goal.percent, 10)}% of income being saved!</div>
+      <div className="goal-card-progress-bar">
+        <div className="goal-card-progress" ref={progressRef}>
+          <div className="goal-card-shimmer" ref={shimmerRef} />
         </div>
-      ) : (
-        <>
-          <div style={{ fontWeight: 700, fontSize: 18, marginBottom: 8 }}>{goal.name}</div>
-          <div style={{ fontSize: 14, color: '#876510', marginBottom: 8 }}>Goal: ${Number(goal.amount).toFixed(2)} &nbsp;|&nbsp; Save {goal.percent}% of income</div>
-          <div style={{ background: '#eee', borderRadius: 8, height: 22, margin: '8px 0', overflow: 'hidden', position: 'relative' }}>
-            <div style={{ width: `${percent}%`, background: '#FFD700', height: 22, transition: 'width 0.5s' }} />
-            <div style={{ position: 'absolute', left: 0, right: 0, top: 0, height: 22, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 600, color: percent > 50 ? '#222' : '#876510' }}>
-              Saved: ${Number(saved).toFixed(2)} / ${Number(goal.amount).toFixed(2)} ({percent.toFixed(0)}%)
-            </div>
-          </div>
-        </>
-      )}
-    </div>
+        <div className="goal-card-progress-label" ref={labelRef}>
+          Saved: ${Number(displayedSaved).toFixed(2)} / ${Number(goal.amount).toFixed(2)} ({Math.round(displayedPercent)}%)
+        </div>
+        <div className="goal-card-confetti" ref={confettiRef} />
+      </div>
+    </Card>
   );
 };
 
-export default GoalCard;
+export default memo(GoalCard);

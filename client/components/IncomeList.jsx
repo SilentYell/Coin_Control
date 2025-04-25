@@ -5,6 +5,8 @@ import formatDate from '../src/helpers/formatDate';
 import { MdEdit, MdDelete } from 'react-icons/md';
 
 const IncomeList = ({ incomeList, setIncomeList, setEditingIncome, editSuccess, lastEditedId }) => {
+  const [error, setError] = useState(null);
+
   useEffect(() => {
     // Fetch income data from the backend when the component mounts
     const fetchIncome = async () => {
@@ -50,6 +52,7 @@ const IncomeList = ({ incomeList, setIncomeList, setEditingIncome, editSuccess, 
         prevList.filter((item) => item.income_id !== id)
       );
     } catch (error) {
+      setError('Failed to delete income. Please try again later.');
       console.error('Error deleting income:', error.message);
     }
   };
@@ -57,6 +60,8 @@ const IncomeList = ({ incomeList, setIncomeList, setEditingIncome, editSuccess, 
   return (
     <div className="income-list">
       <h2>Income History</h2>
+
+      {error && <div className="error-message">{error}</div>}
 
       {editSuccess && (
         <div className="success-message">Income updated successfully!</div>

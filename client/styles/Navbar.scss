@@ -1,12 +1,16 @@
 // Navbar.scss
 
-// Variables for colors and fonts (optional)
-$navbar-bg: #333;
-$navbar-link-color: white;
-$navbar-link-hover: #555;
-$logout-btn-bg: #f44336; // Red color for logout button
-$logout-btn-hover: #d32f2f;
-$login-btn-bg: #4CAF50;
+// Variables for colors and fonts (new colour scheme)
+$navbar-bg: #2C3E50; // Secondary color (dark blue)
+$navbar-text: #FFFFFF; // White text on dark background
+$navbar-link-color: #FFFFFF; // White text for links
+$navbar-accent: #1ABC9C; // Teal accent (Alternate Button)
+$navbar-link-hover: rgba(26, 188, 156, 0.15); // Subtle teal hover
+$logout-btn-bg: #E67E22; // Orange Call to Action for logout
+$logout-btn-hover: #d35400; // Darker orange on hover
+$login-btn-bg: #E67E22; // Orange Call to Action for login
+$login-btn-hover: #d35400; // Darker orange on hover
+$shadow-color: rgba(0, 0, 0, 0.15);
 
 
 .navbar {
@@ -18,55 +22,174 @@ $login-btn-bg: #4CAF50;
   justify-content: space-between; // Space out logo, links, and logout button
   align-items: center;
   background-color: $navbar-bg;
-  padding: 20px 20px;
+  height: 70px;
+  padding: 0px 20px;
   color: $navbar-link-color;
-  z-index: 1000;
+  box-sizing: border-box;
+  box-shadow: 0 6px 24px 0 rgba(44,62,80,0.18), 0 1.5px 6px 0 rgba(44,62,80,0.10);
+  z-index: 100;
 
   .navbar-logo {
-    font-size: 20px;
-    font-weight: bold;
+    position: relative;
+    align-items: center;
+    display: flex;
+    padding-left: 14px;
+    cursor: pointer;
+
+    svg, img {
+      transform: scale(1.15);
+      transform-origin: center center;
+    }
+
+    // hover animation
+    perspective: 800px;
+    transform-style: preserve-3d;
+    transition: transform 0.6s ease;
+    
+    &:hover {
+      transform: translateY(2px) scale(1.05) rotateY(360deg);
+    }
+
+    // Subtle coin glint
+    &::after {
+      content: '';
+      position: absolute;
+      top: 18%;
+      left: 18%;
+      width: 32%;
+      height: 32%;
+      pointer-events: none;
+      border-radius: 50%;
+      background: radial-gradient(
+        circle,
+        rgba(255,255,255,0.8) 0%,
+        rgba(255,255,255,0.2) 60%,
+        rgba(255,255,255,0) 100%
+      );
+      opacity: 0;
+      z-index: 2;
+      transition: opacity 0.3s;
+    }
+
+    &:hover::after {
+      opacity: 1;
+    }
   }
 
   .navbar-links {
     display: flex;
     gap: 20px;
     list-style: none;
-    padding: 0;
-    margin: 0;
-  }
+    padding: 10;
+    margin: 0 auto;
+    padding-left: 175px;
 
+    li {
+      position: relative;
+      
+      button {
+        background: none;
+        border: none;
+        color: $navbar-link-color;
+        font-size: 15px;
+        font-weight: 500;
+        padding: 8px 4px;
+        cursor: pointer;
+        position: relative;
+        letter-spacing: 0.3px;
+        transition: color 0.2s ease;
+        
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 0;
+          height: 2px;
+          background-color: $navbar-accent;
+          transition: width 0.3s ease;
+        }
+        
+        &:hover {
+          color: $navbar-accent;
+          
+          &::after {
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+  
   .user-info {
     display: flex;
     align-items: center;
     gap: 1rem;
     font-weight: bold;
+
+    span {
+      color: $navbar-text;
+      font-size: 15px;
+      letter-spacing: 0.3px;
+    }
+  }
+
+  .login-btn, .logout-btn {
+    position: relative;
+    overflow: hidden;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    letter-spacing: 0.3px;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg, 
+        rgba(255, 255, 255, 0) 0%, 
+        rgba(255, 255, 255, 0.2) 50%, 
+        rgba(255, 255, 255, 0) 100%
+      );
+      transition: left 0.6s ease;
+    }
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+      
+      &::before {
+        left: 100%;
+      }
+    }
+    
+    &:active {
+      transform: translateY(1px);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    }
   }
 
   .login-btn {
     background-color: $login-btn-bg;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-
-    &:hover{
-      background-color: #388E3C;
+    
+    &:hover {
+      background-color: $login-btn-hover;
     }
   }
 
   .logout-btn {
     background-color: $logout-btn-bg;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-
+    
     &:hover {
       background-color: $logout-btn-hover;
     }
@@ -80,6 +203,11 @@ $login-btn-bg: #4CAF50;
     color: $navbar-link-color;
     cursor: pointer;
     margin-left: auto;
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: $navbar-accent;
+    }
   }
   .mobile-logout {
     display: none;
@@ -95,14 +223,16 @@ $login-btn-bg: #4CAF50;
         flex-direction: column;
         align-items: center;
         position: absolute;
-        top: 75px;
+        top: 64px;
         left: 10px;
         right: 10px;
         background-color: $navbar-bg;
-        width: 100%;
+        width: calc(100% - 20px);
         transform: translateY(-100%);
         transition: transform 0.3s ease;
         z-index: 10;
+        border-radius: 0 0 8px 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   
         &.open {
           display: flex;
@@ -110,12 +240,26 @@ $login-btn-bg: #4CAF50;
           border-radius: 10px;
           width: auto;
           gap: 0px;
-          padding: 5px;
+          padding: 8px 0;
         }
   
         li {
           padding: 10px;
           text-align: center;
+
+          button {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 16px;
+
+            &:hover {
+              background-color: $navbar-link-hover;
+            }
+
+            &::after {
+              display: none;
+            }
+          }
         }
   
         a {
@@ -128,18 +272,23 @@ $login-btn-bg: #4CAF50;
           }
         }
       }
+      
       .hamburger {
         display: block;
       }
 
       .mobile-logout {
         display: block;
+
+        button {
+          background-color: $logout-btn-bg;
+          color: white;
+        }
       }
       
       .user-info {
         display: none;
       }
     }
-
 }
 

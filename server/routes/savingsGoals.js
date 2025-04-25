@@ -3,6 +3,11 @@ const router = express.Router();
 const db = require('../db/database');
 const { checkAndAwardTrophies } = require('../services/trophies')
 
+// Helper for consistent error responses
+function sendError(res, status, message) {
+  return res.status(status).json({ error: message });
+}
+
 // Get all savings goals for a user
 router.get('/:user_id', async (req, res) => {
   const { user_id } = req.params;
@@ -13,7 +18,7 @@ router.get('/:user_id', async (req, res) => {
     );
     res.json(result.rows);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    sendError(res, 500, 'Failed to fetch savings goals');
   }
 });
 
@@ -40,8 +45,11 @@ router.post('/', async (req, res) => {
     const savingsGoal = result.rows[0]
 
     res.status(201).json({ ...savingsGoal, earnedTrophies });
+
+    res.status(201).json(result.rows[0]);
+
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    sendError(res, 500, 'Failed to add savings goal');
   }
 });
 
@@ -50,13 +58,21 @@ router.put('/:goal_id', async (req, res) => {
   const { goal_id } = req.params;
   const { name, amount, percent, saved } = req.body;
   try {
+    // Update the savings goal
     const result = await db.query(
       'UPDATE SavingsGoals SET name = $1, amount = $2, percent = $3, saved = $4 WHERE goal_id = $5 RETURNING *',
       [name, amount, percent, saved, goal_id]
     );
-    res.json(result.rows[0]);
+
+    if (result.rows.length === 0) {
+      return sendError(res, 404, 'Savings goal not found.');
+    }
+
+    const updatedGoal = result.rows[0];
+
+    res.json(updatedGoal);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    sendError(res, 500, 'Failed to update savings goal');
   }
 });
 
@@ -67,7 +83,7 @@ router.delete('/:goal_id', async (req, res) => {
     await db.query('DELETE FROM SavingsGoals WHERE goal_id = $1', [goal_id]);
     res.json({ success: true });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    sendError(res, 500, 'Failed to delete savings goal');
   }
 });
 

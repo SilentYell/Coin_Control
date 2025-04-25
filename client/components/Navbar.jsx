@@ -6,7 +6,7 @@ import IncomeForm from './IncomeForm';
 import AddExpenseForm from './AddExpenseForm';
 import ExpensesList from './ExpensesList';
 import IncomeList from './IncomeList';
-import useApplicationData from '../hooks/useApplicationData';
+import TrophyCase from './TrophyCase';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import AllTransactions from './AllTransactions';
 import { getUserTrophies } from '../services/api';
@@ -39,12 +39,14 @@ const Navbar = (
     setLastEditedId,
     setTrophiesList
   }) => {
+
   const [showIncomeFormModal, setShowIncomeFormModal] = useState(false);
   const [showExpenseFormModal, setShowExpenseFormModal] = useState(false);
   const [showIncomeListModal, setShowIncomeListModal] = useState(false);
   const [showExpenseListModal, setShowExpenseListModal] = useState(false);
   const [showTransactionsModal, setShowTransactionsModal] = useState(false);
   const [showGoalModal, setShowGoalModal] = useState(false);
+  const [showTrophyCaseModal, setShowTrophyCaseModal] = useState(false);
   const [goalPercent, setGoalPercent] = useState('');
   const [goalName, setGoalName] = useState('');
   const [goalAmount, setGoalAmount] = useState('');
@@ -77,7 +79,9 @@ const Navbar = (
     <>
       <nav className='navbar'>
         <div className='navbar-logo'>
-          <span>Coin Control</span>
+          <NavbarLogo size="small" />
+          <span style={{ marginLeft: '10px', fontWeight: 'bold', fontSize: '18px' }}>
+          </span>
         </div>
         {user && (
           menuOpen ? (
@@ -111,7 +115,7 @@ const Navbar = (
               </li>
               <li><button onClick={() => setShowIncomeFormModal(true)}>Add Income</button></li>
               <li><button onClick={() => setShowTransactionsModal(true)}>All Transactions</button></li>
-              <li><button>Trophy Case</button></li>
+              <li><button onClick={() => setShowTrophyCaseModal(true)}>Trophy Case</button></li>
               {user && (
                 <li className="mobile-logout">
                   <button className="logout-btn" onClick={handleLogout}>Logout</button>
@@ -290,8 +294,15 @@ const Navbar = (
                 fetch(`${API_URL}/savings-goals/${user.user_id}`)
                   .then(res => res.json())
                   .then(data => setGoals(data));
+                // Trigger dashboard goal refresh
+                if (typeof onGoalChanged === 'function') {
+                  onGoalChanged();
+                }
               }}
             >
+              <div className="modal-header">
+                <h2>Edit Savings Goal</h2>
+              </div>
               <label>
                 Goal Name:
                 <input
@@ -312,7 +323,7 @@ const Navbar = (
                 />
               </label>
               <label>
-                % of future income to save:
+                % of Future Income to Save:
                 <input
                   type="number"
                   min="1"
@@ -356,8 +367,15 @@ const Navbar = (
                 fetch(`${API_URL}/savings-goals/${user.user_id}`)
                   .then(res => res.json())
                   .then(data => setGoals(data));
+                // Trigger dashboard goal refresh
+                if (typeof onGoalChanged === 'function') {
+                  onGoalChanged();
+                }
               }}
             >
+              <div className="modal-header">
+                <h2>Savings Goal</h2>
+              </div>
               <label>
                 Goal Name:
                 <input
@@ -391,28 +409,65 @@ const Navbar = (
               <button type="submit">Save Goal</button>
             </form>
           )}
-          <div style={{ marginTop: '2rem' }}>
+          <div className="savings-goals-list">
             <h3>Your Savings Goals</h3>
             {goals.length === 0 && <div>No goals yet.</div>}
-            {goals.map(goal => (
-              <div key={goal.goal_id} style={{ marginBottom: '1.5rem', background: '#fcedd3', borderRadius: 8, padding: 12 }}>
-                <div style={{ fontWeight: 600 }}>{goal.name} (${goal.amount})</div>
-                <div style={{ fontSize: 14, color: '#876510' }}>Saving {goal.percent}% of future income</div>
-                <div style={{ background: '#eee', borderRadius: 8, height: 16, margin: '8px 0', overflow: 'hidden' }}>
-                  <div style={{ width: `${getProgress(goal)}%`, background: '#FFD700', height: 16, transition: 'width 0.5s' }} />
+            {goals.map(goalItem => (
+              <div key={goalItem.goal_id} className={`goal-item ${getProgress(goalItem) >= 100 ? 'completed-goal' : ''}`}>
+                <div className="goal-title">{goalItem.name} (${goalItem.amount})</div>
+                <div className="goal-percent">Saving {goalItem.percent}% of future income</div>
+                <div className="progress-bar">
+                  <div className="progress-fill" style={{ width: `${getProgress(goalItem)}%` }}></div>
                 </div>
-                <div style={{ fontSize: 13 }}>
-                  Saved: ${Number(goal.saved || 0).toFixed(2)} / ${Number(goal.amount).toFixed(2)}
+                <div className="goal-saved">
+                  <span className="current-amount">${Number(goalItem.saved || 0).toFixed(2)}</span>
+                  <span> / </span>
+                  <span className="target-amount">${Number(goalItem.amount).toFixed(2)}</span>
                 </div>
-                <button style={{marginTop:8}} onClick={() => {
-                  setEditingGoal(goal);
-                  setEditName(goal.name);
-                  setEditAmount(goal.amount);
-                  setEditPercent(goal.percent);
-                }}>Edit</button>
+                <div className="goal-actions">
+                  <button 
+                    onClick={() => {
+                      setEditingGoal(goalItem);
+                      setEditName(goalItem.name);
+                      setEditAmount(goalItem.amount); 
+                      setEditPercent(goalItem.percent);
+                    }}
+                  >
+                    Edit
+                  </button>
+                  <button 
+                    className="delete-goal"
+                    onClick={async () => {
+                      try {
+                        await fetch(`${API_URL}/savings-goals/${goalItem.goal_id}`, {
+                          method: 'DELETE',
+                        });
+                        
+                        // Update the goals list
+                        const updatedGoals = goals.filter(g => g.goal_id !== goalItem.goal_id);
+                        setGoals(updatedGoals);
+                        
+                        // Trigger dashboard refresh
+                        if (typeof onGoalChanged === 'function') {
+                          onGoalChanged();
+                        }
+                      } catch (error) {
+                        console.error('Error deleting goal:', error);
+                        alert('Failed to delete goal. Please try again.');
+                      }
+                    }}
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
             ))}
           </div>
+        </Modal>
+      )}
+      {showTrophyCaseModal && (
+        <Modal isOpen={showTrophyCaseModal} onClose={() => setShowTrophyCaseModal(false)}>
+          <TrophyCase userId={user.user_id} />
         </Modal>
       )}
     </>

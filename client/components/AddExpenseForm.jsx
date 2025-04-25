@@ -99,7 +99,9 @@ const AddExpenseForm = ({ editingExpense, onSubmitSuccess, setEditSuccess, setLa
       if (onSubmitSuccess) await onSubmitSuccess(); // Re-fetch expenses
 
     } catch (error) {
+      // Show user-friendly error message
       setError(error.message || 'Failed to add expense');
+      // Optionally, log error for debugging
       console.error('Error adding expense', error);
     } finally {
       setIsLoading(false);

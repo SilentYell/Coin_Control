@@ -1,24 +1,64 @@
+@use "sass:color";
+
+$goalcard-accent: #876510; // Use brown for accent text instead of yellow
+$main-bg: #F3F4F6;
+$secondary: #2C3E50;
+$alt-btn: #1ABC9C;
+$cta: #E67E22;
+$accent: #BDC3C7;
+$text-dark: #2C3E50;
+$text-light: #fff;
+
 .goal-card {
-  background: #fffbe6;
-  border: 2px solid #ffd700;
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.07);
-  padding: 1.2rem 1.5rem;
-  margin-bottom: 1rem;
-  min-height: 60px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  font-size: 1.1rem;
-  transition: box-shadow 0.2s;
-  position: relative;
+  @extend .card-base !optional;
+  background: $main-bg;
+  color: $text-dark;
+  border: 1px solid $accent;
+
+  .goal-title,
+  .goal-value,
+  .goal-description {
+    color: $text-dark;
+  }
+
+  .goal-btn,
+  .edit-btn,
+  .delete-btn {
+    background: $secondary;
+    color: $text-light;
+    border: none;
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    margin: 0.25rem 0.5rem 0.25rem 0;
+    transition: background 0.2s, color 0.2s;
+
+    &:hover {
+      background: $alt-btn;
+      color: $text-dark;
+    }
+  }
+
+  .delete-btn {
+    background: $cta;
+    color: $text-light;
+
+    &:hover {
+      background: color.adjust($cta, $lightness: -10%);
+      color: $text-light;
+    }
+  }
 }
+
 .goal-card.empty {
   background: #fcedd3;
-  border: 1.5px dashed #ffd700;
+  border: 1.5px dashed #876510;
   color: #876510;
   text-align: center;
 }
+
 .goal-card .completed {
   display: flex;
   align-items: center;
@@ -33,8 +73,137 @@
   animation: pop-complete 0.7s cubic-bezier(0.23, 1, 0.32, 1);
   box-shadow: 0 0 16px #b6ffb6;
 }
+
 @keyframes pop-complete {
   0% { transform: scale(0.7); opacity: 0; }
   60% { transform: scale(1.1); opacity: 1; }
   100% { transform: scale(1); }
+}
+
+.goal-card-title {
+  font-size: 1.15rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: $secondary;
+  text-align: center;
+}
+
+.goal-card-desc {
+  font-size: 0.98rem;
+  color: $text-dark;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.goal-card-progress-bar {
+  background: #eee;
+  border-radius: 8px;
+  height: 24px;
+  margin: 8px 0;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  // Animated outline
+  &::after {
+    content: '';
+    position: absolute;
+    top: -4px; left: -4px; right: -4px; bottom: -4px;
+    border: 8px solid transparent;
+    border-radius: 14px;
+    pointer-events: none;
+    box-sizing: border-box;
+    opacity: 0.85;
+    filter: blur(7px);
+    animation: progress-outline-glow 1.8s infinite ease-in-out;
+  }
+}
+
+.goal-card-progress {
+  background: linear-gradient(90deg, #ffe066 0%, #ffd700 60%, #E67E22 100%);
+  height: 24px;
+  transition: width 0.5s;
+  border-radius: 8px 0 0 8px;
+  position: relative;
+  overflow: visible;
+  box-shadow: 0 0 12px 2px #ffe066;
+}
+
+@keyframes progress-outline-glow {
+  0% { box-shadow: 0 0 0 0 #ffe066, 0 0 0 0 $alt-btn, 0 0 0 0 #ffd700; opacity: 0.85; }
+  40% { box-shadow: 0 0 32px 12px #ffe066, 0 0 48px 18px $alt-btn, 0 0 64px 28px #ffd700; opacity: 1; }
+  100% { box-shadow: 0 0 0 0 #ffe066, 0 0 0 0 $alt-btn, 0 0 0 0 #ffd700; opacity: 0.85; }
+}
+
+// Glow pulse effect
+.glow-pulse {
+  animation: glow-pulse 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+}
+@keyframes glow-pulse {
+  0% { box-shadow: 0 0 0 0 #ffe066; }
+  40% { box-shadow: 0 0 16px 6px #ffe066, 0 0 32px 12px #ffd700; }
+  100% { box-shadow: 0 0 12px 2px #ffe066; }
+}
+
+// Shimmer effect overlay
+.goal-card-shimmer {
+  pointer-events: none;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent 0%, #fffbe6 40%, #fffbe6 60%, transparent 100%);
+  opacity: 0.7;
+  transform: translateX(-100%);
+}
+.shimmer-animate {
+  animation: shimmer-move 1.2s linear;
+}
+@keyframes shimmer-move {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+// Confetti burst (simple sparkles)
+.goal-card-confetti {
+  pointer-events: none;
+  position: absolute;
+  left: 50%;
+  top: -18px;
+  width: 0;
+  height: 0;
+  z-index: 50;
+}
+.confetti-burst::before, .confetti-burst::after {
+  content: '✨✨✨';
+  position: absolute;
+  left: -40px;
+  top: 0;
+  font-size: 1.5rem;
+  color: #ffd700;
+  animation: confetti-burst 1.1s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.confetti-burst::after {
+  left: 20px;
+  color: #ffe066;
+  font-size: 1.2rem;
+}
+@keyframes confetti-burst {
+  0% { opacity: 0; transform: translateY(0) scale(0.7); }
+  40% { opacity: 1; transform: translateY(-18px) scale(1.2); }
+  100% { opacity: 0; transform: translateY(-32px) scale(0.8); }
+}
+
+.goal-card-progress-label {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: $secondary;
+  font-size: 0.97rem;
+  pointer-events: none;
 }

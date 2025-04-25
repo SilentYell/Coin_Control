@@ -6,7 +6,6 @@ DROP TABLE IF EXISTS SavingsGoals CASCADE;
 DROP TABLE IF EXISTS Trophies CASCADE;
 DROP TABLE IF EXISTS User_Trophies CASCADE;
 
-
 -- Create USERS table
 CREATE TABLE Users (
   user_id SERIAL PRIMARY KEY,
@@ -46,19 +45,24 @@ CREATE TABLE SavingsGoals (
   created_at TIMESTAMP DEFAULT NOW()
 );
 
+
+-- Create TROPHIES table 
 CREATE TABLE Trophies (
-  trophy_id SERIAL PRIMARY KEY,
+  trophy_id SERIAL PRIMARY KEY NOT NULL,
   name TEXT NOT NULL,
-  description TEXT,
-  icon_path TEXT, -- Optional, e.g. emoji or image URL
-  criteria_key TEXT UNIQUE -- Used in logic to check eligibility
+  description TEXT NOT NULL,
+  percent_required INTEGER NULL CHECK (percent_required >= 0 AND percent_required <= 100),
+  icon_url TEXT NOT NULL
 );
 
-CREATE TABLE User_Trophies (
-  user_id INTEGER REFERENCES users(user_id),
-  trophy_id INTEGER REFERENCES trophies(trophy_id),
-  earned_at TIMESTAMP DEFAULT NOW(),
-  PRIMARY KEY (user_id, trophy_id)
+-- Create USER_TROPHIES table to track with Users have earned which Trophies
+CREATE TABLE User_trophies (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER REFERENCES Users(user_id) ON DELETE CASCADE,
+  trophy_id INTEGER REFERENCES Trophies(trophy_id) ON DELETE CASCADE,
+  awarded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE (user_id, trophy_id)
+
 );
 
 -- Reset the sequence for the expense_id column

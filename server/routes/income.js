@@ -2,6 +2,12 @@ const { checkAndAwardTrophies } = require("../services/trophies");
 
 // Handles income-related API routes
 const router = require("express").Router();
+const { checkAndAwardTrophies } = require('../helpers/trophyHelpers');
+
+// Helper for consistent error responses
+function sendError(res, status, message) {
+  return res.status(status).json({ error: message });
+}
 
 module.exports = db => {
   // Get all income entries for the user
@@ -20,6 +26,10 @@ module.exports = db => {
     db.query(query, queryParams)
     .then(({ rows }) => {
       res.json(rows);
+    })
+    .catch((err) => {
+      console.error('Error fetching income:', err);
+      sendError(res, 500, 'Failed to fetch income records');
     });
   });
 
@@ -66,7 +76,7 @@ module.exports = db => {
         `SELECT * FROM SavingsGoals WHERE user_id = $1 ORDER BY created_at DESC LIMIT 1`,
         [user_id]
       );
-      const goal = goalResult.rows[0];
+      let goal = goalResult.rows[0];
 
       let allocated = 0;
       if (goal) {
@@ -79,11 +89,19 @@ module.exports = db => {
             `UPDATE SavingsGoals SET saved = saved + $1 WHERE goal_id = $2`,
             [allocated, goal.goal_id]
           );
+
+          // Querying the database for the updated SavingsGoal once new income is added for proper trophy implementation
+          const updatedGoalResult = await db.query(
+            `SELECT * FROM SavingsGoals WHERE goal_id = $1`, 
+            [goal.goal_id]
+          );
+          goal = updatedGoalResult.rows[0];
         }
       }
 
       // (Optional) Deduct allocated from user's current_balance
       await db.query(`UPDATE Users SET current_balance = current_balance - $1 WHERE user_id = $2`, [allocated, user_id]);
+
 
       // Check user trophies after successful income post
       let earnedTrophies = [];
@@ -94,6 +112,12 @@ module.exports = db => {
       }
 
       res.status(201).json({ ...newIncome, earnedTrophies });
+
+      // Checking for and then awarding trophies using helper function
+      const newTrophies = await checkAndAwardTrophies(user_id, goal);
+
+      res.status(201).json({ newIncome, newTrophies });
+
     } catch (err) {
       console.error('Error inserting income and allocating to savings goal', err);
       res.status(500).json({error: 'Internal Server Error'});

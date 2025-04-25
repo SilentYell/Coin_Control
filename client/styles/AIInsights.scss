@@ -1,0 +1,189 @@
+// Base styles for AI insights
+$main-bg: #F3F4F6;
+$secondary: #2C3E50;
+$alt-btn: #1ABC9C;
+$cta: #E67E22;
+$accent: #BDC3C7;
+$text-dark: #2C3E50;
+$text-light: #fff;
+
+.ai-insights {
+  background-color: $main-bg;
+  border-radius: 12px;
+  padding: 1.25rem;
+  width: 100%;
+  color: $text-dark;
+  max-height: 600px;
+  display: flex;
+  flex-direction: column;
+
+  // Preview mode enhancements
+  &.preview-mode {
+    .insights-content {
+      overflow: hidden;
+      position: relative;
+      padding-bottom: 15px;
+
+      p {
+        text-align: left;
+      }
+    }
+
+    .view-more-button {
+      // position: absolute;
+      bottom: 35px;
+      left: 35px;
+      font-size: 1.0rem;
+      padding: 10px 24px;
+      background-color: $secondary;
+      color: $text-light;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+
+      &:hover {
+        background-color: $alt-btn;
+        color: $text-dark;
+      }
+
+      svg {
+        color: $cta;
+      }
+    }
+  }
+
+  // Status indicators
+  .loading,
+  .error {
+    font-style: italic;
+  }
+
+  .loading {
+    color: $cta;
+  }
+
+  .error {
+    color: #c53030;
+  }
+
+  // Content styling with nice typography
+  .insights-content {
+    flex: 1 1 auto;
+    overflow-y: auto;
+
+    // Custom scrollbar
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: $accent;
+      border-radius: 6px;
+    }
+
+    p {
+      margin-bottom: 0.85rem;
+      line-height: 1.5;
+      color: $text-dark;
+
+      // Style quotes (usually the first paragraph)
+      &:first-of-type {
+        font-style: italic;
+        color: $secondary;
+        border-left: 3px solid $accent;
+        padding-left: 10px;
+      }
+
+      // Style the "Financial Tips:" heading
+      &.financial-tips-heading {
+        font-weight: 600;
+        color: $secondary;
+        margin-top: 1rem;
+        border-bottom: 1px solid $accent;
+        padding-bottom: 4px;
+      }
+    }
+
+    // Add emoji to tips
+    p:nth-of-type(4)::before {
+      content: '💡 ';
+    }
+    p:nth-of-type(5)::before {
+      content: '💰 ';
+    }
+    p:nth-of-type(6)::before {
+      content: '📊 ';
+    }
+  }
+}
+
+// Modal styling for financial insights
+.financial-insights {
+  background: $main-bg;
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px rgba(44,62,80,0.08);
+  padding: 2rem;
+  color: $secondary;
+
+  h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0 0 1rem 0;
+    color: $cta;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid $cta;
+    font-size: 1.4rem;
+    font-weight: 600;
+  }
+
+  .financial-insights-content {
+    max-height: 65vh;
+    overflow-y: auto;
+    padding: 0 0.5rem;
+    margin-bottom: 0.75rem;
+    color: $secondary;
+
+    // Custom scrollbar
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: $main-bg;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: $accent;
+      border-radius: 6px;
+    }
+
+    // Content styling
+    .ai-insights {
+      background: none;
+      box-shadow: none;
+      padding: 0;
+      margin: 0;
+
+      .insights-content {
+        font-size: 0.95rem;
+        line-height: 1.6;
+
+        p {
+          margin-bottom: 1rem;
+          color: $text-dark;
+        }
+
+        // Highlighted tips section
+        ol {
+          background-color: $text-light;
+          border: 1px solid $accent;
+          border-radius: 8px;
+          padding: 1rem 1rem 0.5rem 2.5rem;
+          margin: 1rem 0;
+        }
+      }
+    }
+  }
+}
