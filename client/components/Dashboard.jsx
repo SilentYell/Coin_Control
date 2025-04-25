@@ -27,10 +27,10 @@ const compactLayout = [
 ];
 const wideLayout = [
   { i: 'goal', x: 0, y: 1, w: 6, h: 2, minW: 2, minH: 2 },
-  { i: 'expenses', x: 2, y: 4, w: 2, h: 2, minW: 1, minH: 2 },
+  { i: 'expenses', x: 2, y: 2, w: 2, h: 2, minW: 1, minH: 2 },
   { i: 'income', x: 0, y: 3, w: 2, h: 2, minW: 1, minH: 2 },
   { i: 'balance', x: 0, y: 3, w: 2, h: 2, minW: 1, minH: 2 },
-  { i: 'savings', x: 2, y: 4, w: 2, h: 2, minW: 1, minH: 2 },
+  { i: 'savings', x: 2, y: 3, w: 2, h: 2, minW: 1, minH: 2 },
   { i: 'ai-insights', x: 0, y: 2, w: 6, h: 6, minW: 1, minH: 4 },
   { i: 'pie-chart', x: 0, y: 4, w: 4, h: 6, minW: 2, minH: 5 },
   { i: 'trophy-physics', x: 6, y: 4, w: 2, h: 10, minW: 3, minH: 3 },
@@ -48,7 +48,7 @@ function getInitialLayout() {
   return wideLayout;
 }
 
-function Dashboard({ expenses = [], income = [], user, goal, totalSavings, refreshGoal, trophiesList = [], onLogout, ...rest }) {
+function Dashboard({ expenses = [], income = [], user, goal, totalSavings, refreshGoal, trophiesList = [], onLogout }) {
   const [totalExpenses, setTotalExpenses] = useState(0);
   const [totalIncome, setTotalIncome] = useState(0);
   const [currentBalance, setCurrentBalance] = useState(0);
