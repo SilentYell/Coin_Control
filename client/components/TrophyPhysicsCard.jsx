@@ -118,10 +118,16 @@ const TrophyPhysicsCard = ({ userId, isEditable, cardX, cardY }) => {
         if (canvas) {
           canvas.style.border = '3px solid #1a237e';
           canvas.style.borderRadius = '18px';
-          canvas.style.boxShadow = '0 2px 12px rgba(26,35,126,0.12)';
+          canvas.style.boxShadow = '0 2px 12px rgba(26,35,126,0.3)';
+          canvas.style.display = 'block';
+          canvas.style.width = '100%';
+          canvas.style.height = '100%';
+          canvas.width = width;
+          canvas.height = height;
         }
       }
     }
+    // Call immediately on mount
     updateCanvasBorder();
     window.addEventListener('resize', updateCanvasBorder);
     return () => {
