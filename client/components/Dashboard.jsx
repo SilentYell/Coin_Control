@@ -17,22 +17,22 @@ const ResponsiveGridLayout = WidthProvider(Responsive);
 
 const compactLayout = [
   { i: 'goal', x: 0, y: 0, w: 6, h: 2, minW: 2, minH: 2 },
-  { i: 'balance', x: 0, y: 2, w: 2, h: 2, minW: 1, minH: 2 },
-  { i: 'expenses', x: 2, y: 2, w: 2, h: 2, minW: 1, minH: 2 },
-  { i: 'income', x: 0, y: 3, w: 2, h: 2, minW: 1, minH: 2 },
-  { i: 'savings', x: 2, y: 3, w: 2, h: 2, minW: 1, minH: 2 },
-  { i: 'ai-insights', x: 0, y: 4, w: 2, h: 5, minW: 2, minH: 4 },
-  { i: 'pie-chart', x: 2, y: 4, w: 2, h: 5, minW: 2, minH: 5 },
+  { i: 'balance', x: 0, y: 3, w: 2, h: 2, minW: 1, minH: 2 },
+  { i: 'expenses', x: 2, y: 3, w: 2, h: 2, minW: 1, minH: 2 },
+  { i: 'income', x: 0, y: 4, w: 2, h: 2, minW: 1, minH: 2 },
+  { i: 'savings', x: 2, y: 4, w: 2, h: 2, minW: 1, minH: 2 },
+  { i: 'ai-insights', x: 0, y: 2, w: 2, h: 5, minW: 2, minH: 4 },
+  { i: 'pie-chart', x: 2, y: 2, w: 2, h: 5, minW: 2, minH: 5 },
   { i: 'trophy-physics', x: 6, y: 21, w: 2, h: 9, minW: 3, minH: 3 },
 ];
 const wideLayout = [
-  { i: 'goal', x: 0, y: 0, w: 6, h: 2, minW: 2, minH: 2 },
-  { i: 'expenses', x: 2, y: 0, w: 2, h: 2, minW: 1, minH: 2 },
-  { i: 'income', x: 0, y: 2, w: 2, h: 2, minW: 1, minH: 2 },
-  { i: 'balance', x: 0, y: 0, w: 2, h: 2, minW: 1, minH: 2 },
-  { i: 'savings', x: 2, y: 2, w: 2, h: 2, minW: 1, minH: 2 },
-  { i: 'ai-insights', x: 0, y: 6, w: 6, h: 6, minW: 1, minH: 4 },
-  { i: 'pie-chart', x: 0, y: 3, w: 4, h: 6, minW: 2, minH: 5 },
+  { i: 'goal', x: 0, y: 1, w: 6, h: 2, minW: 2, minH: 2 },
+  { i: 'expenses', x: 2, y: 4, w: 2, h: 2, minW: 1, minH: 2 },
+  { i: 'income', x: 0, y: 3, w: 2, h: 2, minW: 1, minH: 2 },
+  { i: 'balance', x: 0, y: 3, w: 2, h: 2, minW: 1, minH: 2 },
+  { i: 'savings', x: 2, y: 4, w: 2, h: 2, minW: 1, minH: 2 },
+  { i: 'ai-insights', x: 0, y: 2, w: 6, h: 6, minW: 1, minH: 4 },
+  { i: 'pie-chart', x: 0, y: 4, w: 4, h: 6, minW: 2, minH: 5 },
   { i: 'trophy-physics', x: 6, y: 4, w: 2, h: 10, minW: 3, minH: 3 },
 ];
 
