@@ -1,6 +1,6 @@
 @use "sass:color";
 
-$goalcard-accent: #876510; // Use brown for accent text instead of yellow
+$goalcard-accent: #E1B000; // Update to match dashboard accent
 $main-bg: #F3F4F6;
 $secondary: #2C3E50;
 $alt-btn: #1ABC9C;
@@ -73,6 +73,7 @@ $text-light: #fff;
     background-color: rgba($goalcard-accent, 0.05);
     margin: 0.5rem 0;
     width: 100%;
+    height: 90%;
   }
 }
 
