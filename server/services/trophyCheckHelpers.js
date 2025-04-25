@@ -11,7 +11,6 @@ export const savingsMilestonesCheck = async (db, userId) => {
 
   // No savings goal set yet, skip this trophy
   if (savings.rows.length === 0) {
-    console.log(`Skipping savings milestone — no goal set for user ${userId}`);
     return null;
   }
 
@@ -48,12 +47,10 @@ export const featureUsageCheck = async (db, userId, tablesToCheck) => {
       `, [userId]);
 
     if (result.rows.length === 0) {
-      console.log(`User ${userId} has not used feature: ${featureName}`);
       return false;
     }
   }
 
-  console.log(`User ${userId} has used all features!`)
   return true;
 ;}
 
@@ -67,8 +64,6 @@ const sevenConsecutiveDaysCalc = (dates) => {
   const uniqueSorted = [...new Set(dates.map(date => date.toISOString().slice(0,10)))]
     .map(date => new Date(date))
     .sort((a,b) => a - b);
-
-    console.log('dates sorted and cleaned: ', uniqueSorted);
 
   let maxStreak = 1;
   let currentStreak = 1;

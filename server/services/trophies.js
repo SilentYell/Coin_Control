@@ -7,22 +7,18 @@ const { trophyChecks } = require('./trophyChecks.js')
  *
  * @returns {Array} trophiesToAward - an array containing the trophies the use has earned
  */
-async function checkAndAwardTrophies(userId) {
+async function checkAndAwardBadgeTrophies(userId) {
   const earned = await db.query(`
       SELECT
         t.criteria_key
       FROM user_trophies ut
-      JOIN trophies t ON t.trophy_id = ut.trophy_id
+      JOIN badge_trophies t ON t.trophy_id = ut.badge_id
+      AND ut.type ='badge'
       WHERE ut.user_id = $1;
     `, [userId])
 
 
-  console.log('earned trophies query: ', earned)
-
-
   const earnedKeys = earned.rows.map(r => r.criteria_key);
-
-  console.log('Already earned keys: ', earnedKeys)
   const trophiesToAward = [];
 
   // Loop through defined checks in trophyChecks.js
@@ -30,16 +26,40 @@ async function checkAndAwardTrophies(userId) {
     if (!earnedKeys.includes(key)) {
       const passed = await checkFn(db, userId);
       if (passed) {
-        const trophy = await db.query(`SELECT trophy_id FROM trophies WHERE criteria_key = $1`, [key]);
 
-        console.log('trophy', trophy)
+        const trophy = await db.query(`SELECT trophy_id FROM badge_trophies WHERE criteria_key = $1`, [key]);
 
         if (trophy.rows.length > 0) {
-          await db.query(`
-            INSERT INTO user_trophies (user_id, trophy_id)
-            VALUES ($1, $2)
-            `, [userId, trophy.rows[0].trophy_id]);
-          trophiesToAward.push(key);
+          const awardedDate = new Date().toISOString().split('T')[0];
+          const badgeId = trophy.rows[0].trophy_id;
+          const trophyId = null; // null trophy_id for trophy.type 'badge'
+
+          // Double-check: has this badge already been awarded?
+          const alreadyAwarded = await db.query(
+            `SELECT 1 FROM user_trophies WHERE user_id = $1 AND badge_id = $2`,
+            [userId, badgeId]
+          );
+
+          if (alreadyAwarded.rows.length === 0) {
+            try {
+            const result = await db.query(`
+              INSERT INTO user_trophies (user_id, trophy_id, badge_id, awarded_at, type)
+              VALUES ($1, $2, $3, $4, $5)
+              ON CONFLICT DO NOTHING;
+            `, [userId, trophyId, badgeId, awardedDate, 'badge']);
+
+            if (result.rowCount > 0) trophiesToAward.push(key);
+
+            } catch ( err ) {
+              if (err === '23505') {
+                console.warn(`Duplicate insert prevented for user ${userId}, badge ${badgeId}`);
+              } else {
+                throw err;
+              }
+            }
+          } else {
+            console.warn(`User ${userId} already has badge ${key}`)
+          }
         } else {
           console.warn(`No trophy found for criteria key: ${key}`)
         }
@@ -50,4 +70,4 @@ async function checkAndAwardTrophies(userId) {
   return trophiesToAward;
 };
 
-module.exports = { checkAndAwardTrophies }
+module.exports = { checkAndAwardBadgeTrophies }
