@@ -151,7 +151,7 @@ function App() {
         </div>
       ) : (
         <>
-          <Dashboard expenses={expensesList} income={incomeList} />
+          <Dashboard expenses={expensesList} income={incomeList} user={user} />
           < Trophies trophiesList={trophiesList} setTrophiesList={setTrophiesList}/>
         </>
       )}
