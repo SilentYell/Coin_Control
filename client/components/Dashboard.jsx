@@ -48,7 +48,7 @@ function getInitialLayout() {
   return wideLayout;
 }
 
-function Dashboard({ expenses = [], income = [], user, goal, totalSavings, refreshGoal, trophiesList = [], onLogout }) {
+function Dashboard({ expenses = [], income = [], user, goal, totalSavings, refreshGoal, trophiesList = [] }) {
   const [totalExpenses, setTotalExpenses] = useState(0);
   const [totalIncome, setTotalIncome] = useState(0);
   const [currentBalance, setCurrentBalance] = useState(0);
@@ -75,7 +75,9 @@ function Dashboard({ expenses = [], income = [], user, goal, totalSavings, refre
     if (saved) {
       try {
         setLayoutState(JSON.parse(saved));
-      } catch {}
+      } catch {
+        // Ignore JSON parse error and fallback to wideLayout
+      }
     }
   }, []);
 
