@@ -48,7 +48,7 @@ function getInitialLayout() {
   return wideLayout;
 }
 
-function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout, user }) {
+function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout, user, trophiesList = [] }) {
   const [totalExpenses, setTotalExpenses] = useState(0);
   const [totalIncome, setTotalIncome] = useState(0);
   const [currentBalance, setCurrentBalance] = useState(0);
@@ -313,11 +313,11 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout, u
           </div>
           <div key="pie-chart">
             <Card title="Expenses Breakdown" isEditable={isEditable}>
-              <ExpensesPieChart />
+              <ExpensesPieChart expenses={expenses} />
             </Card>
           </div>
           <div key="trophy-physics">
-            <TrophyPhysicsCard userId={user.user_id} isEditable={isEditable} cardX={trophyCardPos.x} cardY={trophyCardPos.y} />
+            <TrophyPhysicsCard userId={user.user_id} isEditable={isEditable} cardX={trophyCardPos.x} cardY={trophyCardPos.y} trophiesList={trophiesList} />
           </div>
         </ResponsiveGridLayout>
         {newTrophy && (

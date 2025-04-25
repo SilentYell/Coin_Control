@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
-import { getExpenses } from '../services/api';
 
 // Category colours match ExpenseList.scss colours for consistency
 const CATEGORY_COLORS = {
@@ -15,25 +14,8 @@ const CATEGORY_COLORS = {
   Other: '#4a5568'           // Gray
 };
 
-const ExpensesPieChart = () => {
-  const [expenses, setExpenses] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  // Fetch expenses from backend
-  useEffect(() => {
-    const fetchExpenses = async () => {
-      try {
-        const response = await getExpenses();
-        setExpenses(response);
-      } catch (error) {
-        console.error('Failed to fetch expenses:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchExpenses();
-  }, []);
+const ExpensesPieChart = ({ expenses }) => {
+  const [loading, setLoading] = useState(false);
 
   // Group expenses by category and sum amounts
   const groupedData = expenses.reduce((acc, curr) => {
@@ -50,33 +32,31 @@ const ExpensesPieChart = () => {
     name, value
   }))
 
-  // Loading message for initial webpage entry
   if (loading) {
     return <div style={{ textAlign: 'center', padding: '2rem' }}>Loading chart...</div>;
   }
 
-return (
-  <ResponsiveContainer width="100%" height={400}>
-    <PieChart>
-      <Pie
-        data={chartData}
-        cx="50%"
-        cy="50%"
-        labelLine={true}
-        outerRadius={140}
-        fill="#8884d8"
-        dataKey="value"
-        nameKey="name"
-        label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
-      >
-        {chartData.map((entry, index) => (
-          <Cell key={`cell-${index}`} fill={CATEGORY_COLORS[entry.name] || '#ccc'} />
-        ))}
-      </Pie>
-      <Tooltip formatter={(value, name) => [`$${value.toFixed(2)}`, name]} />
-      <Legend />
-    </PieChart>
-  </ResponsiveContainer>
-)}
+  return (
+    <ResponsiveContainer width="100%" height={400}>
+      <PieChart>
+        <Pie
+          data={chartData}
+          dataKey="value"
+          nameKey="name"
+          cx="50%"
+          cy="50%"
+          outerRadius={120}
+          label
+        >
+          {chartData.map((entry, index) => (
+            <Cell key={`cell-${index}`} fill={CATEGORY_COLORS[entry.name] || '#8884d8'} />
+          ))}
+        </Pie>
+        <Tooltip />
+        <Legend />
+      </PieChart>
+    </ResponsiveContainer>
+  );
+};
 
 export default ExpensesPieChart;

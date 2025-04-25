@@ -10,7 +10,7 @@ const getIconUrl = (iconPath) => {
   return `/icons/${iconPath}`;
 };
 
-const TrophyPhysicsCard = ({ userId, isEditable, cardX, cardY }) => {
+const TrophyPhysicsCard = ({ userId, isEditable, cardX, cardY, trophiesList }) => {
   const sceneRef = useRef(null);
   const engineRef = useRef(null);
   const prevPos = useRef({ x: cardX, y: cardY });
@@ -20,6 +20,10 @@ const TrophyPhysicsCard = ({ userId, isEditable, cardX, cardY }) => {
   const containerRef = useRef(null);
 
   useEffect(() => {
+    if (trophiesList && trophiesList.length > 0) {
+      setTrophies(trophiesList);
+      return;
+    }
     async function fetchTrophies() {
       try {
         const data = await getUserTrophies(userId);
@@ -29,7 +33,7 @@ const TrophyPhysicsCard = ({ userId, isEditable, cardX, cardY }) => {
       }
     }
     fetchTrophies();
-  }, [userId]);
+  }, [userId, trophiesList]);
 
   useEffect(() => {
     prevPos.current = { x: cardX, y: cardY };
