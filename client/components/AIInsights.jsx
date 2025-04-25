@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { getAIInsights } from '../services/api';
 import { FaArrowRight } from 'react-icons/fa';
 import '../styles/AIInsights.scss';
+import { SiGoogle } from 'react-icons/si';
 
 const AIInsights = ({
   expenses,
@@ -47,8 +48,23 @@ const AIInsights = ({
 
   return (
     <div className={`ai-insights ${preview ? 'preview-mode' : ''}`}>
-      {loading && <p className="loading">Analyzing your finances...</p>}
+      {/* Google Gemini branding header */}
+      <div className="ai-insights-header">
+        <div className="gemini-branding">
+          <SiGoogle className="google-icon" />
+          <span>Powered by Gemini AI</span>
+        </div>
+      </div>
+
+      {loading && (
+        <div className="loading-container">
+          <div className="loading-animation"></div>
+          <p className="loading">Google Gemini is analyzing your finances...</p>
+        </div>
+      )}
+
       {error && <p className="error">{error}</p>}
+
       {!loading && !error && insights && (
         <>
           <div className="insights-content">
@@ -62,6 +78,13 @@ const AIInsights = ({
             </button>
           )}
         </>
+      )}
+
+      {/* Add footer attribution */}
+      {!loading && !error && insights && (
+        <div className="ai-attribution">
+          Financial analysis powered by Google Gemini
+        </div>
       )}
     </div>
   );
