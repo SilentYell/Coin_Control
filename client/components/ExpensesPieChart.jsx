@@ -4,15 +4,15 @@ import { getExpenses } from '../services/api';
 
 // Category colours match ExpenseList.scss colours for consistency
 const CATEGORY_COLORS = {
-  Groceries: '#1e4210', 
-  Transportation: '#2b6cb0', 
-  Entertainment: '#876510', 
-  Utilities: '#553c9a', 
-  Housing: '#822727', 
-  Healthcare: '#1e584b', 
-  Education: '#2b6cb0', 
-  Personal: '#553c9a', 
-  Other: '#4a5568'
+  Groceries: '#1e4210',      // Dark green
+  Transportation: '#2b6cb0', // Blue
+  Entertainment: '#876510',  // Gold/brown
+  Utilities: '#553c9a',      // Purple
+  Housing: '#822727',        // Dark red
+  Healthcare: '#1e584b',     // Teal
+  Education: '#0b7285',      // Cyan/Teal
+  Personal: '#805ad5',       // Light purple
+  Other: '#4a5568'           // Gray
 };
 
 const ExpensesPieChart = () => {
