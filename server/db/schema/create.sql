@@ -5,6 +5,8 @@ DROP TABLE IF EXISTS Users CASCADE;
 DROP TABLE IF EXISTS SavingsGoals CASCADE;
 DROP TABLE IF EXISTS Trophies CASCADE;
 DROP TABLE IF EXISTS User_Trophies CASCADE;
+DROP TABLE IF EXISTS Badge_Trophies CASCADE;
+
 
 -- Create USERS table
 CREATE TABLE Users (
@@ -45,7 +47,6 @@ CREATE TABLE SavingsGoals (
   created_at TIMESTAMP DEFAULT NOW()
 );
 
-
 -- Create TROPHIES table
 CREATE TABLE Trophies (
   trophy_id SERIAL PRIMARY KEY NOT NULL,
@@ -55,18 +56,8 @@ CREATE TABLE Trophies (
   icon_url TEXT NOT NULL
 );
 
--- Create USER_TROPHIES table to track with Users have earned which Trophies
-CREATE TABLE User_trophies (
-  id SERIAL PRIMARY KEY,
-  user_id INTEGER REFERENCES Users(user_id) ON DELETE CASCADE,
-  trophy_id INTEGER REFERENCES Trophies(trophy_id) ON DELETE CASCADE,
-  awarded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  UNIQUE (user_id, trophy_id)
-
-);
-
--- Create TROPHIES table
-CREATE TABLE Icon_Trophies (
+-- Create badge_trophies table
+CREATE TABLE Badge_Trophies (
   trophy_id SERIAL PRIMARY KEY NOT NULL,
   name TEXT NOT NULL,
   description TEXT NOT NULL,
@@ -75,14 +66,24 @@ CREATE TABLE Icon_Trophies (
 );
 
 -- Create USER_TROPHIES table to track with Users have earned which Trophies
-CREATE TABLE User_Icon_Trophies (
+CREATE TABLE User_trophies (
   id SERIAL PRIMARY KEY,
   user_id INTEGER REFERENCES Users(user_id) ON DELETE CASCADE,
-  trophy_id INTEGER REFERENCES Icon_Trophies(trophy_id) ON DELETE CASCADE,
+  trophy_id INTEGER REFERENCES Trophies(trophy_id) ON DELETE CASCADE,
+  badge_id INTEGER REFERENCES Badge_Trophies(trophy_id) ON DELETE CASCADE,
   awarded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  UNIQUE (user_id, trophy_id)
-
+  type TEXT CHECK (type IN ('badge', 'trophy')) NOT NULL
 );
+
+
+-- Add partial unique indexes
+CREATE UNIQUE INDEX unique_user_badge
+ON user_trophies(user_id, badge_id)
+WHERE type = 'badge';
+
+CREATE UNIQUE INDEX unique_user_trophy
+ON user_trophies(user_id, trophy_id)
+WHERE type = 'trophy';
 
 -- Reset the sequence for the expense_id column
 DO $$

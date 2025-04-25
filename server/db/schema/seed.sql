@@ -1,9 +1,3 @@
--- Delete data to avoid duplicates on reset
-DELETE FROM User_trophies;
-DELETE FROM SavingsGoals;
-DELETE FROM Income;
-DELETE FROM Expenses;
-DELETE FROM Users;
 -- Insert users into the Users table
 INSERT INTO Users(username)
 VALUES
@@ -42,7 +36,7 @@ VALUES
   (4, 'Platinum Saver', 'Reached 100% of Savings Goal', 100, '/icons/platinum.png');
 
 -- Insert icon trophy data
-INSERT INTO Icon_Trophies(name, description, icon_path, criteria_key)
+INSERT INTO badge_trophies(name, description, icon_path, criteria_key)
 VALUES
   ('First steps', 'Add your first income or expense', 'trophies/first_transaction.png', 'first_transaction'),
   ('Savings Starter', 'Set your first savings goal', 'trophies/first_savings.jpg', 'first_savings'),
@@ -59,13 +53,16 @@ VALUES
   ('HUGE Spender', 'Spend over $1,000', '', 'spend_1000');
 
 -- Insert user trophies
-INSERT INTO User_Icon_Trophies (user_id, trophy_id, awarded_at)
+INSERT INTO User_Trophies (user_id, trophy_id, badge_id, awarded_at, type)
 VALUES
-  (2, 2, '2025-04-01 01:18:36'),
-  (3, 4, '2025-02-11 01:18:36'),
-  (2, 5, '2025-01-18 01:18:36'),
-  (4, 6, '2025-01-23 01:18:36')
-ON CONFLICT (user_id, trophy_id) DO NOTHING;
+  (1, 1, null, '2025-04-01 01:18:36', 'trophy'),
+  (1, 2, null, '2025-04-01 01:18:36', 'trophy'),
+  (1, 3, null, '2025-04-01 01:18:36', 'trophy'),
+  (1, 4, null, '2025-04-01 01:18:36', 'trophy'),
+  (2, null, 2, '2025-04-01 01:18:36', 'badge'),
+  (3, null, 4, '2025-02-11 01:18:36', 'badge'),
+  (2, null, 5, '2025-01-18 01:18:36', 'badge'),
+  (4, null, 6, '2025-01-23 01:18:36', 'badge');
 
 -- Reset the sequence for the expense_id column
 DO $$
