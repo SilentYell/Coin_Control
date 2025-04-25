@@ -1,6 +1,6 @@
 // Handles trophies-related API routes
 const router = require("express").Router();
-const { checkAndAwardTrophies } = require("../services/trophies");
+const { checkAndAwardBadgeTrophies } = require("../services/trophies");
 
 module.exports = db => {
   // Get all trophies for the user
@@ -10,7 +10,7 @@ module.exports = db => {
     // Check user trophies after successful income post
     let earnedTrophies = [];
     try {
-      earnedTrophies = await checkAndAwardTrophies(userId);
+      earnedTrophies = await checkAndAwardBadgeTrophies(userId);
     } catch (error) {
       console.error(`Error checking trophies`, error);
     }
@@ -19,9 +19,9 @@ module.exports = db => {
     SELECT
       *
     FROM user_trophies
-    JOIN trophies ON user_trophies.trophy_id = trophies.trophy_id
+    JOIN badge_trophies ON user_trophies.badge_id = badge_trophies.trophy_id
     WHERE user_id = $1
-    ORDER BY earned_at;
+    ORDER BY awarded_at;
     `;
 
     try {
