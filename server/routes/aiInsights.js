@@ -56,42 +56,39 @@ router.post('/', async (req, res) => {
     const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
     // Create financial prompt
-    const prompt = `As a friendly financial advisor, provide personalized insights based on this data:
+    const prompt = `You are a professional financial advisor providing insights on personal finances.
 
-      SUMMARY:
-      - Total Income: $${totalIncome.toFixed(2)}
-      - Total Expenses: $${totalExpenses.toFixed(2)}
-      - Available Balance: $${(totalIncome - totalExpenses).toFixed(2)}
-      - Top spending categories: ${topCategories
-        .map((c) => `${c.name} ($${c.amount.toFixed(2)}, ${c.percentage}%)`)
-        .join(', ')}
-      ${
-        goal
-          ? `- Savings Goal: ${goal.name} - $${goal.amount} (${
-              goal.percent
-            }% of income allocated)
+    FINANCIAL DATA:
+    • Total Income: $${totalIncome.toFixed(2)}
+    • Total Expenses: $${totalExpenses.toFixed(2)}
+    • Available Balance: $${(totalIncome - totalExpenses).toFixed(2)}
+    • Top Spending Categories: 
+      ${topCategories.map((c) => `  - ${c.name}: $${c.amount.toFixed(2)} (${c.percentage}%)`).join('\n')}
+    ${goal ? 
+    `• Savings Goal: ${goal.name}
+      - Target Amount: $${goal.amount}
+      - Allocation Rate: ${goal.percent}% of income
       - Current Progress: $${goal.saved || 0} / $${goal.amount} (${
-              goal.amount > 0
-                ? Math.min((goal.saved / goal.amount) * 100, 100).toFixed(0)
-                : 0
-            }% complete)`
-          : '- No active savings goal'
-      }
+        goal.amount > 0 ? Math.min((goal.saved / goal.amount) * 100, 100).toFixed(0) : 0
+      }% complete)` : 
+    `• No active savings goal`}
 
-      INSTRUCTIONS:
-      1. Begin with a personalized greeting and relevant financial wisdom quote.
-      2. Provide a CONCISE overview paragraph (200 words) analyzing their financial health, income-to-expense ratio, and savings progress.
-      3. On a new line, include "Financial Tips:" as a section heading.
-      4. Provide exactly 3 actionable, specific tips.
-      5. Each tip must directly address one of these areas:
-        - Specific spending patterns in their top categories
-        - Savings goal progress and strategies
-        - Budget optimization based on income frequency
-      6. Use a conversational, encouraging tone with strategic emoji placement.
-      7. End with a brief motivational statement about their next financial steps.
-      8. Keep the entire response under 500 words, prioritizing quality over quantity.
-      9. Separate the overview and tips with a clear "Financial Tips:" heading on its own line
-      `;
+    OUTPUT STRUCTURE:
+    1. Brief personalized greeting with a relevant financial wisdom quote
+    2. One concise overview paragraph (max 200 words) analyzing their financial health
+    3. Section heading titled "Financial Tips:"
+    4. Three numbered, actionable financial tips addressing:
+      - Specific spending patterns in their top categories
+      - Savings goal progress and strategies
+      - Budget optimization based on income frequency
+    5. Brief motivational conclusion about next financial steps
+
+    TONE GUIDELINES:
+    • Professional yet conversational
+    • Encouraging and positive
+    • Fact-based analysis with practical advice
+    • Total response under 500 words
+    `;
 
     // Generate content
     const result = await model.generateContent(prompt);

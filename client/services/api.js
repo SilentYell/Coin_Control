@@ -192,7 +192,7 @@ export const deleteIncome = async (id) => {
 // get AI insights
 export const getAIInsights = async (expenses, income) => {
   try {
-    const response = await fetch('http://localhost:3000/api/ai-insights', {
+    const response = await fetch(`${API_URL}/ai-insights`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
