@@ -1,6 +1,7 @@
 // Handles income-related API routes
 const router = require("express").Router();
 const { checkAndAwardTrophies } = require('../helpers/trophyHelpers');
+const { checkAndAwardBadgeTrophies } = require('../services/trophies');
 
 // Helper for consistent error responses
 function sendError(res, status, message) {
@@ -104,18 +105,20 @@ module.exports = db => {
       // Check user trophies after successful income post
       let earnedTrophies = [];
       try {
-        earnedTrophies = await checkAndAwardTrophies(user_id);
+        earnedTrophies = await checkAndAwardBadgeTrophies(user_id);
       } catch (error) {
         console.error(`Error checking trophies`, error);
       }
 
-      res.status(201).json({ ...newIncome, earnedTrophies });
+      // Check user trophies after successful income post
+      let newTrophies = [];
+      try {
+        newTrophies = await checkAndAwardTrophies(user_id, goal);
+      } catch (error) {
+        console.error(`Error checking trophies`, error);
+      }
 
-      // Checking for and then awarding trophies using helper function
-      const newTrophies = await checkAndAwardTrophies(user_id, goal);
-
-      res.status(201).json({ newIncome, newTrophies });
-
+      res.status(201).json({ ...newIncome, earnedTrophies, newTrophies });
     } catch (err) {
       console.error('Error inserting income and allocating to savings goal', err);
       res.status(500).json({error: 'Internal Server Error'});
