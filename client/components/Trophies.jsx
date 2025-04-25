@@ -1,16 +1,13 @@
 import React, { useEffect } from 'react'
-import { getUserTrophies } from '../services/api';
+import { getUserBadgeTrophies } from '../services/api';
 import formatDate from '../src/helpers/formatDate';
 
 export const Trophies = ({trophiesList, setTrophiesList}) => {
-
-  console.log('trophiesList', trophiesList)
   useEffect(() => {
     // Fetch trophies data from the backend when the component mounts
     const fetchTrophies = async () => {
       try {
-        const data = await getUserTrophies();
-        console.log('data returned from fetchTrophies', data)
+        const data = await getUserBadgeTrophies();
         setTrophiesList(data.allTrophies); // Updates the state with fetched data
       } catch (error) {
         console.error('Failed to fetch trophies:', error);
@@ -46,7 +43,7 @@ export const Trophies = ({trophiesList, setTrophiesList}) => {
                 <td><img src={`http://localhost:3000/images/${trophy.icon_path}`} alt={trophy.name} /></td>
                 <td className="name">{trophy.name}</td>
                 <td className='description'>{trophy.description}</td>
-                <td className="earned-at">{formatDate(trophy.earned_at)}</td>
+                <td className="earned-at">{formatDate(trophy.awarded_at)}</td>
               </tr>
           ))}
           </tbody>
