@@ -32,7 +32,6 @@ app.use(express.static(path.join(__dirname, '../public'))); // allows icons to b
 // Get backend images
 app.use('/images', express.static(path.join(__dirname, 'public/images')));
 
-console.log('__dirname:', __dirname)
 // use routes
 app.use('/api', expenseRoutes);
 app.use('/api', userRoutes);
