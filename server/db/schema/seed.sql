@@ -27,17 +27,17 @@ VALUES
   (4, 1, 'Weekly Groceries', -250, TO_DATE('25/03/2025', 'DD/MM/YYYY'), 'Groceries');
 
 
-INSERT INTO Trophies(name, description, icon, criteria_key)
+INSERT INTO Trophies(name, description, icon_path, criteria_key)
 VALUES
-  ('First steps', 'Add your first income or expense', '', 'first_transaction'),
-  ('Savings Starter', 'Set your first savings goal', '', 'first_savings'),
+  ('First steps', 'Add your first income or expense', 'trophies/first_transaction.png', 'first_transaction'),
+  ('Savings Starter', 'Set your first savings goal', 'trophies/first_savings.jpg', 'first_savings'),
   ('Consistent Logger', 'Add a transaction every day for 7 days', '', 'transaction_for_7_days'),
-  ('Goal Getter', 'Reach a savings goal', '', 'equal_to_goal'),
-  ('All-In-One', 'Use all features at least once (income, expense, goal, etc.)', '', 'use_all_features'),
+  ('Goal Getter', 'Reach a savings goal', 'trophies/equal_to_goal.png', 'equal_to_goal'),
+  ('All-In-One', 'Use all features at least once (income, expense, goal, etc.)', 'trophies/use_all_features.png', 'use_all_features'),
   ('Small Saver', 'Save $10', '', 'save_income_10'),
   ('Medium Saver', 'Save $50', '', 'save_income_50'),
   ('Big Saver', 'Save $100', '', 'save_income_100'),
-  ('HUGE Saver', 'Save over $1,000', '', 'save_income_1000'),
+  ('HUGE Saver', 'Save over $1,000', 'trophies/save_1000.png', 'save_income_1000'),
   ('Small Spender', 'Spend $10', '', 'spend_10'),
   ('Medium Spender', 'Spend $50', '', 'spend_50'),
   ('Big Spender', 'Spend $100', '', 'spend_100'),

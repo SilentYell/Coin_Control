@@ -50,7 +50,7 @@ CREATE TABLE Trophies (
   trophy_id SERIAL PRIMARY KEY,
   name TEXT NOT NULL,
   description TEXT,
-  icon TEXT, -- Optional, e.g. emoji or image URL
+  icon_path TEXT, -- Optional, e.g. emoji or image URL
   criteria_key TEXT UNIQUE -- Used in logic to check eligibility
 );
 
