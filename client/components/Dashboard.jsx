@@ -126,7 +126,7 @@ function Dashboard({ expenses = [], income = [], goalRefreshTrigger, onLogout, u
     fetchGoal().then(() => {
       fetchTrophies();
     });
-  }, [fetchGoal, income, expenses, goalRefreshTrigger, fetchTrophies]);
+  }, [fetchGoal, income, expenses, goalRefreshTrigger, fetchTrophies, user]);
 
   useEffect(() => {
     const totalExpenses = expenses.reduce(
