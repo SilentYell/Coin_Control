@@ -64,16 +64,20 @@ function Dashboard({ expenses = [], income = [], user, goal, totalSavings, refre
   });
 
   useEffect(() => {
-    if (layoutMode === 'compact') {
-      setLayoutState(compactLayout);
-    } else {
-      setLayoutState(wideLayout);
-    }
+    localStorage.setItem('dashboardLayoutMode', layoutMode);
+    // On mode change, always reset to the default layout for that mode
+    setLayoutState(layoutMode === 'compact' ? compactLayout : wideLayout);
   }, [layoutMode]);
 
+  // On mount, always load saved layout if present
   useEffect(() => {
-    localStorage.setItem('dashboardLayoutMode', layoutMode);
-  }, [layoutMode]);
+    const saved = localStorage.getItem('dashboardLayout');
+    if (saved) {
+      try {
+        setLayoutState(JSON.parse(saved));
+      } catch {}
+    }
+  }, []);
 
   // Helper to get the width of the goal card in grid columns
   const goalCardWidth = layoutState.find((l) => l.i === 'goal')?.w || 6;
@@ -136,14 +140,6 @@ function Dashboard({ expenses = [], income = [], user, goal, totalSavings, refre
     setTotalIncome(totalIncome);
     setCurrentBalance(totalIncome + totalExpenses - totalSavings);
   }, [expenses, income, totalSavings]);
-
-  useEffect(() => {
-    if (typeof onLogout === 'function') {
-      onLogout(() => {
-        localStorage.removeItem('dashboardLayout');
-      });
-    }
-  }, [onLogout]);
 
   // Track previous trophy card position
   const [trophyCardPos, setTrophyCardPos] = useState(() => {
