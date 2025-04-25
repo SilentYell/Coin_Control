@@ -6,7 +6,7 @@ const TrophyPopup = ({ trophy, onClose }) => {
     <div className='trophy-popup'>
       <img src={trophy.icon_url} alt={trophy.name} />
       <h4>You earned the {trophy.name} Trophy!</h4>
-      <p>By reaching {trophy.percent_required}% of your goal 🎯</p> 
+      <p>By reaching {trophy.percent_required}% of your goal 🎯</p>
     </div>
   );
 };

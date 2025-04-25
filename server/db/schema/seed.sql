@@ -55,10 +55,6 @@ VALUES
 -- Insert user trophies
 INSERT INTO User_Trophies (user_id, trophy_id, badge_id, awarded_at, type)
 VALUES
-  (1, 1, null, '2025-04-01 01:18:36', 'trophy'),
-  (1, 2, null, '2025-04-01 01:18:36', 'trophy'),
-  (1, 3, null, '2025-04-01 01:18:36', 'trophy'),
-  (1, 4, null, '2025-04-01 01:18:36', 'trophy'),
   (2, null, 2, '2025-04-01 01:18:36', 'badge'),
   (3, null, 4, '2025-02-11 01:18:36', 'badge'),
   (2, null, 5, '2025-01-18 01:18:36', 'badge'),
