@@ -46,7 +46,7 @@ CREATE TABLE SavingsGoals (
 );
 
 
--- Create TROPHIES table 
+-- Create TROPHIES table
 CREATE TABLE Trophies (
   trophy_id SERIAL PRIMARY KEY NOT NULL,
   name TEXT NOT NULL,
@@ -60,6 +60,25 @@ CREATE TABLE User_trophies (
   id SERIAL PRIMARY KEY,
   user_id INTEGER REFERENCES Users(user_id) ON DELETE CASCADE,
   trophy_id INTEGER REFERENCES Trophies(trophy_id) ON DELETE CASCADE,
+  awarded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE (user_id, trophy_id)
+
+);
+
+-- Create TROPHIES table
+CREATE TABLE Icon_Trophies (
+  trophy_id SERIAL PRIMARY KEY NOT NULL,
+  name TEXT NOT NULL,
+  description TEXT NOT NULL,
+  icon_path TEXT NOT NULL,
+  criteria_key TEXT NOT NULL
+);
+
+-- Create USER_TROPHIES table to track with Users have earned which Trophies
+CREATE TABLE User_Icon_Trophies (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER REFERENCES Users(user_id) ON DELETE CASCADE,
+  trophy_id INTEGER REFERENCES Icon_Trophies(trophy_id) ON DELETE CASCADE,
   awarded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   UNIQUE (user_id, trophy_id)
 
