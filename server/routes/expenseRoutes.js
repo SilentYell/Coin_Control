@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db/database');
 const { escapeLiteral } = require('pg');
-const { checkAndAwardTrophies } = require("../services/trophies");
+const { checkAndAwardBadgeTrophies } = require("../services/trophies");
 
 // Helper for consistent error responses
 function sendError(res, status, message) {
@@ -64,7 +64,7 @@ router.post('/expenses', async (req, res) => {
     // Check user trophies after successful income post
     let earnedTrophies = [];
     try {
-      earnedTrophies = await checkAndAwardTrophies(userId);
+      earnedTrophies = await checkAndAwardBadgeTrophies(userId);
     } catch (error) {
       console.error(`Error checking trophies`, error);
     }
