@@ -26,7 +26,7 @@ const checkAndAwardTrophies = async (user_id, goal) => {
 
       if (existingTrophy.rows.length === 0) {
         const badgeId = null;
-        const awardedAt = new Date().toISOString();
+        const awardedAt = new Date().toISOString().split('T')[0];
         await db.query(
           `INSERT INTO user_trophies (user_id, trophy_id, badge_id, awarded_at, type) VALUES ($1, $2, 3, $4, $5)`,
           [goal.user_id, trophy.trophy_id, badgeId, awardedAt, 'trophy']
