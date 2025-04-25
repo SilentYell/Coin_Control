@@ -54,7 +54,8 @@ function Dashboard({ expenses = [], income = [], user, goal, totalSavings, refre
   const [currentBalance, setCurrentBalance] = useState(0);
   const [isEditable, setIsEditable] = useState(false);
   const [showFinancialInsights, setShowFinancialInsights] = useState(false);
-  const [newTrophy, setNewTrophy] = useState(null);
+  const [trophies, setTrophies] = useState([]);
+  const [showTrophyPopup, setShowTrophyPopup] = useState(null);
 
   const [layoutState, setLayoutState] = useState(getInitialLayout);
   const [layoutMode, setLayoutMode] = useState(() => {
@@ -104,13 +105,20 @@ function Dashboard({ expenses = [], income = [], user, goal, totalSavings, refre
     try {
       const trophies = await getUserTrophies(user.user_id);
       // Only set new trophy popup if there are new trophies
-      setNewTrophy((prev) => {
+      setTrophies((prev = []) => {
         const previousIds = new Set((prev?.map?.(t => t.trophy_id)) || []);
         const newTrophies = trophies.filter(t => !previousIds.has(t.trophy_id));
         if (newTrophies.length > 0) {
           const mostRecentTrophy = newTrophies.sort((a, b) => b.trophy_id - a.trophy_id)[0];
-          setTimeout(() => setNewTrophy(null), 4000);
-          return mostRecentTrophy;
+
+          // Trigger the popup
+          setShowTrophyPopup(mostRecentTrophy);
+
+          // Close popup after 4 seconds
+          setTimeout(() => setShowTrophyPopup(null), 4000);
+
+          // Update trophies state to include new trophy
+          return [...prev, ...newTrophies];
         }
         return prev;
       });
@@ -307,8 +315,8 @@ function Dashboard({ expenses = [], income = [], user, goal, totalSavings, refre
             <TrophyPhysicsCard userId={user.user_id} isEditable={isEditable} cardX={trophyCardPos.x} cardY={trophyCardPos.y} trophiesList={trophiesList} />
           </div>
         </ResponsiveGridLayout>
-        {newTrophy && (
-        <TrophyPopup trophy={newTrophy} />
+        {showTrophyPopup && (
+        <TrophyPopup trophy={showTrophyPopup}/>
         )}
       </div>
       {showFinancialInsights && (
