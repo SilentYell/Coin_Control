@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db/database');
-const { checkAndAwardTrophies } = require('../services/trophies')
+const { checkAndAwardBadgeTrophies } = require('../services/trophies')
 
 // Helper for consistent error responses
 function sendError(res, status, message) {
@@ -37,7 +37,7 @@ router.post('/', async (req, res) => {
     // Check user trophies after successful income post
     let earnedTrophies = [];
     try {
-      earnedTrophies = await checkAndAwardTrophies(user_id);
+      earnedTrophies = await checkAndAwardBadgeTrophies(user_id);
     } catch (error) {
       console.error(`Error checking trophies`, error);
     }
@@ -45,8 +45,6 @@ router.post('/', async (req, res) => {
     const savingsGoal = result.rows[0]
 
     res.status(201).json({ ...savingsGoal, earnedTrophies });
-
-    res.status(201).json(result.rows[0]);
 
   } catch (err) {
     sendError(res, 500, 'Failed to add savings goal');

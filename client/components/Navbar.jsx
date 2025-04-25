@@ -10,7 +10,7 @@ import TrophyCase from './TrophyCase';
 import NavbarLogo from './NavbarLogo'
 import { FaBars, FaTimes } from 'react-icons/fa';
 import AllTransactions from './AllTransactions';
-import { getUserTrophies } from '../services/api';
+import { getUserBadgeTrophies } from '../services/api';
 
 const API_URL = 'http://localhost:3000/api';
 
@@ -356,9 +356,8 @@ const Navbar = (
 
                 // Update trophiesList with any newly earned trophies
                 const data = await res.json();
-                console.log('data from savings POST:', data)
                 if (data.earnedTrophies?.length > 0) {
-                  const updatedTrophies = await getUserTrophies(user.user_id);
+                  const updatedTrophies = await getUserBadgeTrophies(user.user_id);
                   setTrophiesList(updatedTrophies.allTrophies);
                 }
 

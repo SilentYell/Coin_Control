@@ -16,11 +16,12 @@ router.get('/:user_id', async (req, res) => {
       `SELECT t.*
       FROM user_trophies ut
       JOIN trophies t ON ut.trophy_id = t.trophy_id
-      WHERE ut.user_id = $1`,
+      AND ut.type = 'trophy'
+      WHERE ut.user_id = $1;`,
       [user_id]
     );
 
-    res.json(result.rows); 
+    res.json(result.rows);
   } catch (err) {
     sendError(res, 500, 'Failed to fetch user trophies');
   }

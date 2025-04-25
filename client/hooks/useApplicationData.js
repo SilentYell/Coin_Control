@@ -1,6 +1,6 @@
 // Function to track states and Handle API fetches to render data
 import { useState, useCallback } from "react"
-import { getIncome, getExpenses, getUserTrophies } from "../services/api"
+import { getIncome, getExpenses } from "../services/api"
 
 const useApplicationData = () => {
   // Track income state --> maybe use reducer later?
