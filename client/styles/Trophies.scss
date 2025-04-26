@@ -12,16 +12,16 @@ $trophy-text-light: #ffffff; // Text on dark
   background-color: $trophy-bg;
   border-radius: 0.75rem;
   color: $trophy-text-dark;
-  box-shadow: 0 4px 6px rgba(44, 62, 80, 0.1);
+  box-shadow: 0 10px 5px rgba(44, 62, 80, 0.8);
   border: 1px solid $trophy-light-accent;
   transition: width 0.3s ease;
   padding: 2rem;
   z-index: 9999;
   position: fixed;
-  right: 0; /* This will make the sidebar appear on the right side */
-  top: 70px; /* Optional: Set the vertical position of the sidebar */
+  right: 0; /* Side bar on the right */
+  top: 70px; /* Badges inline with bottom navbar */
   height: 100vh; /* Ensures the sidebar takes full screen height */
-  overflow-y: auto; /* To allow scrolling if the sidebar is too tall */
+  overflow-y: auto; /* To allow scrolling inside badgedrawer */
 }
 
 .main-content {
@@ -31,20 +31,18 @@ $trophy-text-light: #ffffff; // Text on dark
 }
 
 .trophies-list {
-    width: 80%;
+  width: 90%;
 
   h2 {
     margin-bottom: 1.5rem;
-    text-align: center;
-    color: $trophy-primary;
     font-size: 1.8rem;
-    font-weight: 700;
     border-bottom: 2px solid $trophy-light-accent;
     padding-bottom: 0.75rem;
   }
 
   .empty-state {
     background-color: $trophy-accent;
+    ;
     padding: 2rem;
     border-radius: 0.5rem;
     text-align: center;
@@ -53,74 +51,31 @@ $trophy-text-light: #ffffff; // Text on dark
   }
 
   .table-container {
-    display: flex;
-    justify-content: center;
-    flex-grow: 1;
-    margin-left: 10px;
-    margin-right: 10px;
+    padding: 20px 30px;
+    margin: 30px 10px;
     width: 100%;
-    overflow-x: auto;
-    overflow-y: auto;
-    background-color: $trophy-bg;
-    border-radius: 0.5rem;
     box-shadow: 10px 10px 10px 10px rgba(20, 29, 37, 0.08);
-    margin-bottom: 1rem;
   }
 
-  /* Highlight animation for edited rows */
-  .trophy-table tbody tr.highlight-row td {
-    animation: pulse 3.5s ease-in;
-    background-color: rgba(26, 188, 156, 0.2);
-  }
-
-  .trophy-table {
+  .trophies-table {
     width: 100%;
     border-collapse: collapse;
     overflow: hidden;
     border-radius: 0.5rem;
     table-layout: fixed;
 
+    .trophy-row {
+      font-weight: bold;
+    }
+
     thead, td {
       padding: 0.75rem 1rem;
       text-align: left;
     }
 
-
-    thead {
-      background-color: $trophy-primary;
-      font-weight: 600;
-      color: $trophy-text-light;
-      border-bottom: 2px solid $trophy-light-accent;
-      text-transform: uppercase;
-      font-size: 0.85rem;
-      letter-spacing: 0.05em;
-    }
-
     td {
       border-bottom: 1px solid $trophy-light-accent;
-      background-color: $trophy-bg;
-      color: $trophy-text-dark;
     }
-
-    tbody tr:hover td {
-      background-color: rgba(26, 188, 156, 0.1);
-    }
-  }
-
-  @keyframes pulse {
-    0% {
-      background-color: rgba(26, 188, 156, 0.4);
-    }
-    50% {
-      background-color: rgba(26, 188, 156, 0.2);
-    }
-    100% {
-      background-color: transparent;
-    }
-  }
-
-  .trophy-description {
-    text-align: left;
   }
 
   .trophy-icon img {
@@ -129,5 +84,75 @@ $trophy-text-light: #ffffff; // Text on dark
     object-fit: contain;
     display: block;
     margin: 10px auto;
+  }
+
+
+  /* Hover effects on badge rows*/
+  .trophy-group {
+    .trophy-details-row {
+      display: none;
+      justify-content: center;
+
+      td {
+        padding: 0;
+      }
+
+      .trophy-details {
+        padding: 1rem;
+        background-color: rgba(26, 188, 156, 0.05);
+        border-top: 1px solid $trophy-light-accent;
+      }
+
+      .details-header {
+        padding: 0 35px;
+        display: flex;
+        justify-content: space-between;
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+      }
+
+      .details-content {
+        padding: 0 px;
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.8rem;
+      }
+
+      .details-header,
+      .details-content {
+        padding: 0 1rem;
+      }
+
+      .details-header,
+      .details-content  span, p {
+        text-align: center;
+      }
+
+      .details-header span:first-child,
+      .details-content p:first-child {
+        flex: 1; // description side is wider
+      }
+
+      .details-header span:last-child,
+      .details-content p:last-child {
+        flex: 1; // earned side is narrower
+      }
+    }
+
+    .trophy-group:hover .trophy-details-row {
+      display: flex;
+    }
+
+    &:hover .trophy-details-row {
+      display: table-row;
+    }
+
+    &:hover .trophy-row {
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      background-color: rgba(26, 188, 156, 0.1);
+      border-radius: 0.5rem;
+      transition: all 0.3s ease;
+    }
   }
 }
