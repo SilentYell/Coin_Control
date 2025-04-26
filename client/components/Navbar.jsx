@@ -38,6 +38,7 @@ const Navbar = (
     setLastEditedTransactionType,
     lastEditedId,
     setLastEditedId,
+    trophiesList,
     setTrophiesList,
     goal,
     totalSavings,
@@ -435,7 +436,7 @@ const Navbar = (
       )}
       {showTrophyCaseModal && (
         <Modal isOpen={showTrophyCaseModal} onClose={() => setShowTrophyCaseModal(false)}>
-          <TrophyCase userId={user.user_id} />
+          <TrophyCase userId={user.user_id} trophiesList={trophiesList} setTrophiesList={setTrophiesList}/>
         </Modal>
       )}
     </>
