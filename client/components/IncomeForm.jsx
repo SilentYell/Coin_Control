@@ -3,7 +3,7 @@ import '../styles/IncomeForm.scss'
 import { addIncomeAndCheckTrophies, updateIncome, getUserBadgeTrophies } from '../services/api';
 import { initializeIncomeFormData } from '../src/helpers/initializeFormData';
 
-const IncomeForm = ({ editingIncome, setEditingIncome, onSubmitSuccess, setEditSuccess, setLastEditedTransactionType, setLastEditedId, setTrophiesList }) => {
+const IncomeForm = ({ editingIncome, setEditingIncome, onSubmitSuccess, setEditSuccess, setLastEditedTransactionType, setLastEditedId, setTrophiesList, onGoalChanged }) => {
   // Track current formData
   const [formData, setFormData] = useState(() => initializeIncomeFormData(editingIncome));
   const [success, setSuccess] = useState(false);
@@ -89,6 +89,7 @@ const IncomeForm = ({ editingIncome, setEditingIncome, onSubmitSuccess, setEditS
       // Trigger list update and from reset if the trophy check worked
       if (response) {
         if (onSubmitSuccess) await onSubmitSuccess();
+        if (onGoalChanged) onGoalChanged(); // Refresh goal/savings after income change
         // Reset the form
         setFormData({
           amount: 0,
