@@ -89,9 +89,8 @@ const Navbar = (
           {user ? (
             // If logged in, show buttons
             <>
-              <li><button onClick={() => setShowExpenseListModal(true)}>Expense History</button></li>
-              <li><button onClick={() => setShowExpenseFormModal(true)}>Add Expense</button></li>
               <li><button onClick={() => setShowGoalModal(true)}>Savings Goal</button></li>
+              <li><button onClick={() => setShowExpenseListModal(true)}>Expense History</button></li>
               <li>
                 <button onClick={() => {
                   const handleIncomeHistoryClick = async () => {
@@ -106,8 +105,9 @@ const Navbar = (
                   Income History
                 </button>
               </li>
-              <li><button onClick={() => setShowIncomeFormModal(true)}>Add Income</button></li>
               <li><button onClick={() => setShowTransactionsModal(true)}>All Transactions</button></li>
+              <li><button onClick={() => setShowExpenseFormModal(true)}>Add Expense</button></li>
+              <li><button onClick={() => setShowIncomeFormModal(true)}>Add Income</button></li>
               <li><button onClick={() => setShowTrophyCaseModal(true)}>Trophy Case</button></li>
               {user && (
                 <li className="mobile-logout">
@@ -147,12 +147,6 @@ const Navbar = (
         </Modal>
       )}
 
-      {showExpenseFormModal && (
-        <Modal isOpen={showExpenseFormModal} onClose={() => setShowExpenseFormModal(false)}>
-          <AddExpenseForm onSubmitSuccess={onExpenseSubmitSuccess} />
-        </Modal>
-      )}
-
       {showIncomeListModal && (
         <Modal isOpen={showIncomeListModal} onClose={() => setShowIncomeListModal(false)}>
           <IncomeList
@@ -166,6 +160,13 @@ const Navbar = (
           />
         </Modal>
       )}
+
+      {showExpenseFormModal && (
+        <Modal isOpen={showExpenseFormModal} onClose={() => setShowExpenseFormModal(false)}>
+          <AddExpenseForm onSubmitSuccess={onExpenseSubmitSuccess} />
+        </Modal>
+      )}
+
 
       {(showIncomeFormModal || editingIncome) && (
         <Modal isOpen={true} onClose={() => {
