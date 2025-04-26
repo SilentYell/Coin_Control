@@ -31,7 +31,6 @@ const Navbar = (
     onSubmitSuccess,
     expensesList,
     setExpensesList,
-    fetchExpensesList,
     onExpenseSubmitSuccess,
     editSuccess,
     setEditSuccess,
@@ -42,7 +41,6 @@ const Navbar = (
     trophiesList,
     setTrophiesList,
     goal,
-    totalSavings,
     refreshGoal
   }) => {
 
@@ -182,11 +180,8 @@ const Navbar = (
             setLastEditedId={setLastEditedId}
             setLastEditedTransactionType={setLastEditedTransactionType}
             setTrophiesList={setTrophiesList}
-            onSubmitSuccess={async () => {
-              await onSubmitSuccess();
-              setEditingIncome(undefined);
-            }}
-            onClose={() => setShowIncomeFormModal(false)}
+            onSubmitSuccess={onSubmitSuccess}
+            onGoalChanged={refreshGoal} // Pass refreshGoal to IncomeForm
           />
         </Modal>
       )}
