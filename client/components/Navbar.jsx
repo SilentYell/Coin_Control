@@ -30,7 +30,6 @@ const Navbar = (
     onSubmitSuccess,
     expensesList,
     setExpensesList,
-    fetchExpensesList,
     onExpenseSubmitSuccess,
     editSuccess,
     setEditSuccess,
@@ -40,7 +39,6 @@ const Navbar = (
     setLastEditedId,
     setTrophiesList,
     goal,
-    totalSavings,
     refreshGoal
   }) => {
 
