@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { getUserTrophies  } from '../services/api';
 import '../styles/TrophyCase.scss';
+import Trophies from './Trophies';
 
-const TrophyCase = ({ userId }) => {
+const TrophyCase = ({ userId, trophiesList, setTrophiesList }) => {
   const [trophies, setTrophies] = useState([]);
 
   useEffect(() => {
@@ -10,7 +11,7 @@ const TrophyCase = ({ userId }) => {
       try {
         const data = await getUserTrophies(userId);
         console.log('Fetched trophies: ', data);
-        
+
         setTrophies(data);
       } catch (error) {
         console.log('Error fetching trophies: ', error);
@@ -28,13 +29,15 @@ const TrophyCase = ({ userId }) => {
             <h3>{trophy.name}</h3>
             <img src={trophy.icon_url} alt={trophy.name} />
             <div className='trophy-info'>
-              {trophy.percent_required}% of your savings goal reached! 
+              {trophy.percent_required}% of your savings goal reached!
             </div>
           </div>
         ))
       ) : (
         <p className='trophy-case-empty'>No trophies earned yet.</p>
       )}
+
+      <Trophies trophiesList={trophiesList} setTrophiesList={setTrophiesList}/>
     </div>
   );
 };
