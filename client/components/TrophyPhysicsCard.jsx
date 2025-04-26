@@ -20,7 +20,6 @@ const TrophyPhysicsCard = ({ userId, isEditable, cardX, cardY, trophiesList }) =
   const engineRef = useRef(null);
   const prevPos = useRef({ x: cardX, y: cardY });
   const [trophies, setTrophies] = React.useState([]);
-  const [score, setScore] = React.useState(0);
   const width = 420;
   const height = 600;
   const containerRef = useRef(null);
@@ -113,45 +112,8 @@ const TrophyPhysicsCard = ({ userId, isEditable, cardX, cardY, trophiesList }) =
       const ground = Matter.Bodies.rectangle(width / 2, height + 10, width, 20, { isStatic: true });
       const leftWall = Matter.Bodies.rectangle(-10, height / 2, 20, height, { isStatic: true });
       const rightWall = Matter.Bodies.rectangle(width + 10, height / 2, 20, height, { isStatic: true });
-      // Move hoop lower and add left/right collision (rim)
-      const HOOP_WIDTH = 100;
-      const HOOP_HEIGHT = 20;
-      const HOOP_X = width / 2;
-      const HOOP_Y = 200; // Lowered hoop
-      // Rim sides (raise them and match hoop color)
-      const RIM_THICKNESS = 10;
-      const RIM_HEIGHT = 20; // Raised rim
-      const rimColor = 'orange';
-      const rimLeft = Matter.Bodies.rectangle(
-        HOOP_X - HOOP_WIDTH / 2 + RIM_THICKNESS / 2,
-        HOOP_Y - RIM_HEIGHT / 2 + 10, // Raise rim
-        RIM_THICKNESS,
-        RIM_HEIGHT,
-        { isStatic: true, render: { fillStyle: rimColor }, label: 'rim' }
-      );
-      const rimRight = Matter.Bodies.rectangle(
-        HOOP_X + HOOP_WIDTH / 2 - RIM_THICKNESS / 2,
-        HOOP_Y - RIM_HEIGHT / 2 + 10, // Raise rim
-        RIM_THICKNESS,
-        RIM_HEIGHT,
-        { isStatic: true, render: { fillStyle: rimColor }, label: 'rim' }
-      );
-      // Hoop sensor (scoring area) with border radius
-      const hoop = Matter.Bodies.rectangle(HOOP_X, HOOP_Y, HOOP_WIDTH, HOOP_HEIGHT, {
-        isStatic: true,
-        isSensor: true,
-        render: {
-          fillStyle: rimColor,
-          strokeStyle: 'black',
-          lineWidth: 3,
-          // Custom property for border radius (visual only, not physics)
-          borderRadius: 50,
-        },
-        label: 'hoop',
-      });
-      // Add top boundary
       const topWall = Matter.Bodies.rectangle(width / 2, -10, width, 20, { isStatic: true, label: 'topWall' });
-      Matter.World.add(world, [ground, leftWall, rightWall, topWall, hoop, rimLeft, rimRight]);
+      Matter.World.add(world, [ground, leftWall, rightWall, topWall]);
       const BADGE_SIZE = 64;
       const margin = BADGE_SIZE / 2 + 8;
       const bodies = loadedTrophies.map((trophy) => {
@@ -189,17 +151,6 @@ const TrophyPhysicsCard = ({ userId, isEditable, cardX, cardY, trophiesList }) =
         bodies.forEach(body => { body.collisionFilter = { group: 0, category: 0x0001, mask: 0xFFFFFFFF }; });
         Matter.World.add(world, mouseConstraint);
       }
-      Matter.Events.on(engine, 'collisionStart', function(event) {
-        event.pairs.forEach(pair => {
-          const labels = [pair.bodyA.label, pair.bodyB.label];
-          if (labels.includes('hoop')) {
-            const trophyBody = pair.bodyA.label === 'hoop' ? pair.bodyB : pair.bodyA;
-            if (trophyBody.label && trophyBody.label !== 'hoop') {
-              setScore(prev => prev + 1);
-            }
-          }
-        });
-      });
       Matter.Render.run(render);
       // Fix: ensure border is applied after canvas is rendered
       setTimeout(() => {
@@ -219,7 +170,7 @@ const TrophyPhysicsCard = ({ userId, isEditable, cardX, cardY, trophiesList }) =
       }, 0);
       const runner = Matter.Runner.create();
       Matter.Runner.run(runner, engine);
-      engineRef.current = { engine, render, runner, bodies, ground, leftWall, rightWall, hoop, rimLeft, rimRight, topWall };
+      engineRef.current = { engine, render, runner, bodies, ground, leftWall, rightWall, topWall };
       cleanup = () => {
         Matter.Render.stop(render);
         Matter.Runner.stop(runner);
@@ -254,10 +205,6 @@ const TrophyPhysicsCard = ({ userId, isEditable, cardX, cardY, trophiesList }) =
 
   return (
     <Card title="Trophy Case" isEditable={isEditable}>
-      {/* Score overlay */}
-      <div style={{ position: 'absolute', left: 20, top: 20, zIndex: 2, fontWeight: 'bold', fontSize: 24, color: '#1a237e', textShadow: '1px 1px 4px #fff' }}>
-        Score: {score}
-      </div>
       <div ref={containerRef} style={{ width: width, height: height, overflow: 'hidden', boxSizing: 'border-box', margin: '0 auto', position: 'relative' }}>
         <div ref={sceneRef} style={{ width: '100%', height: '100%', boxSizing: 'border-box' }} />
       </div>
