@@ -114,12 +114,16 @@ const TrophyPhysicsCard = ({ userId, isEditable, cardX, cardY, trophiesList }) =
       const rightWall = Matter.Bodies.rectangle(width + 10, height / 2, 20, height, { isStatic: true });
       const topWall = Matter.Bodies.rectangle(width / 2, -10, width, 20, { isStatic: true, label: 'topWall' });
       Matter.World.add(world, [ground, leftWall, rightWall, topWall]);
-      const BADGE_SIZE = 64;
-      const margin = BADGE_SIZE / 2 + 8;
+      const BADGE_SIZE = 100;
+      const COLLISION_RADIUS = BADGE_SIZE / 2;
+      const mainTrophyIcons = ['bronze.png', 'silver.png', 'gold.png', 'platinum.png'];
+      const margin = COLLISION_RADIUS + 1;
       const bodies = loadedTrophies.map((trophy) => {
+        const isMainTrophy = trophy.icon_path && mainTrophyIcons.some(icon => trophy.icon_path.includes(icon));
+        const scaleFactor = isMainTrophy ? 1.7 : 1.0;
         const x = margin + Math.random() * (width - 2 * margin);
         const y = margin + Math.random() * (height - 2 * margin);
-        return Matter.Bodies.circle(x, y, BADGE_SIZE / 2, {
+        return Matter.Bodies.circle(x, y, COLLISION_RADIUS, {
           restitution: 0.8,
           friction: 0.2,
           density: 0.005, // Add some weight
@@ -127,8 +131,8 @@ const TrophyPhysicsCard = ({ userId, isEditable, cardX, cardY, trophiesList }) =
           render: {
             sprite: {
               texture: getTrophyIconUrl(trophy),
-              xScale: BADGE_SIZE / 175.46,
-              yScale: BADGE_SIZE / 175.46,
+              xScale: (BADGE_SIZE / 175.46) * scaleFactor,
+              yScale: (BADGE_SIZE / 175.46) * scaleFactor,
               img: trophy._img,
             },
           },
@@ -152,7 +156,6 @@ const TrophyPhysicsCard = ({ userId, isEditable, cardX, cardY, trophiesList }) =
         Matter.World.add(world, mouseConstraint);
       }
       Matter.Render.run(render);
-      // Fix: ensure border is applied after canvas is rendered
       setTimeout(() => {
         if (sceneRef.current) {
           const canvas = sceneRef.current.querySelector('canvas');
