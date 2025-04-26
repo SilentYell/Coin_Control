@@ -20,7 +20,7 @@ const Modal = ({ isOpen, onClose, children }) => {
     };
   }, [isOpen, onClose]);
 
-  const handleBackdropClick = (e) => {
+  const handleBackdropClick = () => {
     console.log('Modal closed via backdrop click'); // Debugging log
     onClose();
   };
