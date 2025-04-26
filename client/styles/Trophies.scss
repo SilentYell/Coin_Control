@@ -7,6 +7,7 @@ $trophy-light-accent: #bdc3c7; // Accents
 $trophy-text-dark: #2c3e50; // Text on light
 $trophy-text-light: #ffffff; // Text on dark
 
+
 .trophies-container {
   width: 40%; /* Sidebar size */
   background-color: $trophy-bg;
@@ -16,7 +17,7 @@ $trophy-text-light: #ffffff; // Text on dark
   border: 1px solid $trophy-light-accent;
   transition: width 0.3s ease;
   padding: 2rem;
-  z-index: 9999;
+  z-index: 999;
   position: fixed;
   right: 0; /* Side bar on the right */
   top: 70px; /* Badges inline with bottom navbar */
