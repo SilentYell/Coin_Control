@@ -1,0 +1,159 @@
+// Colour Scheme
+$trophy-bg: #f3f4f6; // Main Background
+$trophy-primary: #2c3e50; // Secondary (Headers & Primary Buttons)
+$trophy-accent: #1abc9c; // Alternate Button
+$trophy-cta: #e67e22; // Call to Action
+$trophy-light-accent: #bdc3c7; // Accents
+$trophy-text-dark: #2c3e50; // Text on light
+$trophy-text-light: #ffffff; // Text on dark
+
+
+.trophies-container {
+  width: 40%; /* Sidebar size */
+  background-color: $trophy-bg;
+  border-radius: 0.75rem;
+  color: $trophy-text-dark;
+  box-shadow: 0 10px 5px rgba(44, 62, 80, 0.8);
+  border: 1px solid $trophy-light-accent;
+  transition: width 0.3s ease;
+  padding: 2rem;
+  z-index: 999;
+  position: fixed;
+  right: 0; /* Side bar on the right */
+  top: 70px; /* Badges inline with bottom navbar */
+  height: 100vh; /* Ensures the sidebar takes full screen height */
+  overflow-y: auto; /* To allow scrolling inside badgedrawer */
+}
+
+.main-content {
+  display: flex;
+  justify-content: center;
+  transition: margin 0.7s ease;
+}
+
+.trophies-list {
+  width: 90%;
+
+  h2 {
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    border-bottom: 2px solid $trophy-light-accent;
+    padding-bottom: 0.75rem;
+  }
+
+  .empty-state {
+    background-color: $trophy-accent;
+    ;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    text-align: center;
+    color: $trophy-text-light;
+    margin: 1rem 0;
+  }
+
+  .table-container {
+    padding: 20px 30px;
+    margin: 30px 10px;
+    width: 100%;
+    box-shadow: 10px 10px 10px 10px rgba(20, 29, 37, 0.08);
+  }
+
+  .trophies-table {
+    width: 100%;
+    border-collapse: collapse;
+    overflow: hidden;
+    border-radius: 0.5rem;
+    table-layout: fixed;
+
+    .trophy-row {
+      font-weight: bold;
+    }
+
+    thead, td {
+      padding: 0.75rem 1rem;
+      text-align: left;
+    }
+
+    td {
+      border-bottom: 1px solid $trophy-light-accent;
+    }
+  }
+
+  .trophy-icon img {
+    width: 60px;
+    height: auto;
+    object-fit: contain;
+    display: block;
+    margin: 10px auto;
+  }
+
+
+  /* Hover effects on badge rows*/
+  .trophy-group {
+    .trophy-details-row {
+      display: none;
+      justify-content: center;
+
+      td {
+        padding: 0;
+      }
+
+      .trophy-details {
+        padding: 1rem;
+        background-color: rgba(26, 188, 156, 0.05);
+        border-top: 1px solid $trophy-light-accent;
+      }
+
+      .details-header {
+        padding: 0 35px;
+        display: flex;
+        justify-content: space-between;
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+      }
+
+      .details-content {
+        padding: 0 px;
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.8rem;
+      }
+
+      .details-header,
+      .details-content {
+        padding: 0 1rem;
+      }
+
+      .details-header,
+      .details-content  span, p {
+        text-align: center;
+      }
+
+      .details-header span:first-child,
+      .details-content p:first-child {
+        flex: 1; // description side is wider
+      }
+
+      .details-header span:last-child,
+      .details-content p:last-child {
+        flex: 1; // earned side is narrower
+      }
+    }
+
+    .trophy-group:hover .trophy-details-row {
+      display: flex;
+    }
+
+    &:hover .trophy-details-row {
+      display: table-row;
+    }
+
+    &:hover .trophy-row {
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      background-color: rgba(26, 188, 156, 0.1);
+      border-radius: 0.5rem;
+      transition: all 0.3s ease;
+    }
+  }
+}

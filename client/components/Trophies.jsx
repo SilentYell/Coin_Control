@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { getUserBadgeTrophies } from '../services/api';
 import formatDate from '../src/helpers/formatDate';
+import '../styles/Trophies.scss';
 
 export const Trophies = ({trophiesList, setTrophiesList}) => {
   useEffect(() => {
@@ -18,39 +19,48 @@ export const Trophies = ({trophiesList, setTrophiesList}) => {
   }, []);
 
   return (
-    <div className="trophies-list">
-      <h2>Trophies</h2>
+    <div className='trophies-container'>
+      <div className='main-content'>
+        <div className="trophies-list">
+            <h2>Badges Earned</h2>
 
-      {trophiesList.length === 0 ? (
-        <div className="empty-state">
-          <p>No trophies found. Keep saving!</p>
+            {trophiesList.length === 0 ? (
+              <div className="empty-state">
+                <p>No badges found. Explore the app to earn badges!</p>
+              </div>
+            ) : (
+            <div className="table-container">
+              <table className="trophies-table">
+                { trophiesList.map((trophy) => (
+                  <tbody className="trophy-group" key={trophy.id}>
+                    <tr className="trophy-row">
+                      <td className='trophy-icon'>
+                        <img src={`http://localhost:3000/images/${trophy.icon_path}`} alt={trophy.name} />
+                      </td>
+                      <td className="trophy-name">{trophy.name}</td>
+                    </tr>
+                    <tr className="trophy-details-row">
+                      <td colSpan="2">
+                        <div className="trophy-details">
+                          <div className="details-header">
+                            <span>Description</span>
+                            <span>Earned</span>
+                          </div>
+                          <div className="details-content">
+                            <p className="trophy-description">{trophy.description}</p>
+                            <p className="trophy-awarded-at">{formatDate(trophy.awarded_at)}</p>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                ))}
+              </table>
+          </div>
+          )}
         </div>
-      ) : (
-      <div className="table-container">
-        <table className="trophies-table">
-          <thead>
-            <tr>
-              <th></th>
-              <th>Name</th>
-              <th>Description</th>
-              <th>Earned</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-          { trophiesList.map((trophy) => (
-              <tr key={trophy.id}>
-                <td><img src={`http://localhost:3000/images/${trophy.icon_path}`} alt={trophy.name} /></td>
-                <td className="name">{trophy.name}</td>
-                <td className='description'>{trophy.description}</td>
-                <td className="earned-at">{formatDate(trophy.awarded_at)}</td>
-              </tr>
-          ))}
-          </tbody>
-        </table>
+      </div>
     </div>
-    )}
-  </div>
   )
 };
 

@@ -26,6 +26,7 @@ $text-light: #fff;
   max-width: 900px;
   width: 90%;
   position: relative;
+  overflow: hidden;
 }
 
 .modal-header {
@@ -52,4 +53,48 @@ $text-light: #fff;
   max-width: 100%;
   margin: 0;
   padding: 0.5rem;
+}
+
+/* Custom styles for the trophy case modal */
+.trophy-case-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5); // dim background
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  z-index: 1000;
+
+  .modal-close {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    z-index: 1001;
+    top: 100px;
+    left: 75px;
+    font-size: 1.5rem;
+    width: 5px;
+    background: grey;
+    background-color: white;
+    border: none;
+    color: $modal-primary;
+    cursor: pointer;
+    &:hover {
+      color: $modal-accent;
+    }
+  }
+}
+
+.trophy-case-modal .modal-content {
+  left: 50px;
+  background: $modal-bg;
+  color: $modal-primary;
+  padding: 2rem;
+  border-radius: 10px;
+  max-width: 900px;
+  width: 50%;
+  position: relative;
+  overflow: hidden;
 }

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import '../styles/Modal.scss';
 
-const Modal = ({ isOpen, onClose, children }) => {
+const Modal = ({ className, isOpen, onClose, children }) => {
 
   useEffect(() => {
     const handleEscKey = (event) => {
@@ -27,10 +27,12 @@ const Modal = ({ isOpen, onClose, children }) => {
 
   if(!isOpen) return null;
 
+  const modalClassName = className ? `modal-backdrop ${className}` : 'modal-backdrop';
+  const closeModalClassName = className ? `modal-close ${className}` : 'modal-close';
   return (
-    <div className='modal-backdrop' onClick={handleBackdropClick}>
+    <div className={modalClassName} onClick={handleBackdropClick}>
       <div className='modal-content' onClick={(e) => e.stopPropagation()}>
-        <button className='modal-close' onClick={onClose}>x</button>
+        <button className={closeModalClassName} onClick={onClose}>x</button>
         {children}
       </div>
     </div>

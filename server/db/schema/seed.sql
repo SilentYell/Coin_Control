@@ -39,18 +39,18 @@ VALUES
 INSERT INTO badge_trophies(name, description, icon_path, criteria_key)
 VALUES
   ('First steps', 'Add your first income or expense', 'trophies/first_transaction.png', 'first_transaction'),
-  ('Savings Starter', 'Set your first savings goal', 'trophies/first_savings.jpg', 'first_savings'),
-  ('Consistent Logger', 'Add a transaction every day for 7 days', '', 'transaction_for_7_days'),
+  ('Savings Starter', 'Set your first savings goal', 'trophies/first_savings.png', 'first_savings'),
+  ('Consistent Logger', 'Add a transaction every day for 7 days', 'trophies/consistent_logger.svg', 'transaction_for_7_days'),
   ('Goal Getter', 'Reach a savings goal', 'trophies/equal_to_goal.png', 'equal_to_goal'),
-  ('All-In-One', 'Use all features at least once (income, expense, goal, etc.)', 'trophies/use_all_features.png', 'use_all_features'),
-  ('Small Saver', 'Save $10', '', 'save_income_10'),
-  ('Medium Saver', 'Save $50', '', 'save_income_50'),
-  ('Big Saver', 'Save $100', '', 'save_income_100'),
+  ('All-In-One', 'Use all features at least once', 'trophies/use_all_features.png', 'use_all_features'),
+  ('Small Saver', 'Save $10', 'trophies/save_10.svg', 'save_income_10'),
+  ('Medium Saver', 'Save $50', 'trophies/save_50.svg', 'save_income_50'),
+  ('Big Saver', 'Save $100', 'trophies/save_100.svg', 'save_income_100'),
   ('HUGE Saver', 'Save over $1,000', 'trophies/save_1000.png', 'save_income_1000'),
-  ('Small Spender', 'Spend $10', '', 'spend_10'),
-  ('Medium Spender', 'Spend $50', '', 'spend_50'),
-  ('Big Spender', 'Spend $100', '', 'spend_100'),
-  ('HUGE Spender', 'Spend over $1,000', '', 'spend_1000');
+  ('Small Spender', 'Spend $10', 'trophies/spend_10.svg', 'spend_10'),
+  ('Medium Spender', 'Spend $50', 'trophies/spend_50.svg', 'spend_50'),
+  ('Big Spender', 'Spend $100', 'trophies/spend_100.svg', 'spend_100'),
+  ('HUGE Spender', 'Spend over $1,000', 'trophies/spend_1000.svg', 'spend_1000');
 
 -- Insert user trophies
 INSERT INTO User_Trophies (user_id, trophy_id, badge_id, awarded_at, type)

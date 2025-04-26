@@ -10,7 +10,7 @@ const TrophyCase = ({ userId }) => {
       try {
         const data = await getUserTrophies(userId);
         console.log('Fetched trophies: ', data);
-        
+
         setTrophies(data);
       } catch (error) {
         console.log('Error fetching trophies: ', error);
@@ -28,7 +28,7 @@ const TrophyCase = ({ userId }) => {
             <h3>{trophy.name}</h3>
             <img src={trophy.icon_url} alt={trophy.name} />
             <div className='trophy-info'>
-              {trophy.percent_required}% of your savings goal reached! 
+              {trophy.percent_required}% of your savings goal reached!
             </div>
           </div>
         ))

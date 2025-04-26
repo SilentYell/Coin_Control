@@ -7,6 +7,7 @@ import AddExpenseForm from './AddExpenseForm';
 import ExpensesList from './ExpensesList';
 import IncomeList from './IncomeList';
 import TrophyCase from './TrophyCase';
+import Trophies from './Trophies'
 import NavbarLogo from './NavbarLogo'
 import { FaBars, FaTimes } from 'react-icons/fa';
 import AllTransactions from './AllTransactions';
@@ -37,6 +38,7 @@ const Navbar = (
     setLastEditedTransactionType,
     lastEditedId,
     setLastEditedId,
+    trophiesList,
     setTrophiesList,
     goal,
     refreshGoal
@@ -429,8 +431,12 @@ const Navbar = (
         </Modal>
       )}
       {showTrophyCaseModal && (
-        <Modal isOpen={showTrophyCaseModal} onClose={() => setShowTrophyCaseModal(false)}>
-          <TrophyCase userId={user.user_id} />
+        <Modal
+          className="trophy-case-modal"
+          isOpen={showTrophyCaseModal}
+          onClose={() => setShowTrophyCaseModal(false)}>
+          <TrophyCase userId={user.user_id} trophiesList={trophiesList} setTrophiesList={setTrophiesList}/>
+          <Trophies trophiesList={trophiesList} setTrophiesList={setTrophiesList} />
         </Modal>
       )}
     </>

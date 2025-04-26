@@ -128,6 +128,7 @@ function App() {
         setLastEditedTransactionType={setLastEditedTransactionType}
         lastEditedId={lastEditedId}
         setLastEditedId={setLastEditedId}
+        trophiesList={trophiesList}
         setTrophiesList={setTrophiesList}
         onGoalChanged={handleGoalChanged}
         goal={goal}
@@ -191,7 +192,6 @@ function App() {
             totalSavings={totalSavings}
             refreshGoal={() => fetchGoal(user?.user_id)}
           />
-          <Trophies trophiesList={trophiesList} setTrophiesList={setTrophiesList}/>
         </>
       )}
     </div>
