@@ -1,0 +1,133 @@
+// Colour Scheme
+$trophy-bg: #f3f4f6; // Main Background
+$trophy-primary: #2c3e50; // Secondary (Headers & Primary Buttons)
+$trophy-accent: #1abc9c; // Alternate Button
+$trophy-cta: #e67e22; // Call to Action
+$trophy-light-accent: #bdc3c7; // Accents
+$trophy-text-dark: #2c3e50; // Text on light
+$trophy-text-light: #ffffff; // Text on dark
+
+.trophies-container {
+  width: 40%; /* Sidebar size */
+  background-color: $trophy-bg;
+  border-radius: 0.75rem;
+  color: $trophy-text-dark;
+  box-shadow: 0 4px 6px rgba(44, 62, 80, 0.1);
+  border: 1px solid $trophy-light-accent;
+  transition: width 0.3s ease;
+  padding: 2rem;
+  z-index: 9999;
+  position: fixed;
+  right: 0; /* This will make the sidebar appear on the right side */
+  top: 70px; /* Optional: Set the vertical position of the sidebar */
+  height: 100vh; /* Ensures the sidebar takes full screen height */
+  overflow-y: auto; /* To allow scrolling if the sidebar is too tall */
+}
+
+.main-content {
+  display: flex;
+  justify-content: center;
+  transition: margin 0.7s ease;
+}
+
+.trophies-list {
+    width: 80%;
+
+  h2 {
+    margin-bottom: 1.5rem;
+    text-align: center;
+    color: $trophy-primary;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 2px solid $trophy-light-accent;
+    padding-bottom: 0.75rem;
+  }
+
+  .empty-state {
+    background-color: $trophy-accent;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    text-align: center;
+    color: $trophy-text-light;
+    margin: 1rem 0;
+  }
+
+  .table-container {
+    display: flex;
+    justify-content: center;
+    flex-grow: 1;
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: auto;
+    background-color: $trophy-bg;
+    border-radius: 0.5rem;
+    box-shadow: 10px 10px 10px 10px rgba(20, 29, 37, 0.08);
+    margin-bottom: 1rem;
+  }
+
+  /* Highlight animation for edited rows */
+  .trophy-table tbody tr.highlight-row td {
+    animation: pulse 3.5s ease-in;
+    background-color: rgba(26, 188, 156, 0.2);
+  }
+
+  .trophy-table {
+    width: 100%;
+    border-collapse: collapse;
+    overflow: hidden;
+    border-radius: 0.5rem;
+    table-layout: fixed;
+
+    thead, td {
+      padding: 0.75rem 1rem;
+      text-align: left;
+    }
+
+
+    thead {
+      background-color: $trophy-primary;
+      font-weight: 600;
+      color: $trophy-text-light;
+      border-bottom: 2px solid $trophy-light-accent;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+    }
+
+    td {
+      border-bottom: 1px solid $trophy-light-accent;
+      background-color: $trophy-bg;
+      color: $trophy-text-dark;
+    }
+
+    tbody tr:hover td {
+      background-color: rgba(26, 188, 156, 0.1);
+    }
+  }
+
+  @keyframes pulse {
+    0% {
+      background-color: rgba(26, 188, 156, 0.4);
+    }
+    50% {
+      background-color: rgba(26, 188, 156, 0.2);
+    }
+    100% {
+      background-color: transparent;
+    }
+  }
+
+  .trophy-description {
+    text-align: left;
+  }
+
+  .trophy-icon img {
+    width: 60px;
+    height: auto;
+    object-fit: contain;
+    display: block;
+    margin: 10px auto;
+  }
+}
