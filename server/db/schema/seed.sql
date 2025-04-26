@@ -39,10 +39,10 @@ VALUES
 INSERT INTO badge_trophies(name, description, icon_path, criteria_key)
 VALUES
   ('First steps', 'Add your first income or expense', 'trophies/first_transaction.png', 'first_transaction'),
-  ('Savings Starter', 'Set your first savings goal', 'trophies/first_savings.jpg', 'first_savings'),
+  ('Savings Starter', 'Set your first savings goal', 'trophies/first_savings.png', 'first_savings'),
   ('Consistent Logger', 'Add a transaction every day for 7 days', 'trophies/consistent_logger.svg', 'transaction_for_7_days'),
   ('Goal Getter', 'Reach a savings goal', 'trophies/equal_to_goal.png', 'equal_to_goal'),
-  ('All-In-One', 'Use all features at least once (income, expense, goal, etc.)', 'trophies/use_all_features.png', 'use_all_features'),
+  ('All-In-One', 'Use all features at least once', 'trophies/use_all_features.png', 'use_all_features'),
   ('Small Saver', 'Save $10', 'trophies/save_10.svg', 'save_income_10'),
   ('Medium Saver', 'Save $50', 'trophies/save_50.svg', 'save_income_50'),
   ('Big Saver', 'Save $100', 'trophies/save_100.svg', 'save_income_100'),
@@ -55,7 +55,6 @@ VALUES
 -- Insert user trophies
 INSERT INTO User_Trophies (user_id, trophy_id, badge_id, awarded_at, type)
 VALUES
-  (1, null, 3, '2025-04-01 01:18:36', 'badge'),
   (2, null, 2, '2025-04-01 01:18:36', 'badge'),
   (3, null, 4, '2025-02-11 01:18:36', 'badge'),
   (2, null, 5, '2025-01-18 01:18:36', 'badge'),
