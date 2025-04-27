@@ -10,6 +10,7 @@ const TrophyCase = ({ userId }) => {
       try {
         const data = await getUserTrophies(userId);
         console.log('Fetched trophies: ', data);
+        console.log('fetch user tropihies data', data)
 
         const filteredData = data.filter(trophy => trophy.type === 'trophy') // filter for trophy of types 'trophy'
         filteredData.sort((a, b) => Number(a.criteria) - Number(b.criteria)); // Sort by percentage criteria
@@ -30,7 +31,7 @@ const TrophyCase = ({ userId }) => {
         trophies.map((trophy) => (
           <div key={trophy.id} className='trophy'>
             <h3>{trophy.name}</h3>
-            <img src={trophy.icon_path} alt={trophy.name} />
+            <img src={`http://localhost:3000/images/${trophy.icon_path}`} alt={trophy.name} />
             <div className='trophy-info'>
               {Number(trophy.criteria)}% of your savings goal reached!
             </div>
