@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import '../styles/IncomeForm.scss'
-import { addIncomeAndCheckTrophies, updateIncome, getUserBadgeTrophies } from '../services/api';
+import { addIncomeAndCheckTrophies, updateIncome, getUserTrophies } from '../services/api';
 import { initializeIncomeFormData } from '../src/helpers/initializeFormData';
 
 const IncomeForm = ({ editingIncome, setEditingIncome, onSubmitSuccess, setEditSuccess, setLastEditedTransactionType, setLastEditedId, setTrophiesList, onGoalChanged }) => {
@@ -77,8 +77,11 @@ const IncomeForm = ({ editingIncome, setEditingIncome, onSubmitSuccess, setEditS
 
         // Update trophiesList with any newly earned trophies
         if (response.earnedTrophies?.length) {
-          const data = await getUserBadgeTrophies();
-          await setTrophiesList(data.allTrophies);
+          const userId = 1; //hardcoded for now
+          const data = await getUserTrophies(userId);
+          const filteredData = data.filter(t => t.type === 'badge') // filter for 'badge' types only
+
+          await setTrophiesList(filteredData);
         }
 
         // Show success message

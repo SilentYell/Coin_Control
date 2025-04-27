@@ -11,7 +11,7 @@ import Trophies from './Trophies'
 import NavbarLogo from './NavbarLogo'
 import { FaBars, FaTimes } from 'react-icons/fa';
 import AllTransactions from './AllTransactions';
-import { getUserBadgeTrophies } from '../services/api';
+import { getUserTrophies } from '../services/api';
 
 const API_URL = 'http://localhost:3000/api';
 
@@ -336,8 +336,10 @@ const Navbar = (
 
                 const data = await res.json();
                 if (data.earnedTrophies?.length > 0) {
-                  const updatedTrophies = await getUserBadgeTrophies(user.user_id);
-                  setTrophiesList(updatedTrophies.allTrophies);
+                  const updatedTrophies = await getUserTrophies(user.user_id);
+                  const filteredData = updatedTrophies.filter(t => t.type === 'badge'); // filter for 'badge' types only
+
+                  setTrophiesList(filteredData);
                 }
 
                 setGoalName('');
