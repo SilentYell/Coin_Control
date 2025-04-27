@@ -27,7 +27,6 @@ const userTrophies = require('./routes/userTrophies');
 // middleware
 app.use(cors());
 app.use(express.json()); // allows parsing JSON request bodies
-app.use(express.static(path.join(__dirname, '../public'))); // allows icons to be accessible via the browser at the root path
 
 // Get backend images
 app.use('/images', express.static(path.join(__dirname, 'public/images')));
