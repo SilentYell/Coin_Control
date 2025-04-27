@@ -11,7 +11,11 @@ const TrophyCase = ({ userId }) => {
         const data = await getUserTrophies(userId);
         console.log('Fetched trophies: ', data);
 
-        setTrophies(data);
+        const filteredData = data.filter(trophy => trophy.type === 'trophy') // filter for trophy of types 'trophy'
+        console.log(filteredData)
+        filteredData.sort((a, b) => Number(a.criteria) - Number(b.criteria));
+
+        setTrophies(filteredData);
       } catch (error) {
         console.log('Error fetching trophies: ', error);
       }
@@ -20,15 +24,18 @@ const TrophyCase = ({ userId }) => {
     fetchTrophies();
   }, [userId]);
 
+  console.log('trophies state after filtering', trophies)
+
+
   return (
     <div className='trophy-case'>
       {trophies.length > 0 ? (
         trophies.map((trophy) => (
-          <div key={trophy.trophy_id} className='trophy'>
+          <div key={trophy.id} className='trophy'>
             <h3>{trophy.name}</h3>
-            <img src={trophy.icon_url} alt={trophy.name} />
+            <img src={trophy.icon_path} alt={trophy.name} />
             <div className='trophy-info'>
-              {trophy.percent_required}% of your savings goal reached!
+              {Number(trophy.criteria)}% of your savings goal reached!
             </div>
           </div>
         ))
