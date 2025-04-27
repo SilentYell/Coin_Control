@@ -30,10 +30,10 @@ VALUES
 -- Insert trophy data into the Trophies table
 INSERT INTO Trophies(trophy_id, name, description, percent_required, icon_url)
 VALUES
-  (1, 'Bronze Saver', 'Reached 25% of Savings Goal', 25, '/icons/bronze.png'),
-  (2, 'Silver Saver', 'Reached 50% of Savings Goal', 50, '/icons/silver.png'),
-  (3, 'Gold Saver', 'Reached 75% of Savings Goal', 75, '/icons/gold.png'),
-  (4, 'Platinum Saver', 'Reached 100% of Savings Goal', 100, '/icons/platinum.png');
+  (1, 'Bronze Saver', 'Reached 25% of Savings Goal', 25, 'trophies/bronze.png'),
+  (2, 'Silver Saver', 'Reached 50% of Savings Goal', 50, 'trophies/silver.png'),
+  (3, 'Gold Saver', 'Reached 75% of Savings Goal', 75, 'trophies/gold.png'),
+  (4, 'Platinum Saver', 'Reached 100% of Savings Goal', 100, 'trophies/platinum.png');
 
 -- Insert icon trophy data
 INSERT INTO badge_trophies(name, description, icon_path, criteria_key)
