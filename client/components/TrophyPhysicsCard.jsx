@@ -3,18 +3,6 @@ import Matter from 'matter-js';
 import Card from './Card';
 import { getUserTrophies } from '../services/api';
 
-// Mock badge SVGs for TrophyPhysicsCard
-const mockBadges = [
-  { trophy_id: 'mock1', name: 'First Steps', icon_path: 'first_steps.svg', description: 'Add your first income or expense', percent_required: 0 },
-  { trophy_id: 'mock2', name: 'Consistent Logger', icon_path: 'consistent_logger.svg', description: 'Add a transaction every day for 7 days', percent_required: 0 },
-  { trophy_id: 'mock3', name: 'Save $10', icon_path: 'save_10.svg', description: 'Save $10', percent_required: 0 },
-  { trophy_id: 'mock4', name: 'Save $50', icon_path: 'save_50.svg', description: 'Save $50', percent_required: 0 },
-  { trophy_id: 'mock5', name: 'Save $100', icon_path: 'save_100.svg', description: 'Save $100', percent_required: 0 },
-  { trophy_id: 'mock6', name: 'Spend $10', icon_path: 'spend_10.svg', description: 'Spend $10', percent_required: 0 },
-  { trophy_id: 'mock7', name: 'Spend $50', icon_path: 'spend_50.svg', description: 'Spend $50', percent_required: 0 },
-  { trophy_id: 'mock8', name: 'Spend $100', icon_path: 'spend_100.svg', description: 'Spend $100', percent_required: 0 },
-];
-
 const TrophyPhysicsCard = ({ userId, isEditable, cardX, cardY, trophiesList }) => {
   const sceneRef = useRef(null);
   const engineRef = useRef(null);
@@ -30,14 +18,11 @@ const TrophyPhysicsCard = ({ userId, isEditable, cardX, cardY, trophiesList }) =
       let data = [];
       try {
         data = await getUserTrophies(userId);
-
         if (!didCancel) {
-          // Log backend trophies for debugging
-          console.log('TrophyPhysicsCard: backend trophies:', data);
-          setTrophies((data && data.length > 0) ? data : mockBadges);
+          setTrophies((data && data.length > 0) ? data : []);
         }
       } catch (error) {
-        if (!didCancel) setTrophies(mockBadges);
+        if (!didCancel) setTrophies([]);
         console.error(`error fetching all trophies`,  error)
       }
     }
@@ -78,6 +63,27 @@ const TrophyPhysicsCard = ({ userId, isEditable, cardX, cardY, trophiesList }) =
       ).then(results => results.filter(Boolean));
     }
 
+    const trophyScaleMap = {
+      'bronze.png': 1.0,
+      'silver.png': 1.0,
+      'gold.png': 1.0,
+      'platinum.png': 1.0,
+      'first_steps.svg': 1.1,
+      'consistent_logger.svg': 1.1,
+      'save_10.svg': 1.1,
+      'save_50.svg': 1.1,
+      'save_100.svg': 1.1,
+      'spend_10.svg': 1.1,
+      'spend_50.svg': 1.1,
+      'spend_100.svg': 1.1,
+      'spend_1000.svg': 1.1,
+      'first_savings.png': 1.1,
+      'first_transaction.png': 1.1,
+      'equal_to_goal.png': 1.1,
+      'save_1000.png': 1.1,
+      'use_all_features.png': 1.1,
+    };
+
     let cleanup = () => {};
     if (!sceneRef.current || trophies.length === 0) return;
     let cancelled = false;
@@ -111,23 +117,28 @@ const TrophyPhysicsCard = ({ userId, isEditable, cardX, cardY, trophiesList }) =
       Matter.World.add(world, [ground, leftWall, rightWall, topWall]);
       const BADGE_SIZE = 100;
       const COLLISION_RADIUS = BADGE_SIZE / 2;
-      const mainTrophyIcons = ['bronze.png', 'silver.png', 'gold.png', 'platinum.png'];
       const margin = COLLISION_RADIUS + 1;
       const bodies = loadedTrophies.map((trophy) => {
-        const isMainTrophy = trophy.icon_path && mainTrophyIcons.some(icon => trophy.icon_path.includes(icon));
-        const scaleFactor = isMainTrophy ? 1.7 : 1.0;
+        const iconFile = trophy.icon_path ? trophy.icon_path.split('/').pop() : '';
+        const scaleFactor = trophyScaleMap[iconFile] || 1.0;
+        // Use the image's natural size for scaling (works for both SVG and PNG)
+        const img = trophy._img;
+        const naturalWidth = img && (img.naturalWidth || img.width || BADGE_SIZE);
+        const naturalHeight = img && (img.naturalHeight || img.height || BADGE_SIZE);
+        const xScale = (BADGE_SIZE / naturalWidth) * scaleFactor;
+        const yScale = (BADGE_SIZE / naturalHeight) * scaleFactor;
         const x = margin + Math.random() * (width - 2 * margin);
         const y = margin + Math.random() * (height - 2 * margin);
         return Matter.Bodies.circle(x, y, COLLISION_RADIUS, {
           restitution: 0.8,
           friction: 0.2,
-          density: 0.005, // Add some weight
-          mass: 2,        // Add some weight
+          density: 0.005,
+          mass: 2,
           render: {
             sprite: {
               texture: getTrophyIconUrl(trophy),
-              xScale: (BADGE_SIZE / 175.46) * scaleFactor,
-              yScale: (BADGE_SIZE / 175.46) * scaleFactor,
+              xScale,
+              yScale,
               img: trophy._img,
             },
           },
