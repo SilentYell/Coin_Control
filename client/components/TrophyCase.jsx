@@ -12,8 +12,7 @@ const TrophyCase = ({ userId }) => {
         console.log('Fetched trophies: ', data);
 
         const filteredData = data.filter(trophy => trophy.type === 'trophy') // filter for trophy of types 'trophy'
-        console.log(filteredData)
-        filteredData.sort((a, b) => Number(a.criteria) - Number(b.criteria));
+        filteredData.sort((a, b) => Number(a.criteria) - Number(b.criteria)); // Sort by percentage criteria
 
         setTrophies(filteredData);
       } catch (error) {
@@ -23,8 +22,6 @@ const TrophyCase = ({ userId }) => {
 
     fetchTrophies();
   }, [userId]);
-
-  console.log('trophies state after filtering', trophies)
 
 
   return (
