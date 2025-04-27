@@ -26,10 +26,7 @@ module.exports = db => {
 
     try {
       const { rows } = await db.query(query, [userId]);
-      res.json({
-        allTrophies: rows,
-        earnedTrophies
-      })
+      res.json([...rows, ...earnedTrophies])
     } catch (error) {
       console.error(`Error fetching trophies: `, error);
       res.status(500).json({ error: "Error fetching trophies"});
