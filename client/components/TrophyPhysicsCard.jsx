@@ -27,20 +27,18 @@ const TrophyPhysicsCard = ({ userId, isEditable, cardX, cardY, trophiesList }) =
   useEffect(() => {
     let didCancel = false;
     async function fetchTrophies() {
+      let data = [];
       try {
-        let data = [];
-        if (trophiesList && trophiesList.length > 0) {
-          data = trophiesList;
-        } else {
-          data = await getUserTrophies(userId);
-        }
+        data = await getUserTrophies(userId);
+
         if (!didCancel) {
           // Log backend trophies for debugging
           console.log('TrophyPhysicsCard: backend trophies:', data);
           setTrophies((data && data.length > 0) ? data : mockBadges);
         }
-      } catch {
+      } catch (error) {
         if (!didCancel) setTrophies(mockBadges);
+        console.error(`error fetching all trophies`,  error)
       }
     }
     fetchTrophies();
@@ -53,17 +51,13 @@ const TrophyPhysicsCard = ({ userId, isEditable, cardX, cardY, trophiesList }) =
 
   // Helper to robustly get the icon url from trophy object
   function getTrophyIconUrl(trophy) {
-    // Prefer icon_url if present and not empty
-    if (trophy.icon_url && trophy.icon_url.trim() !== '') {
-      if (trophy.icon_url.startsWith('/')) return trophy.icon_url;
-      if (trophy.icon_url.endsWith('.svg') || trophy.icon_url.endsWith('.png')) return `/icons/${trophy.icon_url}`;
-      return `/images/trophies/${trophy.icon_url}`;
-    }
-    // Fallback to icon_path
+    console.log(trophy)
     if (trophy.icon_path && trophy.icon_path.trim() !== '') {
-      if (trophy.icon_path.startsWith('/')) return trophy.icon_path;
-      if (trophy.icon_path.endsWith('.svg') || trophy.icon_path.endsWith('.png')) return `/icons/${trophy.icon_path}`;
-      return `/images/trophies/${trophy.icon_path}`;
+      const cleanedPath = trophy.icon_path.startsWith('/images')
+      ? trophy.icon_path
+      : `/images/${trophy.icon_path}`;
+
+      if (cleanedPath.endsWith('.svg') || cleanedPath.endsWith('.png')) return `http://localhost:3000${cleanedPath}`;
     }
     return '';
   }
@@ -78,6 +72,7 @@ const TrophyPhysicsCard = ({ userId, isEditable, cardX, cardY, trophiesList }) =
             img.onload = () => resolve({ ...trophy, _img: img });
             img.onerror = () => resolve(null); // skip broken images
             img.src = getTrophyIconUrl(trophy);
+            console.log(img.src)
           });
         })
       ).then(results => results.filter(Boolean));
