@@ -13,11 +13,29 @@ router.get('/:user_id', async (req, res) => {
 
   try {
     const result = await db.query(
-      `SELECT t.*
+      `SELECT
+        t.name,
+        t.description,
+        t.percent_required::text AS criteria,
+        t.icon_url AS icon_path,
+        ut.type
       FROM user_trophies ut
       JOIN trophies t ON ut.trophy_id = t.trophy_id
-      AND ut.type = 'trophy'
-      WHERE ut.user_id = $1;`,
+      WHERE ut.user_id = $1
+
+
+      UNION
+
+      SELECT
+        bt.name,
+        bt.description,
+        bt.criteria_key AS criteria,
+        bt.icon_path AS icon_path,
+        ut.type
+      FROM user_trophies ut
+      JOIN badge_trophies bt ON ut.badge_id = bt.trophy_id
+      WHERE ut.user_id = $1
+      ;`,
       [user_id]
     );
 
