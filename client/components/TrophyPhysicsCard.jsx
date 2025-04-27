@@ -3,18 +3,6 @@ import Matter from 'matter-js';
 import Card from './Card';
 import { getUserTrophies } from '../services/api';
 
-// Mock badge SVGs for TrophyPhysicsCard
-const mockBadges = [
-  { trophy_id: 'mock1', name: 'First Steps', icon_path: 'first_steps.svg', description: 'Add your first income or expense', percent_required: 0 },
-  { trophy_id: 'mock2', name: 'Consistent Logger', icon_path: 'consistent_logger.svg', description: 'Add a transaction every day for 7 days', percent_required: 0 },
-  { trophy_id: 'mock3', name: 'Save $10', icon_path: 'save_10.svg', description: 'Save $10', percent_required: 0 },
-  { trophy_id: 'mock4', name: 'Save $50', icon_path: 'save_50.svg', description: 'Save $50', percent_required: 0 },
-  { trophy_id: 'mock5', name: 'Save $100', icon_path: 'save_100.svg', description: 'Save $100', percent_required: 0 },
-  { trophy_id: 'mock6', name: 'Spend $10', icon_path: 'spend_10.svg', description: 'Spend $10', percent_required: 0 },
-  { trophy_id: 'mock7', name: 'Spend $50', icon_path: 'spend_50.svg', description: 'Spend $50', percent_required: 0 },
-  { trophy_id: 'mock8', name: 'Spend $100', icon_path: 'spend_100.svg', description: 'Spend $100', percent_required: 0 },
-];
-
 const TrophyPhysicsCard = ({ userId, isEditable, cardX, cardY, trophiesList }) => {
   const sceneRef = useRef(null);
   const engineRef = useRef(null);
@@ -30,14 +18,11 @@ const TrophyPhysicsCard = ({ userId, isEditable, cardX, cardY, trophiesList }) =
       let data = [];
       try {
         data = await getUserTrophies(userId);
-
         if (!didCancel) {
-          // Log backend trophies for debugging
-          console.log('TrophyPhysicsCard: backend trophies:', data);
-          setTrophies((data && data.length > 0) ? data : mockBadges);
+          setTrophies((data && data.length > 0) ? data : []);
         }
       } catch (error) {
-        if (!didCancel) setTrophies(mockBadges);
+        if (!didCancel) setTrophies([]);
         console.error(`error fetching all trophies`,  error)
       }
     }
