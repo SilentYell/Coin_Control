@@ -78,6 +78,28 @@ const TrophyPhysicsCard = ({ userId, isEditable, cardX, cardY, trophiesList }) =
       ).then(results => results.filter(Boolean));
     }
 
+    // Map each trophy icon filename to a custom scale factor for visual consistency
+    const trophyScaleMap = {
+      'bronze.png': 1.7,
+      'silver.png': 1.7,
+      'gold.png': 1.7,
+      'platinum.png': 1.7,
+      'first_steps.svg': 0.1,
+      'consistent_logger.svg': 1.1,
+      'save_10.svg': 1.1,
+      'save_50.svg': 1.1,
+      'save_100.svg': 1.1,
+      'spend_10.svg': 1.1,
+      'spend_50.svg': 1.1,
+      'spend_100.svg': 1.1,
+      'spend_1000.svg': 1.1,
+      'first_savings.png': 0.5,
+      'first_transaction.png': 1.1,
+      'equal_to_goal.png': 1.1,
+      'save_1000.png': 1.1,
+      'use_all_features.png': 0.35,
+    };
+
     let cleanup = () => {};
     if (!sceneRef.current || trophies.length === 0) return;
     let cancelled = false;
@@ -111,11 +133,11 @@ const TrophyPhysicsCard = ({ userId, isEditable, cardX, cardY, trophiesList }) =
       Matter.World.add(world, [ground, leftWall, rightWall, topWall]);
       const BADGE_SIZE = 100;
       const COLLISION_RADIUS = BADGE_SIZE / 2;
-      const mainTrophyIcons = ['bronze.png', 'silver.png', 'gold.png', 'platinum.png'];
       const margin = COLLISION_RADIUS + 1;
       const bodies = loadedTrophies.map((trophy) => {
-        const isMainTrophy = trophy.icon_path && mainTrophyIcons.some(icon => trophy.icon_path.includes(icon));
-        const scaleFactor = isMainTrophy ? 1.7 : 1.0;
+        // Use the mapping to get the scale factor, fallback to 1.0 if not found
+        const iconFile = trophy.icon_path ? trophy.icon_path.split('/').pop() : '';
+        const scaleFactor = trophyScaleMap[iconFile] || 1.0;
         const x = margin + Math.random() * (width - 2 * margin);
         const y = margin + Math.random() * (height - 2 * margin);
         return Matter.Bodies.circle(x, y, COLLISION_RADIUS, {
