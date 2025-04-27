@@ -10,16 +10,16 @@ const { trophyChecks } = require('./trophyChecks.js')
 async function checkAndAwardBadgeTrophies(userId) {
   const earned = await db.query(`
       SELECT
-        t.criteria_key
+        bt.criteria_key
       FROM user_trophies ut
-      JOIN badge_trophies t ON t.trophy_id = ut.badge_id
-      AND ut.type ='badge'
-      WHERE ut.user_id = $1;
-    `, [userId])
+      JOIN badge_trophies bt ON ut.badge_id = bt.trophy_id
+      WHERE ut.user_id = $1
+      AND ut.type = $2;
+    `, [userId, 'badge'])
 
 
   const earnedKeys = earned.rows.map(r => r.criteria_key);
-  const trophiesToAward = [];
+  //const trophiesToAward = [];
 
   // Loop through defined checks in trophyChecks.js
   for (const [key, checkFn] of Object.entries(trophyChecks)) {
@@ -40,16 +40,14 @@ async function checkAndAwardBadgeTrophies(userId) {
             [userId, badgeId]
           );
 
+
           if (alreadyAwarded.rows.length === 0) {
             try {
-            const result = await db.query(`
+            await db.query(`
               INSERT INTO user_trophies (user_id, trophy_id, badge_id, awarded_at, type)
               VALUES ($1, $2, $3, $4, $5)
               ON CONFLICT DO NOTHING;
             `, [userId, trophyId, badgeId, awardedDate, 'badge']);
-
-            if (result.rowCount > 0) trophiesToAward.push(key);
-
             } catch ( err ) {
               if (err === '23505') {
                 console.warn(`Duplicate insert prevented for user ${userId}, badge ${badgeId}`);
@@ -66,8 +64,6 @@ async function checkAndAwardBadgeTrophies(userId) {
       }
     }
   }
-
-  return trophiesToAward;
 };
 
 module.exports = { checkAndAwardBadgeTrophies }
