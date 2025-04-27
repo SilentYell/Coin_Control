@@ -104,12 +104,14 @@ function Dashboard({ expenses = [], income = [], user, goal, totalSavings, refre
   const fetchTrophies = useCallback(async () => {
     try {
       const trophies = await getUserTrophies(user.user_id);
+
       // Only set new trophy popup if there are new trophies
       setTrophies((prev = []) => {
-        const previousIds = new Set((prev?.map?.(t => t.trophy_id)) || []);
-        const newTrophies = trophies.filter(t => !previousIds.has(t.trophy_id));
+        const previousIds = new Set((prev?.map?.(t => t.id)) || []);
+        const newTrophies = trophies.filter(t => !previousIds.has(t.id) && t.type === 'trophy'); // filter backend trophies for type 'trophy'
+
         if (newTrophies.length > 0) {
-          const mostRecentTrophy = newTrophies.sort((a, b) => b.trophy_id - a.trophy_id)[0];
+          const mostRecentTrophy = newTrophies.sort((a, b) => b.trophy_id - a.trophy_id)[0]; // sort trophies by id
 
           // Trigger the popup
           setShowTrophyPopup(mostRecentTrophy);
