@@ -213,11 +213,10 @@ const Navbar = (
                   setEditTransactionType(undefined)
                 }}
               />
-            ) : editTransactionType === 'Income' ? (
-              <div>Loading income record...</div>
             ) : editTransactionType === 'Expense' && editingExpense ? (
               <AddExpenseForm
                 editingExpense={editingExpense}
+                setEditingExpense={setEditingExpense}
                 setEditSuccess={setEditSuccess}
                 setLastEditedId={setLastEditedId}
                 setTrophiesList={setTrophiesList}
