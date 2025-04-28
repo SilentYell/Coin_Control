@@ -25,6 +25,7 @@ router.get('/:user_id', async (req, res) => {
 // Add a new savings goal (only one per user, override old)
 router.post('/', async (req, res) => {
   const { user_id, name, amount, percent } = req.body;
+
   try {
     // Delete any existing goal for this user
     await db.query('DELETE FROM SavingsGoals WHERE user_id = $1', [user_id]);
@@ -35,16 +36,15 @@ router.post('/', async (req, res) => {
     );
 
     // Check user trophies after successful income post
-    let earnedTrophies = [];
     try {
-      earnedTrophies = await checkAndAwardBadgeTrophies(user_id);
+      await checkAndAwardBadgeTrophies(user_id);
     } catch (error) {
       console.error(`Error checking trophies`, error);
     }
 
     const savingsGoal = result.rows[0]
 
-    res.status(201).json({ ...savingsGoal, earnedTrophies });
+    res.status(201).json({ ...savingsGoal });
 
   } catch (err) {
     sendError(res, 500, 'Failed to add savings goal');
