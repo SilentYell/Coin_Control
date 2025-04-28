@@ -123,8 +123,7 @@ const IncomeForm = ({ editingIncome, setEditingIncome, onSubmitSuccess, setEditS
             name="amount"
             value={formData.amount}
             onChange={handleChange}
-            placeholder="e.g. 1000"
-            style={{ fontStyle: 'italic', color: '#aaa' }}
+            placeholder="0.00"
             step="0.01"
             min="0"
             required
@@ -150,11 +149,8 @@ const IncomeForm = ({ editingIncome, setEditingIncome, onSubmitSuccess, setEditS
             onChange={handleChange}
             required
           >
-            <option value="" disabled hidden>Select frequency</option>
             {frequencies.map(frequency => (
-              <option key={frequency}
-              value={frequency} 
-              style={{ fontStyle: 'normal', color: '#333' }}>
+              <option key={frequency} value={frequency}>
                 {frequency}
               </option>
             ))}
