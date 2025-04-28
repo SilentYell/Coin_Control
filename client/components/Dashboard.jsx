@@ -15,37 +15,49 @@ import TrophyPhysicsCard from './TrophyPhysicsCard';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
-const compactLayout = [
-  { i: 'goal', x: 0, y: 0, w: 6, h: 2, minW: 2, minH: 2 },
-  { i: 'balance', x: 0, y: 3, w: 2, h: 2, minW: 1, minH: 2 },
-  { i: 'expenses', x: 2, y: 3, w: 2, h: 2, minW: 1, minH: 2 },
-  { i: 'income', x: 0, y: 4, w: 2, h: 2, minW: 1, minH: 2 },
-  { i: 'savings', x: 2, y: 4, w: 2, h: 2, minW: 1, minH: 2 },
-  { i: 'ai-insights', x: 0, y: 2, w: 2, h: 5, minW: 2, minH: 4 },
-  { i: 'pie-chart', x: 2, y: 2, w: 2, h: 5, minW: 2, minH: 5 },
-  { i: 'trophy-physics', x: 6, y: 21, w: 2, h: 9, minW: 3, minH: 3 },
-];
-const wideLayout = [
-  { i: 'goal', x: 0, y: 1, w: 6, h: 2, minW: 2, minH: 2 },
-  { i: 'expenses', x: 2, y: 2, w: 2, h: 2, minW: 1, minH: 2 },
-  { i: 'income', x: 0, y: 3, w: 2, h: 2, minW: 1, minH: 2 },
-  { i: 'balance', x: 0, y: 3, w: 2, h: 2, minW: 1, minH: 2 },
-  { i: 'savings', x: 2, y: 3, w: 2, h: 2, minW: 1, minH: 2 },
-  { i: 'ai-insights', x: 0, y: 2, w: 6, h: 6, minW: 1, minH: 4 },
-  { i: 'pie-chart', x: 0, y: 4, w: 4, h: 6, minW: 2, minH: 5 },
-  { i: 'trophy-physics', x: 6, y: 4, w: 2, h: 10, minW: 3, minH: 3 },
-];
+const compactLayout = {
+  layoutMode: "compact",
+  layout: [
+    { i: 'goal', x: 0, y: 0, w: 6, h: 2, minW: 2, minH: 2 },
+    { i: 'balance', x: 0, y: 3, w: 2, h: 2, minW: 1, minH: 2 },
+    { i: 'expenses', x: 2, y: 3, w: 2, h: 2, minW: 1, minH: 2 },
+    { i: 'income', x: 0, y: 4, w: 2, h: 2, minW: 1, minH: 2 },
+    { i: 'savings', x: 2, y: 4, w: 2, h: 2, minW: 1, minH: 2 },
+    { i: 'ai-insights', x: 0, y: 2, w: 2, h: 5, minW: 2, minH: 4 },
+    { i: 'pie-chart', x: 2, y: 2, w: 2, h: 5, minW: 2, minH: 5 },
+    { i: 'trophy-physics', x: 6, y: 21, w: 2, h: 9, minW: 3, minH: 3 },
+  ]
+};
+const wideLayout = {
+  layoutMode: "wide",
+  layout: [
+    { i: 'goal', x: 0, y: 1, w: 6, h: 2, minW: 2, minH: 2 },
+    { i: 'expenses', x: 2, y: 2, w: 2, h: 2, minW: 1, minH: 2 },
+    { i: 'income', x: 0, y: 3, w: 2, h: 2, minW: 1, minH: 2 },
+    { i: 'balance', x: 0, y: 3, w: 2, h: 2, minW: 1, minH: 2 },
+    { i: 'savings', x: 2, y: 3, w: 2, h: 2, minW: 1, minH: 2 },
+    { i: 'ai-insights', x: 0, y: 2, w: 6, h: 6, minW: 1, minH: 4 },
+    { i: 'pie-chart', x: 0, y: 4, w: 4, h: 6, minW: 2, minH: 5 },
+    { i: 'trophy-physics', x: 6, y: 4, w: 2, h: 10, minW: 3, minH: 3 },
+  ]
+};
 
 function getInitialLayout() {
   const saved = localStorage.getItem('dashboardLayout');
   if (saved) {
     try {
       return JSON.parse(saved);
-    } catch {
-      return wideLayout;
+    } catch (error) {
+      return {
+        layoutMode: wideLayout.layoutMode,
+        layoutState: wideLayout.layout
+      } ;
     }
   }
-  return wideLayout;
+  return {
+    layoutMode: wideLayout.layoutMode,
+    layoutState: wideLayout.layout
+  };
 }
 
 function Dashboard({ expenses = [], income = [], user, goal, totalSavings, refreshGoal, trophiesList, setTrophiesList }) {
@@ -57,25 +69,18 @@ function Dashboard({ expenses = [], income = [], user, goal, totalSavings, refre
   const [trophies, setTrophies] = useState([]);
   const [showTrophyPopup, setShowTrophyPopup] = useState(null);
 
-  const [layoutState, setLayoutState] = useState(getInitialLayout);
-  const [layoutMode, setLayoutMode] = useState(() => {
-    const saved = localStorage.getItem('dashboardLayoutMode');
-    if (saved === 'compact' || saved === 'wide') return saved;
-    return 'wide';
-  });
+  const [{ layoutMode, layoutState}, setDashBoardSettings] = useState(getInitialLayout);
 
   useEffect(() => {
-    localStorage.setItem('dashboardLayoutMode', layoutMode);
-    // On mode change, always reset to the default layout for that mode
-    setLayoutState(layoutMode === 'compact' ? compactLayout : wideLayout);
-  }, [layoutMode]);
+    localStorage.setItem('dashboardLayout', JSON.stringify({ layoutMode, layoutState }));
+  }, [layoutMode, layoutState]);
 
   // On mount, always load saved layout if present
   useEffect(() => {
     const saved = localStorage.getItem('dashboardLayout');
     if (saved) {
       try {
-        setLayoutState(JSON.parse(saved));
+        setDashBoardSettings(JSON.parse(saved));
       } catch {
         // Ignore JSON parse error and fallback to wideLayout
       }
@@ -169,13 +174,18 @@ function Dashboard({ expenses = [], income = [], user, goal, totalSavings, refre
 
   // Track previous trophy card position
   const [trophyCardPos, setTrophyCardPos] = useState(() => {
-    const item = getInitialLayout().find(l => l.i === 'trophy-physics');
+    const layout = getInitialLayout().layoutState;
+    const item = layout.find(l => {
+      return l.i === 'trophy-physics'}
+    );
+
     return item ? { x: item.x, y: item.y } : { x: 0, y: 0 };
+
   });
 
   // Save only the layout array (not a preset name)
   const handleSaveLayout = () => {
-    localStorage.setItem('dashboardLayout', JSON.stringify(layoutState));
+    localStorage.setItem('dashboardLayout', JSON.stringify({ layoutMode, layoutState }));
     anime({
       targets: '.save-layout-btn',
       scale: [1, 1.15, 1],
@@ -184,22 +194,30 @@ function Dashboard({ expenses = [], income = [], user, goal, totalSavings, refre
     });
   };
 
-  // Update layoutState on drag/resize stop and track trophy card position
-  const handleLayoutChange = (newLayout) => {
-    setLayoutState(
-      newLayout.map(item => {
+   // Update layoutState on drag/resize stop and track trophy card position
+   const handleLayoutChange = (newLayout) => {
+    setDashBoardSettings(prev => ({
+      ...prev,
+      layoutState: newLayout.map(item => {
         if (item.i === 'pie-chart') {
           return { ...item, minH: 4 };
         }
         return item;
       })
-    );
+    }));
+
     // Find trophy card and update position
     const trophyItem = newLayout.find(l => l.i === 'trophy-physics');
     if (trophyItem) {
       setTrophyCardPos({ x: trophyItem.x, y: trophyItem.y });
     }
   };
+
+  const handleToggleLayout = () => {
+    const newMode = layoutMode === 'compact' ? 'wide' : 'compact';
+    const newLayout = newMode === 'compact' ? compactLayout.layout : wideLayout.layout;
+    setDashBoardSettings({layoutMode : newMode, layoutState: newLayout});
+  }
 
   return (
     <div className="dashboard">
@@ -228,7 +246,7 @@ function Dashboard({ expenses = [], income = [], user, goal, totalSavings, refre
         </div>
         <ToggleLayoutButton
           isCompact={layoutMode === 'compact'}
-          onToggle={() => setLayoutMode(layoutMode === 'compact' ? 'wide' : 'compact')}
+          onToggle={handleToggleLayout}
         />
         <button
           onClick={handleSaveLayout}
