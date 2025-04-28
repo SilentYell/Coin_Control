@@ -132,7 +132,8 @@ const AddExpenseForm = ({ editingExpense, setEditingExpense, onSubmitSuccess, se
             name="amount"
             value={formData.amount}
             onChange={handleChange}
-            placeholder="0.00"
+            placeholder="e.g. 12.50"
+            style={{ fontStyle: 'italic', color: '#aaa' }}
             step="0.01"
             min="0"
             required
@@ -147,6 +148,7 @@ const AddExpenseForm = ({ editingExpense, setEditingExpense, onSubmitSuccess, se
             name="expense_date"
             value={formData.expense_date}
             onChange={handleChange}
+            style={{ fontStyle: 'italic', color: '#aaa' }}
             required
           />
         </div>
@@ -158,10 +160,12 @@ const AddExpenseForm = ({ editingExpense, setEditingExpense, onSubmitSuccess, se
             name="category"
             value={formData.category}
             onChange={handleChange}
+            style={{ fontStyle: 'italic', color: '#aaa' }}
             required
           >
+            <option value="" disabled hidden>Select a category</option>
             {categories.map((category) => (
-              <option key={category} value={category}>
+              <option key={category} value={category} style={{ fontStyle: 'normal', color: '#333' }}>
                 {category}
               </option>
             ))}
@@ -176,7 +180,8 @@ const AddExpenseForm = ({ editingExpense, setEditingExpense, onSubmitSuccess, se
             name="name"
             value={formData.name}
             onChange={handleChange}
-            placeholder="What was this expense for?"
+            placeholder="e.g. Grocery shopping"
+            style={{ fontStyle: 'italic', color: '#aaa' }}
             required
           />
         </div>

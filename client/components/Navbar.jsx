@@ -293,6 +293,8 @@ const Navbar = (
                   type="text"
                   value={editName}
                   onChange={e => setEditName(e.target.value)}
+                  placeholder="e.g. Emergency Fund"
+                  style={{ fontStyle: 'italic', color: '#aaa' }}
                   required
                 />
               </label>
@@ -303,6 +305,8 @@ const Navbar = (
                   min="1"
                   value={editAmount}
                   onChange={e => setEditAmount(e.target.value)}
+                  placeholder="e.g. 1000"
+                  style={{ fontStyle: 'italic', color: '#aaa' }}
                   required
                 />
               </label>
@@ -314,6 +318,8 @@ const Navbar = (
                   max="100"
                   value={editPercent}
                   onChange={e => setEditPercent(e.target.value)}
+                  placeholder="e.g. 10"
+                  style={{ fontStyle: 'italic', color: '#aaa' }}
                   required
                 />
               </label>
@@ -360,6 +366,8 @@ const Navbar = (
                   type="text"
                   value={goalName}
                   onChange={e => setGoalName(e.target.value)}
+                  placeholder="e.g. Emergency Fund"
+                  style={{ fontStyle: 'italic', color: '#aaa' }}
                   required
                 />
               </label>
@@ -370,6 +378,8 @@ const Navbar = (
                   min="1"
                   value={goalAmount}
                   onChange={e => setGoalAmount(e.target.value)}
+                  placeholder="e.g. 1000"
+                  style={{ fontStyle: 'italic', color: '#aaa' }}
                   required
                 />
               </label>
@@ -381,6 +391,8 @@ const Navbar = (
                   max="100"
                   value={goalPercent}
                   onChange={e => setGoalPercent(e.target.value)}
+                  placeholder="e.g. 10"
+                  style={{ fontStyle: 'italic', color: '#aaa' }}
                   required
                 />
               </label>
