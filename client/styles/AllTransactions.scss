@@ -55,20 +55,8 @@ $transaction-text-light: #ffffff; // Text on dark
 
   /* Highlight animation for edited rows */
   .transactions-table tbody tr.highlight-row td {
-    animation: pulse 3.5s ease-in;
-    background-color: rgba(26, 188, 156, 0.2);
-  }
-
-  @keyframes pulse {
-    25% {
-      background-color: rgba(26, 188, 156, 0.4);
-    }
-    50% {
-      background-color: rgba(26, 188, 156, 0.2);
-    }
-    100% {
-      background-color: transparent;
-    }
+    transition: all 2.5s ease-in;
+    background-color: rgba(26, 188, 156, 0.1);
   }
 
   .transactions-table {
