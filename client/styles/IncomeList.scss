@@ -89,6 +89,11 @@ $incomelist-text-light: #FFFFFF;
       color: $incomelist-text-dark;
     }
 
+    td.amount {
+      color: #2ECC71; // green for income
+      font-weight: 600;
+    }
+
     tbody tr:hover td {
       background-color: rgba(26, 188, 156, 0.1);
     }
