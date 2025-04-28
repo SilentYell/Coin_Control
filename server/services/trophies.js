@@ -19,8 +19,6 @@ async function checkAndAwardBadgeTrophies(userId) {
 
 
   const earnedKeys = earned.rows.map(r => r.criteria_key);
-  //const trophiesToAward = [];
-
   // Loop through defined checks in trophyChecks.js
   for (const [key, checkFn] of Object.entries(trophyChecks)) {
     if (!earnedKeys.includes(key)) {
