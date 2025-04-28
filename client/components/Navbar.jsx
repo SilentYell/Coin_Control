@@ -236,6 +236,10 @@ const Navbar = (
             <AllTransactions
               onEditIncome={setEditingIncome}
               onEditExpense={setEditingExpense}
+              incomeList={incomeList}
+              setIncomeList={setIncomeList}
+              expensesList={expensesList}
+              setExpensesList={setExpensesList}
               editTransactionType={setEditTransactionType}
               setEditTransactionType={setEditTransactionType}
               lastEditedTransactionType={lastEditedTransactionType}
