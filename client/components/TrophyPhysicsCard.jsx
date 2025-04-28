@@ -1,34 +1,14 @@
 import React, { useEffect, useRef } from 'react';
 import Matter from 'matter-js';
 import Card from './Card';
-import { getUserTrophies } from '../services/api';
 
-const TrophyPhysicsCard = ({ userId, isEditable, cardX, cardY, trophiesList }) => {
+const TrophyPhysicsCard = ({ isEditable, cardX, cardY, trophiesList }) => {
   const sceneRef = useRef(null);
   const engineRef = useRef(null);
   const prevPos = useRef({ x: cardX, y: cardY });
-  const [trophies, setTrophies] = React.useState([]);
   const width = 420;
   const height = 600;
   const containerRef = useRef(null);
-
-  useEffect(() => {
-    let didCancel = false;
-    async function fetchTrophies() {
-      let data = [];
-      try {
-        data = await getUserTrophies(userId);
-        if (!didCancel) {
-          setTrophies((data && data.length > 0) ? data : []);
-        }
-      } catch (error) {
-        if (!didCancel) setTrophies([]);
-        console.error(`error fetching all trophies`,  error)
-      }
-    }
-    fetchTrophies();
-    return () => { didCancel = true; };
-  }, [userId, trophiesList]);
 
   useEffect(() => {
     prevPos.current = { x: cardX, y: cardY };
@@ -36,32 +16,16 @@ const TrophyPhysicsCard = ({ userId, isEditable, cardX, cardY, trophiesList }) =
 
   // Helper to robustly get the icon url from trophy object
   function getTrophyIconUrl(trophy) {
-    console.log(trophy)
     if (trophy.icon_path && trophy.icon_path.trim() !== '') {
-      const cleanedPath = trophy.icon_path.startsWith('/images')
-      ? trophy.icon_path
-      : `/images/${trophy.icon_path}`;
-
-      if (cleanedPath.endsWith('.svg') || cleanedPath.endsWith('.png')) return `http://localhost:3000${cleanedPath}`;
+      if (trophy.icon_path.endsWith('.svg') || trophy.icon_path.endsWith('.png')) return `http://localhost:3000/images/${trophy.icon_path}`;
     }
     return '';
   }
 
   useEffect(() => {
-    // Preload all trophy images before creating Matter.js bodies
-    function preloadImages(trophies) {
-      return Promise.all(
-        trophies.map(trophy => {
-          return new Promise(resolve => {
-            const img = new window.Image();
-            img.onload = () => resolve({ ...trophy, _img: img });
-            img.onerror = () => resolve(null); // skip broken images
-            img.src = getTrophyIconUrl(trophy);
-            console.log(img.src)
-          });
-        })
-      ).then(results => results.filter(Boolean));
-    }
+    let cleanup = () => {};
+    let cancelled = false;
+    if (!sceneRef.current ||!trophiesList || trophiesList.length === 0) return;
 
     const trophyScaleMap = {
       'bronze.png': 1.0,
@@ -84,12 +48,8 @@ const TrophyPhysicsCard = ({ userId, isEditable, cardX, cardY, trophiesList }) =
       'use_all_features.png': 1.1,
     };
 
-    let cleanup = () => {};
-    if (!sceneRef.current || trophies.length === 0) return;
-    let cancelled = false;
-    preloadImages(trophies).then(loadedTrophies => {
-      if (cancelled) return;
-      if (engineRef.current) {
+    // Clear existing engine if any
+    if (engineRef.current) {
         Matter.Render.stop(engineRef.current.render);
         Matter.Runner.stop(engineRef.current.runner);
         Matter.World.clear(engineRef.current.engine.world, false);
@@ -97,7 +57,28 @@ const TrophyPhysicsCard = ({ userId, isEditable, cardX, cardY, trophiesList }) =
         if (engineRef.current.render.canvas.parentNode) {
           engineRef.current.render.canvas.parentNode.removeChild(engineRef.current.render.canvas);
         }
-      }
+        engineRef.current = null;
+    }
+
+    // If no trophies, don't generate an engine
+    if (!trophiesList || trophiesList.length === 0) return;
+
+    // Preload all trophy images before creating Matter.js bodies
+    function preloadImages(trophies) {
+      return Promise.all(
+        trophies.map(trophy => {
+          return new Promise(resolve => {
+            const img = new window.Image();
+            img.onload = () => resolve({ ...trophy, _img: img });
+            img.onerror = () => resolve(null) // skip broken images
+            img.src = getTrophyIconUrl(trophy);
+          });
+        })
+      ).then(results => results.filter(Boolean));
+    }
+
+    preloadImages(trophiesList).then(loadedTrophies => {
+      if (cancelled) return;
       const engine = Matter.Engine.create();
       const world = engine.world;
       const render = Matter.Render.create({
@@ -110,6 +91,8 @@ const TrophyPhysicsCard = ({ userId, isEditable, cardX, cardY, trophiesList }) =
           background: '#ececec',
         },
       });
+
+
       const ground = Matter.Bodies.rectangle(width / 2, height + 10, width, 20, { isStatic: true });
       const leftWall = Matter.Bodies.rectangle(-10, height / 2, 20, height, { isStatic: true });
       const rightWall = Matter.Bodies.rectangle(width + 10, height / 2, 20, height, { isStatic: true });
@@ -129,6 +112,7 @@ const TrophyPhysicsCard = ({ userId, isEditable, cardX, cardY, trophiesList }) =
         const yScale = (BADGE_SIZE / naturalHeight) * scaleFactor;
         const x = margin + Math.random() * (width - 2 * margin);
         const y = margin + Math.random() * (height - 2 * margin);
+
         return Matter.Bodies.circle(x, y, COLLISION_RADIUS, {
           restitution: 0.8,
           friction: 0.2,
@@ -144,6 +128,7 @@ const TrophyPhysicsCard = ({ userId, isEditable, cardX, cardY, trophiesList }) =
           },
           label: trophy.name,
         });
+
       });
       Matter.World.add(world, bodies);
       if (!isEditable) {
@@ -190,11 +175,12 @@ const TrophyPhysicsCard = ({ userId, isEditable, cardX, cardY, trophiesList }) =
         }
       };
     });
+
     return () => {
       cancelled = true;
       cleanup();
     };
-  }, [trophies, isEditable]);
+  }, [trophiesList, isEditable]);
 
   useEffect(() => {
     if (!isEditable || !engineRef.current || !engineRef.current.bodies) return;
@@ -213,7 +199,7 @@ const TrophyPhysicsCard = ({ userId, isEditable, cardX, cardY, trophiesList }) =
   }, [cardX, cardY, isEditable]);
 
   return (
-    <Card title="Trophy Case" isEditable={isEditable}>
+    <Card className="trophy-physics-card" title="Trophy Case" isEditable={isEditable}>
       <div ref={containerRef} style={{ width: width, height: height, overflow: 'hidden', boxSizing: 'border-box', margin: '0 auto', position: 'relative' }}>
         <div ref={sceneRef} style={{ width: '100%', height: '100%', boxSizing: 'border-box' }} />
       </div>
