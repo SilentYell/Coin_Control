@@ -96,7 +96,7 @@ function Card({ className, title, value, valueClassName = '', children, isEditab
     }
   }, []);
 
-  const cardClassName = `card ${className ? className : ''} ${isEditable ? 'card--editable' : ''}`;// for phsyics card stlying
+  const cardClassName = `card ${isEditable ? 'card--editable' : ''}${className ? className : ''}`;// for phsyics card stlying
   return (
     <div
       className={cardClassName}
