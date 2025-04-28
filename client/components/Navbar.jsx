@@ -335,7 +335,7 @@ const Navbar = (
                 });
 
                 const data = await res.json();
-                if (data.earnedTrophies?.length > 0) {
+                if (data) {
                   const updatedTrophies = await getUserTrophies(user.user_id);
                   const filteredData = updatedTrophies.filter(t => t.type === 'badge'); // filter for 'badge' types only
 
