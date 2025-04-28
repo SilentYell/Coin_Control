@@ -60,7 +60,7 @@ $transaction-text-light: #ffffff; // Text on dark
   }
 
   @keyframes pulse {
-    0% {
+    25% {
       background-color: rgba(26, 188, 156, 0.4);
     }
     50% {
@@ -230,6 +230,16 @@ $transaction-text-light: #ffffff; // Text on dark
 }
 
 .transactions-list .total-amount.negative {
+  color: #e74c3c !important; // Red color
+  font-weight: 700;
+}
+
+.transactions-list .transaction.amount-positive {
+  color: #2ecc71 !important; // Green color
+  font-weight: 700;
+}
+
+.transactions-list .transaction.amount-negative {
   color: #e74c3c !important; // Red color
   font-weight: 700;
 }
