@@ -4,7 +4,7 @@ import '../styles/AddExpenseForm.scss';
 import { initializeExpenseFormData } from '../src/helpers/initializeFormData';
 import { getUserTrophies } from '../services/api';
 
-const AddExpenseForm = ({ editingExpense, onSubmitSuccess, setEditSuccess, setLastEditedTransactionType, setLastEditedId, setTrophiesList }) => {
+const AddExpenseForm = ({ editingExpense, setEditingExpense, onSubmitSuccess, setEditSuccess, setLastEditedTransactionType, setLastEditedId, setTrophiesList }) => {
   // form state
   const amountInputRef = useRef(null);
   const [formData, setFormData] = useState(() => initializeExpenseFormData(editingExpense));
@@ -183,7 +183,10 @@ const AddExpenseForm = ({ editingExpense, onSubmitSuccess, setEditSuccess, setLa
 
         {/* submit button - add or update expense */}
         {editingExpense
-          ? <button type="submit" className="submit-btn" disabled={isLoading}>Update Expense</button>
+          ? <div>
+              <button type="submit" className="submit-btn" disabled={isLoading}>Update Expense</button>
+              <button type="submit" className="cancel-btn" disabled={isLoading} onClick={()=> setEditingExpense(null)}>Cancel</button>
+            </div>
           : <button type="submit" className="submit-btn" disabled={isLoading}>
               {isLoading ? 'Adding...' : 'Add Expense'}
             </button>
