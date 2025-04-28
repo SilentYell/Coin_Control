@@ -56,6 +56,7 @@ const IncomeForm = ({ editingIncome, setEditingIncome, onSubmitSuccess, setEditS
     // Call income post method in API
     try {
       let response
+      console.log('editing income? ', editingIncome)
       if (editingIncome?.income_id) {
         // Update existing income
         response = await updateIncome(editingIncome.income_id, newIncome);
@@ -72,15 +73,16 @@ const IncomeForm = ({ editingIncome, setEditingIncome, onSubmitSuccess, setEditS
       } else {
         // Add new income
         response = await addIncomeAndCheckTrophies(newIncome);
+        console.log('add income response', response)
         // Throw error if response fails
         if (!response) throw new Error('Failed to add income record.');
 
+        console.log(response)
         // Update trophiesList with any newly earned trophies
-        if (response.earnedTrophies?.length) {
+        if (response) {
           const userId = 1; //hardcoded for now
           const data = await getUserTrophies(userId);
           const filteredData = data.filter(t => t.type === 'badge') // filter for 'badge' types only
-
           await setTrophiesList(filteredData);
         }
 
