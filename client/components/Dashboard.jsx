@@ -15,40 +15,52 @@ import TrophyPhysicsCard from './TrophyPhysicsCard';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
-const compactLayout = [
-  { i: 'goal', x: 0, y: 0, w: 6, h: 2, minW: 2, minH: 2 },
-  { i: 'balance', x: 0, y: 3, w: 2, h: 2, minW: 1, minH: 2 },
-  { i: 'expenses', x: 2, y: 3, w: 2, h: 2, minW: 1, minH: 2 },
-  { i: 'income', x: 0, y: 4, w: 2, h: 2, minW: 1, minH: 2 },
-  { i: 'savings', x: 2, y: 4, w: 2, h: 2, minW: 1, minH: 2 },
-  { i: 'ai-insights', x: 0, y: 2, w: 2, h: 5, minW: 2, minH: 4 },
-  { i: 'pie-chart', x: 2, y: 2, w: 2, h: 5, minW: 2, minH: 5 },
-  { i: 'trophy-physics', x: 6, y: 21, w: 2, h: 9, minW: 3, minH: 3 },
-];
-const wideLayout = [
-  { i: 'goal', x: 0, y: 1, w: 6, h: 2, minW: 2, minH: 2 },
-  { i: 'expenses', x: 2, y: 2, w: 2, h: 2, minW: 1, minH: 2 },
-  { i: 'income', x: 0, y: 3, w: 2, h: 2, minW: 1, minH: 2 },
-  { i: 'balance', x: 0, y: 3, w: 2, h: 2, minW: 1, minH: 2 },
-  { i: 'savings', x: 2, y: 3, w: 2, h: 2, minW: 1, minH: 2 },
-  { i: 'ai-insights', x: 0, y: 2, w: 6, h: 6, minW: 1, minH: 4 },
-  { i: 'pie-chart', x: 0, y: 4, w: 4, h: 6, minW: 2, minH: 5 },
-  { i: 'trophy-physics', x: 6, y: 4, w: 2, h: 10, minW: 3, minH: 3 },
-];
+const compactLayout = {
+  layoutMode: "compact",
+  layout: [
+    { i: 'goal', x: 0, y: 0, w: 6, h: 2, minW: 2, minH: 2 },
+    { i: 'balance', x: 0, y: 3, w: 2, h: 2, minW: 1, minH: 2 },
+    { i: 'expenses', x: 2, y: 3, w: 2, h: 2, minW: 1, minH: 2 },
+    { i: 'income', x: 0, y: 4, w: 2, h: 2, minW: 1, minH: 2 },
+    { i: 'savings', x: 2, y: 4, w: 2, h: 2, minW: 1, minH: 2 },
+    { i: 'ai-insights', x: 0, y: 2, w: 2, h: 5, minW: 2, minH: 4 },
+    { i: 'pie-chart', x: 2, y: 2, w: 2, h: 5, minW: 2, minH: 5 },
+    { i: 'trophy-physics', x: 6, y: 21, w: 2, h: 9, minW: 3, minH: 3 },
+  ]
+};
+const wideLayout = {
+  layoutMode: "wide",
+  layout: [
+    { i: 'goal', x: 0, y: 1, w: 6, h: 2, minW: 2, minH: 2 },
+    { i: 'expenses', x: 2, y: 2, w: 2, h: 2, minW: 1, minH: 2 },
+    { i: 'income', x: 0, y: 3, w: 2, h: 2, minW: 1, minH: 2 },
+    { i: 'balance', x: 0, y: 3, w: 2, h: 2, minW: 1, minH: 2 },
+    { i: 'savings', x: 2, y: 3, w: 2, h: 2, minW: 1, minH: 2 },
+    { i: 'ai-insights', x: 0, y: 2, w: 6, h: 6, minW: 1, minH: 4 },
+    { i: 'pie-chart', x: 0, y: 4, w: 4, h: 6, minW: 2, minH: 5 },
+    { i: 'trophy-physics', x: 6, y: 4, w: 2, h: 10, minW: 3, minH: 3 },
+  ]
+};
 
 function getInitialLayout() {
   const saved = localStorage.getItem('dashboardLayout');
   if (saved) {
     try {
       return JSON.parse(saved);
-    } catch {
-      return wideLayout;
+    } catch (error) {
+      return {
+        layoutMode: wideLayout.layoutMode,
+        layoutState: wideLayout.layout
+      } ;
     }
   }
-  return wideLayout;
+  return {
+    layoutMode: wideLayout.layoutMode,
+    layoutState: wideLayout.layout
+  };
 }
 
-function Dashboard({ expenses = [], income = [], user, goal, totalSavings, refreshGoal, trophiesList = [] }) {
+function Dashboard({ expenses = [], income = [], user, goal, totalSavings, refreshGoal, trophiesList, setTrophiesList }) {
   const [totalExpenses, setTotalExpenses] = useState(0);
   const [totalIncome, setTotalIncome] = useState(0);
   const [currentBalance, setCurrentBalance] = useState(0);
@@ -57,25 +69,18 @@ function Dashboard({ expenses = [], income = [], user, goal, totalSavings, refre
   const [trophies, setTrophies] = useState([]);
   const [showTrophyPopup, setShowTrophyPopup] = useState(null);
 
-  const [layoutState, setLayoutState] = useState(getInitialLayout);
-  const [layoutMode, setLayoutMode] = useState(() => {
-    const saved = localStorage.getItem('dashboardLayoutMode');
-    if (saved === 'compact' || saved === 'wide') return saved;
-    return 'wide';
-  });
+  const [{ layoutMode, layoutState}, setDashBoardSettings] = useState(getInitialLayout);
 
   useEffect(() => {
-    localStorage.setItem('dashboardLayoutMode', layoutMode);
-    // On mode change, always reset to the default layout for that mode
-    setLayoutState(layoutMode === 'compact' ? compactLayout : wideLayout);
-  }, [layoutMode]);
+    localStorage.setItem('dashboardLayout', JSON.stringify({ layoutMode, layoutState }));
+  }, [layoutMode, layoutState]);
 
   // On mount, always load saved layout if present
   useEffect(() => {
     const saved = localStorage.getItem('dashboardLayout');
     if (saved) {
       try {
-        setLayoutState(JSON.parse(saved));
+        setDashBoardSettings(JSON.parse(saved));
       } catch {
         // Ignore JSON parse error and fallback to wideLayout
       }
@@ -100,16 +105,18 @@ function Dashboard({ expenses = [], income = [], user, goal, totalSavings, refre
     }
   };
 
-  // Fetch the trophies whenever income/expenses or savings update
+  // Fetch the trophiesList whenever income/expenses or savings update
   const fetchTrophies = useCallback(async () => {
     try {
-      const trophies = await getUserTrophies(user.user_id);
-      // Only set new trophy popup if there are new trophies
+      const trophiesList = await getUserTrophies(user.user_id);
+
+      // Only set new trophy popup if there are new trophiesList
       setTrophies((prev = []) => {
-        const previousIds = new Set((prev?.map?.(t => t.trophy_id)) || []);
-        const newTrophies = trophies.filter(t => !previousIds.has(t.trophy_id));
+        const previousIds = new Set((prev?.map?.(t => t.id)) || []);
+        const newTrophies = trophiesList.filter(t => !previousIds.has(t.id) && t.type === 'trophy'); // filter backend trophiesList for type 'trophy'
+
         if (newTrophies.length > 0) {
-          const mostRecentTrophy = newTrophies.sort((a, b) => b.trophy_id - a.trophy_id)[0];
+          const mostRecentTrophy = newTrophies.sort((a, b) => b.trophy_id - a.trophy_id)[0]; // sort trophiesList by id
 
           // Trigger the popup
           setShowTrophyPopup(mostRecentTrophy);
@@ -117,13 +124,13 @@ function Dashboard({ expenses = [], income = [], user, goal, totalSavings, refre
           // Close popup after 4 seconds
           setTimeout(() => setShowTrophyPopup(null), 4000);
 
-          // Update trophies state to include new trophy
+          // Update trophiesList state to include new trophy
           return [...prev, ...newTrophies];
         }
         return prev;
       });
     } catch (error) {
-      console.error('Error fetching trophies: ', error);
+      console.error('Error fetching trophiesList: ', error);
     }
   }, [user.user_id]);
 
@@ -132,7 +139,21 @@ function Dashboard({ expenses = [], income = [], user, goal, totalSavings, refre
     return (amount < 0 ? '-' : '') + '$' + Math.abs(amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
 
-  // Fetch trophies on mount and whenever income/expenses or user changes
+  // Fetches all trophiesList on re-render for the TrophyPhysicsCard
+  useEffect(() => {
+    const fetchAllEarnedTrophies = async () => {
+      try {
+        const allEarnedTrophies = await getUserTrophies(user.user_id);
+        setTrophiesList(allEarnedTrophies);
+      } catch (error) {
+          console.error('Error fetching all trophiesList: ', error);
+      }
+    }
+
+    fetchAllEarnedTrophies();
+  }, [user])
+
+  // Fetch trophiesList on mount and whenever income/expenses or user changes
   useEffect(() => {
     fetchTrophies();
   }, [income, expenses, fetchTrophies, user]);
@@ -153,13 +174,18 @@ function Dashboard({ expenses = [], income = [], user, goal, totalSavings, refre
 
   // Track previous trophy card position
   const [trophyCardPos, setTrophyCardPos] = useState(() => {
-    const item = getInitialLayout().find(l => l.i === 'trophy-physics');
+    const layout = getInitialLayout().layoutState;
+    const item = layout.find(l => {
+      return l.i === 'trophy-physics'}
+    );
+
     return item ? { x: item.x, y: item.y } : { x: 0, y: 0 };
+
   });
 
   // Save only the layout array (not a preset name)
   const handleSaveLayout = () => {
-    localStorage.setItem('dashboardLayout', JSON.stringify(layoutState));
+    localStorage.setItem('dashboardLayout', JSON.stringify({ layoutMode, layoutState }));
     anime({
       targets: '.save-layout-btn',
       scale: [1, 1.15, 1],
@@ -168,22 +194,30 @@ function Dashboard({ expenses = [], income = [], user, goal, totalSavings, refre
     });
   };
 
-  // Update layoutState on drag/resize stop and track trophy card position
-  const handleLayoutChange = (newLayout) => {
-    setLayoutState(
-      newLayout.map(item => {
+   // Update layoutState on drag/resize stop and track trophy card position
+   const handleLayoutChange = (newLayout) => {
+    setDashBoardSettings(prev => ({
+      ...prev,
+      layoutState: newLayout.map(item => {
         if (item.i === 'pie-chart') {
           return { ...item, minH: 4 };
         }
         return item;
       })
-    );
+    }));
+
     // Find trophy card and update position
     const trophyItem = newLayout.find(l => l.i === 'trophy-physics');
     if (trophyItem) {
       setTrophyCardPos({ x: trophyItem.x, y: trophyItem.y });
     }
   };
+
+  const handleToggleLayout = () => {
+    const newMode = layoutMode === 'compact' ? 'wide' : 'compact';
+    const newLayout = newMode === 'compact' ? compactLayout.layout : wideLayout.layout;
+    setDashBoardSettings({layoutMode : newMode, layoutState: newLayout});
+  }
 
   return (
     <div className="dashboard">
@@ -212,7 +246,7 @@ function Dashboard({ expenses = [], income = [], user, goal, totalSavings, refre
         </div>
         <ToggleLayoutButton
           isCompact={layoutMode === 'compact'}
-          onToggle={() => setLayoutMode(layoutMode === 'compact' ? 'wide' : 'compact')}
+          onToggle={handleToggleLayout}
         />
         <button
           onClick={handleSaveLayout}
@@ -312,7 +346,13 @@ function Dashboard({ expenses = [], income = [], user, goal, totalSavings, refre
             </Card>
           </div>
           <div key="trophy-physics">
-            <TrophyPhysicsCard userId={user.user_id} isEditable={isEditable} cardX={trophyCardPos.x} cardY={trophyCardPos.y} trophiesList={trophiesList} />
+            <TrophyPhysicsCard
+              userId={user.user_id}
+              isEditable={isEditable}
+              cardX={trophyCardPos.x}
+              cardY={trophyCardPos.y}
+              trophiesList={trophiesList}
+              setTrophiesList={setTrophiesList} />
           </div>
         </ResponsiveGridLayout>
         {showTrophyPopup && (

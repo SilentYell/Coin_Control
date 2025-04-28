@@ -191,6 +191,8 @@ function App() {
             goal={goal}
             totalSavings={totalSavings}
             refreshGoal={() => fetchGoal(user?.user_id)}
+            trophiesList={trophiesList}
+            setTrophiesList={setTrophiesList}
           />
         </>
       )}

@@ -4,7 +4,18 @@ import formatDate from '../src/helpers/formatDate';
 import { MdEdit, MdDelete } from 'react-icons/md';
 import '../styles/AllTransactions.scss'
 
-const AllTransactions = ({ setEditTransactionType, onEditIncome, onEditExpense, setShowTransactionsModal, editSuccess, lastEditedTransactionType, lastEditedId }) => {
+const AllTransactions = ({
+    setEditTransactionType,
+    onEditIncome,
+    setIncomeList,
+    onEditExpense,
+    setExpensesList,
+    setShowTransactionsModal,
+    editSuccess,
+    lastEditedTransactionType,
+    lastEditedId
+  }) => {
+
   const [transactionsList, setTransactionsList] = useState([]);
   const [selectedTransactionType, setSelectedTransactionType] = useState('All');
   const [error, setError] = useState(null);
@@ -53,10 +64,18 @@ const AllTransactions = ({ setEditTransactionType, onEditIncome, onEditExpense, 
     try {
       await deleteTransaction(id, type); // call to backend
 
-      // ph change - dont fetch again, update state locally
+      if (type === 'Income') {
+        setIncomeList((prevList) => prevList.filter((item) => item.income_id !== id));
+      } else if (type === 'Expense') {
+        console.log(type)
+        setExpensesList((prevList) => prevList.filter((item) => item.expense_id !== id));
+      }
+
+      // Update transactions List if needed
       setTransactionsList((prevList) =>
         prevList.filter((item) => !(item.id === id && item.type === type))
       );
+
     } catch (error) {
       setError('Failed to delete transaction. Please try again later.');
       console.error('Error deleting transaction:', error.message);
@@ -113,7 +132,7 @@ const AllTransactions = ({ setEditTransactionType, onEditIncome, onEditExpense, 
                     : ''
                   }
                 >
-                  <td className="amount">
+                  <td className={`transaction ${Number(transaction.amount) > 0 ? 'amount-positive' : 'amount-negative'} `}>
                     {/* Format transaction amounts and totals with commas and two decimals for better readability */}
                     {Number(transaction.amount).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
                   </td>

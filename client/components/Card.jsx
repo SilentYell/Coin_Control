@@ -2,7 +2,7 @@ import React, { useEffect, useRef, memo, useState } from 'react';
 import anime from 'animejs/lib/anime.es.js';
 import '../styles/Card.scss';
 
-function Card({ title, value, valueClassName = '', children, isEditable = false, animateValue = false }) {
+function Card({ className, title, value, valueClassName = '', children, isEditable = false, animateValue = false }) {
   const cardRef = useRef(null);
   const valueRef = useRef(null);
   const shineRef = useRef(null);
@@ -96,9 +96,10 @@ function Card({ title, value, valueClassName = '', children, isEditable = false,
     }
   }, []);
 
+  const cardClassName = `card ${isEditable ? 'card--editable' : ''}${className ? className : ''}`;// for phsyics card stlying
   return (
     <div
-      className={`card${isEditable ? ' card--editable' : ''}`}
+      className={cardClassName}
       ref={cardRef}
       style={isEditable ? { cursor: 'grab' } : {}}
       onMouseEnter={handleMouseEnter}

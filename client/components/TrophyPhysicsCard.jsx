@@ -1,104 +1,75 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Matter from 'matter-js';
 import Card from './Card';
-import { getUserTrophies } from '../services/api';
 
-const TrophyPhysicsCard = ({ userId, isEditable, cardX, cardY, trophiesList }) => {
+const TrophyPhysicsCard = ({ isEditable, cardX, cardY, trophiesList }) => {
+
+  // Local state for trophies
+  const [localTrophies, setLocalTrophies] = useState([]);
+
+  // Update state when trophiesList prop changes
+  useEffect(() => {
+    setLocalTrophies(trophiesList);
+  }, [trophiesList]);
+
   const sceneRef = useRef(null);
   const engineRef = useRef(null);
+  const prevTrophiesRef = useRef([]);
   const prevPos = useRef({ x: cardX, y: cardY });
-  const [trophies, setTrophies] = React.useState([]);
   const width = 420;
   const height = 600;
   const containerRef = useRef(null);
 
   useEffect(() => {
-    let didCancel = false;
-    async function fetchTrophies() {
-      let data = [];
-      try {
-        data = await getUserTrophies(userId);
-        if (!didCancel) {
-          setTrophies((data && data.length > 0) ? data : []);
-        }
-      } catch (error) {
-        if (!didCancel) setTrophies([]);
-        console.error(`error fetching all trophies`,  error)
-      }
-    }
-    fetchTrophies();
-    return () => { didCancel = true; };
-  }, [userId, trophiesList]);
-
-  useEffect(() => {
     prevPos.current = { x: cardX, y: cardY };
-  }, [cardX, cardY]);
+  }, [cardX, cardY])
 
   // Helper to robustly get the icon url from trophy object
   function getTrophyIconUrl(trophy) {
-    console.log(trophy)
     if (trophy.icon_path && trophy.icon_path.trim() !== '') {
-      const cleanedPath = trophy.icon_path.startsWith('/images')
-      ? trophy.icon_path
-      : `/images/${trophy.icon_path}`;
-
-      if (cleanedPath.endsWith('.svg') || cleanedPath.endsWith('.png')) return `http://localhost:3000${cleanedPath}`;
+      if (trophy.icon_path.endsWith('.svg') || trophy.icon_path.endsWith('.png')) return `http://localhost:3000/images/${trophy.icon_path}`;
     }
     return '';
   }
 
-  useEffect(() => {
-    // Preload all trophy images before creating Matter.js bodies
-    function preloadImages(trophies) {
-      return Promise.all(
-        trophies.map(trophy => {
-          return new Promise(resolve => {
-            const img = new window.Image();
-            img.onload = () => resolve({ ...trophy, _img: img });
-            img.onerror = () => resolve(null); // skip broken images
-            img.src = getTrophyIconUrl(trophy);
-            console.log(img.src)
-          });
-        })
-      ).then(results => results.filter(Boolean));
-    }
+  // Preload all trophy images before creating Matter.js bodies
+  function preloadImages(trophies) {
+    return Promise.all(
+      trophies.map(trophy => {
+        return new Promise(resolve => {
+          const img = new window.Image();
+          img.onload = () => resolve({ ...trophy, _img: img });
+          img.onerror = () => resolve(null) // skip broken images
+          img.src = getTrophyIconUrl(trophy);
+        });
+      })
+    ).then(results => results.filter(Boolean));
+  }
 
-    const trophyScaleMap = {
-      'bronze.png': 1.0,
-      'silver.png': 1.0,
-      'gold.png': 1.0,
-      'platinum.png': 1.0,
-      'first_steps.svg': 1.1,
-      'consistent_logger.svg': 1.1,
-      'save_10.svg': 1.1,
-      'save_50.svg': 1.1,
-      'save_100.svg': 1.1,
-      'spend_10.svg': 1.1,
-      'spend_50.svg': 1.1,
-      'spend_100.svg': 1.1,
-      'spend_1000.svg': 1.1,
-      'first_savings.png': 1.1,
-      'first_transaction.png': 1.1,
-      'equal_to_goal.png': 1.1,
-      'save_1000.png': 1.1,
-      'use_all_features.png': 1.1,
-    };
+  const trophyScaleMap = {
+    'bronze.png': 1.0,
+    'silver.png': 1.0,
+    'gold.png': 1.0,
+    'platinum.png': 1.0,
+    'first_steps.svg': 1.1,
+    'consistent_logger.svg': 1.1,
+    'save_10.svg': 1.1,
+    'save_50.svg': 1.1,
+    'save_100.svg': 1.1,
+    'spend_10.svg': 1.1,
+    'spend_50.svg': 1.1,
+    'spend_100.svg': 1.1,
+    'spend_1000.svg': 1.1,
+    'first_savings.png': 1.1,
+    'first_transaction.png': 1.1,
+    'equal_to_goal.png': 1.1,
+    'save_1000.png': 1.1,
+    'use_all_features.png': 1.1,
+  };
 
-    let cleanup = () => {};
-    if (!sceneRef.current || trophies.length === 0) return;
-    let cancelled = false;
-    preloadImages(trophies).then(loadedTrophies => {
-      if (cancelled) return;
-      if (engineRef.current) {
-        Matter.Render.stop(engineRef.current.render);
-        Matter.Runner.stop(engineRef.current.runner);
-        Matter.World.clear(engineRef.current.engine.world, false);
-        Matter.Engine.clear(engineRef.current.engine);
-        if (engineRef.current.render.canvas.parentNode) {
-          engineRef.current.render.canvas.parentNode.removeChild(engineRef.current.render.canvas);
-        }
-      }
-      const engine = Matter.Engine.create();
+  // Initalize the Matter.js engines and add trophies
+  const initializePhysics = (loadedTrophies) => {
+    const engine = Matter.Engine.create();
       const world = engine.world;
       const render = Matter.Render.create({
         element: sceneRef.current,
@@ -110,17 +81,22 @@ const TrophyPhysicsCard = ({ userId, isEditable, cardX, cardY, trophiesList }) =
           background: '#ececec',
         },
       });
+
+      // Create Boundaries
       const ground = Matter.Bodies.rectangle(width / 2, height + 10, width, 20, { isStatic: true });
       const leftWall = Matter.Bodies.rectangle(-10, height / 2, 20, height, { isStatic: true });
       const rightWall = Matter.Bodies.rectangle(width + 10, height / 2, 20, height, { isStatic: true });
       const topWall = Matter.Bodies.rectangle(width / 2, -10, width, 20, { isStatic: true, label: 'topWall' });
       Matter.World.add(world, [ground, leftWall, rightWall, topWall]);
+
+      // Set up trophy scale and physics properties
       const BADGE_SIZE = 100;
       const COLLISION_RADIUS = BADGE_SIZE / 2;
       const margin = COLLISION_RADIUS + 1;
       const bodies = loadedTrophies.map((trophy) => {
         const iconFile = trophy.icon_path ? trophy.icon_path.split('/').pop() : '';
         const scaleFactor = trophyScaleMap[iconFile] || 1.0;
+
         // Use the image's natural size for scaling (works for both SVG and PNG)
         const img = trophy._img;
         const naturalWidth = img && (img.naturalWidth || img.width || BADGE_SIZE);
@@ -129,6 +105,7 @@ const TrophyPhysicsCard = ({ userId, isEditable, cardX, cardY, trophiesList }) =
         const yScale = (BADGE_SIZE / naturalHeight) * scaleFactor;
         const x = margin + Math.random() * (width - 2 * margin);
         const y = margin + Math.random() * (height - 2 * margin);
+
         return Matter.Bodies.circle(x, y, COLLISION_RADIUS, {
           restitution: 0.8,
           friction: 0.2,
@@ -144,8 +121,13 @@ const TrophyPhysicsCard = ({ userId, isEditable, cardX, cardY, trophiesList }) =
           },
           label: trophy.name,
         });
+
       });
+
+      // Add bodies to the Matter.js world
       Matter.World.add(world, bodies);
+
+      // If not editable, add mouse constraint to drag trophies
       if (!isEditable) {
         const mouse = Matter.Mouse.create(render.canvas);
         const mouseConstraint = Matter.MouseConstraint.create(engine, {
@@ -161,7 +143,10 @@ const TrophyPhysicsCard = ({ userId, isEditable, cardX, cardY, trophiesList }) =
         bodies.forEach(body => { body.collisionFilter = { group: 0, category: 0x0001, mask: 0xFFFFFFFF }; });
         Matter.World.add(world, mouseConstraint);
       }
+
+      // Run the Matter.js engine
       Matter.Render.run(render);
+
       setTimeout(() => {
         if (sceneRef.current) {
           const canvas = sceneRef.current.querySelector('canvas');
@@ -177,10 +162,13 @@ const TrophyPhysicsCard = ({ userId, isEditable, cardX, cardY, trophiesList }) =
           }
         }
       }, 0);
+
       const runner = Matter.Runner.create();
       Matter.Runner.run(runner, engine);
       engineRef.current = { engine, render, runner, bodies, ground, leftWall, rightWall, topWall };
-      cleanup = () => {
+
+      // Cleanup function to remove Matter.js engine on coomponent unmount or when localTrophies changes
+      const cleanup = () => {
         Matter.Render.stop(render);
         Matter.Runner.stop(runner);
         Matter.World.clear(engine.world, false);
@@ -189,12 +177,39 @@ const TrophyPhysicsCard = ({ userId, isEditable, cardX, cardY, trophiesList }) =
           render.canvas.parentNode.removeChild(render.canvas);
         }
       };
+      return cleanup;
+    };
+
+  useEffect(() => {
+    let cleanup = () => {};
+    let cancelled = false;
+    if (!sceneRef.current ||!localTrophies || localTrophies.length === 0) return;
+
+    // Clear existing engine if any
+    if (engineRef.current) {
+        Matter.Render.stop(engineRef.current.render);
+        Matter.Runner.stop(engineRef.current.runner);
+        Matter.World.clear(engineRef.current.engine.world, false);
+        Matter.Engine.clear(engineRef.current.engine);
+        if (engineRef.current.render.canvas.parentNode) {
+          engineRef.current.render.canvas.parentNode.removeChild(engineRef.current.render.canvas);
+        }
+        engineRef.current = null;
+    }
+
+    preloadImages(localTrophies).then(loadedTrophies => {
+      if (cancelled) return;
+      if (JSON.stringify(prevTrophiesRef.current !== JSON.stringify(localTrophies))) {
+        prevTrophiesRef.current = localTrophies;
+        cleanup = initializePhysics(loadedTrophies)
+      }
     });
+
     return () => {
       cancelled = true;
       cleanup();
     };
-  }, [trophies, isEditable]);
+  }, [localTrophies, isEditable]);
 
   useEffect(() => {
     if (!isEditable || !engineRef.current || !engineRef.current.bodies) return;
@@ -213,7 +228,7 @@ const TrophyPhysicsCard = ({ userId, isEditable, cardX, cardY, trophiesList }) =
   }, [cardX, cardY, isEditable]);
 
   return (
-    <Card title="Trophy Case" isEditable={isEditable}>
+    <Card  title="Trophy Case" isEditable={isEditable}>
       <div ref={containerRef} style={{ width: width, height: height, overflow: 'hidden', boxSizing: 'border-box', margin: '0 auto', position: 'relative' }}>
         <div ref={sceneRef} style={{ width: '100%', height: '100%', boxSizing: 'border-box' }} />
       </div>

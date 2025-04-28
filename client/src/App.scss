@@ -10,7 +10,7 @@ $app-text-light: #FFFFFF; // Text on dark
 #root {
   flex: 1;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   margin: 0;
   padding: 0;
   display: flex;
@@ -23,8 +23,8 @@ $app-text-light: #FFFFFF; // Text on dark
   min-height: 100vh;
   background: linear-gradient(135deg, $app-bg 0%, darken($app-bg, 5%) 100%);
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  padding-top: 40px; 
-  
+  padding-top: 40px;
+
   .hero-section {
     display: flex;
     padding: 2rem 2rem;
@@ -34,17 +34,17 @@ $app-text-light: #FFFFFF; // Text on dark
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 1rem;
-    
+
     @media (max-width: 768px) {
       flex-direction: column-reverse;
       text-align: center;
       padding: 1.5rem 1rem;
     }
-    
+
     .hero-content {
       flex: 1;
       min-width: 300px;
-      
+
       h1 {
         font-size: 3.5rem;
         font-weight: 800;
@@ -52,7 +52,7 @@ $app-text-light: #FFFFFF; // Text on dark
         color: $app-primary;
         line-height: 1.2;
       }
-      
+
       .hero-subtitle {
         font-size: 1.5rem;
         color: lighten($app-text-dark, 15%);
@@ -60,7 +60,7 @@ $app-text-light: #FFFFFF; // Text on dark
         line-height: 1.6;
       }
     }
-    
+
     .logo-container {
       flex: 1;
       display: flex;
@@ -69,7 +69,7 @@ $app-text-light: #FFFFFF; // Text on dark
       min-width: 300px;
       min-height: 200px;
       position: relative;
-      
+
       .logo-animation {
         width: 100%;
         height: 100%;
@@ -81,7 +81,7 @@ $app-text-light: #FFFFFF; // Text on dark
       }
     }
   }
-  
+
   .features-section {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -89,7 +89,7 @@ $app-text-light: #FFFFFF; // Text on dark
     max-width: 1200px;
     margin: 2rem auto 0;
     padding: 2rem;
-    
+
     .feature-card {
       background: $app-text-light;
       padding: 2rem;
@@ -97,30 +97,30 @@ $app-text-light: #FFFFFF; // Text on dark
       box-shadow: 0 4px 6px rgba(44, 62, 80, 0.08);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
       border-top: 4px solid $app-accent;
-      
+
       &:hover {
         transform: translateY(-5px);
         box-shadow: 0 10px 20px rgba(44, 62, 80, 0.12);
       }
-      
+
       .feature-icon {
         font-size: 2.5rem;
         margin-bottom: 1rem;
       }
-      
+
       h3 {
         color: $app-primary;
         margin-bottom: 0.75rem;
         font-weight: 700;
       }
-      
+
       p {
         color: lighten($app-text-dark, 15%);
         line-height: 1.6;
       }
     }
   }
-  
+
   .landing-footer {
     text-align: center;
     padding: 1rem;

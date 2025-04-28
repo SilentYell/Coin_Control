@@ -19,7 +19,6 @@ const trophyRoutes = require('./routes/trophyRoutes');
 const aiInsightsRouter = require('./routes/aiInsights');
 const transactions = require('./routes/transactions');
 
-const trophies = require('./routes/trophies');
 
 
 const userTrophies = require('./routes/userTrophies');
@@ -36,7 +35,6 @@ app.use('/api', expenseRoutes);
 app.use('/api', userRoutes);
 app.use('/api', income(db));
 app.use('/api', transactions(db));
-app.use('/api', trophies(db));
 app.use('/api/savings-goals', savingsGoalsRouter);
 app.use('/api/trophies', trophyRoutes);
 app.use('/api/user-trophies/', userTrophies);

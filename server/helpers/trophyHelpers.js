@@ -20,7 +20,7 @@ const checkAndAwardTrophies = async (user_id, goal) => {
     // Check for existing trophies and then push new to array
     for (const trophy of trophiesResult.rows) {
       const existingTrophy = await db.query(
-        `SELECT * FROM user_trophies WHERE user_id = $1 AND trophy_id = $2 AND type = 'trophy';`,
+        `SELECT * FROM user_trophies WHERE user_id = $1 AND trophy_id = $2;`,
         [user_id, trophy.trophy_id]
       );
 

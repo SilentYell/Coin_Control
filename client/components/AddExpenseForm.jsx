@@ -2,8 +2,9 @@ import React, { useState, useRef, useEffect } from 'react';
 import { addExpense, updateExpense } from '../services/api'; // importing api function
 import '../styles/AddExpenseForm.scss';
 import { initializeExpenseFormData } from '../src/helpers/initializeFormData';
+import { getUserTrophies } from '../services/api';
 
-const AddExpenseForm = ({ editingExpense, onSubmitSuccess, setEditSuccess, setLastEditedTransactionType, setLastEditedId, setTrophiesList }) => {
+const AddExpenseForm = ({ editingExpense, setEditingExpense, onSubmitSuccess, setEditSuccess, setLastEditedTransactionType, setLastEditedId, setTrophiesList }) => {
   // form state
   const amountInputRef = useRef(null);
   const [formData, setFormData] = useState(() => initializeExpenseFormData(editingExpense));
@@ -79,8 +80,10 @@ const AddExpenseForm = ({ editingExpense, onSubmitSuccess, setEditSuccess, setLa
 
         // Update trophiesList with any newly earned trophies
         if (response.earnedTrophies?.length) {
-          const data = await getUserBadgeTrophies();
-          await setTrophiesList(data.allTrophies);
+          const userId = 1; // hardcoded for now
+          const data = await getUserTrophies(userId);
+          const filteredData = data.filter(t => t.type === 'badge'); // filter for 'badge' types only
+          await setTrophiesList(filteredData);
         }
 
         // If no errors, show success message
@@ -180,7 +183,10 @@ const AddExpenseForm = ({ editingExpense, onSubmitSuccess, setEditSuccess, setLa
 
         {/* submit button - add or update expense */}
         {editingExpense
-          ? <button type="submit" className="submit-btn" disabled={isLoading}>Update Expense</button>
+          ? <div>
+              <button type="submit" className="submit-btn" disabled={isLoading}>Update Expense</button>
+              <button type="submit" className="cancel-btn" disabled={isLoading} onClick={()=> setEditingExpense(null)}>Cancel</button>
+            </div>
           : <button type="submit" className="submit-btn" disabled={isLoading}>
               {isLoading ? 'Adding...' : 'Add Expense'}
             </button>
