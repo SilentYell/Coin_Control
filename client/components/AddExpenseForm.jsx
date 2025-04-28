@@ -132,7 +132,7 @@ const AddExpenseForm = ({ editingExpense, setEditingExpense, onSubmitSuccess, se
             name="amount"
             value={formData.amount}
             onChange={handleChange}
-            placeholder="0.00"
+            placeholder="e.g. 12.50"
             step="0.01"
             min="0"
             required

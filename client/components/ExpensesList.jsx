@@ -131,6 +131,7 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess, editingE
               }
               step="0.01"
               required
+              placeholder="e.g. 12.50"
             />
           </div>
           <div className="form-group">
@@ -146,6 +147,7 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess, editingE
                 })
               }
               required
+              placeholder="Select a date"
             />
           </div>
           <div className="form-group">
@@ -161,6 +163,7 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess, editingE
               }
               required
             >
+              <option value="" disabled hidden>Select a category</option>
               {categories.map((category) => (
                 <option key={category} value={category}>
                   {category}
@@ -178,6 +181,7 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess, editingE
                 setEditingExpense({ ...editingExpense, name: e.target.value })
               }
               required
+              placeholder="e.g. Grocery shopping"
             />
           </div>
           <button type="submit" className="submit-btn">

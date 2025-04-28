@@ -123,7 +123,7 @@ const IncomeForm = ({ editingIncome, setEditingIncome, onSubmitSuccess, setEditS
             name="amount"
             value={formData.amount}
             onChange={handleChange}
-            placeholder="0.00"
+            placeholder="e.g. 1000.00"
             step="0.01"
             min="0"
             required
@@ -137,6 +137,7 @@ const IncomeForm = ({ editingIncome, setEditingIncome, onSubmitSuccess, setEditS
             name="last_payment_date"
             value={formData.last_payment_date}
             onChange={handleChange}
+            placeholder="e.g. 2023-01-01"
             required
           />
         </div>

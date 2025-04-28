@@ -294,6 +294,7 @@ const Navbar = (
                   value={editName}
                   onChange={e => setEditName(e.target.value)}
                   required
+                  placeholder="e.g. Emergency Fund"
                 />
               </label>
               <label>
@@ -304,6 +305,7 @@ const Navbar = (
                   value={editAmount}
                   onChange={e => setEditAmount(e.target.value)}
                   required
+                  placeholder="e.g. 1000"
                 />
               </label>
               <label>
@@ -315,6 +317,7 @@ const Navbar = (
                   value={editPercent}
                   onChange={e => setEditPercent(e.target.value)}
                   required
+                  placeholder="e.g. 10"
                 />
               </label>
               <button type="submit">Update Goal</button>
@@ -361,6 +364,7 @@ const Navbar = (
                   value={goalName}
                   onChange={e => setGoalName(e.target.value)}
                   required
+                  placeholder="e.g. Emergency Fund"
                 />
               </label>
               <label>
@@ -371,6 +375,7 @@ const Navbar = (
                   value={goalAmount}
                   onChange={e => setGoalAmount(e.target.value)}
                   required
+                  placeholder="e.g. 1000"
                 />
               </label>
               <label>
@@ -382,6 +387,7 @@ const Navbar = (
                   value={goalPercent}
                   onChange={e => setGoalPercent(e.target.value)}
                   required
+                  placeholder="e.g. 10"
                 />
               </label>
               <button type="submit">Save Goal</button>
