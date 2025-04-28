@@ -132,7 +132,7 @@ const AllTransactions = ({
                     : ''
                   }
                 >
-                  <td className="amount">
+                  <td className={`transaction ${Number(transaction.amount) > 0 ? 'amount-positive' : 'amount-negative'} `}>
                     {/* Format transaction amounts and totals with commas and two decimals for better readability */}
                     {Number(transaction.amount).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
                   </td>
