@@ -229,7 +229,7 @@ const TrophyPhysicsCard = ({ isEditable, cardX, cardY, trophiesList }) => {
 
   return (
     <Card  title="Trophy Case" isEditable={isEditable}>
-      <div ref={containerRef} style={{ width: width, height: height, 'margin-top': '20px', overflow: 'hidden', boxSizing: 'border-box', margin: '0 auto', position: 'relative' }}>
+      <div ref={containerRef} style={{ width: width, height: height, overflow: 'hidden', boxSizing: 'border-box', margin: '0 auto', position: 'relative' }}>
         <div ref={sceneRef} style={{ width: '100%', height: '100%', boxSizing: 'border-box' }} />
       </div>
     </Card>
