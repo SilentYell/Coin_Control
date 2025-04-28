@@ -48,7 +48,7 @@ function getInitialLayout() {
   return wideLayout;
 }
 
-function Dashboard({ expenses = [], income = [], user, goal, totalSavings, refreshGoal, trophiesList = [] }) {
+function Dashboard({ expenses = [], income = [], user, goal, totalSavings, refreshGoal, trophiesList, setTrophiesList }) {
   const [totalExpenses, setTotalExpenses] = useState(0);
   const [totalIncome, setTotalIncome] = useState(0);
   const [currentBalance, setCurrentBalance] = useState(0);
@@ -100,18 +100,18 @@ function Dashboard({ expenses = [], income = [], user, goal, totalSavings, refre
     }
   };
 
-  // Fetch the trophies whenever income/expenses or savings update
+  // Fetch the trophiesList whenever income/expenses or savings update
   const fetchTrophies = useCallback(async () => {
     try {
-      const trophies = await getUserTrophies(user.user_id);
+      const trophiesList = await getUserTrophies(user.user_id);
 
-      // Only set new trophy popup if there are new trophies
+      // Only set new trophy popup if there are new trophiesList
       setTrophies((prev = []) => {
         const previousIds = new Set((prev?.map?.(t => t.id)) || []);
-        const newTrophies = trophies.filter(t => !previousIds.has(t.id) && t.type === 'trophy'); // filter backend trophies for type 'trophy'
+        const newTrophies = trophiesList.filter(t => !previousIds.has(t.id) && t.type === 'trophy'); // filter backend trophiesList for type 'trophy'
 
         if (newTrophies.length > 0) {
-          const mostRecentTrophy = newTrophies.sort((a, b) => b.trophy_id - a.trophy_id)[0]; // sort trophies by id
+          const mostRecentTrophy = newTrophies.sort((a, b) => b.trophy_id - a.trophy_id)[0]; // sort trophiesList by id
 
           // Trigger the popup
           setShowTrophyPopup(mostRecentTrophy);
@@ -119,13 +119,13 @@ function Dashboard({ expenses = [], income = [], user, goal, totalSavings, refre
           // Close popup after 4 seconds
           setTimeout(() => setShowTrophyPopup(null), 4000);
 
-          // Update trophies state to include new trophy
+          // Update trophiesList state to include new trophy
           return [...prev, ...newTrophies];
         }
         return prev;
       });
     } catch (error) {
-      console.error('Error fetching trophies: ', error);
+      console.error('Error fetching trophiesList: ', error);
     }
   }, [user.user_id]);
 
@@ -134,7 +134,21 @@ function Dashboard({ expenses = [], income = [], user, goal, totalSavings, refre
     return (amount < 0 ? '-' : '') + '$' + Math.abs(amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
 
-  // Fetch trophies on mount and whenever income/expenses or user changes
+  // Fetches all trophiesList on re-render for the TrophyPhysicsCard
+  useEffect(() => {
+    const fetchAllEarnedTrophies = async () => {
+      try {
+        const allEarnedTrophies = await getUserTrophies(user.user_id);
+        setTrophiesList(allEarnedTrophies);
+      } catch (error) {
+          console.error('Error fetching all trophiesList: ', error);
+      }
+    }
+
+    fetchAllEarnedTrophies();
+  }, [user])
+
+  // Fetch trophiesList on mount and whenever income/expenses or user changes
   useEffect(() => {
     fetchTrophies();
   }, [income, expenses, fetchTrophies, user]);
@@ -314,7 +328,13 @@ function Dashboard({ expenses = [], income = [], user, goal, totalSavings, refre
             </Card>
           </div>
           <div key="trophy-physics">
-            <TrophyPhysicsCard userId={user.user_id} isEditable={isEditable} cardX={trophyCardPos.x} cardY={trophyCardPos.y} trophiesList={trophiesList} />
+            <TrophyPhysicsCard
+              userId={user.user_id}
+              isEditable={isEditable}
+              cardX={trophyCardPos.x}
+              cardY={trophyCardPos.y}
+              trophiesList={trophiesList}
+              setTrophiesList={setTrophiesList} />
           </div>
         </ResponsiveGridLayout>
         {showTrophyPopup && (
