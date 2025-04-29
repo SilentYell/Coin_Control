@@ -155,8 +155,8 @@ function Dashboard({ expenses = [], income = [], user, goal, totalSavings, refre
       try {
         const allEarnedTrophies = await getUserTrophies(user.user_id);
         setTrophiesList(allEarnedTrophies);
-      } catch (error) {
-          console.error('Error fetching all trophiesList: ', error);
+      } catch {
+          console.error('Error fetching all trophiesList');
       }
     }
 
