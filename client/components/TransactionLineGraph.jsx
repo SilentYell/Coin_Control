@@ -18,7 +18,6 @@ const transformDates = (dates) => {
   const groupedByDate = {};
 
   for (const date of dates) {
-    console.log('date in loop: ', date)
     const { type, amount, txn_date } = date
 
     // check if groupedByDates object exists, if not initialize it
