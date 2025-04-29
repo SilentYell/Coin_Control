@@ -78,6 +78,7 @@ function Dashboard({ expenses = [], income = [], user, goal, totalSavings, refre
   const [showFinancialInsights, setShowFinancialInsights] = useState(false);
   const [trophies, setTrophies] = useState([]);
   const [showTrophyPopup, setShowTrophyPopup] = useState(null);
+  const [isResizing, setIsResizing] = useState(false);
 
   const [{ layoutMode, layoutState}, setDashBoardSettings] = useState(getInitialLayout);
 
@@ -283,8 +284,10 @@ function Dashboard({ expenses = [], income = [], user, goal, totalSavings, refre
           rowHeight={70}
           isResizable={isEditable}
           isDraggable={isEditable}
-          onResizeStop={handleLayoutChange}
-          onDragStop={handleLayoutChange}
+          onResizeStart={() => setIsResizing(true)}
+          onResizeStop={(layout) => { setIsResizing(false); handleLayoutChange(layout); }}
+          onDragStart={() => setIsResizing(true)}
+          onDragStop={(layout) => { setIsResizing(false); handleLayoutChange(layout); }}
           preventCollision={false}
           compactType={'vertical'}
           margin={[16, 16]}
@@ -368,7 +371,9 @@ function Dashboard({ expenses = [], income = [], user, goal, totalSavings, refre
               cardY={trophyCardPos.y}
               trophiesList={trophiesList}
               setTrophiesList={setTrophiesList}
-              refreshSignal={refreshCounter} />
+              refreshSignal={refreshCounter}
+              isResizing={isResizing}
+            />
           </div>
         </ResponsiveGridLayout>
         {showTrophyPopup && (
