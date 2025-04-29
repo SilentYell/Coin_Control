@@ -166,7 +166,10 @@ const Navbar = (
 
       {showExpenseFormModal && (
         <Modal isOpen={showExpenseFormModal} onClose={() => setShowExpenseFormModal(false)}>
-          <AddExpenseForm onSubmitSuccess={onExpenseSubmitSuccess} />
+          <AddExpenseForm
+            onSubmitSuccess={onExpenseSubmitSuccess}
+            triggerRefresh={triggerRefresh}
+            />
         </Modal>
       )}
 
