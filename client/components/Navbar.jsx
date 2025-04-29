@@ -41,7 +41,8 @@ const Navbar = (
     trophiesList,
     setTrophiesList,
     goal,
-    refreshGoal
+    refreshGoal,
+    triggerRefresh
   }) => {
 
   const [showIncomeFormModal, setShowIncomeFormModal] = useState(false);
@@ -143,6 +144,7 @@ const Navbar = (
             setEditSuccess={setEditSuccess}
             lastEditedId={lastEditedId}
             setLastEditedId={setLastEditedId}
+            triggerRefresh={triggerRefresh}
           />
         </Modal>
       )}
