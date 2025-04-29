@@ -4,7 +4,7 @@ import '../styles/ExpensesList.scss';
 import { MdEdit, MdDelete } from 'react-icons/md';
 import formatDate from '../src/helpers/formatDate';
 
-const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess, editingExpense, setEditingExpense, editSuccess, setEditSuccess, lastEditedId, setLastEditedId }) => {
+const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess, editingExpense, setEditingExpense, editSuccess, setEditSuccess, lastEditedId, setLastEditedId, triggerRefresh }) => {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -71,6 +71,9 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess, editingE
       setExpensesList((prevList) =>
         prevList.filter((expense) => expense.expense_id !== id)
       );
+
+      // Refresh Line graph:
+      triggerRefresh();
     } catch (error) {
       setError('Failed to delete expense. Please try again later.');
       console.error('Error deleting expense:', error);
@@ -96,9 +99,11 @@ const ExpensesList = ({ expensesList, setExpensesList, onSubmitSuccess, editingE
       setTimeout(() => setEditSuccess(false), 2000)
       await onSubmitSuccess(); // Re-fetch expenses
 
+
       // Close the modal after saving
       setEditingExpense(null);
       setTimeout(() => setLastEditedId(null), 3500); // clear visual on edited record
+      triggerRefresh(); // refresh line graph
     } catch (error) {
       setError('Failed to update expense. Please try again later.');
       console.error('Error editing expense:', error);
