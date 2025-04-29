@@ -70,7 +70,7 @@ function getInitialLayout() {
   };
 }
 
-function Dashboard({ expenses = [], income = [], user, goal, totalSavings, refreshGoal, trophiesList, setTrophiesList }) {
+function Dashboard({ expenses = [], income = [], user, goal, totalSavings, refreshGoal, trophiesList, setTrophiesList, refreshCounter }) {
   const [totalExpenses, setTotalExpenses] = useState(0);
   const [totalIncome, setTotalIncome] = useState(0);
   const [currentBalance, setCurrentBalance] = useState(0);
@@ -357,7 +357,7 @@ function Dashboard({ expenses = [], income = [], user, goal, totalSavings, refre
           </div>
           <div key='line-chart'>
             <Card title="Transactions Timeline" isEditable={isEditable}>
-              <TransactionsLineGraph />
+              <TransactionsLineGraph refreshSignal={refreshCounter}/>
             </Card>
           </div>
           <div key="trophy-physics">
