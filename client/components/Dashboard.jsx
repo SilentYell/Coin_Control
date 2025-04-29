@@ -1,17 +1,25 @@
+// React & JS modules
 import React, { useEffect, useState, useCallback } from 'react';
-import '../styles/Dashboard.scss';
+import { Responsive, WidthProvider } from 'react-grid-layout';
+import { FaLightbulb, FaLock, FaLockOpen, FaRegSave } from 'react-icons/fa';
+import anime from 'animejs/lib/anime.es.js';
+
+// Components
 import Card from './Card';
 import GoalCard from './GoalCard';
 import ExpensesPieChart from './ExpensesPieChart';
-import AIInsights from './AIInsights';
+import TransactionsLineGraph from './TransactionLineGraph';
+import TrophyPhysicsCard from './TrophyPhysicsCard';
+import ToggleLayoutButton from './ToggleLayoutButton';
 import Modal from './Modal';
 import TrophyPopup from './TrophyPopup';
-import { Responsive, WidthProvider } from 'react-grid-layout';
-import { FaLightbulb, FaLock, FaLockOpen, FaRegSave } from 'react-icons/fa';
+import AIInsights from './AIInsights';
+
+// Stlyes
+import '../styles/Dashboard.scss';
+
+// Routes
 import { getUserTrophies } from '../services/api';
-import ToggleLayoutButton from './ToggleLayoutButton';
-import anime from 'animejs/lib/anime.es.js';
-import TrophyPhysicsCard from './TrophyPhysicsCard';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -19,13 +27,14 @@ const compactLayout = {
   layoutMode: "compact",
   layout: [
     { i: 'goal', x: 0, y: 0, w: 6, h: 2, minW: 2, minH: 2 },
-    { i: 'balance', x: 0, y: 3, w: 2, h: 2, minW: 1, minH: 2 },
-    { i: 'expenses', x: 2, y: 3, w: 2, h: 2, minW: 1, minH: 2 },
-    { i: 'income', x: 0, y: 4, w: 2, h: 2, minW: 1, minH: 2 },
-    { i: 'savings', x: 2, y: 4, w: 2, h: 2, minW: 1, minH: 2 },
+    { i: 'balance', x: 0, y: 3, w: 1, h: 2, minW: 1, minH: 2 },
+    { i: 'expenses', x: 1, y: 3, w: 1, h: 2, minW: 1, minH: 2 },
+    { i: 'income', x: 0, y: 4, w: 1, h: 2, minW: 1, minH: 2 },
+    { i: 'savings', x: 1, y: 4, w: 1, h: 2, minW: 1, minH: 2 },
     { i: 'ai-insights', x: 0, y: 2, w: 2, h: 5, minW: 2, minH: 4 },
     { i: 'pie-chart', x: 2, y: 2, w: 2, h: 5, minW: 2, minH: 5 },
     { i: 'trophy-physics', x: 6, y: 21, w: 2, h: 9, minW: 3, minH: 3 },
+    { i: 'line-chart', x: 2, y: 3, w: 2, h: 4, minW: 2, minH: 4 }
   ]
 };
 const wideLayout = {
@@ -39,6 +48,7 @@ const wideLayout = {
     { i: 'ai-insights', x: 0, y: 2, w: 6, h: 6, minW: 1, minH: 4 },
     { i: 'pie-chart', x: 0, y: 4, w: 4, h: 6, minW: 2, minH: 5 },
     { i: 'trophy-physics', x: 6, y: 4, w: 2, h: 10, minW: 3, minH: 3 },
+    { i: 'line-chart', x: 0, y: 5, w: 6, h: 6, minW: 3, minH: 3 }
   ]
 };
 
@@ -144,6 +154,7 @@ function Dashboard({ expenses = [], income = [], user, goal, totalSavings, refre
     const fetchAllEarnedTrophies = async () => {
       try {
         const allEarnedTrophies = await getUserTrophies(user.user_id);
+        console.log('All earned trophies in dashbaord use effect:', allEarnedTrophies)
         setTrophiesList(allEarnedTrophies);
       } catch (error) {
           console.error('Error fetching all trophiesList: ', error);
@@ -343,6 +354,11 @@ function Dashboard({ expenses = [], income = [], user, goal, totalSavings, refre
           <div key="pie-chart">
             <Card title="Expenses Breakdown" isEditable={isEditable}>
               <ExpensesPieChart expenses={expenses} />
+            </Card>
+          </div>
+          <div key='line-chart'>
+            <Card title="Transactions Timeline" isEditable={isEditable}>
+              <TransactionsLineGraph />
             </Card>
           </div>
           <div key="trophy-physics">
