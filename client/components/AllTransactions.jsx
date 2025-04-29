@@ -13,7 +13,8 @@ const AllTransactions = ({
     setShowTransactionsModal,
     editSuccess,
     lastEditedTransactionType,
-    lastEditedId
+    lastEditedId,
+    triggerRefresh
   }) => {
 
   const [transactionsList, setTransactionsList] = useState([]);
@@ -75,6 +76,8 @@ const AllTransactions = ({
       setTransactionsList((prevList) =>
         prevList.filter((item) => !(item.id === id && item.type === type))
       );
+
+      triggerRefresh(); // refresh line graph
 
     } catch (error) {
       setError('Failed to delete transaction. Please try again later.');

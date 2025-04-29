@@ -251,6 +251,7 @@ const Navbar = (
               editTransactionType={setEditTransactionType}
               setEditTransactionType={setEditTransactionType}
               lastEditedTransactionType={lastEditedTransactionType}
+              triggerRefresh={triggerRefresh}
               lastEditedId={lastEditedId}
               setShowTransactionsModal={setShowTransactionsModal}
               editSuccess={editSuccess}
