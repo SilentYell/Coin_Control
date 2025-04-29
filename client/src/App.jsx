@@ -5,6 +5,7 @@ import Dashboard from '../components/Dashboard';
 import useApplicationData from '../hooks/useApplicationData';
 import Logo from '../components/Logo';
 import Trophies from '../components/Trophies';
+import { useRefresh } from '../hooks/useRefresh';
 
 function App() {
   const {
@@ -31,6 +32,9 @@ function App() {
     trophiesList,
     setTrophiesList
   } = useApplicationData();
+
+
+  const { refreshCounter, triggerRefresh } = useRefresh();
 
   const [user, setUser] = useState(null);
   const [showLogo, setShowLogo] = useState(false); // don't show logo immediately on load
@@ -134,6 +138,7 @@ function App() {
         goal={goal}
         totalSavings={totalSavings}
         refreshGoal={() => fetchGoal(user?.user_id)}
+        triggerRefresh={triggerRefresh}
       />
 
       {!user ? (
@@ -193,6 +198,7 @@ function App() {
             refreshGoal={() => fetchGoal(user?.user_id)}
             trophiesList={trophiesList}
             setTrophiesList={setTrophiesList}
+            refreshCounter={refreshCounter}
           />
         </>
       )}

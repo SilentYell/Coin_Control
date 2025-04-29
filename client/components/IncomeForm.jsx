@@ -3,7 +3,7 @@ import '../styles/IncomeForm.scss'
 import { addIncomeAndCheckTrophies, updateIncome, getUserTrophies } from '../services/api';
 import { initializeIncomeFormData } from '../src/helpers/initializeFormData';
 
-const IncomeForm = ({ editingIncome, setEditingIncome, onSubmitSuccess, setEditSuccess, setLastEditedTransactionType, setLastEditedId, setTrophiesList, onGoalChanged }) => {
+const IncomeForm = ({ editingIncome, setEditingIncome, onSubmitSuccess, setEditSuccess, setLastEditedTransactionType, setLastEditedId, setTrophiesList, onGoalChanged, triggerRefresh }) => {
   // Track current formData
   const [formData, setFormData] = useState(() => initializeIncomeFormData(editingIncome));
   const [success, setSuccess] = useState(false);
@@ -56,7 +56,6 @@ const IncomeForm = ({ editingIncome, setEditingIncome, onSubmitSuccess, setEditS
     // Call income post method in API
     try {
       let response
-      console.log('editing income? ', editingIncome)
       if (editingIncome?.income_id) {
         // Update existing income
         response = await updateIncome(editingIncome.income_id, newIncome);
@@ -70,14 +69,13 @@ const IncomeForm = ({ editingIncome, setEditingIncome, onSubmitSuccess, setEditS
         setEditSuccess(true);
         setTimeout(() => setEditSuccess(false), 2000); // clear success message
         setTimeout(() => setLastEditedId(null), 3500); // clear visual on edited record
+        triggerRefresh(); // trigger line graph refresh
       } else {
         // Add new income
         response = await addIncomeAndCheckTrophies(newIncome);
-        console.log('add income response', response)
         // Throw error if response fails
         if (!response) throw new Error('Failed to add income record.');
 
-        console.log(response)
         // Update trophiesList with any newly earned trophies
         if (response) {
           const userId = 1; //hardcoded for now
@@ -89,6 +87,7 @@ const IncomeForm = ({ editingIncome, setEditingIncome, onSubmitSuccess, setEditS
         // Show success message
         setSuccess(true);
         setTimeout(() => setSuccess(false), 2000);
+        triggerRefresh(); // trigger line graph refresh
       }
 
       // Trigger list update and from reset if the trophy check worked
