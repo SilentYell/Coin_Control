@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getAIInsights } from '../services/api';
-import { FaArrowRight } from 'react-icons/fa';
+import { FaArrowRight, FaLightbulb } from 'react-icons/fa';
 import '../styles/AIInsights.scss';
 import { SiGoogle } from 'react-icons/si';
 
@@ -34,9 +34,22 @@ const AIInsights = ({
     fetchInsights();
   }, [expenses, income, preview]);
 
+  // place holder when no data
   if (!expenses.length || !income.length) {
-    return null; // no render if no data
+    return (
+      <div className="ai-insights placeholder-mode">
+        <div className="ai-insights-header">
+          <div className="gemini-branding">
+            <SiGoogle className="google-icon" />
+            <span>Powered by Gemini AI</span>
+          </div>
+        </div>
+      </div>
+    );
   }
+
+    
+  
 
   // preview until financial tips
   const parts = insights ? insights.split('Financial Tips:') : ['', ''];
