@@ -44,12 +44,25 @@ const AIInsights = ({
             <span>Powered by Gemini AI</span>
           </div>
         </div>
+
+        <div className="insights-placeholder">
+          <div className="placeholder-icon">
+            <FaLightbulb />
+          </div>
+          <h3>AI Financial Insights On The Way</h3>
+          <p>
+            Add both expense and income data to activate your personalized
+            financial analysis.
+          </p>
+          <ul>
+            <li>Track your spending patterns</li>
+            <li>Get personalized savings recommendations</li>
+            <li>Receive budget optimization tips</li>
+          </ul>
+        </div>
       </div>
     );
   }
-
-    
-  
 
   // preview until financial tips
   const parts = insights ? insights.split('Financial Tips:') : ['', ''];
