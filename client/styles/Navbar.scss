@@ -82,7 +82,7 @@ $shadow-color: rgba(0, 0, 0, 0.15);
     list-style: none;
     padding: 10;
     margin: 0 auto;
-    padding-left: 175px;
+    padding-left: 40px;
 
     li {
       position: relative;
@@ -216,7 +216,7 @@ $shadow-color: rgba(0, 0, 0, 0.15);
   }
 
   // Navbar for tablet size
-  @media (min-width: 768px) and (max-width: 1200px) {
+  @media (min-width: 768px) and (max-width: 1300px) {
     .navbar {
       display: flex;
       flex-direction: column;
