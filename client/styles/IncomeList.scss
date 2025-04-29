@@ -1,11 +1,11 @@
 // Colour Scheme
-$incomelist-bg: #F3F4F6;
-$incomelist-primary: #2C3E50;
-$incomelist-accent: #1ABC9C;
-$incomelist-cta: #E67E22;
-$incomelist-light-accent: #BDC3C7;
-$incomelist-text-dark: #2C3E50;
-$incomelist-text-light: #FFFFFF;
+$incomelist-bg: #f3f4f6;
+$incomelist-primary: #2c3e50;
+$incomelist-accent: #1abc9c;
+$incomelist-cta: #e67e22;
+$incomelist-light-accent: #bdc3c7;
+$incomelist-text-dark: #2c3e50;
+$incomelist-text-light: #ffffff;
 
 .income-list {
   background: $incomelist-bg;
@@ -14,7 +14,6 @@ $incomelist-text-light: #FFFFFF;
   padding: 2rem;
   box-shadow: 0 4px 6px rgba(44, 62, 80, 0.1);
   border: 1px solid $incomelist-light-accent;
-
 
   h2 {
     margin-bottom: 1.5rem;
@@ -43,6 +42,26 @@ $incomelist-text-light: #FFFFFF;
     border-radius: 0.5rem;
     box-shadow: 0 2px 8px rgba(44, 62, 80, 0.08);
     margin-bottom: 1rem;
+
+    // Webkit scrollbar styling
+    &::-webkit-scrollbar {
+      width: 6px;
+      height: 6px; // For horizontal scrollbars
+    }
+
+    &::-webkit-scrollbar-track {
+      background: $incomelist-bg;
+      border-radius: 8px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: $incomelist-light-accent;
+      border-radius: 6px;
+
+      &:hover {
+        background: darken($incomelist-light-accent, 10%);
+      }
+    }
   }
 
   /* Ensure the td elements are part of the animation */
@@ -90,7 +109,7 @@ $incomelist-text-light: #FFFFFF;
     }
 
     td.amount {
-      color: #2ECC71; // green for income
+      color: #2ecc71; // green for income
       font-weight: 600;
     }
 
