@@ -33,7 +33,7 @@ const compactLayout = {
     { i: 'savings', x: 1, y: 4, w: 1, h: 2, minW: 1, minH: 2 },
     { i: 'ai-insights', x: 0, y: 2, w: 2, h: 5, minW: 2, minH: 4 },
     { i: 'pie-chart', x: 2, y: 2, w: 2, h: 5, minW: 2, minH: 5 },
-    { i: 'trophy-physics', x: 6, y: 21, w: 2, h: 9, minW: 3, minH: 3 },
+    { i: 'trophy-physics', x: 6, y: 21, w: 2, h: 9, minW: 2, minH: 7 },
     { i: 'line-chart', x: 2, y: 3, w: 2, h: 4, minW: 2, minH: 4 }
   ]
 };
@@ -47,8 +47,8 @@ const wideLayout = {
     { i: 'savings', x: 2, y: 3, w: 2, h: 2, minW: 1, minH: 2 },
     { i: 'ai-insights', x: 0, y: 2, w: 6, h: 5, minW: 1, minH: 4 },
     { i: 'pie-chart', x: 0, y: 4, w: 4, h: 6, minW: 2, minH: 5 },
-    { i: 'trophy-physics', x: 6, y: 4, w: 2, h: 10, minW: 3, minH: 3 },
-    { i: 'line-chart', x: 0, y: 5, w: 6, h: 6, minW: 3, minH: 3 }
+    { i: 'trophy-physics', x: 6, y: 4, w: 2, h: 10, minW: 2, minH: 7 },
+    { i: 'line-chart', x: 0, y: 5, w: 6, h: 6, minW: 3, minH: 4 }
   ]
 };
 
