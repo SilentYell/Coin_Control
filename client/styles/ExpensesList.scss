@@ -92,6 +92,26 @@ $expenses-text-light: #ffffff; // Text on dark
     box-shadow: 0 2px 8px rgba(44, 62, 80, 0.08);
     max-height: 400px;
     overflow-y: auto;
+
+    // Webkit scrollbar styling
+    &::-webkit-scrollbar {
+      width: 6px;
+      height: 6px; // For horizontal scrollbars
+    }
+
+    &::-webkit-scrollbar-track {
+      background: $expenses-bg;
+      border-radius: 8px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: $expenses-light-accent;
+      border-radius: 6px;
+
+      &:hover {
+        background: darken($expenses-light-accent, 10%);
+      }
+    }
   }
 
   .expenses-table {
@@ -125,7 +145,7 @@ $expenses-text-light: #ffffff; // Text on dark
     }
 
     td.amount {
-      color: #E74C3C; // red for expenses
+      color: #e74c3c; // red for expenses
       font-weight: 600;
     }
 

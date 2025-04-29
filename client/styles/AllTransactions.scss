@@ -91,6 +91,26 @@ $transaction-text-light: #ffffff; // Text on dark
     border-radius: 0.5rem;
     box-shadow: 0 2px 8px rgba(44, 62, 80, 0.08);
     margin-bottom: 1rem;
+
+    // Webkit scrollbar styling
+    &::-webkit-scrollbar {
+      width: 6px;
+      height: 6px; // For horizontal scrollbars
+    }
+
+    &::-webkit-scrollbar-track {
+      background: $transaction-bg;
+      border-radius: 8px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: $transaction-light-accent;
+      border-radius: 6px;
+
+      &:hover {
+        background: darken($transaction-light-accent, 10%);
+      }
+    }
   }
 
   /* Highlight animation for edited rows */
@@ -184,8 +204,6 @@ $transaction-text-light: #ffffff; // Text on dark
     }
   }
 }
-
-
 
 .transactions-list .total-amount.positive {
   color: #2ecc71 !important; // Green color

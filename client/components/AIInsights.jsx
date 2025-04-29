@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getAIInsights } from '../services/api';
-import { FaArrowRight } from 'react-icons/fa';
+import { FaArrowRight, FaLightbulb } from 'react-icons/fa';
 import '../styles/AIInsights.scss';
 import { SiGoogle } from 'react-icons/si';
 
@@ -34,8 +34,38 @@ const AIInsights = ({
     fetchInsights();
   }, [expenses, income, preview]);
 
+  // place holder when no data
   if (!expenses.length || !income.length) {
-    return null; // no render if no data
+    return (
+      <div className="ai-insights placeholder-mode">
+        <div className="ai-insights-header">
+          <div className="gemini-branding">
+            <SiGoogle className="google-icon" />
+            <span>Powered by Gemini AI</span>
+          </div>
+        </div>
+
+        <div className="insights-placeholder">
+          <div className="placeholder-icon">
+            <FaLightbulb />
+          </div>
+          <h3>AI Financial Insights On The Way</h3>
+          <p>
+            Add both expense and income data to activate your personalized
+            financial analysis.
+          </p>
+          <ul>
+            <li>Track your spending patterns</li>
+            <li>Get personalized savings recommendations</li>
+            <li>Receive budget optimization tips</li>
+          </ul>
+        </div>
+
+        <div className="ai-attribution">
+          Financial analysis powered by Google Gemini
+        </div>
+      </div>
+    );
   }
 
   // preview until financial tips
