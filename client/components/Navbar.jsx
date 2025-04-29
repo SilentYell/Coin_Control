@@ -159,6 +159,7 @@ const Navbar = (
             editSuccess={editSuccess}
             setEditSuccess={setEditSuccess}
             lastEditedId={lastEditedId}
+            triggerRefresh={triggerRefresh}
           />
         </Modal>
       )}
