@@ -41,7 +41,8 @@ const Navbar = (
     trophiesList,
     setTrophiesList,
     goal,
-    refreshGoal
+    refreshGoal,
+    triggerRefresh
   }) => {
 
   const [showIncomeFormModal, setShowIncomeFormModal] = useState(false);
@@ -143,6 +144,7 @@ const Navbar = (
             setEditSuccess={setEditSuccess}
             lastEditedId={lastEditedId}
             setLastEditedId={setLastEditedId}
+            triggerRefresh={triggerRefresh}
           />
         </Modal>
       )}
@@ -157,13 +159,17 @@ const Navbar = (
             editSuccess={editSuccess}
             setEditSuccess={setEditSuccess}
             lastEditedId={lastEditedId}
+            triggerRefresh={triggerRefresh}
           />
         </Modal>
       )}
 
       {showExpenseFormModal && (
         <Modal isOpen={showExpenseFormModal} onClose={() => setShowExpenseFormModal(false)}>
-          <AddExpenseForm onSubmitSuccess={onExpenseSubmitSuccess} />
+          <AddExpenseForm
+            onSubmitSuccess={onExpenseSubmitSuccess}
+            triggerRefresh={triggerRefresh}
+            />
         </Modal>
       )}
 
@@ -182,6 +188,7 @@ const Navbar = (
             setTrophiesList={setTrophiesList}
             onSubmitSuccess={onSubmitSuccess}
             onGoalChanged={refreshGoal} // Pass refreshGoal to IncomeForm
+            triggerRefresh={triggerRefresh}
           />
         </Modal>
       )}
@@ -202,6 +209,7 @@ const Navbar = (
                 setEditingIncome={setEditingIncome}
                 setEditSuccess={setEditSuccess}
                 setLastEditedId={setLastEditedId}
+                triggerRefresh={triggerRefresh}
                 setLastEditedTransactionType={setLastEditedTransactionType}
                 onSubmitSuccess={async () => {
                   await onSubmitSuccess();
@@ -220,6 +228,7 @@ const Navbar = (
                 setEditSuccess={setEditSuccess}
                 setLastEditedId={setLastEditedId}
                 setTrophiesList={setTrophiesList}
+                triggerRefresh={triggerRefresh}
                 setLastEditedTransactionType={setLastEditedTransactionType}
                 onSubmitSuccess={ async () => {
                   await onExpenseSubmitSuccess();
@@ -242,6 +251,7 @@ const Navbar = (
               editTransactionType={setEditTransactionType}
               setEditTransactionType={setEditTransactionType}
               lastEditedTransactionType={lastEditedTransactionType}
+              triggerRefresh={triggerRefresh}
               lastEditedId={lastEditedId}
               setShowTransactionsModal={setShowTransactionsModal}
               editSuccess={editSuccess}

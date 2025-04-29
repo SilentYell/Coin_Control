@@ -4,7 +4,7 @@ import '../styles/AddExpenseForm.scss';
 import { initializeExpenseFormData } from '../src/helpers/initializeFormData';
 import { getUserTrophies } from '../services/api';
 
-const AddExpenseForm = ({ editingExpense, setEditingExpense, onSubmitSuccess, setEditSuccess, setLastEditedTransactionType, setLastEditedId, setTrophiesList }) => {
+const AddExpenseForm = ({ editingExpense, setEditingExpense, onSubmitSuccess, setEditSuccess, setLastEditedTransactionType, setLastEditedId, setTrophiesList, triggerRefresh }) => {
   // form state
   const amountInputRef = useRef(null);
   const [formData, setFormData] = useState(() => initializeExpenseFormData(editingExpense));
@@ -71,6 +71,7 @@ const AddExpenseForm = ({ editingExpense, setEditingExpense, onSubmitSuccess, se
         setEditSuccess(true);
         setTimeout(() => setEditSuccess(false), 2000); // clear success message
         setTimeout(() => setLastEditedId(null), 3500); // clear visual on edited record
+        triggerRefresh(); // refresh line graph
       } else {
         // Add new expense
         response = await addExpense(newExpense)
@@ -89,6 +90,7 @@ const AddExpenseForm = ({ editingExpense, setEditingExpense, onSubmitSuccess, se
         // If no errors, show success message
         console.log('Expense added successfully'); // Debugging log
         setSuccess(true);
+        triggerRefresh(); // refresh line graph
       }
 
       // reset the form

@@ -4,7 +4,7 @@ import { deleteIncome, getIncome, updateIncome } from '../services/api';
 import formatDate from '../src/helpers/formatDate';
 import { MdEdit, MdDelete } from 'react-icons/md';
 
-const IncomeList = ({ incomeList, setIncomeList, setEditingIncome, editSuccess, lastEditedId }) => {
+const IncomeList = ({ incomeList, setIncomeList, setEditingIncome, editSuccess, lastEditedId, triggerRefresh }) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -51,6 +51,8 @@ const IncomeList = ({ incomeList, setIncomeList, setEditingIncome, editSuccess, 
       setIncomeList((prevList) =>
         prevList.filter((item) => item.income_id !== id)
       );
+
+      triggerRefresh(); // trigger refresh for line graph
     } catch (error) {
       setError('Failed to delete income. Please try again later.');
       console.error('Error deleting income:', error.message);
@@ -83,31 +85,31 @@ const IncomeList = ({ incomeList, setIncomeList, setEditingIncome, editSuccess, 
               </tr>
             </thead>
             <tbody>
-    {incomeList.map((income) => (
-      <tr
-        key={income.income_id}
-        className={lastEditedId === 'Income' && income.income_id === lastEditedId.id ? 'highlight-row' : ''}
-      >
-        <td className="amount">${income.amount}</td>
-        <td>{formatDate(income.last_payment_date)}</td>
-        <td className="frequency">{income.frequency}</td>
-        <td className="actions">
-          <button
-            className="edit-btn"
-            onClick={() => setEditingIncome((prev) => prev?.income_id === income.income_id ? null : income)}
-          >
-            <MdEdit />
-          </button>
-          <button
-            className="delete-btn"
-            onClick={() => handleDelete(income.income_id)}
-          >
-            <MdDelete />
-          </button>
-        </td>
-      </tr>
-    ))}
-  </tbody>
+              {incomeList.map((income) => (
+                <tr
+                  key={income.income_id}
+                  className={lastEditedId === 'Income' && income.income_id === lastEditedId.id ? 'highlight-row' : ''}
+                >
+                  <td className="amount">${income.amount}</td>
+                  <td>{formatDate(income.last_payment_date)}</td>
+                  <td className="frequency">{income.frequency}</td>
+                  <td className="actions">
+                    <button
+                      className="edit-btn"
+                      onClick={() => setEditingIncome((prev) => prev?.income_id === income.income_id ? null : income)}
+                    >
+                      <MdEdit />
+                    </button>
+                    <button
+                      className="delete-btn"
+                      onClick={() => handleDelete(income.income_id)}
+                    >
+                      <MdDelete />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
             <tfoot>
               <tr className="total-row">
                 <td className="total-label">Total</td>
