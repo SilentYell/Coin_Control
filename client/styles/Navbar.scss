@@ -189,6 +189,8 @@ $shadow-color: rgba(0, 0, 0, 0.15);
 
   .logout-btn {
     background-color: $logout-btn-bg;
+    display: flex;
+    justify-content: center;
 
     &:hover {
       background-color: $logout-btn-hover;
@@ -213,9 +215,84 @@ $shadow-color: rgba(0, 0, 0, 0.15);
     display: none;
   }
 
+  // Navbar for tablet size
+  @media (min-width: 768px) and (max-width: 1200px) {
+    .navbar {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: absolute;
+    }
+
+    .navbar-logo {
+      align-self: flex-start;
+      padding: 10px 5px 5px 5px;
+    }
+
+    .navbar-links {
+      display: none;
+
+      &.open {
+        transform: translateY(52%) translateX(-25%);
+        padding: 10px;
+        width: calc(40%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-evenly;
+        background-color: $navbar-link-color;
+        transition: transform 0.3s ease;
+        z-index: 10;
+        border-radius: 8px;
+        box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.4);
+      }
+
+      li {
+        padding: 10px;
+        text-align: center;
+        width: 350px;
+
+        button {
+          width: 100%;
+          padding: 12px 60px;
+          font-size: 16px;
+          background-color: $navbar-bg;
+          color: $navbar-link-color;
+
+          &:hover {
+            background-color: $navbar-link-hover;
+          }
+
+          &::after {
+            display: none;
+          }
+        }
+      }
+
+      a {
+        color: $navbar-link-color;
+        text-decoration: none;
+        padding: 10px;
+
+        &:hover {
+          background-color: $navbar-link-hover;
+        }
+      }
+    }
+
+    .hamburger {
+      display: block;
+      position: absolute;
+      transform: translateX(450%)
+    }
+
+  };
+
+  // Nav bar for mobile size
   @media (max-width: 768px) {
       .navbar-logo {
         align-self: flex-start;
+        padding: 10px 5px 5px 5px;
       }
 
       .navbar-links {
@@ -224,23 +301,22 @@ $shadow-color: rgba(0, 0, 0, 0.15);
         align-items: center;
         position: absolute;
         top: 64px;
-        left: 10px;
         right: 10px;
-        background-color: $navbar-bg;
+        background-color: $navbar-link-color;
         width: calc(100% - 20px);
         transform: translateY(-100%);
         transition: transform 0.3s ease;
         z-index: 10;
         border-radius: 0 0 8px 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 
         &.open {
           display: flex;
           transform: translateY(0);
-          border-radius: 10px;
+          border-radius: 4px;
           width: auto;
           gap: 0px;
           padding: 8px 0;
+          box-shadow: -5px 5px 5px 5px rgba(0, 0, 0, 0.4);
         }
 
         li {
@@ -251,6 +327,8 @@ $shadow-color: rgba(0, 0, 0, 0.15);
             width: 100%;
             padding: 12px 16px;
             font-size: 16px;
+            background-color: $navbar-bg;
+            color: $navbar-link-color;
 
             &:hover {
               background-color: $navbar-link-hover;
@@ -280,9 +358,13 @@ $shadow-color: rgba(0, 0, 0, 0.15);
       .mobile-logout {
         display: block;
 
-        button {
+        .logout-btn {
           background-color: $logout-btn-bg;
-          color: white;
+
+          &:hover {
+            background-color: $login-btn-hover;
+            color: $navbar-link-color
+          }
         }
       }
 
