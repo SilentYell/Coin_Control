@@ -10,21 +10,33 @@ VALUES
 INSERT INTO Users (username, current_balance)
 VALUES ('Demo User', 1000.00);
 
--- Insert income data into the Income table
-INSERT INTO Income(user_id, amount, frequency, last_payment_date)
-VALUES
-  (1, 2000, 'Semi-Monthly', TO_DATE('15/02/2025', 'DD/MM/YYYY')),
-  (3, 1800, 'Semi-Monthly', TO_DATE('01/03/2025', 'DD/MM/YYYY')),
-  (4, 1500, 'Semi-Monthly', TO_DATE('15/03/2025', 'DD/MM/YYYY')),
-  (1, 1200, 'Semi-Monthly', TO_DATE('01/03/2025', 'DD/MM/YYYY'));
+-- -- Insert income data into the Income table
+-- INSERT INTO Income(user_id, amount, frequency, last_payment_date)
+-- VALUES
+
 
 -- Insert expenses data into the Expenses table
 INSERT INTO Expenses(expense_id, user_id, name, amount, expense_date, category)
 VALUES
-  (1, 2, 'Car Insurance Payment', -400, TO_DATE('10/02/2025', 'DD/MM/YYYY'), 'Transportation'),
-  (2, 1, 'Monthly Rent', -1200, TO_DATE('01/03/2025', 'DD/MM/YYYY'), 'Housing'),
-  (3, 1, 'Phone Bill', -85, TO_DATE('20/03/2025', 'DD/MM/YYYY'), 'Utilities'),
-  (4, 1, 'Weekly Groceries', -250, TO_DATE('25/03/2025', 'DD/MM/YYYY'), 'Groceries');
+  (1, 1, 'Monthly Rent', -1200, TO_DATE('01/04/2025', 'DD/MM/YYYY'), 'Housing'),
+  (2, 1, 'Car Insurance Payment', -200, TO_DATE('10/04/2025', 'DD/MM/YYYY'), 'Transportation'),
+  (3, 1, 'Night Out', -100, TO_DATE('11/04/2025', 'DD/MM/YYYY'), 'Entertainment'),
+  (4, 1, 'Phone Bill', -85, TO_DATE('20/04/2025', 'DD/MM/YYYY'), 'Utilities'),
+  (5, 1, 'Weekly Groceries', -250, TO_DATE('25/04/2025', 'DD/MM/YYYY'), 'Groceries'),
+  (6, 1, 'Dog food + supplies', -200, TO_DATE('20/04/2025', 'DD/MM/YYYY'), 'Other'),
+  (7, 1, 'Weekly Groceries', -250, TO_DATE('11/04/2025', 'DD/MM/YYYY'), 'Groceries'),
+  (8, 1, 'Weekly Groceries', -250, TO_DATE('18/04/2025', 'DD/MM/YYYY'), 'Groceries'),
+  (9, 1, 'Gas', -50, TO_DATE('18/04/2025', 'DD/MM/YYYY'), 'Transportation'),
+  (10, 1, 'Gas', -50, TO_DATE('09/04/2025', 'DD/MM/YYYY'), 'Transportation'),
+  (11, 1, 'Gas', -50, TO_DATE('22/04/2025', 'DD/MM/YYYY'), 'Transportation'),
+  (12, 1, 'Internet', -60, TO_DATE('01/04/2025', 'DD/MM/YYYY'), 'Utilities'),
+  (13, 1, 'Prescriptions', -100, TO_DATE('07/04/2025', 'DD/MM/YYYY'), 'Healthcare'),
+  (14, 1, 'Textbooks', -350, TO_DATE('15/04/2025', 'DD/MM/YYYY'), 'Education'),
+  (15, 1, 'Spa Day', -150, TO_DATE('30/04/2025', 'DD/MM/YYYY'), 'Personal'),
+  (16, 1, 'Netflix', -18, TO_DATE('02/04/2025', 'DD/MM/YYYY'), 'Entertainment'),
+  (17, 1, 'Pizza Night', -28, TO_DATE('12/04/2025', 'DD/MM/YYYY'), 'Entertainment'),
+  (18, 1, 'Physio', -75, TO_DATE('22/04/2025', 'DD/MM/YYYY'), 'Personal');
+  
 
 
 -- Insert trophy data into the Trophies table

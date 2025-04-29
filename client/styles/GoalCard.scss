@@ -64,16 +64,16 @@ $text-light: #fff;
   
   .no-goal-message {
     color: $goalcard-accent;
-    font-weight: 600;
-    font-size: 1.1rem;
+    font-weight: 500;
+    font-size: 1.15rem;
     text-align: center;
-    padding: 0.75rem;
+    padding: 1rem;
     border: 1px dashed $goalcard-accent;
     border-radius: 8px;
     background-color: rgba($goalcard-accent, 0.05);
     margin: 0.5rem 0;
     width: 100%;
-    height: 90%;
+    height: 100%;
   }
 }
 
