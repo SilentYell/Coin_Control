@@ -282,3 +282,18 @@ export const getUserTrophies = async (userId) => {
     throw error;
   }
 };
+
+// Fetch transaction dates for user id
+export const getTransactionDates = async (userId) => {
+  try {
+    const response = await fetch(`${API_URL}/transactions/${userId}/dates`)
+
+    if (!response.ok) {
+      throw new Error(`Error ${response.status}: ${response.statusText}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error(`Failed to fetch transaction dates for user ${userId}`, error);
+    throw error;
+  }
+};
