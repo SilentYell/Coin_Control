@@ -60,6 +60,10 @@ const AIInsights = ({
             <li>Receive budget optimization tips</li>
           </ul>
         </div>
+
+        <div className="ai-attribution">
+          Financial analysis powered by Google Gemini
+        </div>
       </div>
     );
   }
