@@ -188,6 +188,7 @@ const Navbar = (
             setTrophiesList={setTrophiesList}
             onSubmitSuccess={onSubmitSuccess}
             onGoalChanged={refreshGoal} // Pass refreshGoal to IncomeForm
+            triggerRefresh={triggerRefresh}
           />
         </Modal>
       )}

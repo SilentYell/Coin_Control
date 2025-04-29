@@ -3,7 +3,7 @@ import '../styles/IncomeForm.scss'
 import { addIncomeAndCheckTrophies, updateIncome, getUserTrophies } from '../services/api';
 import { initializeIncomeFormData } from '../src/helpers/initializeFormData';
 
-const IncomeForm = ({ editingIncome, setEditingIncome, onSubmitSuccess, setEditSuccess, setLastEditedTransactionType, setLastEditedId, setTrophiesList, onGoalChanged }) => {
+const IncomeForm = ({ editingIncome, setEditingIncome, onSubmitSuccess, setEditSuccess, setLastEditedTransactionType, setLastEditedId, setTrophiesList, onGoalChanged, triggerRefresh }) => {
   // Track current formData
   const [formData, setFormData] = useState(() => initializeIncomeFormData(editingIncome));
   const [success, setSuccess] = useState(false);
@@ -70,6 +70,7 @@ const IncomeForm = ({ editingIncome, setEditingIncome, onSubmitSuccess, setEditS
         setEditSuccess(true);
         setTimeout(() => setEditSuccess(false), 2000); // clear success message
         setTimeout(() => setLastEditedId(null), 3500); // clear visual on edited record
+        triggerRefresh(); // trigger line graph refresh
       } else {
         // Add new income
         response = await addIncomeAndCheckTrophies(newIncome);
@@ -89,6 +90,7 @@ const IncomeForm = ({ editingIncome, setEditingIncome, onSubmitSuccess, setEditS
         // Show success message
         setSuccess(true);
         setTimeout(() => setSuccess(false), 2000);
+        triggerRefresh(); // trigger line graph refresh
       }
 
       // Trigger list update and from reset if the trophy check worked
