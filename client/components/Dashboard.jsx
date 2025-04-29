@@ -367,7 +367,8 @@ function Dashboard({ expenses = [], income = [], user, goal, totalSavings, refre
               cardX={trophyCardPos.x}
               cardY={trophyCardPos.y}
               trophiesList={trophiesList}
-              setTrophiesList={setTrophiesList} />
+              setTrophiesList={setTrophiesList}
+              refreshSignal={refreshCounter} />
           </div>
         </ResponsiveGridLayout>
         {showTrophyPopup && (

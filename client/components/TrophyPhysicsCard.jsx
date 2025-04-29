@@ -1,16 +1,27 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Matter from 'matter-js';
 import Card from './Card';
+import { getUserTrophies } from '../services/api';
 
-const TrophyPhysicsCard = ({ isEditable, cardX, cardY, trophiesList }) => {
+const TrophyPhysicsCard = ({ isEditable, cardX, cardY, refreshSignal }) => {
 
   // Local state for trophies
   const [localTrophies, setLocalTrophies] = useState([]);
 
-  // Update state when trophiesList prop changes
+  // Update state when refreshSignal prop changes
   useEffect(() => {
-    setLocalTrophies(trophiesList);
-  }, [trophiesList]);
+    const fetchTrophies = async () => {
+      try {
+        const userId = 1;
+        const data = await getUserTrophies(userId); // ✅ await the actual data
+        setLocalTrophies(data); // ✅ now data is the array, not a Promise
+      } catch (error) {
+        console.error('Error fetching trophies', error);
+      }
+    };
+
+    fetchTrophies();
+  }, [refreshSignal]);
 
   const sceneRef = useRef(null);
   const engineRef = useRef(null);
