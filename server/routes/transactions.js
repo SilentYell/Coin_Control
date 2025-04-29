@@ -44,6 +44,37 @@ module.exports = db => {
     });
   });
 
+  // Get request for all transactions dates by user
+  router.get("/transactions/:id/dates", (req, res) => {
+    console.log('getting /transactions/:id/dates')
+    const { id } = req.params
+
+    const query = `
+    SELECT
+      DATE(last_payment_date) AS txn_date,
+      amount,
+      'Income' AS type
+    FROM income
+    WHERE user_id = $1
+
+    UNION
+
+    SELECT
+    DATE(expense_date) AS txn_date,
+    amount,
+    'Expense' AS type
+    FROM expenses
+    WHERE user_id = $1
+    `;
+
+    db.query(query, [id])
+    .then(({ rows }) => {
+      return res.json(rows);
+    })
+    .catch((err) => {
+      console.error('Error getting transaction dates:', err);
+    });
+  });
 
   // Delete a transactions record by ID, use type of transactions for query
   router.delete("/delete/transactions/:type/:id", (req, res) => {
