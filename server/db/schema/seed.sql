@@ -70,7 +70,8 @@ VALUES
   (2, null, 2, '2025-04-01 01:18:36', 'badge'),
   (3, null, 4, '2025-02-11 01:18:36', 'badge'),
   (2, null, 5, '2025-01-18 01:18:36', 'badge'),
-  (4, null, 6, '2025-01-23 01:18:36', 'badge');
+  (4, null, 6, '2025-01-23 01:18:36', 'badge'),
+  (1, null, 3, '2025-04-29 01:18:36', 'badge');
 
 -- Reset the sequence for the expense_id column
 DO $$
