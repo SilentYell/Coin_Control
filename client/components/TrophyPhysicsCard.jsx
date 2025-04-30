@@ -15,8 +15,8 @@ const TrophyPhysicsCard = ({ isEditable, cardX, cardY, refreshSignal, isResizing
     const fetchTrophies = async () => {
       try {
         const userId = 1;
-        const data = await getUserTrophies(userId); // ✅ await the actual data
-        setLocalTrophies(data); // ✅ now data is the array, not a Promise
+        const data = await getUserTrophies(userId); // await the actual data
+        setLocalTrophies(data); // now data is the array, not a Promise
       } catch (error) {
         console.error('Error fetching trophies', error);
       }
@@ -129,7 +129,7 @@ const TrophyPhysicsCard = ({ isEditable, cardX, cardY, refreshSignal, isResizing
 
     // Set up trophy scale and physics properties
     const BADGE_SIZE = Math.max(60, Math.min(width, height) / 5); // scale badge size for mobile
-    const COLLISION_RADIUS = (BADGE_SIZE / 2) * 1.1;
+    const COLLISION_RADIUS = BADGE_SIZE * 0.55; // slightly larger collision circle
     const margin = COLLISION_RADIUS + 1;
     const bodies = loadedTrophies.map((trophy) => {
       const iconFile = trophy.icon_path ? trophy.icon_path.split('/').pop() : '';
@@ -295,7 +295,7 @@ const TrophyPhysicsCard = ({ isEditable, cardX, cardY, refreshSignal, isResizing
   return (
     <Card title="Collection" isEditable={isEditable}>
       {isReady && !isResizing && (
-        <div ref={containerRef} style={{ width: '100%', height: '100%', minHeight: 260, margin: 0, padding: 0 }}>
+        <div ref={containerRef} style={{ width: '100%', aspectRatio: '7/10', height: 'auto', minHeight: 260, margin: 0, padding: 0 }}>
           <div ref={sceneRef} style={{ width: '100%', height: '100%', boxSizing: 'border-box', margin: 0, padding: 0 }} />
         </div>
       )}
