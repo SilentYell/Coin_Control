@@ -90,6 +90,10 @@ $trophy-text-light: #ffffff; // Text on dark
 
   /* Hover effects on badge rows*/
   .trophy-group {
+    .trophy-name {
+      font-size: 1.5rem;
+    }
+
     .trophy-details-row {
       display: none;
       justify-content: center;
@@ -97,6 +101,7 @@ $trophy-text-light: #ffffff; // Text on dark
       td {
         padding: 0;
       }
+
 
       .trophy-details {
         padding: 1rem;
@@ -110,14 +115,14 @@ $trophy-text-light: #ffffff; // Text on dark
         justify-content: space-between;
         font-weight: bold;
         text-transform: uppercase;
-        font-size: 0.8rem;
+        font-size: 1rem;
       }
 
       .details-content {
         padding: 0 px;
         display: flex;
         justify-content: space-between;
-        font-size: 0.8rem;
+        font-size: 1rem;
       }
 
       .details-header,
