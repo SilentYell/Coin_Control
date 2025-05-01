@@ -128,7 +128,7 @@ const TrophyPhysicsCard = ({ isEditable, cardX, cardY, refreshSignal, isResizing
     Matter.World.add(world, [ground, leftWall, rightWall, topWall]);
 
     // Set up trophy scale and physics properties
-    const BADGE_SIZE = Math.max(60, Math.min(width, height) / 5); // scale badge size for mobile
+    const BADGE_SIZE = Math.max(70, Math.min(width, height) / 8); // scale badge size for mobile
     const COLLISION_RADIUS = BADGE_SIZE * 0.55; // slightly larger collision circle
     const margin = COLLISION_RADIUS + 1;
     const bodies = loadedTrophies.map((trophy) => {
