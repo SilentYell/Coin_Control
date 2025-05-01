@@ -1,12 +1,52 @@
-# React + Vite
+# Coin Control Client
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the frontend for Coin Control, built with React and Vite. It provides a modern, animated, and responsive UI for personal finance management.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Expense and income tracking
+- Savings goals and progress visualization
+- Dashboard with charts and summaries
+- Trophy/achievement system
+- AI-powered financial insights
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+2. Start the development server:
+
+   ```bash
+   npm run dev
+   ```
+
+## Main Dependencies
+
+- react, react-dom
+- animejs
+- matter-js
+- react-grid-layout
+- react-icons
+- react-router-dom
+- recharts
+- sass
+
+## Project Structure
+
+- `components/` - UI components (Dashboard, Navbar, Cards, etc.)
+- `hooks/` - Custom React hooks
+- `services/` - API service functions
+- `src/` - App entry, styles, helpers
+- `styles/` - SCSS styles for components
+
+## For more info
+
+- See the main [README](../README.md)
+- User stories: [../docs/user_stories.md](../docs/user_stories.md)
+- ERD: [../docs/ERD.md](../docs/ERD.md)
+
+_Last updated: April 29, 2025_
