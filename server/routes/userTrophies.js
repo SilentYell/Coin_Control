@@ -31,7 +31,8 @@ router.get('/:user_id', async (req, res) => {
         t.description,
         t.percent_required::text AS criteria,
         t.icon_url AS icon_path,
-        ut.type
+        ut.type,
+        ut.awarded_at
       FROM user_trophies ut
       JOIN trophies t ON ut.trophy_id = t.trophy_id
       WHERE ut.user_id = $1
@@ -44,7 +45,8 @@ router.get('/:user_id', async (req, res) => {
         bt.description,
         bt.criteria_key AS criteria,
         bt.icon_path AS icon_path,
-        ut.type
+        ut.type,
+        ut.awarded_at
       FROM user_trophies ut
       JOIN badge_trophies bt ON ut.badge_id = bt.trophy_id
       WHERE ut.user_id = $1
