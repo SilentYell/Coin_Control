@@ -125,7 +125,8 @@ const Navbar = (
             <button className='login-btn' onClick={handleLogin}>Login</button>
           ) : (
             <div className='user-info'>
-              <span>Welcome, {user.username}</span>
+              <span>Welcome, <span className="navbar-username">{user.username}</span>
+                </span>
               <button className='logout-btn' onClick={handleLogout}>Logout</button>
             </div>
           )}

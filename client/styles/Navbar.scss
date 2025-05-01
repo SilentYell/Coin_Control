@@ -127,11 +127,17 @@ $shadow-color: rgba(0, 0, 0, 0.15);
     gap: 1rem;
     font-weight: bold;
 
-    span {
+    span:not(.navbar-username) {
       color: $navbar-text;
       font-size: 15px;
       letter-spacing: 0.3px;
     }
+  }
+
+  .navbar-username {
+    font-size: 1.3em;
+    font-weight: bold;
+    color: #ffbc2d;
   }
 
   .login-btn, .logout-btn {
