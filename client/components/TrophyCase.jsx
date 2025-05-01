@@ -9,15 +9,13 @@ const TrophyCase = ({ userId }) => {
     const fetchTrophies = async () => {
       try {
         const data = await getUserTrophies(userId);
-        console.log('Fetched trophies: ', data);
-        console.log('fetch user tropihies data', data)
-
         const filteredData = data.filter(trophy => trophy.type === 'trophy') // filter for trophy of types 'trophy'
         filteredData.sort((a, b) => Number(a.criteria) - Number(b.criteria)); // Sort by percentage criteria
 
         setTrophies(filteredData);
       } catch (error) {
-        console.log('Error fetching trophies: ', error);
+        console.error('Error fetching trophies: ', error);
+        throw error;
       }
     };
 
