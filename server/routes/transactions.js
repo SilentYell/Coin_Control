@@ -46,7 +46,6 @@ module.exports = db => {
 
   // Get request for all transactions dates by user
   router.get("/transactions/:id/dates", (req, res) => {
-    console.log('getting /transactions/:id/dates')
     const { id } = req.params
 
     const query = `
