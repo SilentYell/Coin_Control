@@ -57,7 +57,7 @@ function getInitialLayout() {
   if (saved) {
     try {
       return JSON.parse(saved);
-    } catch (error) {
+    } catch {
       return {
         layoutMode: wideLayout.layoutMode,
         layoutState: wideLayout.layout
