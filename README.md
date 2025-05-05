@@ -34,27 +34,27 @@ Below are placeholders for screenshots or GIFs of the main features. Replace the
 
 ### Dashboard Overview
 
-![Dashboard Screenshot](docs/images/dashboard.png)
+![Dashboard Screenshot](https://github.com/SilentYell/Coin_Control/blob/main/docs/images/dashboard.png?raw=true)
 
 ### Expense Tracking
 
-![Expense Tracking Screenshot](docs/images/expense_tracking.png)
+![Expense Tracking Screenshot](https://github.com/SilentYell/Coin_Control/blob/main/docs/images/expense_tracking.png?raw=true)
 
 ### Income Management
 
-![Income Management Screenshot](docs/images/income_tracking.png)
+![Income Management Screenshot](https://github.com/SilentYell/Coin_Control/blob/main/docs/images/income_tracking.png?raw=true)
 
 ### Savings Goals
 
-![Savings Goals Screenshot](docs/images/saving_goal.png)
+![Savings Goals Screenshot](https://github.com/SilentYell/Coin_Control/blob/main/docs/images/saving_goal.png?raw=true)
 
 ### Trophies & Achievements
 
-![Trophies Screenshot](docs/images/trophy_case.png)
+![Trophies Screenshot](https://github.com/SilentYell/Coin_Control/blob/main/docs/images/trophy_case.png?raw=true)
 
 ### AI Insights
 
-![AI Insights Screenshot](docs/images/AI_Insights.png)
+![AI Insights Screenshot](https://github.com/SilentYell/Coin_Control/blob/main/docs/images/AI_Insights.png?raw=true)
 
 ---
 
