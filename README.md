@@ -1,5 +1,7 @@
 # Coin Control
 
+![Landing Page](https://github.com/SilentYell/Coin_Control/blob/main/docs/images/landing_page.png?raw=true)
+
 Coin Control is a personal finance management tool that helps users track expenses, manage income, set savings goals, and visualize their financial progress. Built with a React + Vite frontend and Express backend, it features a PostgreSQL database and a modern, interactive dashboard.
 
 ---
