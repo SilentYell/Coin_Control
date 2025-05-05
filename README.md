@@ -7,6 +7,7 @@ Coin Control is a personal finance management tool that helps users track expens
 ## Table of Contents
 
 - [Features](#features)
+- [Feature Previews](#feature-previews)
 - [Setup](#setup)
 - [Dependencies](#dependencies)
 - [User Stories](#user-stories)
@@ -24,6 +25,36 @@ Coin Control is a personal finance management tool that helps users track expens
 - **Trophies:** Earn achievements for financial milestones.
 - **AI Insights:** Get personalized financial insights (AI-powered).
 - **Responsive UI:** Modern, animated, and mobile-friendly interface.
+
+---
+
+## Feature Previews
+
+Below are placeholders for screenshots or GIFs of the main features. Replace the image links with actual screenshots or demo GIFs as needed.
+
+### Dashboard Overview
+
+![Dashboard Screenshot](docs/images/dashboard.png)
+
+### Expense Tracking
+
+![Expense Tracking Screenshot](docs/images/expense_tracking.png)
+
+### Income Management
+
+![Income Management Screenshot](docs/images/income_tracking.png)
+
+### Savings Goals
+
+![Savings Goals Screenshot](docs/images/saving_goal.png)
+
+### Trophies & Achievements
+
+![Trophies Screenshot](docs/images/trophy_case.png)
+
+### AI Insights
+
+![AI Insights Screenshot](docs/images/AI_Insights.png)
 
 ---
 
@@ -52,7 +83,9 @@ Coin Control is a personal finance management tool that helps users track expens
 ---
 
 ## Dependencies
+
 **Frontend:**
+
 - animejs (animations)
 - matter-js (physics for trophy/animation effects)
 - react, react-dom
@@ -63,6 +96,7 @@ Coin Control is a personal finance management tool that helps users track expens
 - sass (styling)
 
 **Backend:**
+
 - express
 - pg (node-postgres)
 - dotenv
@@ -70,7 +104,9 @@ Coin Control is a personal finance management tool that helps users track expens
 ---
 
 ## User Stories
+
 See [`docs/user_stories.md`](docs/user_stories.md) for full details. Highlights:
+
 - Authentication (sign up, login, logout)
 - Expense and income management (add, view, edit, delete)
 - Set and track savings goals
@@ -79,17 +115,18 @@ See [`docs/user_stories.md`](docs/user_stories.md) for full details. Highlights:
 ---
 
 ## ERD
+
 See [`docs/ERD.md`](docs/ERD.md) for full details. Highlights:
+
 - Users, Expenses, Income, SavingsGoals tables
 - Users have many Expenses, Income, and SavingsGoals
 
 ---
 
 ## Development Timeline
+
 - **Week 1:** Database schema, core components, backend API routes
 - **Week 2:** Frontend-backend integration, dashboard, savings goals
 - **Week 3:** Testing, UI polish, animations, trophies, AI insights
 
 ---
-
-_Last updated: April 29, 2025_

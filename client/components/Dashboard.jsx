@@ -76,7 +76,7 @@ function Dashboard({ expenses = [], income = [], user, goal, totalSavings, refre
   const [currentBalance, setCurrentBalance] = useState(0);
   const [isEditable, setIsEditable] = useState(false);
   const [showFinancialInsights, setShowFinancialInsights] = useState(false);
-  const [trophies, setTrophies] = useState([]);
+  const [trophies, setTrophies] = useState([]);``
   const [showTrophyPopup, setShowTrophyPopup] = useState(null);
   const [isResizing, setIsResizing] = useState(false);
 
